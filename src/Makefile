@@ -26,7 +26,8 @@ BFLAGS += -rectypes -g -package GT,OCanren
 # opt flags
 OFLAGS += #-inline 10
 NOCANREN = noCanren
-NOCFLAGS +=
+NOCFLAGS += -pp ./rewriter.native -w -8 -rectypes -I `ocamlfind query GT`
+BFLAGS += -package noCanren.Peano -package noCanren.List #-dsource
 
 .DEFAULT: all
 
@@ -85,8 +86,6 @@ include $(DEPFILES)
 	$(OCAMLOPT) -c $(BFLAGS) $(STATIC) $(PXFLAGS) $(OFLAGS) $<
 	#ocamlobjinfo $(<:.ml=.cmi) | head -n 6
 
-NOCFLAGS = -pp ./rewriter.native -w -8 -rectypes
-BFLAGS += -package noCanren.Peano -package noCanren.List
 
 rewriter.native: rewriter_ppx.native
 rewriter_ppx.native:

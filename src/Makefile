@@ -1,5 +1,5 @@
-TOPFILE = JGS
-SOURCES = JGS.noc.ml
+TOPFILE = JGSml
+SOURCES = JGSml.ml
 
 REWRITER_EXES = rewriter.native rewriter_ppx.native
 PXFLAGS = -pp './rewriter_ppx.native -new-typenames -pp ./rewriter.native'

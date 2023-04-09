@@ -27,7 +27,7 @@ BFLAGS += -rectypes -g -package GT,OCanren
 OFLAGS += #-inline 10
 NOCANREN = noCanren
 NOCFLAGS += -pp ./rewriter.native -w -8 -rectypes -I `ocamlfind query GT`
-BFLAGS += -package noCanren.Peano -package noCanren.List #-dsource
+# BFLAGS += -package noCanren.Peano -package noCanren.List #-dsource
 
 .DEFAULT: all
 

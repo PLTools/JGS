@@ -45,8 +45,8 @@
   equations in the Java generics type system. More specifically, we put the
   problem in the context of relational verifier-to-solver approach, which brings in a certain
   specificity to the analysis. We reiterate on the Java generics type system, subtyping
-  relation and relevant notions, discuss the pecularities of relational verifier-to-solver
-  approach application, and describe a prototype of functional subtyping verifier.
+  relation and relevant notions, and discuss the pecularities of relational verifier-to-solver
+  approach application. %, and describe a prototype of functional subtyping verifier.
 \end{abstract}
 
 \section{Java Generics}
@@ -58,7 +58,7 @@ reiterating on the non-generic part of Java type system assuming reader's famili
 concepts of reference types, arrays, classes, interfaces, and inheritance.
 
 The subsystem we are dealing with contains generic class/interface types, array types,
-type variables and intersection types:
+type variables, null and intersection types:
 
 \[
 \begin{array}{rcll}
@@ -88,7 +88,7 @@ can be specified for a generic class/interface:
 \]
 
 Here $C$ is the class/interface being declared, $\alpha_i^{U_i}$~--- its generic parameters with upper
-bounds, $S_i$~--- its direct supertypes, among which only one type is a class type, $T^j_l$~--- type
+bounds, $S_i$~--- its direct supertypes, among which only one type can be a class type, $T^j_l$~--- type
 parameters for direct supertypes, which may contain the occurences of $\alpha_i$; note: neither of $T^j_l$ can be
 an intersection type.
 
@@ -97,9 +97,12 @@ determined by the position of its introduction (either generic class/interface o
 is unclear what is the scope of type variables introduced implicitly as a result of capture
 conversion (but this might be irrelevant to the problem we are dealing with).
 
-Intersection types can not be declared explicitly; the only position in which they can be specified is
+Intersection types can not be declared explicitly; the only positions in which they can be specified are
 upper bounds of type parameters in generic class/interface declarations. However intersection types can be derived
 as a result of capture conversion.
+
+Null type is an artificial transparent type with no explicit representation. It is assumed to be a subtype for
+every other reference type.
 
 Besides regular types generic classes can be applied to \emph{wildcard types}. A wildcard is an anonymous
 type variable (notation: ``\java{?}'') equipped with optional lower or upper bound which can not be an intersection type.
@@ -151,7 +154,7 @@ $\grc{C}{T_1\dots T_K}$ is the type $\grc{C}{\cc{T_1}\dots \cc{T_k}}$ where the 
 \end{array}\right.
 \]
 
-Here ``$[\bullet\gets\bullet]$'' denotes a (simultaneous) substitution of type variables with types. Note, in capture conversion
+Here ``$[\bullet\gets\bullet]$'' denotes a (simultaneous) substitution of type variables with some types. Note, in capture conversion
 type parameters of the class under conversion are substituted with the results of the conversion in all bounds.
 
 The subtyping relation ``$\precprec$'', which is the principle notion for the problem we are dealing with, is defined as a reflexive-transitive
@@ -196,7 +199,7 @@ This is rather expected by the very nature of relational programming.
 
 However, from the implementation standpoint the application of this technique imposes a certain problem since ``$\prec$'' and ``$\precprec$''
 are mutually recursive, and we expect ``$\prec$'' to be obtained as a result of relational conversion of functional implementation. In current
-prototype implementation we used open recursion and the knot is tied on the very top level. We hope that this (obvious) solution will be
+prototype implementation open recursion is used and the knot is tied on the very top level. We hope that this (obvious) solution will be
 scalable enough to be applied in the final functional-relational mixture.
 
 

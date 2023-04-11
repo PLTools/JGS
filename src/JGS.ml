@@ -156,7 +156,6 @@ module Verifier (CT : sig
          (match tb with
           | Interface (id_b, targs_b)
           | Class     (id_b, targs_b) ->
-             let targs_b = capture_conversion id_b targs_b in   
              class_int_sub id_a targs_a id_b targs_b (let C decl = CT.decl_by_id id_a in
                                                       decl.super :: decl.supers)
 
@@ -169,7 +168,6 @@ module Verifier (CT : sig
          (match tb with
           | Class     (id_b, targs_b) 
           | Interface (id_b, targs_b) ->
-             let targs_b = capture_conversion id_b targs_b in   
               let supers =
                 let I decl = CT.decl_by_id id_a in 
                 decl.supers

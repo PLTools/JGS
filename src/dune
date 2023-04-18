@@ -3,3 +3,13 @@
  (modules JGS)
  (flags
   (-w -8-9-27-37)))
+
+(rule
+ (targets JGS.ml)
+ (deps
+  (:input JGS.noc.ml))
+ (action
+  (run
+   sh
+   -c
+   "noCanren -w -8 %{input} -rectypes -o %{targets} | ocamlformat --enable-outside-detected-project --impl -")))

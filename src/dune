@@ -1,0 +1,5 @@
+(executable
+ (name JGS)
+ (modules JGS)
+ (flags
+  (-w -8-9-27-37)))

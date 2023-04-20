@@ -1,6 +1,9 @@
 build:
 	dune build
 
+run:
+	dune exec ./JGS_run.exe
+
 test:
 	dune test
 

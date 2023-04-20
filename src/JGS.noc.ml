@@ -5,31 +5,33 @@
    Further references are given according to this document.
 *)
 
+open Option
+open Peano
+open List
+
 (* A type to identify various objects *)
-type id = int
+(* NEED TO RETURN: type id = int *)
 type polarity = Extends | Super
 
 (* Types; only reference types since primitive types seem not to be involved;
    section 4.3, page 63.
 *)
 (* Type arguments; section 4.5.1, page 71 *)
-type 'jtype abst_targ =
-  | Type of 'jtype
-  | Wildcard of (polarity * 'jtype) option
+type 'jtype targ = Type of 'jtype | Wildcard of (polarity * 'jtype) option
 
 type jtype =
   (* array type *)
   | Array of jtype
   (* class type *)
-  | Class of id * jtype abst_targ list
+  | Class of (* NEED TO RETURN: id *) nat * jtype targ list
   (* interface type *)
-  | Interface of id * jtype abst_targ list
+  | Interface of (* NEED TO RETURN: id *) nat * jtype targ list
   (* type variable: *)
   | Var of {
       (* 1. identity *)
-      id : id;
+      id : (* NEED TO RETURN: id *) nat;
       (* 2. index in declaration list *)
-      index : int;
+      index : nat;
       (* 3. upper bound *)
       upb : jtype;
       (* 4. lower bound *)
@@ -40,20 +42,18 @@ type jtype =
   (* intersection type *)
   | Intersect of jtype list
 
-type targ = jtype abst_targ
-
 (* Type parameters:
    1. represented implicitly by their indices;
    2. the number of parameters is the length of the bounds' array.
 *)
-type params = jtype list
+(* NEED TO RETURN: type params = jtype list *)
 
 (* Class declaration; only type-specific informanion is retained.
    Section 8.1, page 237, section 8.1.2, page 241.
 *)
 type cdecl = {
   (* type parameters *)
-  params : params;
+  params : (* NEED TO RETURN: params *) jtype list;
   (* supeclass *)
   super : jtype;
   (* superinterfaces *)
@@ -65,22 +65,25 @@ type cdecl = {
 *)
 type idecl = {
   (* type parameters *)
-  params : params;
+  params : (* NEED TO RETURN: params *) jtype list;
   (* superinterfaces *)
   supers : jtype list;
 }
 
+(* Type declaration: a class or an interface *)
+type decl = C of cdecl | I of idecl
 type capture_conversion_subst = CC_inter of jtype * jtype | CC_subst of jtype
 
 type capture_conversion_type =
   | CC_type of jtype
-  | CC_var of id * id * capture_conversion_subst * jtype option
-
-(* Type declaration: a class or an interface *)
-type decl = C of cdecl | I of idecl
+  | CC_var of
+      (* NEED TO RETURN: id *) nat
+      * (* NEED TO RETURN: id *) nat
+      * capture_conversion_subst
+      * jtype option
 
 (* Substitution of type parameters *)
-let rec substitute_typ (subst : targ list) = function
+let rec substitute_typ subst = function
   | Array typ -> Array (substitute_typ subst typ)
   | Class (id, args) -> Class (id, List.map (substitute_arg subst) args)
   | Interface (id, args) -> Interface (id, List.map (substitute_arg subst) args)
@@ -88,8 +91,8 @@ let rec substitute_typ (subst : targ list) = function
   | Var _ -> failwith "*** should not happen ***"
   | Null -> Null
 
-and substitute_arg (subst : targ list) = function
-  | Type (Var { index = n }) -> List.nth subst n
+and substitute_arg subst = function
+  | Type (Var { index }) -> List.nth subst index
   | Type typ -> Type (substitute_typ subst typ)
   | Wildcard None -> Wildcard None
   | Wildcard (Some (p, typ)) -> Wildcard (Some (p, substitute_typ subst typ))
@@ -97,7 +100,7 @@ and substitute_arg (subst : targ list) = function
 (* Subtyping verifier functor parameterized by a class table CT*)
 module Verifier (CT : sig
   (* Gets a class/interface declaration by is *)
-  val decl_by_id : id -> decl
+  val decl_by_id : (* NEED TO RETURN: id *) nat -> decl
 
   (* Synonyms for some specific classes *)
   val object_t : jtype
@@ -105,11 +108,11 @@ module Verifier (CT : sig
   (* mentioned in the JLS *)
   val cloneable_t : jtype
 
-  (* *)
+  (* mentioned in the JLS *)
   val serializable_t : jtype
 
   (* Gets a new var's id *)
-  val new_var : unit -> id
+  val new_var : unit -> (* NEED TO RETURN: id *) nat
 end) =
 struct
   (* Direct subtyping relation; only for non-raw types, section 4.10.2, page 82.
@@ -118,7 +121,7 @@ struct
   *)
   let rec ( -<- ) (( <-< ) : jtype -> jtype -> bool) (ta : jtype) (tb : jtype) =
     (* "Contains" relation, section 4.5.1, page 72 *)
-    let ( <=< ) (ta : targ) (tb : targ) =
+    let ( <=< ) ta tb =
       match (ta, tb) with
       | Wildcard (Some (Extends, t)), Wildcard (Some (Extends, s)) -> t <-< s
       | Wildcard (Some (Extends, t)), Wildcard None -> true
@@ -229,133 +232,85 @@ struct
     | Null -> tb <> Null
 end
 
-module SampleCT = struct
-  let new_id =
-    let n = ref 0 in
-    fun () ->
-      let i = !n in
-      incr n;
-      i
+(* module Verify = Verifier (SampleCT) *)
 
-  module M = Map.Make (struct
-    type t = id
+(* let rec ( <-< ) ta tb = ta -<- tb (* not complete! *)
+   and ( -<- ) ta tb = Verify.( -<- ) ( <-< ) ta tb
 
-    let compare = compare
-  end)
+   let _ =
+     Printf.printf " 1 Object[] < Object (true) : %b\n"
+       (Array SampleCT.object_t -<- SampleCT.object_t);
+     Printf.printf " 2 Object[] < Cloneable (true) : %b\n"
+       (Array SampleCT.object_t -<- SampleCT.cloneable_t);
+     Printf.printf " 3 Object[] < Serializable (true) : %b\n"
+       (Array SampleCT.object_t -<- SampleCT.serializable_t);
 
-  let add_class, add_interface, decl_by_id =
-    let m = ref M.empty in
-    ( (fun c ->
-        let id = new_id () in
-        let d = C c in
-        m := M.add id d !m;
-        id),
-      (fun i ->
-        let id = new_id () in
-        let d = I i in
-        m := M.add id d !m;
-        id),
-      fun id -> M.find id !m )
+     Printf.printf " 4 Object < Object[] (false): %b\n"
+       (SampleCT.object_t -<- Array SampleCT.object_t);
+     Printf.printf " 5 Cloneable < Object[] (false): %b\n"
+       (SampleCT.cloneable_t -<- Array SampleCT.object_t);
+     Printf.printf " 6 Serializable < Object[] (false): %b\n"
+       (SampleCT.serializable_t -<- Array SampleCT.object_t);
 
-  let make_tvar index upb = Var { id = new_id (); index; upb; lwb = None }
-  let make_class params super supers = add_class { params; super; supers }
-  let make_interface params supers = add_interface { params; supers }
-  let top = Class (-1, [])
+     Printf.printf " 7 Object[][] < Serializable[] (true) : %b\n"
+       (Array (Array SampleCT.object_t) -<- Array SampleCT.serializable_t);
 
-  let object_t =
-    let id = make_class [] top [] in
-    Class (id, [])
+     (* class A {...} *)
+     let class_a = SampleCT.make_class [] SampleCT.object_t [] in
 
-  let cloneable_t =
-    let id = make_interface [] [] in
-    Interface (id, [])
+     (* class B extends A {...} *)
+     let class_b = SampleCT.make_class [] (Class (class_a, [])) [] in
+     Printf.printf " 8 B < A (true) : %b\n"
+       (Class (class_b, []) -<- Class (class_a, []));
 
-  let serializable_t =
-    let id = make_interface [] [] in
-    Interface (id, [])
+     (* interface IA {...} *)
+     let intf_a = SampleCT.make_interface [] [] in
 
-  let new_var = new_id
-end
+     (* class C extends A implements IA {...} *)
+     let class_c =
+       SampleCT.make_class [] (Class (class_a, [])) [ Interface (intf_a, []) ]
+     in
+     Printf.printf " 9 C < A (true) : %b\n"
+       (Class (class_c, []) -<- Class (class_a, []));
+     Printf.printf "10 C < IA (true) : %b\n"
+       (Class (class_c, []) -<- Interface (intf_a, []));
 
-module Verify = Verifier (SampleCT)
+     (* interface IB extends IA {...} *)
+     let intf_b = SampleCT.make_interface [] [ Interface (intf_a, []) ] in
+     Printf.printf "11 IB < IA (true) : %b\n"
+       (Interface (intf_b, []) -<- Interface (intf_a, []));
 
-let rec ( <-< ) ta tb = ta -<- tb (* not complete! *)
-and ( -<- ) ta tb = Verify.( -<- ) ( <-< ) ta tb
+     (* class D<X> {...} *)
+     let class_d =
+       SampleCT.make_class [ SampleCT.object_t ] SampleCT.object_t []
+     in
 
-let _ =
-  Printf.printf " 1 Object[] < Object (true) : %b\n"
-    (Array SampleCT.object_t -<- SampleCT.object_t);
-  Printf.printf " 2 Object[] < Cloneable (true) : %b\n"
-    (Array SampleCT.object_t -<- SampleCT.cloneable_t);
-  Printf.printf " 3 Object[] < Serializable (true) : %b\n"
-    (Array SampleCT.object_t -<- SampleCT.serializable_t);
+     (* class E<X, Y> {...} *)
+     let class_e =
+       SampleCT.make_class
+         [ SampleCT.object_t; SampleCT.object_t ]
+         SampleCT.object_t []
+     in
 
-  Printf.printf " 4 Object < Object[] (false): %b\n"
-    (SampleCT.object_t -<- Array SampleCT.object_t);
-  Printf.printf " 5 Cloneable < Object[] (false): %b\n"
-    (SampleCT.cloneable_t -<- Array SampleCT.object_t);
-  Printf.printf " 6 Serializable < Object[] (false): %b\n"
-    (SampleCT.serializable_t -<- Array SampleCT.object_t);
-
-  Printf.printf " 7 Object[][] < Serializable[] (true) : %b\n"
-    (Array (Array SampleCT.object_t) -<- Array SampleCT.serializable_t);
-
-  (* class A {...} *)
-  let class_a = SampleCT.make_class [] SampleCT.object_t [] in
-
-  (* class B extends A {...} *)
-  let class_b = SampleCT.make_class [] (Class (class_a, [])) [] in
-  Printf.printf " 8 B < A (true) : %b\n"
-    (Class (class_b, []) -<- Class (class_a, []));
-
-  (* interface IA {...} *)
-  let intf_a = SampleCT.make_interface [] [] in
-
-  (* class C extends A implements IA {...} *)
-  let class_c =
-    SampleCT.make_class [] (Class (class_a, [])) [ Interface (intf_a, []) ]
-  in
-  Printf.printf " 9 C < A (true) : %b\n"
-    (Class (class_c, []) -<- Class (class_a, []));
-  Printf.printf "10 C < IA (true) : %b\n"
-    (Class (class_c, []) -<- Interface (intf_a, []));
-
-  (* interface IB extends IA {...} *)
-  let intf_b = SampleCT.make_interface [] [ Interface (intf_a, []) ] in
-  Printf.printf "11 IB < IA (true) : %b\n"
-    (Interface (intf_b, []) -<- Interface (intf_a, []));
-
-  (* class D<X> {...} *)
-  let class_d =
-    SampleCT.make_class [ SampleCT.object_t ] SampleCT.object_t []
-  in
-
-  (* class E<X, Y> {...} *)
-  let class_e =
-    SampleCT.make_class
-      [ SampleCT.object_t; SampleCT.object_t ]
-      SampleCT.object_t []
-  in
-
-  (* class F<X, Y> extends E<D<Y>, X> {...} *)
-  let class_f =
-    SampleCT.make_class
-      [ SampleCT.object_t; SampleCT.object_t ]
-      (Class
-         ( class_e,
-           [
-             Type
-               (Class
-                  (class_d, [ Type (SampleCT.make_tvar 1 SampleCT.object_t) ]));
-             Type (SampleCT.make_tvar 0 SampleCT.object_t);
-           ] ))
-      []
-  in
-  Printf.printf "12 F<A, B> < E<D<B>, A> (true) : %b\n"
-    (Class (class_f, [ Type (Class (class_a, [])); Type (Class (class_b, [])) ])
-    -<- Class
-          ( class_e,
-            [
-              Type (Class (class_d, [ Type (Class (class_b, [])) ]));
-              Type (Class (class_a, []));
-            ] ))
+     (* class F<X, Y> extends E<D<Y>, X> {...} *)
+     let class_f =
+       SampleCT.make_class
+         [ SampleCT.object_t; SampleCT.object_t ]
+         (Class
+            ( class_e,
+              [
+                Type
+                  (Class
+                     (class_d, [ Type (SampleCT.make_tvar 1 SampleCT.object_t) ]));
+                Type (SampleCT.make_tvar 0 SampleCT.object_t);
+              ] ))
+         []
+     in
+     Printf.printf "12 F<A, B> < E<D<B>, A> (true) : %b\n"
+       (Class (class_f, [ Type (Class (class_a, [])); Type (Class (class_b, [])) ])
+       -<- Class
+             ( class_e,
+               [
+                 Type (Class (class_d, [ Type (Class (class_b, [])) ]));
+                 Type (Class (class_a, []));
+               ] )) *)

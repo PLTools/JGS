@@ -1,15 +1,25 @@
+(env
+ (dev
+  (flags
+   (:standard -warn-error -9-27-32-33-34))))
+
 (library
  (name JGS_lib)
- (modules JGS JGS_Helpers MutableTypeTable)
- (libraries GT OCanren noCanren.Option noCanren.List)
- (flags (-rectypes))
+ (modules JGS CT_of_json JGS_Helpers MutableTypeTable)
+ (wrapped false)
+ (libraries yojson GT OCanren noCanren.Option noCanren.List)
+ (flags
+  (:standard -rectypes))
  (preprocess
   (pps
    OCanren-ppx.ppx_repr
    OCanren-ppx.ppx_fresh
    OCanren-ppx.ppx_distrib
    -new-typenames
-   GT.ppx_all)))
+   ppx_yojson_conv
+   ppx_expect
+   GT.ppx_all))
+ (inline_tests))
 
 (rule
  (targets JGS.ml)

@@ -1,7 +1,7 @@
 open OCanren
 open OCanren.Std
-open JGS_lib.JGS
-open JGS_lib.MutableTypeTable
+open JGS
+open MutableTypeTable
 
 let _ =
   let module SampleCT = SampleCT () in

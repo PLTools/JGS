@@ -55,6 +55,16 @@ type idecl = {
 type decl = C of cdecl | I of idecl [@@deriving yojson_of, of_yojson]
 type table = decl list [@@deriving yojson_of, of_yojson]
 
+type query = {
+  table : table;
+  smaller : class_id jtype option;
+  larger : class_id jtype option;
+}
+(** A query is a table with query itself.
+  We check if [smaller] id subtype of [larger].
+  fresh variables are represented as optional values
+*)
+
 let%expect_test _ =
   Format.printf "%a\n%!"
     (Yojson.Safe.pretty_print ~std:true)
@@ -86,7 +96,8 @@ let%expect_test _ =
     (Yojson.Safe.pretty_print ~std:true)
     (yojson_of_table table);
 
-  [%expect {|
+  [%expect
+    {|
     [
       [ "I", { "iname": "A", "params": [], "supers": [] } ],
       [ "I", { "iname": "B", "params": [ [ "Class", "A", [] ] ], "supers": [] } ],
@@ -112,3 +123,22 @@ let%expect_test _ =
         }
       ]
     ] |}]
+
+let make_sample_ct () =
+  let open MutableTypeTable in
+  (module SampleCT () : SAMPLE_CLASSTABLE)
+
+[@@@ocaml.warnerror "-26"]
+
+let make_classtable j =
+  let table = table_of_yojson j in
+
+  let classes = Hashtbl.create (List.length table + 1) in
+  let ifaces = Hashtbl.create (List.length table + 1) in
+
+  let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
+    make_sample_ct ()
+  in
+
+  table |> Stdlib.List.iter (function C c -> () | I _ -> ());
+  ct

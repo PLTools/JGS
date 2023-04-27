@@ -6,7 +6,28 @@ open JGS_Helpers
 (*************************** Functional-relational fuctor parameter *******************************)
 (**************************************************************************************************)
 
-module SampleCT () = struct
+module type SAMPLE_CLASSTABLE = sig
+  val decl_by_id : int -> decl
+  val object_t : jtype
+  val cloneable_t : jtype
+  val serializable_t : jtype
+  val new_var : unit -> int
+  val make_class : jtype list -> jtype -> jtype list -> int
+  val make_tvar : int -> jtype -> jtype
+  val make_interface : jtype list -> jtype list -> int
+
+  module HO : sig
+    val decl_by_id :
+      (OCanren__.Nat.injected -> goal) -> HO.decl_injected -> goal
+
+    val object_t : HO.jtype_injected -> goal
+    val cloneable_t : HO.jtype_injected -> goal
+    val serializable_t : HO.jtype_injected -> goal
+    val new_var : (GT.unit ilogic -> goal) -> OCanren__.Nat.injected -> goal
+  end
+end
+
+module SampleCT () : SAMPLE_CLASSTABLE = struct
   let new_id =
     let n = ref 1 in
     fun () ->

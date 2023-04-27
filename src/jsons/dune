@@ -1,0 +1,20 @@
+(executable
+ (name run_json)
+ (modules run_json)
+ (libraries JGS_lib yojson)
+ (preprocessor_deps test1.json)
+ (flags
+  (:standard -rectypes))
+ (preprocess
+  (pps ppx_blob)))
+
+(cram
+ (deps run_json.exe test1.json))
+
+(rule
+ (targets test1.json)
+ (mode
+  (promote (until-clean)))
+ (deps ../make_JSONs.exe)
+ (action
+  (run ../make_JSONs.exe)))

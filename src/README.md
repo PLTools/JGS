@@ -2,7 +2,7 @@ Type solver uses two projects `OCanren` and `noCanren` with `wildcard` extension
 
 First, you need to install OCaml via OPAM, 4.14.1.
 
-To install the projects you need to pin they:
+~~To install the projects you need to pin them~~ You don't, I have added submodules:
 
     opam pin https://github.com/Lozov-Petr/OCanren.git#wildcard-experiments --yes
     opam pin https://github.com/PLTools/noCanren.git#wildcard --yes

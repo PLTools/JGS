@@ -1,0 +1,8 @@
+[submodule "src/OCanren"]
+	path = src/OCanren
+	url = https://github.com/Kakadu/OCanren.git
+	branch = wildcard+ppx-rec
+[submodule "src/noCanren"]
+	path = src/noCanren
+	url = https://github.com/PLTools/noCanren.git
+	branch = wildcard

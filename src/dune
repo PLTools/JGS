@@ -14,7 +14,8 @@
 (rule
  (targets JGS.ml)
  (deps
-  (:input JGS.noc.ml))
+  (:input JGS.noc.ml)
+  (package noCanren))
  (action
   (run
    sh

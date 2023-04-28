@@ -30,6 +30,26 @@ let () =
         };
     ]
   in
+  let upper_bounds =
+    [
+      Class
+        ( "E",
+          [
+            Type (Class ("D", [ Type (Class ("B", [])) ]));
+            Type (Class ("A", []));
+          ] );
+    ]
+  in
+
+  let query =
+    {
+      table;
+      upper_bounds;
+      lower_bounds = [];
+      neg_lower_bounds = [];
+      neg_upper_bounds = [];
+    }
+  in
 
   with_file "test1.json" (fun ch ->
-      Yojson.Safe.pretty_to_channel ch (yojson_of_table table))
+      Yojson.Safe.pretty_to_channel ch (yojson_of_query query))

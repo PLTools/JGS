@@ -1,29 +1,46 @@
   $ ./run_json.exe test1.json
-  [
-    [ "I", { "iname": "A", "params": [], "supers": [] } ],
-    [ "I", { "iname": "B", "params": [ [ "Class", "A", [] ] ], "supers": [] } ],
-    [
-      "C",
-      {
-        "cname": "D",
-        "params": [ [ "Class", "Object", [] ] ],
-        "super": [ "Class", "Object", [] ],
-        "supers": []
-      }
+  {
+    "table": [
+      [ "I", { "iname": "A", "params": [], "supers": [] } ],
+      [
+        "I", { "iname": "B", "params": [ [ "Class", "A", [] ] ], "supers": [] }
+      ],
+      [
+        "C",
+        {
+          "cname": "D",
+          "params": [ [ "Class", "Object", [] ] ],
+          "super": [ "Class", "Object", [] ],
+          "supers": []
+        }
+      ],
+      [
+        "C",
+        {
+          "cname": "E",
+          "params": [
+            [ "Class", "A", [] ],
+            [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ]
+          ],
+          "super": [ "Class", "Object", [] ],
+          "supers": []
+        }
+      ]
     ],
-    [
-      "C",
-      {
-        "cname": "E",
-        "params": [
-          [ "Class", "A", [] ],
-          [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ]
-        ],
-        "super": [ "Class", "Object", [] ],
-        "supers": []
-      }
-    ]
-  ]
+    "upper_bounds": [
+      [
+        "Class",
+        "E",
+        [
+          [ "Type", [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ] ],
+          [ "Type", [ "Class", "A", [] ] ]
+        ]
+      ]
+    ],
+    "lower_bounds": [],
+    "neg_upper_bounds": [],
+    "neg_lower_bounds": []
+  }
   1.1 (?) < Object : 
   [
     Class (1, []);

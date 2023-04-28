@@ -57,13 +57,12 @@ type table = decl list [@@deriving yojson_of, of_yojson]
 
 type query = {
   table : table;
-  smaller : class_id jtype option;
-  larger : class_id jtype option;
+  upper_bounds : class_id jtype list;
+  lower_bounds : class_id jtype list;
+  neg_upper_bounds : class_id jtype list;
+  neg_lower_bounds : class_id jtype list;
 }
-(** A query is a table with query itself.
-  We check if [smaller] id subtype of [larger].
-  fresh variables are represented as optional values
-*)
+[@@deriving yojson_of, of_yojson]
 
 let%expect_test _ =
   Format.printf "%a\n%!"
@@ -131,7 +130,7 @@ let make_sample_ct () =
 [@@@ocaml.warnerror "-26"]
 
 let make_classtable j =
-  let table = table_of_yojson j in
+  let { table; _ } = query_of_yojson j in
 
   let classes = Hashtbl.create (List.length table + 1) in
   let ifaces = Hashtbl.create (List.length table + 1) in

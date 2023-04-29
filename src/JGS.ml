@@ -210,16 +210,23 @@ module SampleCT =
 
     module M = Map.Make (struct type t = id let compare = compare end)
 
-    let add_class, add_interface, decl_by_id =
+    let make_tvar index upb = Var {id=new_id (); index=index; upb=upb; lwb=None}
+    
+    let add_class, add_interface, add_class_fix, add_interface_fix, decl_by_id =
+      let make_params params =
+        Array.mapi (fun i p -> make_tvar i p) params
+      in
       let m = ref M.empty in
-      (fun c -> let id = new_id () in let d = C c in m := M.add id d !m; id),
-      (fun i -> let id = new_id () in let d = I i in m := M.add id d !m; id),
+      (fun (c : cdecl) -> let id = new_id () in let d = C {c with params=make_params c.params} in m := M.add id d !m; id),
+      (fun (i : idecl) -> let id = new_id () in let d = I {i with params=make_params i.params} in m := M.add id d !m; id),
+      (fun (c : id -> cdecl) -> let id = new_id () in let c = c id in let d = C {c with params=make_params c.params} in m := M.add id d !m; id),
+      (fun (i : id -> idecl) -> let id = new_id () in let i = i id in let d = I {i with params=make_params i.params} in m := M.add id d !m; id),
       (fun id   -> M.find id !m)
 
-    let make_tvar index upb = Var {id=new_id (); index=index; upb=upb; lwb=None}
-                              
-    let make_class     params super supers = add_class {params; super; supers}
-    let make_interface params supers       = add_interface {params; supers}
+    let make_class         params super supers = add_class         {params; super; supers}
+    let make_interface     params supers       = add_interface     {params; supers}
+    let make_class_fix     params super supers = add_class_fix     (fun id -> {params=params id; super=super id; supers=supers id})
+    let make_interface_fix params supers       = add_interface_fix (fun id -> {params=params id; supers=supers id})
                                            
     let top = Class (-1, [||])
       
@@ -280,6 +287,13 @@ let _ =
   (* class E<X, Y> {...} *)
   let class_e = SampleCT.make_class [|SampleCT.object_t; SampleCT.object_t|] SampleCT.object_t [] in
 
+  (* class G<X> extends D <G<A>> *)
+  let class_g = SampleCT.make_class_fix
+                  (fun self -> [|SampleCT.object_t|])
+                  (fun self -> (Class (class_d, [|Type (Class (self, [|Type (Class (class_a, [||]))|]))|])))
+                  (fun self -> [])
+  in
+  
   (* class F<X, Y> extends E<D<Y>, X> {...} *)
   let class_f = SampleCT.make_class
                   [|SampleCT.object_t; SampleCT.object_t|]

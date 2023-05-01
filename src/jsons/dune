@@ -2,17 +2,17 @@
  (name run_json)
  (modules run_json)
  (libraries JGS_lib yojson)
- (preprocessor_deps test1.json)
+ ;(preprocessor_deps test1.json)
  (flags
   (:standard -rectypes))
  (preprocess
   (pps ppx_blob)))
 
 (cram
- (deps run_json.exe test1.json))
+ (deps run_json.exe test1.json test2.json))
 
 (rule
- (targets test1.json)
+ (targets test1.json test2.json)
  (mode
   (promote (until-clean)))
  (deps ../make_JSONs.exe)

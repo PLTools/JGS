@@ -12,34 +12,25 @@ let with_file name f =
 let () =
   let table =
     [
-      I { iname = "A"; params = []; supers = [] };
-      I { iname = "B"; params = [ Class ("A", []) ]; supers = [] };
+      I { iname = "A"; iparams = []; isupers = [] };
+      I { iname = "B"; isupers = [ Interface ("A", []) ]; iparams = [] };
       C
         {
           cname = "D";
-          params = [ Class ("Object", []) ];
+          params = [ make_param "P1" ~up:[ Class ("Object", []) ] ];
           super = Class ("Object", []);
           supers = [];
         };
       C
         {
           cname = "E";
-          params = [ Class ("A", []); Class ("D", [ Type (Class ("B", [])) ]) ];
+          params = [ make_param "P1"; make_param "P2" ];
           super = Class ("Object", []);
           supers = [];
         };
     ]
   in
-  let upper_bounds =
-    [
-      Class
-        ( "E",
-          [
-            Type (Class ("D", [ Type (Class ("B", [])) ]));
-            Type (Class ("A", []));
-          ] );
-    ]
-  in
+  let upper_bounds = [ Class ("Object", []) ] in
 
   let query =
     {
@@ -52,4 +43,47 @@ let () =
   in
 
   with_file "test1.json" (fun ch ->
+      Yojson.Safe.pretty_to_channel ch (yojson_of_query query))
+
+let () =
+  let table =
+    [
+      C
+        {
+          cname = "String";
+          params = [];
+          super = Class ("Object", []);
+          supers = [];
+        };
+      C
+        {
+          cname = "Int";
+          params = [];
+          super = Class ("Object", []);
+          supers = [];
+        };
+      C
+        {
+          cname = "List";
+          params = [ make_param "P1" ~up:[ Class ("Object", []) ] ];
+          super = Class ("Object", []);
+          supers = [];
+        };
+    ]
+  in
+  let upper_bounds =
+    [ Class ("List", [ Wildcard (Some (Extends, Class ("Object", []))) ]) ]
+  in
+
+  let query =
+    {
+      table;
+      upper_bounds;
+      lower_bounds = [];
+      neg_lower_bounds = [];
+      neg_upper_bounds = [];
+    }
+  in
+
+  with_file "test2.json" (fun ch ->
       Yojson.Safe.pretty_to_channel ch (yojson_of_query query))

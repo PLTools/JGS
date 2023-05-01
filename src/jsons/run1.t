@@ -1,15 +1,22 @@
-  $ ./run_json.exe test1.json
+  $ ./run_json.exe test1.json -default -n 5
   {
     "table": [
-      [ "I", { "iname": "A", "params": [], "supers": [] } ],
+      [ "I", { "iname": "A", "iparams": [], "isupers": [] } ],
       [
-        "I", { "iname": "B", "params": [ [ "Class", "A", [] ] ], "supers": [] }
+        "I",
+        {
+          "iname": "B",
+          "iparams": [],
+          "isupers": [ [ "Interface", "A", [] ] ]
+        }
       ],
       [
         "C",
         {
           "cname": "D",
-          "params": [ [ "Class", "Object", [] ] ],
+          "params": [
+            { "pname": "P1", "p_upper": [ [ "Class", "Object", [] ] ] }
+          ],
           "super": [ "Class", "Object", [] ],
           "supers": []
         }
@@ -19,38 +26,36 @@
         {
           "cname": "E",
           "params": [
-            [ "Class", "A", [] ],
-            [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ]
+            { "pname": "P1", "p_upper": [] }, { "pname": "P2", "p_upper": [] }
           ],
           "super": [ "Class", "Object", [] ],
           "supers": []
         }
       ]
     ],
-    "upper_bounds": [
-      [
-        "Class",
-        "E",
-        [
-          [ "Type", [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ] ],
-          [ "Type", [ "Class", "A", [] ] ]
-        ]
-      ]
-    ],
+    "upper_bounds": [ [ "Class", "Object", [] ] ],
     "lower_bounds": [],
     "neg_upper_bounds": [],
     "neg_lower_bounds": []
   }
+  Adding an interface A with id = 4
+  Adding an interface B with id = 5
+  Adding a class D with id  = 6
+  Adding a class E with id  = 8
   1.1 (?) < Object : 
   [
     Class (1, []);
     Var {id=_.38, index=_.39, upb=Class (1, []), lwb=_.41};
     Interface (2, _.17);
     Null;
-    Interface (3, _.17);
-    Intersect ([Class (1, []) | _.94]);
-    Array (Class (1, []));
-    Intersect ([_.96 [=/= Class (1, [])]; Class (1, []) | _.183]);
-    Intersect ([_.96 [=/= Class (1, [])]; _.185 [=/= Class (1, [])]; Class (1, []) | _.211]);
-    Intersect ([_.96 [=/= Class (1, [])]; _.185 [=/= Class (1, [])]; _.213 [=/= Class (1, [])]; Class (1, []) | _.235])
+    Intersect ([Class (1, []) | _.94])
+  ]
+  Running generated query
+  
+  [
+    Class (1, []);
+    Var {id=_.38, index=_.39, upb=Class (1, []), lwb=_.41};
+    Interface (2, _.17);
+    Null;
+    Intersect ([Class (1, []) | _.94])
   ]

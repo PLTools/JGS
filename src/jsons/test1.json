@@ -1,14 +1,21 @@
 {
   "table": [
-    [ "I", { "iname": "A", "params": [], "supers": [] } ],
+    [ "I", { "iname": "A", "iparams": [], "isupers": [] } ],
     [
-      "I", { "iname": "B", "params": [ [ "Class", "A", [] ] ], "supers": [] }
+      "I",
+      {
+        "iname": "B",
+        "iparams": [],
+        "isupers": [ [ "Interface", "A", [] ] ]
+      }
     ],
     [
       "C",
       {
         "cname": "D",
-        "params": [ [ "Class", "Object", [] ] ],
+        "params": [
+          { "pname": "P1", "p_upper": [ [ "Class", "Object", [] ] ] }
+        ],
         "super": [ "Class", "Object", [] ],
         "supers": []
       }
@@ -18,24 +25,14 @@
       {
         "cname": "E",
         "params": [
-          [ "Class", "A", [] ],
-          [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ]
+          { "pname": "P1", "p_upper": [] }, { "pname": "P2", "p_upper": [] }
         ],
         "super": [ "Class", "Object", [] ],
         "supers": []
       }
     ]
   ],
-  "upper_bounds": [
-    [
-      "Class",
-      "E",
-      [
-        [ "Type", [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ] ],
-        [ "Type", [ "Class", "A", [] ] ]
-      ]
-    ]
-  ],
+  "upper_bounds": [ [ "Class", "Object", [] ] ],
   "lower_bounds": [],
   "neg_upper_bounds": [],
   "neg_lower_bounds": []

@@ -9,12 +9,19 @@
   (pps ppx_blob)))
 
 (cram
- (deps run_json.exe test1.json test2.json))
+ (deps run_json.exe test1.json test2.json test3.json guava.json))
 
 (rule
- (targets test1.json test2.json)
+ (targets test1.json test2.json test3.json)
  (mode
   (promote (until-clean)))
- (deps ../make_JSONs.exe)
+ (deps ./make_JSONs.exe)
  (action
-  (run ../make_JSONs.exe)))
+  (run ./make_JSONs.exe)))
+
+(executable
+ (name make_JSONs)
+ (modules make_JSONs)
+ (flags
+  (:standard -rectypes))
+ (libraries JGS_lib))

@@ -31,13 +31,3 @@
    sh
    -c
    "noCanren -w -8 %{input} -I `ocamlfind -query OCanren` -rectypes -o %{targets} | ocamlformat --enable-outside-detected-project --impl -")))
-
-(cram
- (deps ./JGS_run.exe make_JSONs.exe jsons/test1.json))
-
-(executable
- (name make_JSONs)
- (modules make_JSONs)
- (flags
-  (:standard -rectypes))
- (libraries JGS_lib))

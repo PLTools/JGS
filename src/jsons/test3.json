@@ -1,0 +1,38 @@
+{
+  "table": [
+    [
+      "C",
+      {
+        "cname": "String",
+        "params": [],
+        "super": [ "Class", "Object", [] ],
+        "supers": []
+      }
+    ],
+    [
+      "I",
+      {
+        "iname": "Collection",
+        "iparams": [ { "pname": "E", "p_upper": [] } ],
+        "isupers": []
+      }
+    ],
+    [
+      "C",
+      {
+        "cname": "AbstractCollection",
+        "params": [
+          { "pname": "E", "p_upper": [ [ "Class", "Object", [] ] ] }
+        ],
+        "super": [
+          "Interface", "Collection", [ [ "Type", [ "Class", "E", [] ] ] ]
+        ],
+        "supers": []
+      }
+    ]
+  ],
+  "upper_bounds": [ [ "Class", "Object", [] ] ],
+  "lower_bounds": [],
+  "neg_upper_bounds": [],
+  "neg_lower_bounds": []
+}

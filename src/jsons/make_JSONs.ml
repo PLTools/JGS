@@ -87,3 +87,42 @@ let () =
 
   with_file "test2.json" (fun ch ->
       Yojson.Safe.pretty_to_channel ch (yojson_of_query query))
+
+let () =
+  let table =
+    [
+      C
+        {
+          cname = "String";
+          params = [];
+          super = Class ("Object", []);
+          supers = [];
+        };
+      I
+        {
+          iname = "Collection";
+          iparams = [ { pname = "E"; p_upper = [] } ];
+          isupers = [];
+        };
+      C
+        {
+          cname = "AbstractCollection";
+          params = [ make_param "E" ~up:[ Class ("Object", []) ] ];
+          super = Interface ("Collection", [ Type (Class ("E", [])) ]);
+          supers = [];
+        };
+    ]
+  in
+
+  let query =
+    {
+      table;
+      upper_bounds = [ Class ("Object", []) ];
+      lower_bounds = [];
+      neg_lower_bounds = [];
+      neg_upper_bounds = [];
+    }
+  in
+
+  with_file "test3.json" (fun ch ->
+      Yojson.Safe.pretty_to_channel ch (yojson_of_query query))

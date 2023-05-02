@@ -19,8 +19,6 @@ type 'class_id jtype =
   | Var of {
       (* 1. identity *)
       id : (* NEED TO RETURN: id *) 'class_id;
-      (* 2. index in declaration list *)
-      index : 'class_id;
       (* 3. upper bound *)
       upb : 'class_id jtype;
       (* 4. lower bound *)
@@ -31,6 +29,8 @@ type 'class_id jtype =
 (* intersection type *)
 (* | Intersect of 'class_id jtype list *)
 [@@deriving yojson_of, of_yojson]
+
+let var ?lwb id upb = Var { id; upb; lwb }
 
 type param = { pname : class_id; p_upper : class_id jtype list }
 [@@deriving yojson_of, of_yojson]
@@ -144,8 +144,16 @@ let log fmt =
 [@@@ocaml.warnerror "-26"]
 
 let make_classtable table =
-  let classes = Hashtbl.create (List.length table + 1) in
-  let ifaces = Hashtbl.create (List.length table + 1) in
+  let classes : (string, int) Hashtbl.t =
+    Hashtbl.create (List.length table + 1)
+  in
+  let ifaces : (string, int) Hashtbl.t =
+    Hashtbl.create (List.length table + 1)
+  in
+  let params_hash : (string, int) Hashtbl.t =
+    Hashtbl.create (List.length table + 1)
+  in
+  let cur_name = ref ("", -42) in
 
   let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
     make_sample_ct ()
@@ -157,20 +165,35 @@ let make_classtable table =
     | _ -> assert false
   in
 
-  let prepare_lookup cur_id cur_name : _ =
-   fun name -> if name = cur_name then cur_id else Hashtbl.find classes name
-   (* TODO: Lookup for interfaces too  *)
+  let id_of_name name =
+    if name = fst !cur_name then `Defined (snd !cur_name)
+    else
+      match Hashtbl.find classes name with
+      | x -> `Defined x
+      | exception Not_found -> (
+          match Hashtbl.find ifaces name with
+          | x -> `Defined x
+          | exception Not_found -> (
+              match Hashtbl.find params_hash name with
+              | x -> `Param x
+              | exception Not_found ->
+                  failwiths "The type names '%s' is not found" name))
   in
+
   let rec on_decl = function
     | C { cname; params; super; supers } ->
-        let params_hash = Hashtbl.create (List.length params) in
+        Hashtbl.clear params_hash;
+        Stdlib.List.iteri
+          (fun i { pname } -> Hashtbl.add params_hash pname i)
+          params;
         let cid =
           CT.make_class_fix
             ~params:(fun cur_id ->
+              cur_name := (cname, cur_id);
               List.mapi
                 (fun i p ->
-                  let typ = on_param (prepare_lookup cur_id cname) i p in
-                  Hashtbl.add params_hash p.pname typ;
+                  let typ = on_param i p in
+                  Hashtbl.add params_hash p.pname i;
                   typ)
                 params)
             (fun _ -> on_typ super)
@@ -179,32 +202,52 @@ let make_classtable table =
         log "Adding a class %s with id  = %d" cname cid;
         Hashtbl.add classes cname cid
     | I { iname; iparams; isupers } ->
+        Hashtbl.clear params_hash;
         let iid =
           CT.make_interface_fix
             (fun cur_id ->
-              List.mapi (on_param (prepare_lookup cur_id iname)) iparams)
+              cur_name := (iname, cur_id);
+              List.mapi
+                (fun i p ->
+                  let typ = on_param i p in
+                  Hashtbl.add params_hash p.pname i;
+                  typ)
+                iparams)
             (fun _ -> List.map on_typ isupers)
         in
         log "Adding an interface %s with id = %d" iname iid;
         Hashtbl.add ifaces iname iid
-  and on_param id_of_name idx { pname; p_upper } =
+  and on_param idx { pname; p_upper } : JGS.jtype =
     let upper_bounds = p_upper |> List.map on_typ in
     (* TODO: read  again if params could have upper bound *)
     CT.object_t
     (* assert false *)
-  and on_arg = function Type _ -> assert false | Wildcard _ -> assert false
+  and on_arg : _ -> JGS.jtype JGS.targ = function
+    | Type t -> JGS.Type (on_typ t)
+    | Wildcard None -> JGS.Wildcard None
+    | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
   and on_typ = function
     | Class (name, args) -> (
-        match Hashtbl.find classes name with
-        | id -> JGS.Class (id, List.map on_arg args)
-        | exception Not_found ->
-            failwith (Printf.sprintf "Class '%s' was not yet declared" name))
+        match Hashtbl.find params_hash name with
+        | param_id ->
+            let () =
+              if args <> [] then
+                failwith "Type variables with arguments do not happen in Java"
+            in
+            CT.make_tvar param_id CT.object_t
+        | exception Not_found -> (
+            match Hashtbl.find classes name with
+            | id -> JGS.Class (id, List.map on_arg args)
+            | exception Not_found ->
+                failwith (Printf.sprintf "Class '%s' was not yet declared" name)
+            ))
     | Interface (name, args) -> (
         match Hashtbl.find ifaces name with
         | id -> JGS.Interface (id, List.map on_arg args)
         | exception Not_found ->
             failwith (Printf.sprintf "Interface '%s' was not yet declared" name)
         )
+    (* | Var { id; upb; lwb } -> JGS.(Var { id; index = id }) *)
     | _ -> assert false
   in
 
@@ -237,7 +280,6 @@ let make_query j =
     | Type t -> JGS.Type (on_typ t)
     | Wildcard None -> JGS.Wildcard None
     | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
-    (* -> failwith "Wildcards are not yet implemented" *)
   in
 
   if neg_lower_bounds <> [] || neg_upper_bounds <> [] then

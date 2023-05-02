@@ -103,27 +103,30 @@ let%expect_test _ =
   [%expect
     {|
     [
-      [ "I", { "iname": "A", "params": [], "supers": [] } ],
-      [ "I", { "iname": "B", "params": [ [ "Class", "A", [] ] ], "supers": [] } ],
+      [ "I", { "iname": "A", "iparams": [], "isupers": [] } ],
+      [
+        "I",
+        { "iname": "B", "iparams": [], "isupers": [ [ "Interface", "A", [] ] ] }
+      ],
       [
         "C",
         {
           "cname": "D",
-          "params": [ [ "Class", "Object", [] ] ],
+          "params": [],
           "super": [ "Class", "Object", [] ],
-          "supers": []
+          "supers": [ [ "Class", "Object", [] ] ]
         }
       ],
       [
         "C",
         {
           "cname": "E",
-          "params": [
+          "params": [],
+          "super": [ "Class", "Object", [] ],
+          "supers": [
             [ "Class", "A", [] ],
             [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ]
-          ],
-          "super": [ "Class", "Object", [] ],
-          "supers": []
+          ]
         }
       ]
     ] |}]

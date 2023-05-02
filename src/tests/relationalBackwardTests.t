@@ -2,10 +2,10 @@
   1.1 (?) < Object : 
   [
     Null;
-    Class (1, []);
     Array (Class (1, []));
-    Interface (2, _.17);
-    Interface (3, _.17)
+    Class (1, []);
+    Interface (2, []);
+    Interface (3, [])
   ]
   
   
@@ -16,7 +16,7 @@
     Class (1, []);
     Interface (2, []);
     Interface (3, []);
-    Array (Var {id=_.73, index=_.74, upb=_.75, lwb=Some (Class (1, []))});
+    Array (Var {id=_.109, index=_.110, upb=_.111, lwb=Some (Class (1, []))});
     Array (Interface (1, []));
     Array (Class (1, []));
     Array (Interface (0, []));
@@ -29,8 +29,8 @@
   2 (?) < Cloneable : 
   [
     Null;
-    Class (2, []);
-    Array (Class (1, []))
+    Array (Class (1, []));
+    Class (2, [])
   ]
   
   
@@ -38,16 +38,16 @@
   
   3 (?) < Serializable : 
   [
-    Class (3, []);
-    Var {id=_.38, index=_.39, upb=Interface (3, []), lwb=_.41};
+    Var {id=_.34, index=_.35, upb=Interface (3, []), lwb=_.37};
     Null;
-    Intersect ([Interface (3, []) | _.94]);
+    Intersect ([Interface (3, []) | _.104]);
+    Class (3, []);
     Array (Class (1, []));
-    Intersect ([_.96 [=/= Interface (3, [])]; Interface (3, []) | _.165]);
-    Intersect ([_.96 [=/= Interface (3, [])]; _.167 [=/= Interface (3, [])]; Interface (3, []) | _.194]);
-    Intersect ([_.96 [=/= Interface (3, [])]; _.167 [=/= Interface (3, [])]; _.196 [=/= Interface (3, [])]; Interface (3, []) | _.219]);
-    Intersect ([_.96 [=/= Interface (3, [])]; _.167 [=/= Interface (3, [])]; _.196 [=/= Interface (3, [])]; _.221 [=/= Interface (3, [])]; Interface (3, []) | _.247]);
-    Intersect ([_.96 [=/= Interface (3, [])]; _.167 [=/= Interface (3, [])]; _.196 [=/= Interface (3, [])]; _.221 [=/= Interface (3, [])]; _.249 [=/= Interface (3, [])]; Interface (3, []) | _.271])
+    Intersect ([_.106 [=/= Interface (3, [])]; Interface (3, []) | _.232]);
+    Intersect ([_.106 [=/= Interface (3, [])]; _.234 [=/= Interface (3, [])]; Interface (3, []) | _.304]);
+    Intersect ([_.106 [=/= Interface (3, [])]; _.234 [=/= Interface (3, [])]; _.306 [=/= Interface (3, [])]; Interface (3, []) | _.344]);
+    Intersect ([_.106 [=/= Interface (3, [])]; _.234 [=/= Interface (3, [])]; _.306 [=/= Interface (3, [])]; _.346 [=/= Interface (3, [])]; Interface (3, []) | _.374]);
+    Intersect ([_.106 [=/= Interface (3, [])]; _.234 [=/= Interface (3, [])]; _.306 [=/= Interface (3, [])]; _.346 [=/= Interface (3, [])]; _.376 [=/= Interface (3, [])]; Interface (3, []) | _.416])
   ]
   
   
@@ -57,14 +57,14 @@
   [
     Null;
     Array (Class (1, []));
-    Array (Var {id=_.113, index=_.114, upb=Class (1, []), lwb=_.116});
-    Array (Interface (2, _.74));
+    Array (Var {id=_.399, index=_.400, upb=Class (1, []), lwb=_.402});
     Array (Null);
-    Array (Interface (3, _.74));
-    Array (Intersect ([Class (1, []) | _.209]));
+    Array (Intersect ([Class (1, []) | _.910]));
     Array (Array (Class (1, [])));
-    Array (Intersect ([_.211 [=/= Class (1, [])]; Class (1, []) | _.302]));
-    Array (Intersect ([_.211 [=/= Class (1, [])]; _.304 [=/= Class (1, [])]; Class (1, []) | _.328]))
+    Array (Intersect ([_.912 [=/= Class (1, [])]; Class (1, []) | _.1501]));
+    Array (Intersect ([_.912 [=/= Class (1, [])]; _.1503 [=/= Class (1, [])]; Class (1, []) | _.1726]));
+    Array (Intersect ([_.912 [=/= Class (1, [])]; _.1503 [=/= Class (1, [])]; _.1728 [=/= Class (1, [])]; Class (1, []) | _.1903]));
+    Array (Intersect ([_.912 [=/= Class (1, [])]; _.1503 [=/= Class (1, [])]; _.1728 [=/= Class (1, [])]; _.1905 [=/= Class (1, [])]; Class (1, []) | _.2091]))
   ]
   
   
@@ -72,7 +72,7 @@
   
   4.2 Object < (?) : 
   [
-    Var {id=_.32, index=_.33, upb=_.34, lwb=Some (Class (1, []))};
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Class (1, []))};
     Interface (1, []);
     Class (1, []);
     Interface (0, []);
@@ -84,7 +84,7 @@
   
   5 Cloneable < (?): 
   [
-    Var {id=_.34, index=_.35, upb=_.36, lwb=Some (Interface (2, []))};
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Interface (2, []))};
     Class (1, [])
   ]
   
@@ -93,7 +93,7 @@
   
   6 Serializable < (?) : 
   [
-    Var {id=_.34, index=_.35, upb=_.36, lwb=Some (Interface (3, []))};
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Interface (3, []))};
     Class (1, [])
   ]
   
@@ -103,15 +103,15 @@
   7.1 (?) < Serializable[] : 
   [
     Null;
-    Array (Class (3, []));
-    Array (Var {id=_.113, index=_.114, upb=Interface (3, []), lwb=_.116});
+    Array (Var {id=_.399, index=_.400, upb=Interface (3, []), lwb=_.402});
     Array (Null);
-    Array (Intersect ([Interface (3, []) | _.219]));
+    Array (Intersect ([Interface (3, []) | _.956]));
+    Array (Class (3, []));
     Array (Array (Class (1, [])));
-    Array (Intersect ([_.221 [=/= Interface (3, [])]; Interface (3, []) | _.290]));
-    Array (Intersect ([_.221 [=/= Interface (3, [])]; _.292 [=/= Interface (3, [])]; Interface (3, []) | _.319]));
-    Array (Intersect ([_.221 [=/= Interface (3, [])]; _.292 [=/= Interface (3, [])]; _.321 [=/= Interface (3, [])]; Interface (3, []) | _.344]));
-    Array (Intersect ([_.221 [=/= Interface (3, [])]; _.292 [=/= Interface (3, [])]; _.321 [=/= Interface (3, [])]; _.346 [=/= Interface (3, [])]; Interface (3, []) | _.372]))
+    Array (Intersect ([_.958 [=/= Interface (3, [])]; Interface (3, []) | _.1635]));
+    Array (Intersect ([_.958 [=/= Interface (3, [])]; _.1637 [=/= Interface (3, [])]; Interface (3, []) | _.1949]));
+    Array (Intersect ([_.958 [=/= Interface (3, [])]; _.1637 [=/= Interface (3, [])]; _.1951 [=/= Interface (3, [])]; Interface (3, []) | _.2142]));
+    Array (Intersect ([_.958 [=/= Interface (3, [])]; _.1637 [=/= Interface (3, [])]; _.1951 [=/= Interface (3, [])]; _.2144 [=/= Interface (3, [])]; Interface (3, []) | _.2328]))
   ]
   
   
@@ -122,7 +122,7 @@
     Array (Class (1, []));
     Array (Interface (2, []));
     Array (Interface (3, []));
-    Array (Array (Var {id=_.100, index=_.101, upb=_.102, lwb=Some (Class (1, []))}));
+    Array (Array (Var {id=_.138, index=_.139, upb=_.140, lwb=Some (Class (1, []))}));
     Array (Array (Interface (1, [])));
     Array (Array (Class (1, [])));
     Array (Array (Interface (0, [])));
@@ -132,15 +132,15 @@
   
   ****************************************************************************************************
   
-  Class A: 15
+  Class A: 124
   
-  Class B: 16
+  Class B: 125
   
   8.1 (?) < A : 
   [
     Null;
-    Class (15, []);
-    Class (16, _.15)
+    Class (124, []);
+    Class (125, [])
   ]
   
   
@@ -148,11 +148,11 @@
   
   8.2 B < (?) : 
   [
-    Var {id=_.32, index=_.33, upb=_.34, lwb=Some (Class (16, []))};
-    Interface (16, []);
-    Class (16, []);
-    Interface (15, []);
-    Class (15, [])
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Class (125, []))};
+    Interface (125, []);
+    Class (125, []);
+    Interface (124, []);
+    Class (124, [])
   ]
   
   
@@ -161,7 +161,7 @@
   8.3 (?) < B : 
   [
     Null;
-    Class (16, [])
+    Class (125, [])
   ]
   
   
@@ -169,9 +169,9 @@
   
   8.4 A < (?) : 
   [
-    Var {id=_.32, index=_.33, upb=_.34, lwb=Some (Class (15, []))};
-    Interface (15, []);
-    Class (15, []);
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Class (124, []))};
+    Interface (124, []);
+    Class (124, []);
     Interface (1, []);
     Class (1, [])
   ]
@@ -179,19 +179,19 @@
   
   ****************************************************************************************************
   
-  Interface A: 20
+  Interface A: 138
   
-  Class C: 21
+  Class C: 139
   
   9 C < (?) : 
   [
-    Var {id=_.32, index=_.33, upb=_.34, lwb=Some (Class (21, []))};
-    Interface (21, []);
-    Class (21, []);
-    Interface (15, []);
-    Class (15, []);
-    Interface (20, []);
-    Class (20, [])
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Class (139, []))};
+    Interface (139, []);
+    Class (139, []);
+    Interface (124, []);
+    Class (124, []);
+    Interface (138, []);
+    Class (138, [])
   ]
   
   
@@ -200,8 +200,8 @@
   10.1 (?) < IA : 
   [
     Null;
-    Class (20, []);
-    Class (21, _.15)
+    Class (138, []);
+    Class (139, [])
   ]
   
   
@@ -209,50 +209,50 @@
   
   10.2 C < (?) : 
   [
-    Var {id=_.32, index=_.33, upb=_.34, lwb=Some (Class (21, []))};
-    Interface (21, []);
-    Class (21, []);
-    Interface (15, []);
-    Class (15, []);
-    Interface (20, []);
-    Class (20, [])
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Class (139, []))};
+    Interface (139, []);
+    Class (139, []);
+    Interface (124, []);
+    Class (124, []);
+    Interface (138, []);
+    Class (138, [])
   ]
   
   
   ****************************************************************************************************
   
-  Interface B: 27
+  Interface B: 154
   
   11 IB < (?) : 
   [
-    Var {id=_.34, index=_.35, upb=_.36, lwb=Some (Interface (27, []))};
-    Class (27, []);
-    Interface (27, []);
-    Class (20, []);
-    Interface (20, [])
+    Var {id=_.66, index=_.67, upb=_.68, lwb=Some (Interface (154, []))};
+    Class (154, []);
+    Interface (154, []);
+    Class (138, []);
+    Interface (138, [])
   ]
   
   
   ****************************************************************************************************
   
-  Class D<X>: 28
+  Class D<X>: 155
   
-  Class E<X, Y>: 29
+  Class E<X, Y>: 157
   
-  Class F<X, Y>: 32
+  Class F<X, Y>: 162
   
   12.1 (?) < E<D<B>, A> : 
   [
     Null;
-    Class (32, [Type (Class (15, [])); Type (Class (16, []))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Class (_.24590, []))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Null)]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Interface (_.34469, []))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Array (Class (_.38386, [])))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Array (Null))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Intersect ([]))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Class (_.55939, [Wildcard (None)]))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Array (Interface (_.58669, [])))])
+    Class (162, [Type (Class (124, [])); Type (Class (125, []))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.66493, []))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Null)]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Interface (_.126410, []))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Class (_.162005, [])))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Null))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Intersect ([]))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.316221, [Wildcard (None)]))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Interface (_.353463, [])))])
   ]
   
   
@@ -260,16 +260,16 @@
   
   12.2 (? - is class) < E<D<B>, A> : 
   [
-    Class (32, [Type (Class (15, [])); Type (Class (16, []))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Class (_.24515, []))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Null)]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Interface (_.34394, []))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Array (Class (_.38311, [])))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Array (Null))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Intersect ([]))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Class (_.55864, [Wildcard (None)]))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Array (Interface (_.58594, [])))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, [])); Type (Array (Array (Class (_.64937, []))))])
+    Class (162, [Type (Class (124, [])); Type (Class (125, []))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.35274, []))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Null)]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Interface (_.67930, []))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Class (_.87511, [])))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Null))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Intersect ([]))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.175099, [Wildcard (None)]))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Interface (_.195886, [])))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Array (Class (_.589533, []))))])
   ]
   
   
@@ -277,26 +277,26 @@
   
   12.3 F<A, B> < (?) : 
   [
-    Var {id=_.32, index=_.33, upb=_.34, lwb=Some (Class (32, [Type (Class (15, [])); Type (Class (16, []))]))};
-    Interface (32, [Type (Class (15, [])); Type (Class (16, []))]);
-    Class (32, [Type (Class (15, [])); Type (Class (16, []))]);
-    Interface (32, [Type (Class (15, [])); Wildcard (Some ((Extends, Class (16, []))))]);
-    Class (32, [Type (Class (15, [])); Wildcard (Some ((Extends, Class (16, []))))]);
-    Interface (32, [Type (Class (15, [])); Wildcard (Some ((Super, Class (16, []))))]);
-    Class (32, [Type (Class (15, [])); Wildcard (Some ((Super, Class (16, []))))]);
-    Interface (32, [Wildcard (Some ((Extends, Class (15, [])))); Type (Class (16, []))]);
-    Class (32, [Wildcard (Some ((Extends, Class (15, [])))); Type (Class (16, []))]);
-    Interface (32, [Wildcard (Some ((Extends, Class (15, [])))); Wildcard (Some ((Extends, Class (16, []))))]);
-    Class (32, [Wildcard (Some ((Extends, Class (15, [])))); Wildcard (Some ((Extends, Class (16, []))))]);
-    Interface (32, [Wildcard (Some ((Super, Class (15, [])))); Type (Class (16, []))]);
-    Class (32, [Wildcard (Some ((Super, Class (15, [])))); Type (Class (16, []))]);
-    Interface (32, [Wildcard (Some ((Extends, Class (15, [])))); Wildcard (Some ((Super, Class (16, []))))]);
-    Class (32, [Wildcard (Some ((Extends, Class (15, [])))); Wildcard (Some ((Super, Class (16, []))))]);
-    Interface (32, [Wildcard (Some ((Super, Class (15, [])))); Wildcard (Some ((Extends, Class (16, []))))]);
-    Class (32, [Wildcard (Some ((Super, Class (15, [])))); Wildcard (Some ((Extends, Class (16, []))))]);
-    Interface (32, [Wildcard (Some ((Super, Class (15, [])))); Wildcard (Some ((Super, Class (16, []))))]);
-    Class (32, [Wildcard (Some ((Super, Class (15, [])))); Wildcard (Some ((Super, Class (16, []))))]);
-    Interface (29, [Type (Class (28, [Type (Class (16, []))])); Type (Class (15, []))]);
-    Class (29, [Type (Class (28, [Type (Class (16, []))])); Type (Class (15, []))])
+    Var {id=_.372, index=_.373, upb=_.374, lwb=Some (Class (162, [Type (Class (124, [])); Type (Class (125, []))]))};
+    Interface (162, [Type (Class (124, [])); Type (Class (125, []))]);
+    Class (162, [Type (Class (124, [])); Type (Class (125, []))]);
+    Interface (162, [Type (Class (124, [])); Wildcard (Some ((Extends, Class (125, []))))]);
+    Class (162, [Type (Class (124, [])); Wildcard (Some ((Extends, Class (125, []))))]);
+    Interface (162, [Type (Class (124, [])); Wildcard (Some ((Super, Class (125, []))))]);
+    Class (162, [Type (Class (124, [])); Wildcard (Some ((Super, Class (125, []))))]);
+    Interface (162, [Wildcard (Some ((Extends, Class (124, [])))); Type (Class (125, []))]);
+    Class (162, [Wildcard (Some ((Extends, Class (124, [])))); Type (Class (125, []))]);
+    Interface (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Class (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Interface (162, [Wildcard (Some ((Super, Class (124, [])))); Type (Class (125, []))]);
+    Class (162, [Wildcard (Some ((Super, Class (124, [])))); Type (Class (125, []))]);
+    Interface (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Class (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Interface (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Class (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Interface (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Class (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Interface (157, [Type (Class (155, [Type (Class (125, []))])); Type (Class (124, []))]);
+    Class (157, [Type (Class (155, [Type (Class (125, []))])); Type (Class (124, []))])
   ]
 

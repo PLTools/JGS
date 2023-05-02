@@ -44,18 +44,18 @@
   Adding a class E with id  = 8
   1.1 (?) < Object : 
   [
-    Class (1, []);
-    Var {id=_.38, index=_.39, upb=Class (1, []), lwb=_.41};
-    Interface (2, _.17);
+    Var {id=_.34, index=_.35, upb=Class (1, []), lwb=_.37};
     Null;
-    Intersect ([Class (1, []) | _.94])
+    Intersect ([Class (1, []) | _.104]);
+    Class (1, []);
+    Array (Class (1, []))
   ]
   Running generated query
   
   [
-    Class (1, []);
-    Var {id=_.38, index=_.39, upb=Class (1, []), lwb=_.41};
-    Interface (2, _.17);
+    Var {id=_.34, index=_.35, upb=Class (1, []), lwb=_.37};
     Null;
-    Intersect ([Class (1, []) | _.94])
+    Intersect ([Class (1, []) | _.104]);
+    Class (1, []);
+    Array (Class (1, []))
   ]

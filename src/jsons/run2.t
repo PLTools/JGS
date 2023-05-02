@@ -48,11 +48,11 @@
   Running generated query
   
   [
-    Var {id=_.38, index=_.39, upb=Class (6, [Wildcard (Some ((Extends, Class (1, []))))]), lwb=_.41};
+    Var {id=_.34, index=_.35, upb=Class (6, [Wildcard (Some ((Extends, Class (1, []))))]), lwb=_.37};
     Null;
-    Intersect ([Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.94]);
-    Intersect ([_.96 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.168]);
-    Intersect ([_.96 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.170 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.196]);
-    Intersect ([_.96 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.170 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.198 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.217]);
-    Intersect ([_.96 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.170 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.198 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.219 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.242])
+    Intersect ([Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.104]);
+    Intersect ([_.106 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.232]);
+    Intersect ([_.106 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.234 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.317]);
+    Intersect ([_.106 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.234 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.319 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.348]);
+    Intersect ([_.106 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.234 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.319 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; _.350 [=/= Class (6, [Wildcard (Some ((Extends, Class (1, []))))])]; Class (6, [Wildcard (Some ((Extends, Class (1, []))))]) | _.380])
   ]

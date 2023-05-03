@@ -1,38 +1,138 @@
 type polarity = JGS.polarity = Extends | Super
 [@@deriving yojson_of, of_yojson]
 
-type 'jtype targ = 'jtype JGS.targ =
-  | Type of 'jtype
-  | Wildcard of (polarity * 'jtype) option
-[@@deriving yojson_of, of_yojson]
+let%expect_test _ =
+  Format.printf "%a\n%!"
+    (Yojson.Safe.pretty_print ~std:true)
+    (yojson_of_polarity Extends);
+  [%expect {| [ "Extends" ] |}]
 
 type class_id = string [@@deriving yojson_of, of_yojson]
 
-type 'class_id jtype =
+type 'jtype targ = Type of 'jtype | Wildcard of (polarity * 'jtype) option
+[@@deriving yojson_of, of_yojson]
+
+let targ_of_yojson (from_arg : Yojson.Safe.t -> 'jtype) (j : Yojson.Safe.t) =
+  match j with
+  | `List (`String "Var" :: _) ->
+      Format.printf "%s %d\n%!" __FILE__ __LINE__;
+      Type (from_arg j)
+  | _ -> targ_of_yojson from_arg j
+
+type jtype =
   (* array type *)
-  | Array of 'class_id jtype
+  | Array of jtype
   (* class type *)
-  | Class of (* NEED TO RETURN: id *) 'class_id * 'class_id jtype targ list
+  | Class of (* NEED TO RETURN: id *) class_id * jtype targ list
   (* interface type *)
-  | Interface of (* NEED TO RETURN: id *) 'class_id * 'class_id jtype targ list
+  | Interface of (* NEED TO RETURN: id *) class_id * jtype targ list
   (* type variable: *)
   | Var of {
       (* 1. identity *)
-      id : (* NEED TO RETURN: id *) 'class_id;
+      id : (* NEED TO RETURN: id *) class_id;
+      index : int;
       (* 3. upper bound *)
-      upb : 'class_id jtype;
+      upb : jtype;
       (* 4. lower bound *)
-      lwb : 'class_id jtype option;
+      lwb : jtype option; [@yojson.option]
     }
     (* null type *)
   | Null
-(* intersection type *)
-(* | Intersect of 'class_id jtype list *)
 [@@deriving yojson_of, of_yojson]
 
-let var ?lwb id upb = Var { id; upb; lwb }
+let var ?lwb id upb = Var { id; upb; lwb; index = 0 }
 
-type param = { pname : class_id; p_upper : class_id jtype list }
+let%expect_test _ =
+  let t = var "XXX" (Class ("Object", [])) in
+  let j = yojson_of_jtype t in
+  Format.printf "%s\n%a\n%!" (Yojson.Safe.show j)
+    (Yojson.Safe.pretty_print ~std:true)
+    j;
+  [%expect
+    {|
+    `List ([`String ("Var");
+             `Assoc ([("id", `String ("XXX")); ("index", `Int (0));
+                       ("upb",
+                        `List ([`String ("Class"); `String ("Object"); `List (
+                                 [])]))
+                       ])
+             ])
+
+    [
+      "Var", { "id": "XXX", "index": 0, "upb": [ "Class", "Object", [] ] }
+    ] |}]
+
+let%expect_test _ =
+  let j =
+    Yojson.Safe.from_string
+      {|
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [ "Class", "Object", [] ]
+            }
+          ]
+|}
+  in
+  Format.printf "%s\n%!" (Yojson.Safe.show j);
+  [%expect
+    {|
+    `List ([`String ("Var");
+             `Assoc ([("id", `String ("E")); ("index", `Int (0));
+                       ("upb",
+                        `List ([`String ("Class"); `String ("Object"); `List (
+                                 [])]))
+                       ])
+             ]) |}];
+  let () =
+    match targ_of_yojson jtype_of_yojson j with
+    | exception Ppx_yojson_conv_lib__Yojson_conv.Of_yojson_error (exc, j) ->
+        Format.printf "%s\n%s\n%!" (Printexc.to_string exc) (Yojson.Safe.show j)
+    | _ -> Format.printf "OK\n%!"
+  in
+  [%expect {|
+    CT_of_json.ml 18
+    OK |}]
+
+let%expect_test _ =
+  let j =
+    Yojson.Safe.from_string
+      {|
+  [
+           "Var",
+           {
+              "id": "id",
+              "upb": [ "Class", "java.lang.Object", [] ],
+              "lwb": null
+            }
+        ]
+|}
+  in
+  Format.printf "%s\n%!" (Yojson.Safe.show j);
+  [%expect
+    {|
+    `List ([`String ("Var");
+             `Assoc ([("id", `String ("id"));
+                       ("upb",
+                        `List ([`String ("Class"); `String ("java.lang.Object");
+                                 `List ([])]));
+                       ("lwb", `Null)])
+             ]) |}];
+  let () =
+    match targ_of_yojson jtype_of_yojson j with
+    | exception Ppx_yojson_conv_lib__Yojson_conv.Of_yojson_error (exc, j) ->
+        Format.printf "%s\n%s\n%!" (Printexc.to_string exc) (Yojson.Safe.show j)
+    | _ -> Format.printf "OK\n%!"
+  in
+  [%expect
+    {|
+    CT_of_json.ml 18
+    Failure("CT_of_json.ml.jtype_of_yojson: unexpected variant constructor")
+    `Null |}]
+
+type param = { pname : class_id; p_upper : jtype list }
 [@@deriving yojson_of, of_yojson]
 
 let make_param ?(up = []) pname = { pname; p_upper = up }
@@ -42,9 +142,9 @@ type cdecl = {
   (* type parameters *)
   params : (* NEED TO RETURN: params *) param list;
   (* supeclass *)
-  super : class_id jtype;
+  super : jtype;
   (* superinterfaces *)
-  supers : class_id jtype list;
+  supers : jtype list;
 }
 [@@deriving yojson_of, of_yojson]
 
@@ -53,7 +153,7 @@ type idecl = {
   (* type parameters *)
   iparams : (* NEED TO RETURN: params *) param list;
   (* superinterfaces *)
-  isupers : class_id jtype list;
+  isupers : jtype list;
 }
 [@@deriving yojson_of, of_yojson]
 
@@ -62,18 +162,12 @@ type table = decl list [@@deriving yojson_of, of_yojson]
 
 type query = {
   table : table;
-  upper_bounds : class_id jtype list;
-  lower_bounds : class_id jtype list;
-  neg_upper_bounds : class_id jtype list;
-  neg_lower_bounds : class_id jtype list;
+  upper_bounds : jtype list; [@default []]
+  lower_bounds : jtype list; [@default []]
+  neg_upper_bounds : jtype list; [@default []]
+  neg_lower_bounds : jtype list; [@default []]
 }
 [@@deriving yojson_of, of_yojson]
-
-let%expect_test _ =
-  Format.printf "%a\n%!"
-    (Yojson.Safe.pretty_print ~std:true)
-    (yojson_of_polarity Extends);
-  [%expect {| [ "Extends" ] |}]
 
 let%expect_test _ =
   let table =

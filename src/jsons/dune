@@ -2,14 +2,13 @@
  (name run_json)
  (modules run_json)
  (libraries JGS_lib yojson)
- ;(preprocessor_deps test1.json)
  (flags
   (:standard -rectypes))
  (preprocess
   (pps ppx_blob)))
 
 (cram
- (deps run_json.exe test1.json test2.json test3.json guava.json))
+ (deps run_json.exe test1.json test2.json test3.json run4.json guava.json))
 
 (rule
  (targets test1.json test2.json test3.json)

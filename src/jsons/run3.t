@@ -1,42 +1,4 @@
   $ ./run_json.exe test3.json -n 20
-  {
-    "table": [
-      [
-        "C",
-        {
-          "cname": "String",
-          "params": [],
-          "super": [ "Class", "Object", [] ],
-          "supers": []
-        }
-      ],
-      [
-        "I",
-        {
-          "iname": "Collection",
-          "iparams": [ { "pname": "E", "p_upper": [] } ],
-          "isupers": []
-        }
-      ],
-      [
-        "C",
-        {
-          "cname": "AbstractCollection",
-          "params": [
-            { "pname": "E", "p_upper": [ [ "Class", "Object", [] ] ] }
-          ],
-          "super": [
-            "Interface", "Collection", [ [ "Type", [ "Class", "E", [] ] ] ]
-          ],
-          "supers": []
-        }
-      ]
-    ],
-    "upper_bounds": [ [ "Class", "Object", [] ] ],
-    "lower_bounds": [],
-    "neg_upper_bounds": [],
-    "neg_lower_bounds": []
-  }
   Adding a class String with id  = 4
   Adding an interface Collection with id = 5
   Adding a class AbstractCollection with id  = 7

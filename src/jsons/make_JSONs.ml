@@ -92,6 +92,7 @@ let () =
   let table =
     [
       make_c "String" ~params:[] ~sup:(Class ("Object", [])) [];
+      make_c "Object" ~params:[] [];
       I
         {
           iname = "Collection";

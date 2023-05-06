@@ -243,6 +243,20 @@ let log fmt =
 
 [@@@ocaml.warnerror "-26"]
 
+module G = struct
+  include Graph.Imperative.Digraph.Concrete (struct
+    type t = string
+
+    let hash = Stdlib.Hashtbl.hash
+    let compare = (Stdlib.compare : string -> string -> int)
+    let equal = String.equal
+  end)
+
+  let add_edge g start fin =
+    (* log "Add edge: %s -> %s" start fin; *)
+    add_edge g start fin
+end
+
 let make_classtable table =
   let classes : (string, int) Hashtbl.t =
     Hashtbl.create (List.length table + 1)
@@ -353,8 +367,49 @@ let make_classtable table =
     (* | Var { id; upb; lwb } -> JGS.(Var { id; index = id }) *)
     | _ -> assert false
   in
+  (* log "%s %d" __FILE__ __LINE__; *)
+  let iter on_decl =
+    let g = G.create ~size:(List.length table) () in
+    let decl_of_name = Hashtbl.create (List.length table) in
+    let wrap iname isupers =
+      (* log "wrap '%s' with %d supers " iname (List.length isupers); *)
+      isupers
+      |> Stdlib.List.iter (function
+           | Interface (name, _) | Class (name, _) -> G.add_edge g name iname
+           | _ ->
+               Format.eprintf "Missgin case?\n%!";
+               ())
+    in
+    table
+    |> Stdlib.List.iter (function
+         | I { iname; isupers; _ } as d ->
+             (* log "%s %d" __FILE__ __LINE__; *)
+             G.add_vertex g iname;
+             Hashtbl.add decl_of_name iname d;
+             wrap iname isupers
+         | C { cname; supers; super; _ } as d ->
+             (* log "%s %d" __FILE__ __LINE__; *)
+             G.add_vertex g cname;
+             Hashtbl.add decl_of_name cname d;
+             Stdlib.Option.iter (fun x -> wrap cname [ x ]) super;
+             wrap cname supers);
 
-  table |> Stdlib.List.iter on_decl;
+    let module TopSort = Graph.Topological.Make (G) in
+    (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
+       (G.nb_edges g) __FILE__ __LINE__; *)
+    g
+    |> TopSort.iter (fun name ->
+           (* log "%s %d" __FILE__ __LINE__; *)
+           (* log "Running on '%s'" name; *)
+           on_decl
+             (match Hashtbl.find decl_of_name name with
+             | d -> d
+             | exception Not_found ->
+                 failwiths "class or interface %s is not found" name))
+    (* log "%s %d" __FILE__ __LINE__ *)
+  in
+
+  iter on_decl;
   ( ct,
     fun name ->
       match Hashtbl.find classes name with
@@ -363,8 +418,8 @@ let make_classtable table =
           match Hashtbl.find ifaces name with
           | id -> id
           | exception Not_found ->
-              failwith "Can't find '%s' neither in classes not in interfaces")
-  )
+              failwiths "Can't find '%s' neither in classes not in interfaces"
+                name) )
 
 let make_query j =
   let { table; neg_upper_bounds; neg_lower_bounds; upper_bounds; lower_bounds }

@@ -1,2 +1,7 @@
 (cram
- (deps ../jsons/run_json.exe 0.json))
+ (deps
+  ../jsons/run_json.exe
+  0.json
+  1.json
+  ;
+  ))

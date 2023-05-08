@@ -1,11 +1,12 @@
 {
   "table": [
+    [ "C", { "cname": "java.lang.Object", "params": [], "supers": [] } ],
     [
       "C",
       {
         "cname": "String",
         "params": [],
-        "super": [ "Class", "Object", [] ],
+        "super": [ "Class", "java.lang.Object", [] ],
         "supers": []
       }
     ],
@@ -14,7 +15,7 @@
       {
         "cname": "Int",
         "params": [],
-        "super": [ "Class", "Object", [] ],
+        "super": [ "Class", "java.lang.Object", [] ],
         "supers": []
       }
     ],
@@ -23,9 +24,12 @@
       {
         "cname": "List",
         "params": [
-          { "pname": "P1", "p_upper": [ [ "Class", "Object", [] ] ] }
+          {
+            "pname": "P1",
+            "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
+          }
         ],
-        "super": [ "Class", "Object", [] ],
+        "super": [ "Class", "java.lang.Object", [] ],
         "supers": []
       }
     ]
@@ -34,7 +38,11 @@
     [
       "Class",
       "List",
-      [ [ "Wildcard", [ [ "Extends" ], [ "Class", "Object", [] ] ] ] ]
+      [
+        [
+          "Wildcard", [ [ "Extends" ], [ "Class", "java.lang.Object", [] ] ]
+        ]
+      ]
     ]
   ],
   "lower_bounds": [],

@@ -1,43 +1,38 @@
 {
     "table": [
         [
-            "C",
-            {
-                "cname": "CABI",
-                "params": [],
-                "super": [
+          "I",
+          {
+            "iname": "net.bytebuddy.description.ByteCodeElement$Token",
+            "iparams": [
+              [
+                "Var",
+                {
+                  "id": "T",
+                  "index": 0,
+                  "upb": [
                     "Class",
-                    "java.lang.Enum",
+                    "net.bytebuddy.description.ByteCodeElement$Token",
                     [
-                        [
-                            "Var",
-                            {
-                                "id": "E",
-                                "index": 0,
-                                "upb": [
-                                    "Class",
-                                    "java.lang.Enum",
-                                    [
-                                        [
-                                            "Var",
-                                            {
-                                                "id": "E",
-                                                "index": 0,
-                                                "upb": [
-                                                    "Class",
-                                                    "java.lang.Object",
-                                                    []
-                                                ]
-                                            }
-                                        ]
-                                    ]
-                                ]
-                            }
-                        ]
+                      [
+                        "Var",
+                        {
+                          "id": "T",
+                          "index": 0,
+                          "upb": [
+                            "Class",
+                            "java.lang.Object",
+                            []
+                          ]
+                        }
+                      ]
                     ]
-                ],
-                "supers": []
-            }
+                  ]
+                }
+              ]
+            ],
+            "isupers": []
+          }
         ]
     ]
 }

@@ -5,11 +5,11 @@
       {
         "cname": "String",
         "params": [],
-        "super": [ "Class", "Object", [] ],
+        "super": [ "Class", "java.lang.Object", [] ],
         "supers": []
       }
     ],
-    [ "C", { "cname": "Object", "params": [], "supers": [] } ],
+    [ "C", { "cname": "java.lang.Object", "params": [], "supers": [] } ],
     [
       "I",
       {
@@ -23,7 +23,10 @@
       {
         "cname": "AbstractCollection",
         "params": [
-          { "pname": "E", "p_upper": [ [ "Class", "Object", [] ] ] }
+          {
+            "pname": "E",
+            "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
+          }
         ],
         "super": [
           "Interface", "Collection", [ [ "Type", [ "Class", "E", [] ] ] ]
@@ -32,7 +35,7 @@
       }
     ]
   ],
-  "upper_bounds": [ [ "Class", "Object", [] ] ],
+  "upper_bounds": [ [ "Class", "java.lang.Object", [] ] ],
   "lower_bounds": [],
   "neg_upper_bounds": [],
   "neg_lower_bounds": []

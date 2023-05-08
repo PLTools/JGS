@@ -135,7 +135,7 @@ type param = { pname : class_id; p_upper : jtype list }
 
 let param_of_yojson j =
   match jtype_of_yojson j with
-  | Var { id; upb } -> { pname = id; p_upper = [ upb ] }
+  | Var { id; upb; index = _ } -> { pname = id; p_upper = [ upb ] }
   | (exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error _) | _ ->
       param_of_yojson j
 
@@ -237,9 +237,14 @@ let make_sample_ct () =
 
 let failwiths fmt = Format.kasprintf failwith fmt
 
+type config = { mutable verbose : int }
+
+let config = { verbose = 0 }
+let set_verbose () = config.verbose <- 1
+
 let log fmt =
-  if true then Format.kasprintf (Format.eprintf "%s\n%!") fmt
-  else Format.ikfprintf (fun _ppf -> ()) Format.err_formatter fmt
+  if config.verbose > 0 then Format.kasprintf (Format.eprintf "%s\n%!") fmt
+  else Format.ikfprintf (fun _ -> ()) Format.err_formatter fmt
 
 [@@@ocaml.warnerror "-26"]
 
@@ -253,9 +258,66 @@ module G = struct
   end)
 
   let add_edge g start fin =
-    (* log "Add edge: %s -> %s" start fin; *)
-    add_edge g start fin
+    if not (String.equal start fin) then
+      let () = log "Add edge: %s -> %s" start fin in
+      add_edge g start fin
 end
+
+module TopSort = Graph.Topological.Make (G)
+
+let populate_graph on_decl table =
+  (* log "%s %d" __FILE__ __LINE__; *)
+  let iter () =
+    let g = G.create ~size:(List.length table) () in
+    let decl_of_name = Hashtbl.create (List.length table) in
+    let wrap iname isupers =
+      (* log "wrap '%s' with %d supers " iname (List.length isupers); *)
+      isupers
+      |> Stdlib.List.iter (function
+           | Interface (name, _) | Class (name, _) -> G.add_edge g name iname
+           | _ ->
+               Format.eprintf "Missgin case?\n%!";
+               ())
+    in
+    let rec traverse_typ dest = function
+      | Class (name, _) | Interface (name, _) -> G.add_edge g name dest
+      | Var { upb; _ } -> traverse_typ dest upb
+      | _ -> ()
+    in
+    let traverse_param dest { p_upper; _ } =
+      p_upper |> Stdlib.List.iter (traverse_typ dest)
+    in
+    table
+    |> Stdlib.List.iter (function
+         | I { iname; isupers; iparams } as d ->
+             (* log "%s %d" __FILE__ __LINE__; *)
+             G.add_vertex g iname;
+             Hashtbl.add decl_of_name iname d;
+             iparams |> Stdlib.List.iter (traverse_param iname);
+             wrap iname isupers
+         | C { cname; supers; super; params } as d ->
+             (* log "%s %d" __FILE__ __LINE__; *)
+             G.add_vertex g cname;
+             Hashtbl.add decl_of_name cname d;
+             params |> Stdlib.List.iter (traverse_param cname);
+             Stdlib.Option.iter (fun x -> wrap cname [ x ]) super;
+             wrap cname supers);
+
+    (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
+       (G.nb_edges g) __FILE__ __LINE__; *)
+    g
+    |> TopSort.iter (fun name ->
+           (* log "%s %d" __FILE__ __LINE__; *)
+           (* log "Running on '%s'" name; *)
+           match Hashtbl.find decl_of_name name with
+           | exception Not_found ->
+               Format.eprintf
+                 "  The type %S is not found (Bad JSON?). Ignored.\n%!" name
+           | x -> on_decl x)
+    (* log "%s %d" __FILE__ __LINE__ *)
+  in
+
+  iter ()
 
 let make_classtable table =
   let classes : (string, int) Hashtbl.t =
@@ -268,6 +330,7 @@ let make_classtable table =
     Hashtbl.create (List.length table + 1)
   in
   let cur_name = ref ("", -42) in
+  let is_current name = name = fst !cur_name in
 
   let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
     make_sample_ct ()
@@ -275,7 +338,7 @@ let make_classtable table =
 
   let () =
     match CT.object_t with
-    | Class (class_id, _) -> Hashtbl.add classes "Object" class_id
+    | Class (class_id, _) -> Hashtbl.add classes "java.lang.Object" class_id
     | _ -> assert false
   in
 
@@ -296,6 +359,7 @@ let make_classtable table =
 
   let rec on_decl = function
     | C { cname; params; super; supers } ->
+        log "Running on class %s..." cname;
         Hashtbl.clear params_hash;
         Stdlib.List.iteri
           (fun i { pname; _ } -> Hashtbl.add params_hash pname i)
@@ -304,12 +368,10 @@ let make_classtable table =
           CT.make_class_fix
             ~params:(fun cur_id ->
               cur_name := (cname, cur_id);
-              List.mapi
-                (fun i p ->
-                  let typ = on_param i p in
-                  Hashtbl.add params_hash p.pname i;
-                  typ)
-                params)
+              Stdlib.List.iteri
+                (fun i p -> Hashtbl.add params_hash p.pname i)
+                params;
+              List.mapi on_param params)
             (fun _ ->
               match super with
               | None -> CT.object_t
@@ -319,21 +381,24 @@ let make_classtable table =
         log "Adding a class %s with id  = %d" cname cid;
         Hashtbl.add classes cname cid
     | I { iname; iparams; isupers } ->
-        Hashtbl.clear params_hash;
-        let iid =
-          CT.make_interface_fix
-            (fun cur_id ->
-              cur_name := (iname, cur_id);
-              List.mapi
-                (fun i p ->
-                  let typ = on_param i p in
-                  Hashtbl.add params_hash p.pname i;
-                  typ)
-                iparams)
-            (fun _ -> List.map on_typ isupers)
-        in
-        log "Adding an interface %s with id = %d" iname iid;
-        Hashtbl.add ifaces iname iid
+        if true then (
+          log "Running on interface %s..." iname;
+          Hashtbl.clear params_hash;
+          let iid =
+            CT.make_interface_fix
+              (fun cur_id ->
+                cur_name := (iname, cur_id);
+                Stdlib.List.iteri
+                  (fun i p -> Hashtbl.add params_hash p.pname i)
+                  iparams;
+                List.mapi on_param iparams)
+              (fun _ -> List.map on_typ isupers)
+          in
+          log "Adding an interface %s with id = %d" iname iid;
+          Hashtbl.add ifaces iname iid)
+        else
+          Format.eprintf
+            "The interface '%s' seems to be not declared. Skipping.\n%!" iname
   and on_param idx { pname; p_upper } : JGS.jtype =
     let upper_bounds = p_upper |> List.map on_typ in
     (* TODO: read  again if params could have upper bound *)
@@ -344,6 +409,10 @@ let make_classtable table =
     | Wildcard None -> JGS.Wildcard None
     | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
   and on_typ = function
+    | Class (name, args) when is_current name ->
+        JGS.Class (snd !cur_name, List.map on_arg args)
+    | Interface (name, args) when is_current name ->
+        JGS.Class (snd !cur_name, List.map on_arg args)
     | Class (name, args) -> (
         match Hashtbl.find params_hash name with
         | param_id ->
@@ -359,57 +428,33 @@ let make_classtable table =
                 failwith (Printf.sprintf "Class '%s' was not yet declared" name)
             ))
     | Interface (name, args) -> (
-        match Hashtbl.find ifaces name with
-        | id -> JGS.Interface (id, List.map on_arg args)
-        | exception Not_found ->
-            failwith (Printf.sprintf "Interface '%s' was not yet declared" name)
-        )
-    (* | Var { id; upb; lwb } -> JGS.(Var { id; index = id }) *)
+        match Hashtbl.find params_hash name with
+        | param_id ->
+            let () =
+              if args <> [] then
+                failwith "Type variables with arguments do not happen in Java"
+            in
+            CT.make_tvar param_id CT.object_t
+        | exception Not_found -> (
+            match Hashtbl.find ifaces name with
+            | id -> JGS.Interface (id, List.map on_arg args)
+            | exception Not_found ->
+                failwith
+                  (Printf.sprintf "Interface '%s' was not yet declared" name)))
+    | Var { id; upb; lwb; index = _ } ->
+        (* log "Looking for param %s " id; *)
+        let class_id = Hashtbl.find params_hash id in
+        JGS.(
+          Var
+            {
+              id = class_id;
+              index = class_id;
+              upb = on_typ upb;
+              lwb = Stdlib.Option.map on_typ lwb;
+            })
     | _ -> assert false
   in
-  (* log "%s %d" __FILE__ __LINE__; *)
-  let iter on_decl =
-    let g = G.create ~size:(List.length table) () in
-    let decl_of_name = Hashtbl.create (List.length table) in
-    let wrap iname isupers =
-      (* log "wrap '%s' with %d supers " iname (List.length isupers); *)
-      isupers
-      |> Stdlib.List.iter (function
-           | Interface (name, _) | Class (name, _) -> G.add_edge g name iname
-           | _ ->
-               Format.eprintf "Missgin case?\n%!";
-               ())
-    in
-    table
-    |> Stdlib.List.iter (function
-         | I { iname; isupers; _ } as d ->
-             (* log "%s %d" __FILE__ __LINE__; *)
-             G.add_vertex g iname;
-             Hashtbl.add decl_of_name iname d;
-             wrap iname isupers
-         | C { cname; supers; super; _ } as d ->
-             (* log "%s %d" __FILE__ __LINE__; *)
-             G.add_vertex g cname;
-             Hashtbl.add decl_of_name cname d;
-             Stdlib.Option.iter (fun x -> wrap cname [ x ]) super;
-             wrap cname supers);
-
-    let module TopSort = Graph.Topological.Make (G) in
-    (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
-       (G.nb_edges g) __FILE__ __LINE__; *)
-    g
-    |> TopSort.iter (fun name ->
-           (* log "%s %d" __FILE__ __LINE__; *)
-           (* log "Running on '%s'" name; *)
-           on_decl
-             (match Hashtbl.find decl_of_name name with
-             | d -> d
-             | exception Not_found ->
-                 failwiths "class or interface %s is not found" name))
-    (* log "%s %d" __FILE__ __LINE__ *)
-  in
-
-  iter on_decl;
+  populate_graph on_decl table;
   ( ct,
     fun name ->
       match Hashtbl.find classes name with

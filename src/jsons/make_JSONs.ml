@@ -12,25 +12,26 @@ let with_file name f =
 let () =
   let table =
     [
+      make_c "java.lang.Object" ~params:[] [];
       I { iname = "A"; iparams = []; isupers = [] };
       I { iname = "B"; isupers = [ Interface ("A", []) ]; iparams = [] };
       C
         {
           cname = "D";
-          params = [ make_param "P1" ~up:[ Class ("Object", []) ] ];
-          super = Some (Class ("Object", []));
+          params = [ make_param "P1" ~up:[ Class ("java.lang.Object", []) ] ];
+          super = Some (Class ("java.lang.Object", []));
           supers = [];
         };
       C
         {
           cname = "E";
           params = [ make_param "P1"; make_param "P2" ];
-          super = Some (Class ("Object", []));
+          super = Some (Class ("java.lang.Object", []));
           supers = [];
         };
     ]
   in
-  let upper_bounds = [ Class ("Object", []) ] in
+  let upper_bounds = [ Class ("java.lang.Object", []) ] in
 
   let query =
     {
@@ -48,31 +49,35 @@ let () =
 let () =
   let table =
     [
+      make_c "java.lang.Object" ~params:[] [];
       C
         {
           cname = "String";
           params = [];
-          super = Some (Class ("Object", []));
+          super = Some (Class ("java.lang.Object", []));
           supers = [];
         };
       C
         {
           cname = "Int";
           params = [];
-          super = Some (Class ("Object", []));
+          super = Some (Class ("java.lang.Object", []));
           supers = [];
         };
       C
         {
           cname = "List";
-          params = [ make_param "P1" ~up:[ Class ("Object", []) ] ];
-          super = Some (Class ("Object", []));
+          params = [ make_param "P1" ~up:[ Class ("java.lang.Object", []) ] ];
+          super = Some (Class ("java.lang.Object", []));
           supers = [];
         };
     ]
   in
   let upper_bounds =
-    [ Class ("List", [ Wildcard (Some (Extends, Class ("Object", []))) ]) ]
+    [
+      Class
+        ("List", [ Wildcard (Some (Extends, Class ("java.lang.Object", []))) ]);
+    ]
   in
 
   let query =
@@ -91,8 +96,8 @@ let () =
 let () =
   let table =
     [
-      make_c "String" ~params:[] ~sup:(Class ("Object", [])) [];
-      make_c "Object" ~params:[] [];
+      make_c "String" ~params:[] ~sup:(Class ("java.lang.Object", [])) [];
+      make_c "java.lang.Object" ~params:[] [];
       I
         {
           iname = "Collection";
@@ -100,7 +105,7 @@ let () =
           isupers = [];
         };
       make_c "AbstractCollection"
-        ~params:[ make_param "E" ~up:[ Class ("Object", []) ] ]
+        ~params:[ make_param "E" ~up:[ Class ("java.lang.Object", []) ] ]
         ~sup:(Interface ("Collection", [ Type (Class ("E", [])) ]))
         [];
     ]
@@ -109,7 +114,7 @@ let () =
   let query =
     {
       table;
-      upper_bounds = [ Class ("Object", []) ];
+      upper_bounds = [ Class ("java.lang.Object", []) ];
       lower_bounds = [];
       neg_lower_bounds = [];
       neg_upper_bounds = [];

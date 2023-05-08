@@ -4,13 +4,18 @@ type test_args = {
   mutable answers_count : int;
 }
 
-let test_args = { json_name = ""; run_default = false; answers_count = 10 }
+let test_args = { json_name = ""; run_default = false; answers_count = 1 }
 
 let () =
   Arg.parse
     [
-      ("-default", Arg.Unit (fun () -> test_args.run_default <- true), "");
-      ("-n", Arg.Int (fun n -> test_args.answers_count <- n), "");
+      ( "-default",
+        Arg.Unit (fun () -> test_args.run_default <- true),
+        " Run a default table-agnostic query (tests only)" );
+      ("-v", Arg.Unit CT_of_json.set_verbose, " More verbose output");
+      ( "-n",
+        Arg.Int (fun n -> test_args.answers_count <- n),
+        " Numer of answers requested (default 1)" );
     ]
     (fun file -> test_args.json_name <- file)
     ""

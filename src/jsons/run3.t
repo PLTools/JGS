@@ -1,8 +1,4 @@
   $ ./run_json.exe test3.json -n 20
-  Adding a class Object with id  = 4
-  Adding an interface Collection with id = 5
-  Adding a class String with id  = 7
-  Adding a class AbstractCollection with id  = 8
   Running generated query
   
   [

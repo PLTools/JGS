@@ -185,9 +185,13 @@ let populate_graph on_decl table =
       (* log "wrap '%s' with %d supers " iname (List.length isupers); *)
       isupers
       |> Stdlib.List.iter (function
-           | Interface (name, _) | Class (name, _) -> G.add_edge g name iname
+           | Interface (name, _) | Class (name, _) ->
+               (* TODO: super classes could be parametrized by concrente types,
+                  so we need also to add these types as dependecies.
+                  See jdk.internal.net.http.Http1Response$BodyReader as example *)
+               G.add_edge g name iname
            | _ ->
-               Format.eprintf "Missgin case?\n%!";
+               Format.eprintf "Missing case?\n%!";
                ())
     in
     let rec traverse_typ dest = function
@@ -207,8 +211,12 @@ let populate_graph on_decl table =
              iparams |> Stdlib.List.iter (traverse_param iname);
              wrap iname isupers
          | C { cname; supers; super; params } as d ->
-             (* log "%s %d" __FILE__ __LINE__; *)
+             log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__;
              G.add_vertex g cname;
+             assert (
+               match Hashtbl.find decl_of_name cname with
+               | _ -> false
+               | exception Not_found -> true);
              Hashtbl.add decl_of_name cname d;
              params |> Stdlib.List.iter (traverse_param cname);
              Stdlib.Option.iter (fun x -> wrap cname [ x ]) super;
@@ -216,16 +224,14 @@ let populate_graph on_decl table =
 
     (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
        (G.nb_edges g) __FILE__ __LINE__; *)
-    g
-    |> TopSort.iter (fun name ->
-           (* log "%s %d" __FILE__ __LINE__; *)
-           (* log "Running on '%s'" name; *)
-           match Hashtbl.find decl_of_name name with
-           | exception Not_found ->
-               Format.eprintf
-                 "  The type %S is not found (Bad JSON?). Ignored.\n%!" name
-           | x -> on_decl x)
-    (* log "%s %d" __FILE__ __LINE__ *)
+    TopSort.iter
+      (fun name ->
+        match Hashtbl.find decl_of_name name with
+        | exception Not_found ->
+            Format.eprintf
+              "  The type %S is not found (Bad JSON?). Ignored.\n%!" name
+        | x -> on_decl x)
+      g
   in
 
   iter ()
@@ -284,16 +290,19 @@ let make_classtable table =
           CT.make_class_fix
             ~params:(fun cur_id ->
               cur_name := (cname, cur_id);
-              Stdlib.List.iteri
-                (fun i p -> Hashtbl.add params_hash p.pname i)
-                params;
+              (* Stdlib.List.iteri
+                 (fun i p -> Hashtbl.add params_hash p.pname i)
+                 params; *)
               List.mapi on_param params)
-            (fun _ ->
+            (fun cur_id ->
+              cur_name := (cname, cur_id);
               match super with
               | None -> CT.object_t
               | Some super ->
                   unwrap (on_typ super) Fun.id ~on_error:(fun () -> CT.object_t))
-            (fun _ -> Stdlib.List.filter_map on_typ supers)
+            (fun cur_id ->
+              cur_name := (cname, cur_id);
+              Stdlib.List.filter_map on_typ supers)
         in
         log "Adding a class %s with id  = %d" cname cid;
         Hashtbl.add classes cname cid
@@ -301,15 +310,20 @@ let make_classtable table =
         if true then (
           log "Running on interface %s..." iname;
           Hashtbl.clear params_hash;
+          Stdlib.List.iteri
+            (fun i { pname; _ } -> Hashtbl.add params_hash pname i)
+            iparams;
           let iid =
             CT.make_interface_fix
               (fun cur_id ->
                 cur_name := (iname, cur_id);
-                Stdlib.List.iteri
-                  (fun i p -> Hashtbl.add params_hash p.pname i)
-                  iparams;
+                (* Stdlib.List.iteri
+                   (fun i p -> Hashtbl.add params_hash p.pname i)
+                   iparams; *)
                 List.mapi on_param iparams)
-              (fun _ -> Stdlib.List.filter_map on_typ isupers)
+              (fun cur_id ->
+                cur_name := (iname, cur_id);
+                Stdlib.List.filter_map on_typ isupers)
           in
           log "Adding an interface %s with id = %d" iname iid;
           Hashtbl.add ifaces iname iid)
@@ -349,9 +363,9 @@ let make_classtable table =
             | id -> return @@ JGS.Class (id, List.map on_arg args)
             | exception Not_found ->
                 Format.eprintf
-                  "The name %S is neither class nor interface. Substiturin \
-                   gobject"
-                  name;
+                  "   The name %S is not class or parameter. Substituting \
+                   object. (cur_name = %s)\n\n"
+                  name (fst !cur_name);
                 Some CT.object_t))
     | Interface (name, args) -> (
         match Hashtbl.find params_hash name with
@@ -366,9 +380,9 @@ let make_classtable table =
             | id -> return @@ JGS.Interface (id, List.map on_arg args)
             | exception Not_found ->
                 Format.eprintf
-                  "The name %S is neither class nor interface. Substiturin \
-                   gobject"
-                  name;
+                  "  The name %S is not interface or parameter. Substituting \
+                   object  (cur_name = %s)\n"
+                  name (fst !cur_name);
                 Some CT.object_t))
     | Var { id; upb; lwb; index = _ } -> (
         (* log "Looking for param %s " id; *)

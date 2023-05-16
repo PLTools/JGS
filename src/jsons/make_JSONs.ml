@@ -106,6 +106,7 @@ let () =
         };
       make_c "AbstractCollection"
         ~params:[ make_param "E" ~up:[ Class ("java.lang.Object", []) ] ]
+        ~sup:(Interface ("Collection", [ Class ("E", []) ]))
         [];
     ]
   in

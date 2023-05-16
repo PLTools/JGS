@@ -36,7 +36,7 @@
             "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
           }
         ],
-        "super": null,
+        "super": [ "Interface", "Collection", [ [ "Class", "E", [] ] ] ],
         "supers": []
       }
     ]

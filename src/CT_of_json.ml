@@ -1,5 +1,7 @@
 open Stdlib
 
+let failwiths fmt = Format.kasprintf failwith fmt
+
 type polarity = JGS.polarity = Extends | Super
 [@@deriving yojson_of, of_yojson]
 
@@ -142,11 +144,26 @@ type query = {
 }
 [@@deriving yojson_of, of_yojson]
 
-let make_sample_ct () =
-  let open MutableTypeTable in
-  (module SampleCT () : SAMPLE_CLASSTABLE)
+module SS = Set.Make (String)
 
-let failwiths fmt = Format.kasprintf failwith fmt
+let collect_used_typenames =
+  let rec helper acc = function
+    | Interface (name, args) | Class (name, args) ->
+        List.fold_left helper (SS.add name acc) args
+    | Array t -> helper acc t
+    | Primitive _ | Null -> acc
+    | Wildcard None -> acc
+    | Wildcard (Some (_, t)) -> helper acc t
+    | Intersect xs -> List.fold_left helper acc xs
+    | Var { upb; lwb; _ } ->
+        helper (match lwb with Some t -> helper acc t | None -> acc) upb
+    (* | _ -> failwiths "Not implemented" *)
+  in
+  helper SS.empty
+
+  let make_sample_ct () =
+    let open MutableTypeTable in
+    (module SampleCT () : SAMPLE_CLASSTABLE)
 
 type config = { mutable verbose : int }
 
@@ -181,19 +198,7 @@ let populate_graph on_decl table =
   let iter () =
     let g = G.create ~size:(List.length table) () in
     let decl_of_name = Hashtbl.create (List.length table) in
-    let wrap iname isupers =
-      (* log "wrap '%s' with %d supers " iname (List.length isupers); *)
-      isupers
-      |> Stdlib.List.iter (function
-           | Interface (name, _) | Class (name, _) ->
-               (* TODO: super classes could be parametrized by concrente types,
-                  so we need also to add these types as dependecies.
-                  See jdk.internal.net.http.Http1Response$BodyReader as example *)
-               G.add_edge g name iname
-           | _ ->
-               Format.eprintf "Missing case?\n%!";
-               ())
-    in
+
     let rec traverse_typ dest = function
       | Class (name, _) | Interface (name, _) -> G.add_edge g name dest
       | Var { upb; _ } -> traverse_typ dest upb
@@ -205,22 +210,45 @@ let populate_graph on_decl table =
     table
     |> Stdlib.List.iter (function
          | I { iname; isupers; iparams } as d ->
-             (* log "%s %d" __FILE__ __LINE__; *)
              G.add_vertex g iname;
              Hashtbl.add decl_of_name iname d;
              iparams |> Stdlib.List.iter (traverse_param iname);
-             wrap iname isupers
+             let used_typenames =
+               List.fold_left
+                 (fun acc p -> SS.union acc (collect_used_typenames p))
+                 SS.empty isupers
+             in
+             SS.iter (fun name -> G.add_edge g name iname) used_typenames
          | C { cname; supers; super; params } as d ->
              log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__;
              G.add_vertex g cname;
              assert (
                match Hashtbl.find decl_of_name cname with
-               | _ -> false
-               | exception Not_found -> true);
+               | exception Not_found -> true
+               | C
+                   {
+                     cname = "org.intellij.lang.annotations.PrintFormatPattern";
+                     _;
+                   }
+               | C { cname = "org.intellij.lang.annotations.JdkConstants"; _ }
+                 ->
+                   true
+               | _ ->
+                   Format.eprintf "Already present: '%s'\n%!" cname;
+                   false);
              Hashtbl.add decl_of_name cname d;
              params |> Stdlib.List.iter (traverse_param cname);
-             Stdlib.Option.iter (fun x -> wrap cname [ x ]) super;
-             wrap cname supers);
+             (* TODO: should we lookup references in params? *)
+             let used_typenames =
+               let acc =
+                 Stdlib.Option.fold ~none:SS.empty ~some:collect_used_typenames
+                   super
+               in
+               List.fold_left
+                 (fun acc p -> SS.union acc (collect_used_typenames p))
+                 acc supers
+             in
+             SS.iter (fun name -> G.add_edge g name cname) used_typenames);
 
     (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
        (G.nb_edges g) __FILE__ __LINE__; *)

@@ -148,6 +148,22 @@ module SS = Set.Make (String)
 
 let collect_used_typenames =
   let rec helper acc = function
+    | Interface (_, args) | Class (_, args) -> List.fold_left helper acc args
+    | Array t -> helper acc t
+    | Primitive _ | Null -> acc
+    | Wildcard None -> acc
+    | Wildcard (Some (_, t)) -> helper acc t
+    | Intersect xs -> List.fold_left helper acc xs
+    | Var { upb; lwb; id; _ } ->
+        let acc = SS.add id acc in
+        let acc = match lwb with Some t -> helper acc t | None -> acc in
+        helper acc upb
+  in
+
+  helper SS.empty
+
+let collect_varnames =
+  let rec helper acc = function
     | Interface (name, args) | Class (name, args) ->
         List.fold_left helper (SS.add name acc) args
     | Array t -> helper acc t
@@ -155,10 +171,12 @@ let collect_used_typenames =
     | Wildcard None -> acc
     | Wildcard (Some (_, t)) -> helper acc t
     | Intersect xs -> List.fold_left helper acc xs
-    | Var { upb; lwb; _ } ->
-        helper (match lwb with Some t -> helper acc t | None -> acc) upb
-    (* | _ -> failwiths "Not implemented" *)
+    | Var { upb; lwb; id } ->
+        SS.union
+          (match lwb with None -> SS.empty | Some t -> helper SS.empty t)
+          (helper (SS.add id acc) upb)
   in
+
   helper SS.empty
 
   let make_sample_ct () =
@@ -187,7 +205,7 @@ module G = struct
 
   let add_edge g start fin =
     if not (String.equal start fin) then
-      let () = log "Add edge: %s -> %s" start fin in
+      (* let () = log "Add edge: %s -> %s" start fin in *)
       add_edge g start fin
 end
 
@@ -220,7 +238,7 @@ let populate_graph on_decl table =
              in
              SS.iter (fun name -> G.add_edge g name iname) used_typenames
          | C { cname; supers; super; params } as d ->
-             log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__;
+             (* log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__; *)
              G.add_vertex g cname;
              assert (
                match Hashtbl.find decl_of_name cname with
@@ -309,7 +327,7 @@ let make_classtable table =
   in
   let rec on_decl = function
     | C { cname; params; super; supers } ->
-        log "Running on class %s..." cname;
+        (* log "Running on class %s..." cname; *)
         Hashtbl.clear params_hash;
         Stdlib.List.iteri
           (fun i { pname; _ } -> Hashtbl.add params_hash pname i)
@@ -332,11 +350,11 @@ let make_classtable table =
               cur_name := (cname, cur_id);
               Stdlib.List.filter_map on_typ supers)
         in
-        log "Adding a class %s with id  = %d" cname cid;
+        (* log "Adding a class %s with id  = %d" cname cid; *)
         Hashtbl.add classes cname cid
     | I { iname; iparams; isupers } ->
         if true then (
-          log "Running on interface %s..." iname;
+          (* log "Running on interface %s..." iname; *)
           Hashtbl.clear params_hash;
           Stdlib.List.iteri
             (fun i { pname; _ } -> Hashtbl.add params_hash pname i)
@@ -353,7 +371,7 @@ let make_classtable table =
                 cur_name := (iname, cur_id);
                 Stdlib.List.filter_map on_typ isupers)
           in
-          log "Adding an interface %s with id = %d" iname iid;
+          (* log "Adding an interface %s with id = %d" iname iid; *)
           Hashtbl.add ifaces iname iid)
         else
           Format.eprintf
@@ -412,10 +430,14 @@ let make_classtable table =
                    object  (cur_name = %s)\n"
                   name (fst !cur_name);
                 Some CT.object_t))
+    | Array typ -> Option.map CT.array_t (on_typ typ)
     | Var { id; upb; lwb; index = _ } -> (
         (* log "Looking for param %s " id; *)
         match Hashtbl.find params_hash id with
-        | exception Not_found -> failwiths "Possibly undeclared param '%s'" id
+        | exception Not_found ->
+            Format.eprintf "Possibly undeclared param '%s' in the class '%s'\n"
+              id (fst !cur_name);
+            return CT.object_t
         | class_id ->
             return
             @@ JGS.(
@@ -430,6 +452,7 @@ let make_classtable table =
     | Intersect _ ->
         Format.eprintf "Intersections are not supported. Substituting Object\n";
         return CT.object_t
+    | Primitive s -> return (CT.primitive_t s)
     | t ->
         Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
         failwith "unsuported case"
@@ -455,9 +478,18 @@ let make_query j =
   let rec on_typ : _ -> JGS.jtype = function
     | Class (name, args) -> (
         match id_by_name name with
-        | cid -> JGS.Class (cid, args |> List.map (fun arg -> on_arg arg))
+        | cid -> JGS.Class (cid, List.map on_arg args)
         | exception Not_found -> failwiths "Can't find class name '%s'" name)
-    | _ -> assert false
+    | Interface (name, args) -> (
+        match id_by_name name with
+        | cid -> JGS.Interface (cid, List.map on_arg args)
+        | exception Not_found -> failwiths "Can't find class name '%s'" name)
+    | Var { id; upb; lwb; _ } ->
+        JGS.Var
+          { id = 0; upb = on_typ upb; lwb = Option.map on_typ lwb; index = -42 }
+    | t ->
+        Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
+        failwith "unsuported case"
   and on_arg : _ -> _ JGS.targ = function
     (* TODO: wildcards are not used, fix that later *)
     | Wildcard None -> JGS.Wildcard None
@@ -467,6 +499,50 @@ let make_query j =
 
   if neg_lower_bounds <> [] || neg_upper_bounds <> [] then
     Format.eprintf "Negatives bound are not yet supported\n%!";
+
+  (*
+
+         let relationalize_typ acc typ = function
+               | Class (name, args) -> (
+             match id_by_name name with
+             | cid -> JGS.Class (cid, List.map on_arg args)
+             | exception Not_found -> failwiths "Can't find class name '%s'" name)
+         | Interface (name, args) -> (
+             match id_by_name name with
+             | cid -> JGS.Interface (cid, List.map on_arg args)
+             | exception Not_found -> failwiths "Can't find class name '%s'" name)
+         | Var { id; upb; lwb; _ } ->
+             JGS.Var
+               { id = 0; upb = on_typ upb; lwb = Option.map on_typ lwb; index = -42 }
+         | t ->
+             Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
+             failwith "unsuported case"
+         in
+         let relationalize_arg acc arg =
+     | Wildcard None -> JGS.Wildcard None
+         | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
+         | t -> JGS.Type (on_typ t)
+         in *)
+  let varnames =
+    let acc =
+      List.fold_left
+        (fun acc x -> SS.union acc (collect_used_typenames x))
+        SS.empty upper_bounds
+    in
+    let acc =
+      List.fold_left
+        (fun acc x -> SS.union acc (collect_used_typenames x))
+        acc lower_bounds
+    in
+    acc
+  in
+
+  let () =
+    Format.printf "\nType variables mentioned in constraints: [";
+    SS.to_seq varnames |> Seq.iter (Format.printf " %s ");
+    Format.printf "]\n\n%!"
+  in
+
   let goal is_subtype targ_inj answer_typ =
     let open OCanren in
     let init = success in

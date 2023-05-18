@@ -1,0 +1,27 @@
+  $ ../jsons/run_json.exe -n 1 2.json -v
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"K\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"V\",\"index\":1,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"T\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"K\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"V\",\"index\":1,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"T\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"K\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"V\",\"index\":1,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"V\",\"index\":0,\"upb\":[\"Interface\",\"org.objectweb.asm.tree.analysis.Value\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"T\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"T\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"T\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"T\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  	 param_of_yojson: "[\"Var\",{\"id\":\"T\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
+  Failure("CT_of_json.ml.targ_of_yojson: tuple of size 2 expected")
+  { "first": "Super", "second": [ "Interface", "java.nio.file.Path", [] ] }
+  [1]

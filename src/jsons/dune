@@ -1,3 +1,8 @@
+(env
+ (dev
+  (flags
+   (:standard -warn-error -26))))
+
 (executable
  (name run_json)
  (modules run_json)
@@ -5,21 +10,22 @@
  (flags
   (:standard -rectypes))
  (preprocess
-  (pps ppx_blob)))
+  (pps ppx_blob OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
 
 (cram
  (deps
   run_json.exe
   test1.json
-  test2.json
+  2.json
   test3.json
-  run4.json
-  test5.json
+  ;run4.json
+  5.json
+  6closure.json
   ;guava.json
   ))
 
 (rule
- (targets test1.json test2.json test3.json test5.json)
+ (targets test1.json 2.json test3.json 5.json 6closure.json)
  (mode
   (promote (until-clean)))
  (deps ./make_JSONs.exe)

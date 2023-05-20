@@ -41,6 +41,51 @@ and pp_ljtype : HO.jtype_logic -> string =
        (GT.show Std.List.logic pp_ljtype))
     t
 
+let rec pp_jtyp_logic name_of : Format.formatter -> HO.jtype_logic -> unit =
+  let open Format in
+  let open OCanren.Std in
+  let rec helper ppf :
+      ( HO.jtype_logic HO.targ_logic List.logic,
+        Nat.logic,
+        HO.jtype_logic,
+        HO.jtype_logic Option.logic,
+        HO.jtype_logic List.logic )
+      HO.jtype_fuly ->
+      _ = function
+    | HO.Null -> fprintf ppf "null"
+    | HO.Array t -> fprintf ppf "Array<%a>" main t
+    | HO.Interface (id, Value Std.List.Nil) | HO.Class (id, Value Std.List.Nil)
+      ->
+        fprintf ppf "%s" (name_of id)
+    | HO.Interface (id, args) | HO.Class (id, args) ->
+        fprintf ppf "%s<%a>" (name_of id)
+          (GT.fmt Std.List.logic (pp_targ_logic name_of))
+          args
+    | Intersect args ->
+        fprintf ppf "Intersect %a" (GT.fmt Std.List.logic main) args
+    | HO.Var { upb; lwb = Value None; _ } -> fprintf ppf "? extends %a" main upb
+    | HO.Var { upb; lwb = Value (Some lwb); _ } ->
+        fprintf ppf "(? extends %a super %a)" main upb main lwb
+    | HO.Var { upb; lwb = Var _; _ } ->
+        fprintf ppf "Not implemented %s %d" __FILE__ __LINE__
+  and main : _ -> HO.jtype_logic -> _ =
+   fun ppf x -> GT.fmt OCanren.logic helper ppf x
+  in
+  main
+
+and pp_pol ppf a = Format.fprintf ppf "%s" ((GT.show HO.polarity_logic) a)
+
+and pp_targ_logic name_of : Format.formatter -> _ -> _ =
+ fun ppf ->
+  GT.fmt OCanren.logic
+    (fun ppf -> function
+      | HO.Type t -> pp_jtyp_logic name_of ppf t
+      | HO.Wildcard (Value None) -> Format.fprintf ppf "?"
+      | HO.Wildcard (Value (Some (Value (pol, t)))) ->
+          Format.fprintf ppf "? %a %a" pp_pol pol (pp_jtyp_logic name_of) t
+      | _ -> assert false)
+    ppf
+
 let sep () = Printf.printf "\n\n%s\n\n" @@ String.make 100 '*'
 
 (**************************************************************************************************)
@@ -96,6 +141,13 @@ let cdecl_inj : cdecl -> HO.cdecl_injected =
 let decl_inj : decl -> HO.decl_injected = function
   | I i -> !!(HO.I (idecl_inj i))
   | C c -> !!(HO.C (cdecl_inj c))
+
+let class_ id args : JGS.HO.jtype_injected = !!(HO.Class (id, args))
+let interface id args = !!(HO.Interface (id, args))
+let array t = !!(HO.Array t)
+let intersect xs = !!(HO.Intersect xs)
+let wildcard xs : _ JGS.HO.targ_injected = !!(HO.Wildcard xs)
+let type_ t : _ JGS.HO.targ_injected = !!(HO.Type t)
 
 (**************************************************************************************************)
 (*********************************** Relational helpers *******************************************)

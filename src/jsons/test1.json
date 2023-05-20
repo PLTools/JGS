@@ -9,13 +9,18 @@
         "supers": []
       }
     ],
-    [ "I", { "iname": "A", "iparams": [], "isupers": [] } ],
+    [ "I", { "iname": "IA", "iparams": [], "isupers": [] } ],
     [
       "I",
       {
         "iname": "B",
-        "iparams": [],
-        "isupers": [ [ "Interface", "A", [] ] ]
+        "iparams": [
+          {
+            "pname": "P1",
+            "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
+          }
+        ],
+        "isupers": [ [ "Interface", "IA", [] ] ]
       }
     ],
     [

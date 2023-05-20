@@ -1,24 +1,23 @@
-  $ ./run_json.exe test1.json -default -n 5
-  	 param_of_yojson: "{\"pname\":\"P1\",\"p_upper\":[[\"Class\",\"java.lang.Object\",[]]]}"
-  Fallback: it's not  a type
-  	 param_of_yojson: "{\"pname\":\"P1\",\"p_upper\":[]}"
-  Fallback: it's not  a type
-  	 param_of_yojson: "{\"pname\":\"P2\",\"p_upper\":[]}"
-  Fallback: it's not  a type
-  1.1 (?) < Object : 
-  [
-    Var {id=_.34, index=_.35, upb=Class (1, []), lwb=_.37};
-    Null;
-    Intersect ([Class (1, []) | _.104]);
-    Class (1, []);
-    Array (Class (1, []))
-  ]
+  $ ./run_json.exe test1.json -n 5 -default
+
+  Type variables mentioned in constraints: []
+
   Running generated query
-  
+  1.1 (?) < Object :
   [
-    Var {id=_.34, index=_.35, upb=Class (5, []), lwb=_.37};
-    Null;
-    Intersect ([Class (5, []) | _.104]);
-    Class (5, []);
-    Intersect ([_.106 [=/= Class (5, [])]; Class (5, []) | _.232])
+    java.lang.Clonable<_.28>;
+    java.io.Serializable<_.28>;
+    java.lang.Object;
+    IA<_.28>;
+    E<_.22>
   ]
+  	     Processing: _.? <-< java.lang.Object ()
+
+  [
+    Not implemented JGS_Helpers.ml 70;
+    null;
+    java.lang.Object;
+    Array<java.lang.Object>;
+    java.lang.Clonable<_.17>
+  ]
+

@@ -1,0 +1,94 @@
+{
+    "table": [
+        [
+            "C",
+            {
+                "cname": "java.lang.Object",
+                "params": [],
+                "super": null,
+                "supers": []
+            }
+        ],
+        [
+            "C",
+            {
+                "cname": "org.junit.platform.commons.function.Try",
+                "params": [
+                    [
+                        "Var",
+                        {
+                            "id": "V",
+                            "index": 0,
+                            "upb": [
+                                "Class",
+                                "java.lang.Object",
+                                []
+                            ],
+                            "lwb": null
+                        }
+                    ]
+                ],
+                "super": [
+                    "Class",
+                    "java.lang.Object",
+                    []
+                ],
+                "supers": []
+            }
+        ],
+        [
+            "C",
+            {
+                "cname": "org.junit.platform.commons.function.Try$Failure",
+                "params": [
+                    [
+                        "Var",
+                        {
+                            "id": "V",
+                            "index": 0,
+                            "upb": [
+                                "Class",
+                                "java.lang.Object",
+                                []
+                            ],
+                            "lwb": null
+                        }
+                    ]
+                ],
+                "super": [
+                    "Class",
+                    "org.junit.platform.commons.function.Try",
+                    [
+                        [
+                            "Type",
+                            [
+                                "Var",
+                                {
+                                    "id": "V",
+                                    "index": 0,
+                                    "upb": [
+                                        "Class",
+                                        "java.lang.Object",
+                                        []
+                                    ],
+                                    "lwb": null
+                                }
+                            ]
+                        ]
+                    ]
+                ],
+                "supers": []
+            }
+        ]
+    ],
+    "upper_bounds": [
+        [
+            "Class",
+            "java.lang.Object",
+            []
+        ]
+    ],
+    "lower_bounds": [],
+    "neg_upper_bounds": [],
+    "neg_lower_bounds": []
+}

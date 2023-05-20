@@ -22,21 +22,25 @@ let () =
     (fun file -> test_args.json_name <- file)
     ""
 
-let run_jtype ?(n = test_args.answers_count) query =
+let run_jtype pp ?(n = test_args.answers_count) query =
   let pp_list f l =
     Printf.sprintf "\n[\n  %s\n]%!"
     @@ String.concat ";\n  " @@ Stdlib.List.map f l
   in
-  pp_list JGS_Helpers.pp_ljtype
-  @@ OCanren.Stream.take ~n
+  pp_list pp @@ OCanren.Stream.take ~n
   @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+
+let class_or_interface typ =
+  let open OCanren in
+  let open JGS_Helpers in
+  conde
+    [ fresh (a b) (typ === class_ a b); fresh (a b) (typ === interface a b) ]
 
 let () =
   let open JGS_Helpers in
   let j = Yojson.Safe.from_file test_args.json_name in
 
-  (* Format.printf "%a\n%!" (Yojson.Safe.pretty_print ~std:true) j; *)
-  let (module CT : MutableTypeTable.SAMPLE_CLASSTABLE), goal =
+  let (module CT : MutableTypeTable.SAMPLE_CLASSTABLE), goal, name_of_id =
     match CT_of_json.make_query j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->
@@ -46,8 +50,11 @@ let () =
   in
 
   let module V = JGS.FO.Verifier (CT) in
-  let rec ( <-< ) ta tb = ta -<- tb (* not complete! *)
+  let rec ( <-< ) ta tb = failwith "<-<"
+  (* ta -<- tb  *)
+  (* not complete! *)
   and ( -<- ) ta tb = V.( -<- ) ( <-< ) ta tb in
+
   (* let module MM = struct
        open OCanren
 
@@ -70,22 +77,39 @@ let () =
 
        let (_ : hack -> hack -> bool ilogic -> Peano.HO.goal) = ( -<- )
      end in *)
+  Format.printf "Running generated query\n%!";
+  let pp x =
+    let nat_logic_to_int =
+      let open OCanren in
+      let rec helper acc = function
+        | Value Std.Nat.O -> acc
+        | Value (S p) -> helper (acc + 1) p
+        | Var _ -> raise OCanren.Not_a_value
+      in
+      helper 0
+    in
+    let lookup id =
+      let id = nat_logic_to_int id in
+      (* Format.printf "lookup %d\n%!" id; *)
+      match id with
+      | id -> name_of_id id
+      | exception OCanren.Not_a_value -> assert false
+    in
+    Format.asprintf "%a" (JGS_Helpers.pp_jtyp_logic lookup) x
+  in
+
   let () =
     if test_args.run_default then
       Printf.printf "1.1 (?) < Object : %s\n"
-      @@ run_jtype ~n:test_args.answers_count (fun typ ->
+      @@ run_jtype pp ~n:test_args.answers_count (fun typ ->
              let open OCanren in
-             ( -<- ) typ (jtype_inj @@ CT.object_t) !!true)
+             fresh () (class_or_interface typ)
+               (( -<- ) typ (jtype_inj CT.object_t) !!true))
   in
-  (* let e_d_b_a =
-       let open JGS in
-       Class
-         ( class_e,
-           [
-             Type (Class (class_d, [ Type (Class (class_b, [])) ]));
-             Type (Class (class_a, []));
-           ] )
-     in *)
-  let (_ : JGS.jtype JGS.targ -> _) = targ_inj in
-  Format.printf "Running generated query\n%!";
-  print_endline @@ run_jtype (fun typ -> goal ( -<- ) jtype_inj typ)
+
+  print_endline
+  @@ run_jtype pp (fun typ ->
+         let open OCanren in
+         fresh ()
+           (typ =/= intersect __)
+           success success (goal ( -<- ) Fun.id typ))

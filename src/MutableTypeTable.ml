@@ -88,8 +88,16 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     id
 
   let make_tvar index upb = Var { id = new_id (); index; upb; lwb = None }
-  let make_class params super supers = add_class { params; super; supers }
-  let make_interface params supers = add_interface { params; supers }
+
+  let make_class params super supers =
+    let id = add_class { params; super; supers } in
+    (* Printf.printf "Class   with id=%d was created\n%!" id; *)
+    id
+
+  let make_interface params supers =
+    let id = add_interface { params; supers } in
+    (* Printf.printf "Interface   with id=%d was created\n%!" id; *)
+    id
 
   let make_class_fix ~params super supers =
     add_class_fix (fun id ->
@@ -102,7 +110,18 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
   let object_t =
     let id = make_class [] top [] in
+    assert (id = 1);
     Class (id, [])
+
+  let cloneable_t =
+    let id = make_interface [] [] in
+    assert (id = 2);
+    Interface (id, [])
+
+  let serializable_t =
+    let id = make_interface [] [] in
+    assert (id = 3);
+    Interface (id, [])
 
   let array_t param =
     let id = make_class [] top [] in
@@ -120,14 +139,6 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
         | id -> id
       in
       Class (id, [])
-
-  let cloneable_t =
-    let id = make_interface [] [] in
-    Interface (id, [])
-
-  let serializable_t =
-    let id = make_interface [] [] in
-    Interface (id, [])
 
   let new_var = new_id
 

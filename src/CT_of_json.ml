@@ -6,23 +6,6 @@ type polarity = JGS.polarity = Extends | Super
 [@@deriving yojson_of, of_yojson]
 
 type class_id = string [@@deriving yojson_of, of_yojson]
-(*
-   let targ_of_yojson (from_arg : Yojson.Safe.t -> 'jtype) (j : Yojson.Safe.t) =
-     (* Format.printf "\ttarg_of_yosjon: %S\n%!" (Yojson.Safe.to_string j); *)
-     match j with
-     | `List (`String "Var" :: _) ->
-         (* Format.printf "%s %d\n%!" __FILE__ __LINE__; *)
-         Type (from_arg j)
-     | `List
-         [
-           `String "Wildcard";
-           `Assoc [ ("first", `String "Extends"); ("seconds", typ) ];
-         ] ->
-         Wildcard (Some (Extends, from_arg typ))
-     | `List [] ->
-         (* Format.printf "\t%s %d\n%!" __FILE__ __LINE__; *)
-         targ_of_yojson from_arg j
-     | _ -> targ_of_yojson from_arg j *)
 
 type jtype =
   (* array type *)
@@ -47,6 +30,28 @@ type jtype =
   | Intersect of jtype list
   | Primitive of string
 [@@deriving yojson_of, of_yojson]
+
+let rec pp_jtype ppf = function
+  | Array t -> Format.fprintf ppf "Array<%a>" pp_jtype t
+  | Null -> Format.fprintf ppf "null"
+  | Wildcard None -> Format.fprintf ppf "?"
+  | Wildcard (Some (Super, t)) -> Format.fprintf ppf "? super %a" pp_jtype t
+  | Wildcard (Some (Extends, t)) -> Format.fprintf ppf "? extends %a" pp_jtype t
+  | Interface (name, args) | Class (name, args) ->
+      Format.fprintf ppf "%s (%a)" name
+        (Format.pp_print_list
+           ~pp_sep:(fun ppf () -> Format.fprintf ppf " ")
+           pp_jtype)
+        args
+  | Var { id; lwb = None; upb; index = _ } ->
+      Format.fprintf ppf "(%s <: %a)" id pp_jtype upb
+  | Var { id; lwb = Some lwb; upb; index = _ } ->
+      Format.fprintf ppf "(%a <: %s <: %a)" pp_jtype lwb id pp_jtype upb
+  | Primitive name -> Format.fprintf ppf "%s" name
+  | Intersect xs ->
+      Format.pp_print_list
+        ~pp_sep:(fun ppf () -> Format.fprintf ppf " & ")
+        pp_jtype ppf xs
 
 let jtype_of_yojson =
   let rec helper j : jtype =
@@ -98,7 +103,7 @@ let param_of_yojson j =
   match jtype_of_yojson j with
   | Var { id; upb; index = _; _ } -> { pname = id; p_upper = [ upb ] }
   | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error _ ->
-      Format.printf "Fallback: it's not  a type\n%!";
+      (* Format.printf "Fallback: it's not  a type\n%!"; *)
       param_of_yojson j
   | _ ->
       Format.printf "Fallback from type to param\n%!";
@@ -134,13 +139,14 @@ type decl = C of cdecl | I of idecl [@@deriving yojson_of, of_yojson]
 type table = decl list [@@deriving yojson_of, of_yojson]
 
 let make_c cname ~params ?sup supers = C { cname; params; super = sup; supers }
+let make_i iname ~params isupers = I { iname; iparams = params; isupers }
 
 type query = {
   table : table;
   upper_bounds : jtype list; [@default []]
   lower_bounds : jtype list; [@default []]
   neg_upper_bounds : jtype list; [@default []]
-  neg_lower_bounds : jtype list; [@default []]
+  neg_lower_bounds : jtype list; [@defau lt []]
 }
 [@@deriving yojson_of, of_yojson]
 
@@ -148,7 +154,8 @@ module SS = Set.Make (String)
 
 let collect_used_typenames =
   let rec helper acc = function
-    | Interface (_, args) | Class (_, args) -> List.fold_left helper acc args
+    | Interface (name, args) | Class (name, args) ->
+        List.fold_left helper (SS.add name acc) args
     | Array t -> helper acc t
     | Primitive _ | Null -> acc
     | Wildcard None -> acc
@@ -164,14 +171,13 @@ let collect_used_typenames =
 
 let collect_varnames =
   let rec helper acc = function
-    | Interface (name, args) | Class (name, args) ->
-        List.fold_left helper (SS.add name acc) args
+    | Interface (_, args) | Class (_, args) -> List.fold_left helper acc args
     | Array t -> helper acc t
     | Primitive _ | Null -> acc
     | Wildcard None -> acc
     | Wildcard (Some (_, t)) -> helper acc t
     | Intersect xs -> List.fold_left helper acc xs
-    | Var { upb; lwb; id } ->
+    | Var { upb; lwb; id; _ } ->
         SS.union
           (match lwb with None -> SS.empty | Some t -> helper SS.empty t)
           (helper (SS.add id acc) upb)
@@ -179,9 +185,9 @@ let collect_varnames =
 
   helper SS.empty
 
-  let make_sample_ct () =
-    let open MutableTypeTable in
-    (module SampleCT () : SAMPLE_CLASSTABLE)
+let make_sample_ct () =
+  let open MutableTypeTable in
+  (module SampleCT () : SAMPLE_CLASSTABLE)
 
 type config = { mutable verbose : int }
 
@@ -203,11 +209,36 @@ module G = struct
     let equal = String.equal
   end)
 
+  let add_vertex g v =
+    (* let () = log "Add vertex: %s" v in *)
+    add_vertex g v
+
   let add_edge g start fin =
     if not (String.equal start fin) then
-      (* let () = log "Add edge: %s -> %s" start fin in *)
+      let () = log "Add edge: %s -> %s%!" start fin in
       add_edge g start fin
 end
+
+let add_parent_edges add_edge cname =
+  let names = Str.split (Str.regexp "\\$") cname in
+  match names with
+  | [] -> failwith "should not happen"
+  | [ _ ] -> ()
+  | parents ->
+      let _ =
+        List.fold_left
+          (fun acc name ->
+            add_edge acc cname;
+            acc ^ "$" ^ name)
+          (List.hd parents) (List.tl parents)
+      in
+      ()
+
+let%expect_test _ =
+  add_parent_edges (Printf.printf "%s -> %s\n") "a$b$c";
+  [%expect {|
+    a -> a$b$c
+    a$b -> a$b$c |}]
 
 module TopSort = Graph.Topological.Make (G)
 
@@ -223,7 +254,7 @@ let populate_graph on_decl table =
       | _ -> ()
     in
     let traverse_param dest { p_upper; _ } =
-      p_upper |> Stdlib.List.iter (traverse_typ dest)
+      Stdlib.List.iter (traverse_typ dest) p_upper
     in
     table
     |> Stdlib.List.iter (function
@@ -255,18 +286,41 @@ let populate_graph on_decl table =
                    Format.eprintf "Already present: '%s'\n%!" cname;
                    false);
              Hashtbl.add decl_of_name cname d;
+             let () =
+               (* If it is an inner class, we should add dependencies to parents  *)
+               add_parent_edges (G.add_edge g) cname
+             in
+
              params |> Stdlib.List.iter (traverse_param cname);
              (* TODO: should we lookup references in params? *)
              let used_typenames =
                let acc =
-                 Stdlib.Option.fold ~none:SS.empty ~some:collect_used_typenames
+                 Stdlib.Option.fold ~none:SS.empty
+                   ~some:(fun t ->
+                     (* Format.printf "Superclass = %s\n%!"
+                        (Yojson.Safe.pretty_to_string (yojson_of_jtype t)); *)
+                     collect_used_typenames t)
                    super
                in
                List.fold_left
                  (fun acc p -> SS.union acc (collect_used_typenames p))
                  acc supers
+               |> SS.to_seq |> List.of_seq
              in
-             SS.iter (fun name -> G.add_edge g name cname) used_typenames);
+             let __ () =
+               if
+                 cname
+                 = "net.bytebuddy.pool.TypePool$Default$AnnotationRegistrant$ForTypeVariable$WithIndex$DoubleIndexed"
+               then
+                 let () =
+                   Format.printf "Used typenames for %S: %s\n%!" cname
+                     (String.concat " " used_typenames)
+                 in
+                 (* Format.printf "%s\n%!"
+                    (Yojson.Safe.pretty_to_string (yojson_of_decl d)); *)
+                 ()
+             in
+             List.iter (fun name -> G.add_edge g name cname) used_typenames);
 
     (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
        (G.nb_edges g) __FILE__ __LINE__; *)
@@ -283,6 +337,9 @@ let populate_graph on_decl table =
   iter ()
 
 let make_classtable table =
+  let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
+    make_sample_ct ()
+  in
   let classes : (string, int) Hashtbl.t =
     Hashtbl.create (List.length table + 1)
   in
@@ -292,40 +349,40 @@ let make_classtable table =
   let params_hash : (string, int) Hashtbl.t =
     Hashtbl.create (List.length table + 1)
   in
+  let name_of_id_hash = Hashtbl.create 10000 in
   let cur_name = ref ("", -42) in
   let is_current name = name = fst !cur_name in
 
-  let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
-    make_sample_ct ()
-  in
-
   let () =
     match CT.object_t with
-    | Class (class_id, _) -> Hashtbl.add classes "java.lang.Object" class_id
+    | Class (id, _) ->
+        Hashtbl.add classes "java.lang.Object" id;
+        Hashtbl.add name_of_id_hash id "java.lang.Object"
     | _ -> assert false
   in
-
-  let id_of_name name =
-    if name = fst !cur_name then `Defined (snd !cur_name)
-    else
-      match Hashtbl.find classes name with
-      | x -> `Defined x
-      | exception Not_found -> (
-          match Hashtbl.find ifaces name with
-          | x -> `Defined x
-          | exception Not_found -> (
-              match Hashtbl.find params_hash name with
-              | x -> `Param x
-              | exception Not_found ->
-                  failwiths "The type names '%s' is not found" name))
+  let () =
+    let full_name = "java.lang.Clonable" in
+    match CT.cloneable_t with
+    | Interface (id, _) ->
+        Hashtbl.add classes full_name id;
+        Hashtbl.add name_of_id_hash id full_name
+    | _ -> assert false
   in
-
+  let () =
+    let full_name = "java.io.Serializable" in
+    match CT.serializable_t with
+    | Interface (id, _) ->
+        Hashtbl.add classes full_name id;
+        Hashtbl.add name_of_id_hash id full_name
+    | _ -> assert false
+  in
   let return x = Some x in
   let unwrap scru ?(on_error = fun () -> failwith "Can't recover from error") sk
       =
     match scru with Some t -> sk t | None -> on_error ()
   in
   let rec on_decl = function
+    | C { cname = "java.lang.Object"; _ } -> ()
     | C { cname; params; super; supers } ->
         (* log "Running on class %s..." cname; *)
         Hashtbl.clear params_hash;
@@ -336,9 +393,6 @@ let make_classtable table =
           CT.make_class_fix
             ~params:(fun cur_id ->
               cur_name := (cname, cur_id);
-              (* Stdlib.List.iteri
-                 (fun i p -> Hashtbl.add params_hash p.pname i)
-                 params; *)
               List.mapi on_param params)
             (fun cur_id ->
               cur_name := (cname, cur_id);
@@ -350,7 +404,8 @@ let make_classtable table =
               cur_name := (cname, cur_id);
               Stdlib.List.filter_map on_typ supers)
         in
-        (* log "Adding a class %s with id  = %d" cname cid; *)
+        log "Adding a class %S with id  = %d" cname cid;
+        Hashtbl.add name_of_id_hash cid cname;
         Hashtbl.add classes cname cid
     | I { iname; iparams; isupers } ->
         if true then (
@@ -363,15 +418,13 @@ let make_classtable table =
             CT.make_interface_fix
               (fun cur_id ->
                 cur_name := (iname, cur_id);
-                (* Stdlib.List.iteri
-                   (fun i p -> Hashtbl.add params_hash p.pname i)
-                   iparams; *)
                 List.mapi on_param iparams)
               (fun cur_id ->
                 cur_name := (iname, cur_id);
                 Stdlib.List.filter_map on_typ isupers)
           in
-          (* log "Adding an interface %s with id = %d" iname iid; *)
+          log "Adding an interface %s with id = %d" iname iid;
+          Hashtbl.add name_of_id_hash iid iname;
           Hashtbl.add ifaces iname iid)
         else
           Format.eprintf
@@ -380,7 +433,6 @@ let make_classtable table =
     let upper_bounds = p_upper |> List.map on_typ in
     (* TODO: read  again if params could have upper bound *)
     CT.object_t
-    (* assert false *)
   and on_arg : _ -> JGS.jtype JGS.targ = function
     | Wildcard None -> JGS.Wildcard None
     | Wildcard (Some (kind, typ)) ->
@@ -410,7 +462,8 @@ let make_classtable table =
             | exception Not_found ->
                 Format.eprintf
                   "   The name %S is not class or parameter. Substituting \
-                   object. (cur_name = %s)\n\n"
+                   object. (cur_name = %s)\n\
+                   %!"
                   name (fst !cur_name);
                 Some CT.object_t))
     | Interface (name, args) -> (
@@ -427,7 +480,8 @@ let make_classtable table =
             | exception Not_found ->
                 Format.eprintf
                   "  The name %S is not interface or parameter. Substituting \
-                   object  (cur_name = %s)\n"
+                   object  (cur_name = %s)\n\
+                   %!"
                   name (fst !cur_name);
                 Some CT.object_t))
     | Array typ -> Option.map CT.array_t (on_typ typ)
@@ -435,8 +489,9 @@ let make_classtable table =
         (* log "Looking for param %s " id; *)
         match Hashtbl.find params_hash id with
         | exception Not_found ->
-            Format.eprintf "Possibly undeclared param '%s' in the class '%s'\n"
-              id (fst !cur_name);
+            Format.eprintf
+              "Possibly undeclared param '%s' in the class '%s'\n%!" id
+              (fst !cur_name);
             return CT.object_t
         | class_id ->
             return
@@ -450,7 +505,8 @@ let make_classtable table =
                        Option.bind lwb (fun x -> unwrap (on_typ x) Option.some);
                    }))
     | Intersect _ ->
-        Format.eprintf "Intersections are not supported. Substituting Object\n";
+        Format.eprintf
+          "Intersections are not supported. Substituting Object\n%!";
         return CT.object_t
     | Primitive s -> return (CT.primitive_t s)
     | t ->
@@ -458,71 +514,41 @@ let make_classtable table =
         failwith "unsuported case"
   in
   populate_graph on_decl table;
-  ( ct,
-    fun name ->
-      match Hashtbl.find classes name with
-      | cid -> cid
-      | exception Not_found -> (
-          match Hashtbl.find ifaces name with
-          | id -> id
-          | exception Not_found ->
-              failwiths "Can't find '%s' neither in classes not in interfaces"
-                name) )
+  let name_of_id id =
+    match Hashtbl.find name_of_id_hash id with
+    | exception Not_found ->
+        failwiths "Cannot find a class for id %d. There are %d known ids" id
+          (Hashtbl.length name_of_id_hash)
+    | s -> s
+  in
+  let id_of_name name =
+    match Hashtbl.find classes name with
+    | cid -> cid
+    | exception Not_found -> (
+        match Hashtbl.find ifaces name with
+        | id -> id
+        | exception Not_found ->
+            failwiths "Can't find '%s' neither in classes not in interfaces"
+              name)
+  in
+  (ct, id_of_name, name_of_id)
+
+type var_desc = Queried | Named of string
+
+let pp_var_desc ppf = function
+  | Queried -> Format.fprintf ppf "_.?"
+  | Named s -> Format.fprintf ppf "_.%s" s
 
 let make_query j =
   let { table; neg_upper_bounds; neg_lower_bounds; upper_bounds; lower_bounds }
       =
     query_of_yojson j
   in
-  let ((module CT) as ct), id_by_name = make_classtable table in
-  let rec on_typ : _ -> JGS.jtype = function
-    | Class (name, args) -> (
-        match id_by_name name with
-        | cid -> JGS.Class (cid, List.map on_arg args)
-        | exception Not_found -> failwiths "Can't find class name '%s'" name)
-    | Interface (name, args) -> (
-        match id_by_name name with
-        | cid -> JGS.Interface (cid, List.map on_arg args)
-        | exception Not_found -> failwiths "Can't find class name '%s'" name)
-    | Var { id; upb; lwb; _ } ->
-        JGS.Var
-          { id = 0; upb = on_typ upb; lwb = Option.map on_typ lwb; index = -42 }
-    | t ->
-        Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
-        failwith "unsuported case"
-  and on_arg : _ -> _ JGS.targ = function
-    (* TODO: wildcards are not used, fix that later *)
-    | Wildcard None -> JGS.Wildcard None
-    | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
-    | t -> JGS.Type (on_typ t)
-  in
+  let ((module CT) as ct), id_of_name, name_of_id = make_classtable table in
 
   if neg_lower_bounds <> [] || neg_upper_bounds <> [] then
     Format.eprintf "Negatives bound are not yet supported\n%!";
 
-  (*
-
-         let relationalize_typ acc typ = function
-               | Class (name, args) -> (
-             match id_by_name name with
-             | cid -> JGS.Class (cid, List.map on_arg args)
-             | exception Not_found -> failwiths "Can't find class name '%s'" name)
-         | Interface (name, args) -> (
-             match id_by_name name with
-             | cid -> JGS.Interface (cid, List.map on_arg args)
-             | exception Not_found -> failwiths "Can't find class name '%s'" name)
-         | Var { id; upb; lwb; _ } ->
-             JGS.Var
-               { id = 0; upb = on_typ upb; lwb = Option.map on_typ lwb; index = -42 }
-         | t ->
-             Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
-             failwith "unsuported case"
-         in
-         let relationalize_arg acc arg =
-     | Wildcard None -> JGS.Wildcard None
-         | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
-         | t -> JGS.Type (on_typ t)
-         in *)
   let varnames =
     let acc =
       List.fold_left
@@ -535,6 +561,8 @@ let make_query j =
         acc lower_bounds
     in
     acc
+    |> SS.filter (fun name ->
+           match id_of_name name with _ -> false | exception Not_found -> true)
   in
 
   let () =
@@ -543,18 +571,143 @@ let make_query j =
     Format.printf "]\n\n%!"
   in
 
-  let goal is_subtype targ_inj answer_typ =
-    let open OCanren in
-    let init = success in
-
-    let init =
-      List.fold_left
-        (fun acc b ->
-          acc &&& is_subtype answer_typ (targ_inj (on_typ b)) !!true)
-        init upper_bounds
+  (* TODO: negative bound too *)
+  let upper_bounds, lower_bounds =
+    let ( ++ ) (a, b) (c, d) = (a @ c, b @ d) in
+    let fold :
+        jtype -> ((var_desc * jtype) list * (var_desc * jtype) list) * jtype =
+      let empty = ([], []) in
+      let rec helper : _ -> _ * _ = function
+        | Var { id; upb; lwb; _ } as t ->
+            let ans1, upb = helper upb in
+            let acc = ((Named id, upb) :: fst ans1, snd ans1) in
+            let ans2 =
+              match lwb with
+              | None -> ([], [])
+              | Some t ->
+                  let ans, lwb = helper t in
+                  (fst ans, (Named id, lwb) :: snd ans)
+            in
+            (acc ++ ans2, t)
+        | Interface (name, args) ->
+            let acc, new_args =
+              List.fold_right
+                (fun x (acc, args) ->
+                  let acc0, x = helper x in
+                  (acc0 ++ acc, x :: args))
+                args
+                (([], []), [])
+            in
+            (acc, Interface (name, new_args))
+        | Class (name, args) ->
+            let acc, new_args =
+              List.fold_right
+                (fun x (acc, args) ->
+                  let acc0, x = helper x in
+                  (acc0 ++ acc, x :: args))
+                args
+                (([], []), [])
+            in
+            (acc, Class (name, new_args))
+        | Wildcard None as v -> (empty, v)
+        | Wildcard (Some (pol, t)) ->
+            let acc0, t = helper t in
+            (acc0, Wildcard (Some (pol, t)))
+        | t ->
+            Format.eprintf "%s\n%!"
+              (Yojson.Safe.pretty_to_string (yojson_of_jtype t));
+            assert false
+      in
+      fun typ -> helper typ
     in
-    List.fold_left
-      (fun acc b -> acc &&& is_subtype (targ_inj (on_typ b)) answer_typ !!true)
-      init lower_bounds
+
+    let upper_rez =
+      List.fold_left
+        (fun acc t ->
+          let rez, t = fold t in
+          acc ++ ([ (Queried, t) ], []) ++ rez)
+        ([], []) upper_bounds
+    in
+    let lower_rez =
+      List.fold_left
+        (fun acc t ->
+          let rez, t = fold t in
+          acc ++ ([ (Queried, t) ], []) ++ rez)
+        ([], []) lower_bounds
+    in
+    upper_rez ++ lower_rez
   in
-  (ct, goal)
+  let goal is_subtype targ_inj answer_typ =
+    let make_vars names k =
+      let storage = Hashtbl.create 23 in
+      let rec helper = function
+        | [] -> k (fun s -> Hashtbl.find storage s)
+        | h :: tl ->
+            OCanren.Fresh.one (fun q ->
+                Hashtbl.add storage h q;
+                helper tl)
+      in
+      helper names
+    in
+    make_vars
+      (SS.to_seq varnames |> List.of_seq)
+      (fun lookup ->
+        let open OCanren in
+        let rec on_typ : _ -> JGS.HO.jtype_injected = function
+          | Class (name, args) -> (
+              match id_of_name name with
+              | cid -> JGS_Helpers.class_ (Std.nat cid) (Std.list on_arg args)
+              | exception Not_found ->
+                  failwiths "Can't find class name '%s'" name)
+          | Interface (name, args) -> (
+              match id_of_name name with
+              | cid ->
+                  JGS_Helpers.interface (Std.nat cid) (Std.list on_arg args)
+              | exception Not_found ->
+                  failwiths "Can't find class name '%s'" name)
+          | Var { id; _ } -> lookup id
+          | t ->
+              Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
+              failwith "unsuported case"
+        and on_arg : _ -> _ JGS.HO.targ_injected = function
+          (* TODO: wildcards are not used, fix that later *)
+          | Wildcard None -> JGS_Helpers.wildcard (Std.none ())
+          | Wildcard (Some (kind, typ)) ->
+              let pol : JGS.HO.polarity_injected =
+                match kind with
+                | Super -> !!JGS.HO.Super
+                | Extends -> !!JGS.HO.Extends
+              in
+              JGS_Helpers.wildcard (Std.some !!(pol, on_typ typ))
+          | t -> JGS_Helpers.type_ (on_typ t)
+        in
+
+        let open OCanren in
+        let ask_var = function Queried -> answer_typ | Named v -> lookup v in
+        let wrap pos (name, b) =
+          Format.printf "\t%sProcessing: %a <-< %a\n%!"
+            (if pos then "     " else " NOT ")
+            pp_var_desc name pp_jtype b;
+          is_subtype (ask_var name) (targ_inj (on_typ b)) !!pos
+        in
+        let pos_upper_goals = List.map (wrap true) upper_bounds in
+        let pos_lower_goals = List.map (wrap true) lower_bounds in
+        let neg_upper_goals = [] (* List.map (wrap false) upper_bounds  *) in
+        let neg_lower_goals =
+          (* List.map (wrap false) lower_bounds *)
+          []
+        in
+        let all_goals =
+          List.concat
+            [
+              pos_upper_goals; pos_lower_goals; neg_upper_goals; neg_lower_goals;
+            ]
+        in
+        match all_goals with
+        | [] ->
+            Format.printf "The are not bounds. Exit\n%!";
+            exit 1
+        | _ -> List.fold_right ( &&& ) all_goals success)
+  in
+
+  (ct, goal, name_of_id)

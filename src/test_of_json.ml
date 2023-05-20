@@ -147,7 +147,6 @@ let%expect_test _ =
   in
   [%expect
     {|
-    	 param_of_yojson: "[\"Var\",{\"id\":\"E\",\"index\":0,\"upb\":[\"Class\",\"java.lang.Object\",[]],\"lwb\":null}]"
     OK
     	 |}]
 
@@ -241,8 +240,7 @@ let%expect_test _ =
           "params": [],
           "super": [ "Class", "Object", [] ],
           "supers": [
-            [ "Class", "A", [] ],
-            [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ]
+            [ "Class", "A", [] ], [ "Class", "D", [ [ "Class", "B", [] ] ] ]
           ]
         }
       ]

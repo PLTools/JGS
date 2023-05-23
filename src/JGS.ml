@@ -107,8 +107,8 @@ module Verifier (CT : sig
         | Wildcard (Some (Super  , t)), Wildcard (Some (Extends, o)) when o = CT.object_t -> true
                                                                                            
         | Type      t1                , Type      t2                   
-          | Type      t1                , Wildcard (Some (Extends, t2))
-          | Type      t1                , Wildcard (Some (Super  , t2)) -> t1 = t2
+        | Type      t1                , Wildcard (Some (Extends, t2))
+        | Type      t1                , Wildcard (Some (Super  , t2)) -> t1 = t2
                                                                          
         | _ -> false
       in
@@ -130,14 +130,22 @@ module Verifier (CT : sig
                      | `Var (id, i, _, _) -> Type (Var {id=id; index=i; upb=Null; lwb=None}) (* upb and lwb are dummy here! *)
                     ) raw
         in
-        Array.map (function
-                   | `Type t                          -> Type (substitute_typ subst t)
-                   | `Var (id, i, `Subst p, lwb)      -> Type (Var {id=id; index=i; upb=substitute_typ subst p; lwb=lwb})
-                   | `Var (id, i, `Inter (t, p), lwb) ->
-                        Type (Var {id=id; index=i; upb=(match substitute_typ subst p with
-                                                        | Intersect ts -> Intersect (t :: ts)
-                                                        | typ          -> Intersect [t; typ]); lwb=lwb})
-                  ) raw
+        let targs =
+          Array.map (function
+                     | `Type t                          -> Type (substitute_typ subst t)
+                     | `Var (id, i, `Subst p, lwb)      -> Type (Var {id=id; index=i; upb=substitute_typ subst p; lwb=lwb})
+                     | `Var (id, i, `Inter (t, p), lwb) ->
+                         Type (Var {id=id; index=i; upb=(match substitute_typ subst p with
+                                                         | Intersect ts -> Intersect (t :: ts)
+                                                         | typ          -> Intersect [t; typ]); lwb=lwb})
+                    ) raw
+        in
+        if Array.for_all (function
+                          | Type (Var {upb=upb; lwb=Some lwb}) -> lwb <-< upb
+                          | _ -> true
+                         ) targs
+        then Some targs
+        else None
       in
       (* helper function *)
       let class_int_sub id_a targs_a id_b targs_b supers =
@@ -152,33 +160,37 @@ module Verifier (CT : sig
       let (-<-) = (-<-) (<-<) in
       match ta with
       | Class (id_a, targs_a) ->
-         let targs_a = capture_conversion id_a targs_a in
-         (match tb with
-          | Interface (id_b, targs_b)
-          | Class     (id_b, targs_b) ->
-             class_int_sub id_a targs_a id_b targs_b (let C decl = CT.decl_by_id id_a in
-                                                      decl.super :: decl.supers)
-
-          | Var {lwb=Some typ} -> typ = ta
-          | _                  -> false
+         (match capture_conversion id_a targs_a with
+          | None         -> false
+          | Some targs_a ->
+             (match tb with
+              | Interface (id_b, targs_b)
+              | Class     (id_b, targs_b) ->
+                  class_int_sub id_a targs_a id_b targs_b (let C decl = CT.decl_by_id id_a in
+                                                           decl.super :: decl.supers)
+              | Var {lwb=Some typ} -> typ = ta
+              | _                  -> false
+             )
          )
          
       | Interface (id_a, targs_a) ->
-         let targs_a = capture_conversion id_a targs_a in
-         (match tb with
-          | Class     (id_b, targs_b) 
-          | Interface (id_b, targs_b) ->
-              let supers =
-                let I decl = CT.decl_by_id id_a in 
-                decl.supers
-              in
-              (match supers with
-               | [] -> tb = CT.object_t
-               | _  ->
-                  class_int_sub id_a targs_a id_b targs_b supers
-              )
-          | Var {lwb=Some typ} -> typ = ta
-          | _                  -> false
+         (match capture_conversion id_a targs_a with
+          | None         -> false
+          | Some targs_a ->
+             (match tb with
+              | Class     (id_b, targs_b) 
+              | Interface (id_b, targs_b) ->
+                 let supers =
+                   let I decl = CT.decl_by_id id_a in 
+                   decl.supers
+                 in
+                 (match supers with
+                  | [] -> tb = CT.object_t
+                  | _  -> class_int_sub id_a targs_a id_b targs_b supers
+                 )
+              | Var {lwb=Some typ} -> typ = ta
+              | _                  -> false
+             )
          )
          
       | Array ta ->

@@ -1,0 +1,43 @@
+{
+    "table": [
+        [
+            "C",
+            {
+                "cname": "CABI",
+                "params": [],
+                "super": [
+                    "Class",
+                    "java.lang.Enum",
+                    [
+                        [
+                            "Var",
+                            {
+                                "id": "E",
+                                "index": 0,
+                                "upb": [
+                                    "Class",
+                                    "java.lang.Enum",
+                                    [
+                                        [
+                                            "Var",
+                                            {
+                                                "id": "E",
+                                                "index": 0,
+                                                "upb": [
+                                                    "Class",
+                                                    "java.lang.Object",
+                                                    []
+                                                ]
+                                            }
+                                        ]
+                                    ]
+                                ]
+                            }
+                        ]
+                    ]
+                ],
+                "supers": []
+            }
+        ]
+    ]
+}

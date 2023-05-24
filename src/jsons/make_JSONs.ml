@@ -18,14 +18,14 @@ let () =
         {
           cname = "D";
           params = [ make_param "P1" ~up:[ Class ("Object", []) ] ];
-          super = Class ("Object", []);
+          super = Some (Class ("Object", []));
           supers = [];
         };
       C
         {
           cname = "E";
           params = [ make_param "P1"; make_param "P2" ];
-          super = Class ("Object", []);
+          super = Some (Class ("Object", []));
           supers = [];
         };
     ]
@@ -52,21 +52,21 @@ let () =
         {
           cname = "String";
           params = [];
-          super = Class ("Object", []);
+          super = Some (Class ("Object", []));
           supers = [];
         };
       C
         {
           cname = "Int";
           params = [];
-          super = Class ("Object", []);
+          super = Some (Class ("Object", []));
           supers = [];
         };
       C
         {
           cname = "List";
           params = [ make_param "P1" ~up:[ Class ("Object", []) ] ];
-          super = Class ("Object", []);
+          super = Some (Class ("Object", []));
           supers = [];
         };
     ]
@@ -91,26 +91,17 @@ let () =
 let () =
   let table =
     [
-      C
-        {
-          cname = "String";
-          params = [];
-          super = Class ("Object", []);
-          supers = [];
-        };
+      make_c "String" ~params:[] ~sup:(Class ("Object", [])) [];
       I
         {
           iname = "Collection";
           iparams = [ { pname = "E"; p_upper = [] } ];
           isupers = [];
         };
-      C
-        {
-          cname = "AbstractCollection";
-          params = [ make_param "E" ~up:[ Class ("Object", []) ] ];
-          super = Interface ("Collection", [ Type (Class ("E", [])) ]);
-          supers = [];
-        };
+      make_c "AbstractCollection"
+        ~params:[ make_param "E" ~up:[ Class ("Object", []) ] ]
+        ~sup:(Interface ("Collection", [ Type (Class ("E", [])) ]))
+        [];
     ]
   in
 

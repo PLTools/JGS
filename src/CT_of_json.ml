@@ -15,7 +15,7 @@ type 'jtype targ = Type of 'jtype | Wildcard of (polarity * 'jtype) option
 let targ_of_yojson (from_arg : Yojson.Safe.t -> 'jtype) (j : Yojson.Safe.t) =
   match j with
   | `List (`String "Var" :: _) ->
-      Format.printf "%s %d\n%!" __FILE__ __LINE__;
+      (* Format.printf "%s %d\n%!" __FILE__ __LINE__; *)
       Type (from_arg j)
   | _ -> targ_of_yojson from_arg j
 
@@ -93,7 +93,6 @@ let%expect_test _ =
     | _ -> Format.printf "OK\n%!"
   in
   [%expect {|
-    CT_of_json.ml 18
     OK |}]
 
 let%expect_test _ =
@@ -128,12 +127,17 @@ let%expect_test _ =
   in
   [%expect
     {|
-    CT_of_json.ml 18
     Failure("CT_of_json.ml.jtype_of_yojson: unexpected variant constructor")
     `Null |}]
 
 type param = { pname : class_id; p_upper : jtype list }
 [@@deriving yojson_of, of_yojson]
+
+let param_of_yojson j =
+  match jtype_of_yojson j with
+  | Var { id; upb } -> { pname = id; p_upper = [ upb ] }
+  | (exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error _) | _ ->
+      param_of_yojson j
 
 let make_param ?(up = []) pname = { pname; p_upper = up }
 
@@ -142,7 +146,7 @@ type cdecl = {
   (* type parameters *)
   params : (* NEED TO RETURN: params *) param list;
   (* supeclass *)
-  super : jtype;
+  super : jtype option; [@yojson.option]
   (* superinterfaces *)
   supers : jtype list;
 }
@@ -159,6 +163,8 @@ type idecl = {
 
 type decl = C of cdecl | I of idecl [@@deriving yojson_of, of_yojson]
 type table = decl list [@@deriving yojson_of, of_yojson]
+
+let make_c cname ~params ?sup supers = C { cname; params; super = sup; supers }
 
 type query = {
   table : table;
@@ -178,14 +184,14 @@ let%expect_test _ =
         {
           cname = "D";
           supers = [ Class ("Object", []) ];
-          super = Class ("Object", []);
+          super = Some (Class ("Object", []));
           params = [];
         };
       C
         {
           cname = "E";
           supers = [ Class ("A", []); Class ("D", [ Type (Class ("B", [])) ]) ];
-          super = Class ("Object", []);
+          super = Some (Class ("Object", []));
           params = [];
         };
     ]
@@ -278,7 +284,7 @@ let make_classtable table =
     | C { cname; params; super; supers } ->
         Hashtbl.clear params_hash;
         Stdlib.List.iteri
-          (fun i { pname } -> Hashtbl.add params_hash pname i)
+          (fun i { pname; _ } -> Hashtbl.add params_hash pname i)
           params;
         let cid =
           CT.make_class_fix
@@ -290,7 +296,10 @@ let make_classtable table =
                   Hashtbl.add params_hash p.pname i;
                   typ)
                 params)
-            (fun _ -> on_typ super)
+            (fun _ ->
+              match super with
+              | None -> CT.object_t
+              | Some super -> on_typ super)
             (fun _ -> List.map on_typ supers)
         in
         log "Adding a class %s with id  = %d" cname cid;

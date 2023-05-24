@@ -1,4 +1,4 @@
-  $ ./run_json.exe 6closure.json -n 2
+  $ ./run_json.exe 6closure.json -n 4
   
   Type variables mentioned in constraints: []
   
@@ -6,7 +6,10 @@
   	     Processing: _.? <-< ia ()
   
   [
-    Not implemented JGS_Helpers.ml 70;
-    null
+    (? extends ia);
+    null;
+    ia;
+    (? extends ia super (? extends ia))
   ]
+
 

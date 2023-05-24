@@ -6,10 +6,11 @@
   	     Processing: _.? <-< java.lang.Object ()
   
   [
-    Not implemented JGS_Helpers.ml 70;
+    (? extends java.lang.Object);
     null;
     Array<java.lang.Object>;
     java.lang.Object;
-    java.lang.Clonable
+    (? extends java.lang.Object super (? extends java.lang.Object))
   ]
+
 

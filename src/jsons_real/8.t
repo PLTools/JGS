@@ -4193,6 +4193,6 @@
   	     Processing: _.? <-< com.sun.tools.javac.code.Directive$RequiresDirective ()
   
   [
-    Not implemented JGS_Helpers.ml 70;
+    (? extends com.sun.tools.javac.code.Directive$RequiresDirective);
     null
   ]

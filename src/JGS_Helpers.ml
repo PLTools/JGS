@@ -63,7 +63,8 @@ let rec pp_jtyp_logic name_of : Format.formatter -> HO.jtype_logic -> unit =
           args
     | Intersect args ->
         fprintf ppf "Intersect %a" (GT.fmt Std.List.logic main) args
-    | HO.Var { upb; lwb = Value None; _ } -> fprintf ppf "? extends %a" main upb
+    | HO.Var { upb; lwb = Value None; _ } ->
+        fprintf ppf "(? extends %a)" main upb
     | HO.Var { upb; lwb = Value (Some lwb); _ } ->
         fprintf ppf "(? extends %a super %a)" main upb main lwb
     | HO.Var { upb; lwb = Var _; _ } ->

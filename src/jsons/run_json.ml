@@ -50,11 +50,29 @@ let () =
   in
 
   let module V = JGS.FO.Verifier (CT) in
-  let rec ( <-< ) ta tb = failwith "<-<"
-  (* ta -<- tb  *)
-  (* not complete! *)
-  and ( -<- ) ta tb = V.( -<- ) ( <-< ) ta tb in
-
+  let open OCanren in
+  let open JGS in
+  let rec is_correct_type t =
+    conde
+      [
+        fresh (id index upb lwb)
+          (t === !!(HO.Var { id; index; upb; lwb = Std.some lwb }))
+          (( -<- ) lwb upb !!true);
+        fresh (id index upb)
+          (t === !!(HO.Var { id; index; upb; lwb = Std.none () }));
+        ( wc @@ fun id ->
+          wc @@ fun index ->
+          wc @@ fun upb ->
+          wc @@ fun lwb -> t =/= !!(HO.Var { id; index; upb; lwb }) );
+      ]
+  and ( <-< ) ta tb b =
+    fresh () (b === !!true)
+      (conde [ ta === tb; fresh ti (( -<- ) tb ti !!true) ((ti <-< ta) b) ])
+  and ( -<- ) ta tb flg =
+    fresh ()
+      (V.( -<- ) ( <-< ) ta tb flg)
+      (is_correct_type ta) (is_correct_type tb)
+  in
   (* let module MM = struct
        open OCanren
 
@@ -111,5 +129,6 @@ let () =
   @@ run_jtype pp (fun typ ->
          let open OCanren in
          fresh ()
-           (typ =/= intersect __)
-           success success (goal ( -<- ) Fun.id typ))
+           (typ =/= intersect __) (* (typ =/= !!HO.Null) *)
+           (*  *)
+           (goal ( -<- ) Fun.id typ))

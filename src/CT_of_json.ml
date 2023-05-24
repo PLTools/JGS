@@ -537,7 +537,16 @@ let pp_var_desc ppf = function
   | Queried -> Format.fprintf ppf "_.?"
   | Named s -> Format.fprintf ppf "_.%s" s
 
-let make_query j =
+type result_query =
+  (JGS.HO.jtype_injected ->
+  JGS.HO.jtype_injected ->
+  bool OCanren.ilogic ->
+  OCanren.goal) ->
+  (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
+  JGS.HO.jtype_injected ->
+  OCanren.goal
+
+let make_query j : _ * result_query * _ =
   let { table; neg_upper_bounds; neg_lower_bounds; upper_bounds; lower_bounds }
       =
     query_of_yojson j

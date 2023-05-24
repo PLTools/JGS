@@ -1,4 +1,5 @@
-  $ ../jsons/run_json.exe -n 3 9.json
+# Test 9 returns only NULLs. WTF?
+  $ ../jsons/run_json.exe -n 2 9.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4201,7 +4202,6 @@
   	     Processing: _.? <-< java.lang.Object ()
   
   [
-    null;
     null;
     null
   ]

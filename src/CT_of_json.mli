@@ -79,17 +79,18 @@ val make_classtable :
   * (string -> int)
   * (int -> string)
 
-val make_query :
-  Yojson.Safe.t ->
-  (module MutableTypeTable.SAMPLE_CLASSTABLE)
-  * ((JGS.HO.jtype_injected ->
-     JGS.HO.jtype_injected ->
-     bool OCanren.ilogic ->
-     OCanren.goal) ->
-    (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
-    JGS.HO.jtype_injected ->
-    OCanren.goal)
-  * (int -> string)
-
 exception Id_not_found of int
 exception Name_not_found of class_id
+
+type result_query =
+  (JGS.HO.jtype_injected ->
+  JGS.HO.jtype_injected ->
+  bool OCanren.ilogic ->
+  OCanren.goal) ->
+  (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
+  JGS.HO.jtype_injected ->
+  OCanren.goal
+
+val make_query :
+  Yojson.Safe.t ->
+  (module MutableTypeTable.SAMPLE_CLASSTABLE) * result_query * (int -> string)

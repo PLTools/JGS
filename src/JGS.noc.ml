@@ -163,24 +163,33 @@ struct
                 (* upb and lwb are dummy here! *))
           raw
       in
-      List.map
-        (function
-          | CC_type t -> Type (substitute_typ subst t)
-          | CC_var (id, i, CC_subst p, lwb) ->
-              Type (Var { id; index = i; upb = substitute_typ subst p; lwb })
-          | CC_var (id, i, CC_inter (t, p), lwb) ->
-              Type
-                (Var
-                   {
-                     id;
-                     index = i;
-                     upb =
-                       (match substitute_typ subst p with
-                       | Intersect ts -> Intersect (t :: ts)
-                       | typ -> Intersect [ t; typ ]);
-                     lwb;
-                   }))
-        raw
+      let targs =
+        List.map
+          (function
+            | CC_type t -> Type (substitute_typ subst t)
+            | CC_var (id, i, CC_subst p, lwb) ->
+                Type (Var { id; index = i; upb = substitute_typ subst p; lwb })
+            | CC_var (id, i, CC_inter (t, p), lwb) ->
+                Type
+                  (Var
+                     {
+                       id;
+                       index = i;
+                       upb =
+                         (match substitute_typ subst p with
+                         | Intersect ts -> Intersect (t :: ts)
+                         | typ -> Intersect [ t; typ ]);
+                       lwb;
+                     }))
+          raw
+      in
+      if
+        List.for_all
+          (function
+            | Type (Var { upb; lwb = Some lwb }) -> lwb <-< upb | _ -> true)
+          targs
+      then Some targs
+      else None
     in
     (* helper function *)
     let class_int_sub id_a targs_a id_b targs_b supers =
@@ -200,27 +209,31 @@ struct
     let ( -<- ) = ( -<- ) ( <-< ) in
     match ta with
     | Class (id_a, targs_a) -> (
-        let targs_a = capture_conversion id_a targs_a in
-        match tb with
-        | Interface (id_b, targs_b) | Class (id_b, targs_b) ->
-            class_int_sub id_a targs_a id_b targs_b
-              (let (C decl) = CT.decl_by_id id_a in
-               decl.super :: decl.supers)
-        | Var { lwb = Some typ } -> typ = ta
-        | _ -> false)
+        match capture_conversion id_a targs_a with
+        | None -> false
+        | Some targs_a -> (
+            match tb with
+            | Interface (id_b, targs_b) | Class (id_b, targs_b) ->
+                class_int_sub id_a targs_a id_b targs_b
+                  (let (C decl) = CT.decl_by_id id_a in
+                   decl.super :: decl.supers)
+            | Var { lwb = Some typ } -> typ = ta
+            | _ -> false))
     | Interface (id_a, targs_a) -> (
-        let targs_a = capture_conversion id_a targs_a in
-        match tb with
-        | Class (id_b, targs_b) | Interface (id_b, targs_b) -> (
-            let supers =
-              let (I decl) = CT.decl_by_id id_a in
-              decl.supers
-            in
-            match supers with
-            | [] -> tb = CT.object_t
-            | _ -> class_int_sub id_a targs_a id_b targs_b supers)
-        | Var { lwb = Some typ } -> typ = ta
-        | _ -> false)
+        match capture_conversion id_a targs_a with
+        | None -> false
+        | Some targs_a -> (
+            match tb with
+            | Class (id_b, targs_b) | Interface (id_b, targs_b) -> (
+                let supers =
+                  let (I decl) = CT.decl_by_id id_a in
+                  decl.supers
+                in
+                match supers with
+                | [] -> tb = CT.object_t
+                | _ -> class_int_sub id_a targs_a id_b targs_b supers)
+            | Var { lwb = Some typ } -> typ = ta
+            | _ -> false))
     | Array ta -> (
         if ta = CT.object_t then
           if tb = CT.object_t || tb = CT.cloneable_t || tb = CT.serializable_t
@@ -231,86 +244,3 @@ struct
     | Var { upb = typ } -> typ = tb
     | Null -> tb <> Null
 end
-
-(* module Verify = Verifier (SampleCT) *)
-
-(* let rec ( <-< ) ta tb = ta -<- tb (* not complete! *)
-   and ( -<- ) ta tb = Verify.( -<- ) ( <-< ) ta tb
-
-   let _ =
-     Printf.printf " 1 Object[] < Object (true) : %b\n"
-       (Array SampleCT.object_t -<- SampleCT.object_t);
-     Printf.printf " 2 Object[] < Cloneable (true) : %b\n"
-       (Array SampleCT.object_t -<- SampleCT.cloneable_t);
-     Printf.printf " 3 Object[] < Serializable (true) : %b\n"
-       (Array SampleCT.object_t -<- SampleCT.serializable_t);
-
-     Printf.printf " 4 Object < Object[] (false): %b\n"
-       (SampleCT.object_t -<- Array SampleCT.object_t);
-     Printf.printf " 5 Cloneable < Object[] (false): %b\n"
-       (SampleCT.cloneable_t -<- Array SampleCT.object_t);
-     Printf.printf " 6 Serializable < Object[] (false): %b\n"
-       (SampleCT.serializable_t -<- Array SampleCT.object_t);
-
-     Printf.printf " 7 Object[][] < Serializable[] (true) : %b\n"
-       (Array (Array SampleCT.object_t) -<- Array SampleCT.serializable_t);
-
-     (* class A {...} *)
-     let class_a = SampleCT.make_class [] SampleCT.object_t [] in
-
-     (* class B extends A {...} *)
-     let class_b = SampleCT.make_class [] (Class (class_a, [])) [] in
-     Printf.printf " 8 B < A (true) : %b\n"
-       (Class (class_b, []) -<- Class (class_a, []));
-
-     (* interface IA {...} *)
-     let intf_a = SampleCT.make_interface [] [] in
-
-     (* class C extends A implements IA {...} *)
-     let class_c =
-       SampleCT.make_class [] (Class (class_a, [])) [ Interface (intf_a, []) ]
-     in
-     Printf.printf " 9 C < A (true) : %b\n"
-       (Class (class_c, []) -<- Class (class_a, []));
-     Printf.printf "10 C < IA (true) : %b\n"
-       (Class (class_c, []) -<- Interface (intf_a, []));
-
-     (* interface IB extends IA {...} *)
-     let intf_b = SampleCT.make_interface [] [ Interface (intf_a, []) ] in
-     Printf.printf "11 IB < IA (true) : %b\n"
-       (Interface (intf_b, []) -<- Interface (intf_a, []));
-
-     (* class D<X> {...} *)
-     let class_d =
-       SampleCT.make_class [ SampleCT.object_t ] SampleCT.object_t []
-     in
-
-     (* class E<X, Y> {...} *)
-     let class_e =
-       SampleCT.make_class
-         [ SampleCT.object_t; SampleCT.object_t ]
-         SampleCT.object_t []
-     in
-
-     (* class F<X, Y> extends E<D<Y>, X> {...} *)
-     let class_f =
-       SampleCT.make_class
-         [ SampleCT.object_t; SampleCT.object_t ]
-         (Class
-            ( class_e,
-              [
-                Type
-                  (Class
-                     (class_d, [ Type (SampleCT.make_tvar 1 SampleCT.object_t) ]));
-                Type (SampleCT.make_tvar 0 SampleCT.object_t);
-              ] ))
-         []
-     in
-     Printf.printf "12 F<A, B> < E<D<B>, A> (true) : %b\n"
-       (Class (class_f, [ Type (Class (class_a, [])); Type (Class (class_b, [])) ])
-       -<- Class
-             ( class_e,
-               [
-                 Type (Class (class_d, [ Type (Class (class_b, [])) ]));
-                 Type (Class (class_a, []));
-               ] )) *)

@@ -8,10 +8,14 @@ let _ =
   let module SampleCT = SampleCT () in
   let module V = FO.Verifier (SampleCT) in
   let rec ( <-< ) ta tb b =
-    conde [ (ta -<- tb) b; fresh ti ((tb -<- ti) b) ((ti <-< ta) b) ]
+    conde
+      [
+        fresh () (b === !!true) (ta === tb);
+        fresh ti ((tb -<- ti) b) ((ti <-< ta) b);
+      ]
   and ( -<- ) ta tb b = V.( -<- ) ( <-< ) ta tb b in
 
-  let run_jtype ?(n = -1) query =
+  let _run_jtype ?(n = -1) query =
     let pp_list f l =
       Printf.sprintf "\n[\n  %s\n]%!"
       @@ String.concat ";\n  " @@ Stdlib.List.map f l
@@ -20,12 +24,22 @@ let _ =
     @@ run q query (fun q -> q#reify HO.jtype_reify)
   in
 
+  let run_jtypes ?(n = -1) query =
+    let pp_list f l =
+      Printf.sprintf "\n[\n  %s\n]%!"
+      @@ String.concat ";\n  " @@ Stdlib.List.map f l
+    in
+    pp_list (GT.show Std.List.logic pp_ljtype)
+    @@ Stream.take ~n
+    @@ run q query (fun q -> q#reify (Std.List.reify HO.jtype_reify))
+  in
+
   let class_a = SampleCT.make_class [] SampleCT.object_t [] in
   let a = Class (class_a, []) in
   Printf.printf "Class A: %d\n\n" class_a;
 
   let class_a1 = SampleCT.make_class [] SampleCT.object_t [] in
-  let _a1 = Class (class_a1, []) in
+  let a1 = Class (class_a1, []) in
   Printf.printf "Class A1: %d\n\n" class_a1;
 
   let class_b = SampleCT.make_class [] a [] in
@@ -37,4 +51,10 @@ let _ =
   Printf.printf "Class C: %d\n\n" class_c;
 
   Printf.printf "%s\n"
-  @@ run_jtype ~n:10 (fun q -> fresh (x y t1) ((q <-< jtype_inj a) !!true))
+  @@ run_jtypes ~n:1 (fun q ->
+         fresh (super sub t1 t2 t3)
+           (super === jtype_inj a)
+           (sub === jtype_inj a1)
+           (q === Std.list Fun.id [ super; t1; t2; t3; sub ])
+           ((t1 -<- super) !!true)
+           ((sub -<- t1) !!true))

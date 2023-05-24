@@ -7,7 +7,7 @@
   	     Processing: _.? <-< java.lang.Object ()
   
   [
-    (? extends java.lang.Object);
     null;
-    Array<java.lang.Object>
+    Array<java.lang.Object>;
+    java.lang.Object
   ]

@@ -130,5 +130,6 @@ let () =
          let open OCanren in
          fresh ()
            (typ =/= intersect __) (* (typ =/= !!HO.Null) *)
+           (typ =/= var __ __ __ __)
            (*  *)
            (goal ( -<- ) Fun.id typ))

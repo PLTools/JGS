@@ -1,0 +1,56 @@
+(executable
+ (name functionalTests)
+ (modules functionalTests)
+ (libraries JGS_lib)
+ (flags (-rectypes)))
+
+(executable
+ (name reflectionTests)
+ (modules reflectionTests)
+ (libraries JGS_lib)
+ (flags (-rectypes)))
+
+(executable
+ (name relationalForwardTests)
+ (modules relationalForwardTests)
+ (libraries JGS_lib OCanren)
+ (flags (-rectypes))
+ (preprocess
+  (pps
+   GT.ppx_all
+   ;
+   )))
+
+(executable
+ (name relationalBackwardTests)
+ (modules relationalBackwardTests)
+ (libraries JGS_lib OCanren)
+ (flags (-rectypes))
+ (preprocess
+  (pps
+   GT.ppx_all
+   OCanren-ppx.ppx_fresh
+   ;
+   )))
+
+(executable
+ (name relationalClosureTests)
+ (modules relationalClosureTests)
+ (libraries JGS_lib OCanren)
+ (flags (-rectypes))
+ (preprocess
+  (pps
+   GT.ppx_all
+   OCanren-ppx.ppx_fresh
+   ;
+   )))
+
+(cram
+ (deps
+  ./functionalTests.exe
+  ./reflectionTests.exe
+  ./relationalForwardTests.exe
+  ./relationalBackwardTests.exe
+  ./relationalClosureTests.exe
+  ;
+  ))

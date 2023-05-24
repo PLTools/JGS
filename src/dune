@@ -1,6 +1,6 @@
-(executable
- (name JGS_run)
- (modules JGS JGS_run)
+(library
+ (name JGS_lib)
+ (modules JGS JGS_Helpers MutableTypeTable)
  (libraries GT OCanren noCanren.Option noCanren.List)
  (flags (-rectypes))
  (preprocess
@@ -20,6 +20,3 @@
    sh
    -c
    "noCanren -w -8 %{input} -I `ocamlfind -query OCanren` -rectypes -o %{targets} | ocamlformat --enable-outside-detected-project --impl -")))
-
-(cram
- (deps ./JGS_run.exe))

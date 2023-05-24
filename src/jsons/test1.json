@@ -1,6 +1,14 @@
 {
   "table": [
-    [ "C", { "cname": "java.lang.Object", "params": [], "supers": [] } ],
+    [
+      "C",
+      {
+        "cname": "java.lang.Object",
+        "params": [],
+        "super": null,
+        "supers": []
+      }
+    ],
     [ "I", { "iname": "A", "iparams": [], "isupers": [] } ],
     [
       "I",

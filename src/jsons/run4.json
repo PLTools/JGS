@@ -1,38 +1,39 @@
 {
-    "table": [
-        [
-          "I",
-          {
-            "iname": "net.bytebuddy.description.ByteCodeElement$Token",
-            "iparams": [
-              [
-                "Var",
-                {
-                  "id": "T",
-                  "index": 0,
-                  "upb": [
-                    "Class",
-                    "net.bytebuddy.description.ByteCodeElement$Token",
-                    [
-                      [
-                        "Var",
-                        {
-                          "id": "T",
-                          "index": 0,
-                          "upb": [
-                            "Class",
-                            "java.lang.Object",
-                            []
-                          ]
-                        }
+  "table": [
+    [
+      "I",
+      {
+        "iname": "net.bytebuddy.description.ByteCodeElement$Token",
+        "iparams": [
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "net.bytebuddy.description.ByteCodeElement$Token",
+                [
+                  [
+                    "Var",
+                    {
+                      "id": "T",
+                      "index": 0,
+                      "upb": [
+                        "Class",
+                        "java.lang.Object",
+                        []
                       ]
-                    ]
+                    }
                   ]
-                }
-              ]
-            ],
-            "isupers": []
-          }
-        ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        "isupers": []
+      }
     ]
+  ]
 }

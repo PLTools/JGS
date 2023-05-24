@@ -1,4 +1,10 @@
   $ ./run_json.exe test1.json -default -n 5
+  	 param_of_yojson: "{\"pname\":\"P1\",\"p_upper\":[[\"Class\",\"java.lang.Object\",[]]]}"
+  Fallback: it's not  a type
+  	 param_of_yojson: "{\"pname\":\"P1\",\"p_upper\":[]}"
+  Fallback: it's not  a type
+  	 param_of_yojson: "{\"pname\":\"P2\",\"p_upper\":[]}"
+  Fallback: it's not  a type
   1.1 (?) < Object : 
   [
     Var {id=_.34, index=_.35, upb=Class (1, []), lwb=_.37};

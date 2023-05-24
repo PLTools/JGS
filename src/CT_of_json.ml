@@ -1,31 +1,34 @@
+open Stdlib
+
 type polarity = JGS.polarity = Extends | Super
 [@@deriving yojson_of, of_yojson]
 
-let%expect_test _ =
-  Format.printf "%a\n%!"
-    (Yojson.Safe.pretty_print ~std:true)
-    (yojson_of_polarity Extends);
-  [%expect {| [ "Extends" ] |}]
-
 type class_id = string [@@deriving yojson_of, of_yojson]
-
-type 'jtype targ = Type of 'jtype | Wildcard of (polarity * 'jtype) option
-[@@deriving yojson_of, of_yojson]
-
-let targ_of_yojson (from_arg : Yojson.Safe.t -> 'jtype) (j : Yojson.Safe.t) =
-  match j with
-  | `List (`String "Var" :: _) ->
-      (* Format.printf "%s %d\n%!" __FILE__ __LINE__; *)
-      Type (from_arg j)
-  | _ -> targ_of_yojson from_arg j
+(*
+   let targ_of_yojson (from_arg : Yojson.Safe.t -> 'jtype) (j : Yojson.Safe.t) =
+     (* Format.printf "\ttarg_of_yosjon: %S\n%!" (Yojson.Safe.to_string j); *)
+     match j with
+     | `List (`String "Var" :: _) ->
+         (* Format.printf "%s %d\n%!" __FILE__ __LINE__; *)
+         Type (from_arg j)
+     | `List
+         [
+           `String "Wildcard";
+           `Assoc [ ("first", `String "Extends"); ("seconds", typ) ];
+         ] ->
+         Wildcard (Some (Extends, from_arg typ))
+     | `List [] ->
+         (* Format.printf "\t%s %d\n%!" __FILE__ __LINE__; *)
+         targ_of_yojson from_arg j
+     | _ -> targ_of_yojson from_arg j *)
 
 type jtype =
   (* array type *)
   | Array of jtype
   (* class type *)
-  | Class of (* NEED TO RETURN: id *) class_id * jtype targ list
+  | Class of (* NEED TO RETURN: id *) class_id * jtype list
   (* interface type *)
-  | Interface of (* NEED TO RETURN: id *) class_id * jtype targ list
+  | Interface of (* NEED TO RETURN: id *) class_id * jtype list
   (* type variable: *)
   | Var of {
       (* 1. identity *)
@@ -34,109 +37,69 @@ type jtype =
       (* 3. upper bound *)
       upb : jtype;
       (* 4. lower bound *)
-      lwb : jtype option; [@yojson.option]
+      lwb : jtype option;
     }
     (* null type *)
   | Null
+  | Wildcard of (polarity * jtype) option
+  | Intersect of jtype list
+  | Primitive of string
 [@@deriving yojson_of, of_yojson]
 
+let jtype_of_yojson =
+  let rec helper j : jtype =
+    (* Format.printf "\t@[jtype_of_yojson helper:@ %s@]\n\n%!"
+       (Yojson.Safe.pretty_to_string j); *)
+    match j with
+    | `List [ `String "Class"; `String name; `List xs ] ->
+        Class (name, List.map helper xs)
+    | `List [ `String "Interface"; `String name; `List xs ] ->
+        Interface (name, List.map helper xs)
+    | `List [ `String "Type"; lst ] -> helper lst
+    | `List [ `String "Array"; t ] -> Array (helper t)
+    | `List
+        [
+          `String "Wildcard";
+          `Assoc [ ("first", `String "Extends"); ("second", t) ];
+        ] ->
+        Wildcard (Some (Extends, helper t))
+    | `List
+        [
+          `String "Wildcard";
+          `Assoc [ ("first", `String "Super"); ("second", t) ];
+        ] ->
+        Wildcard (Some (Super, helper t))
+    | `List
+        [
+          `String "Var";
+          `Assoc
+            [
+              ("id", `String id);
+              ("index", `Int index);
+              ("upb", upb);
+              ("lwb", `Null);
+            ];
+        ] ->
+        Var { id; index; upb = helper upb; lwb = None }
+    | `List [ `String "Intersect"; `List xs ] -> Intersect (List.map helper xs)
+    | t -> jtype_of_yojson t
+  in
+  helper
+
 let var ?lwb id upb = Var { id; upb; lwb; index = 0 }
-
-let%expect_test _ =
-  let t = var "XXX" (Class ("Object", [])) in
-  let j = yojson_of_jtype t in
-  Format.printf "%s\n%a\n%!" (Yojson.Safe.show j)
-    (Yojson.Safe.pretty_print ~std:true)
-    j;
-  [%expect
-    {|
-    `List ([`String ("Var");
-             `Assoc ([("id", `String ("XXX")); ("index", `Int (0));
-                       ("upb",
-                        `List ([`String ("Class"); `String ("Object"); `List (
-                                 [])]))
-                       ])
-             ])
-
-    [
-      "Var", { "id": "XXX", "index": 0, "upb": [ "Class", "Object", [] ] }
-    ] |}]
-
-let%expect_test _ =
-  let j =
-    Yojson.Safe.from_string
-      {|
-          [
-            "Var",
-            {
-              "id": "E",
-              "index": 0,
-              "upb": [ "Class", "Object", [] ]
-            }
-          ]
-|}
-  in
-  Format.printf "%s\n%!" (Yojson.Safe.show j);
-  [%expect
-    {|
-    `List ([`String ("Var");
-             `Assoc ([("id", `String ("E")); ("index", `Int (0));
-                       ("upb",
-                        `List ([`String ("Class"); `String ("Object"); `List (
-                                 [])]))
-                       ])
-             ]) |}];
-  let () =
-    match targ_of_yojson jtype_of_yojson j with
-    | exception Ppx_yojson_conv_lib__Yojson_conv.Of_yojson_error (exc, j) ->
-        Format.printf "%s\n%s\n%!" (Printexc.to_string exc) (Yojson.Safe.show j)
-    | _ -> Format.printf "OK\n%!"
-  in
-  [%expect {|
-    OK |}]
-
-let%expect_test _ =
-  let j =
-    Yojson.Safe.from_string
-      {|
-  [
-           "Var",
-           {
-              "id": "id",
-              "upb": [ "Class", "java.lang.Object", [] ],
-              "lwb": null
-            }
-        ]
-|}
-  in
-  Format.printf "%s\n%!" (Yojson.Safe.show j);
-  [%expect
-    {|
-    `List ([`String ("Var");
-             `Assoc ([("id", `String ("id"));
-                       ("upb",
-                        `List ([`String ("Class"); `String ("java.lang.Object");
-                                 `List ([])]));
-                       ("lwb", `Null)])
-             ]) |}];
-  let () =
-    match targ_of_yojson jtype_of_yojson j with
-    | exception Ppx_yojson_conv_lib__Yojson_conv.Of_yojson_error (exc, j) ->
-        Format.printf "%s\n%s\n%!" (Printexc.to_string exc) (Yojson.Safe.show j)
-    | _ -> Format.printf "OK\n%!"
-  in
-  [%expect
-    {|
-    Failure("CT_of_json.ml.jtype_of_yojson: unexpected variant constructor")
-    `Null |}]
 
 type param = { pname : class_id; p_upper : jtype list }
 [@@deriving yojson_of, of_yojson]
 
 let param_of_yojson j =
+  (* Format.printf "\t param_of_yojson: %S\n%!" (Yojson.Safe.to_string j); *)
   match jtype_of_yojson j with
-  | Var { id; upb; index = _ } -> { pname = id; p_upper = [ upb ] }
-  | (exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error _) | _ ->
+  | Var { id; upb; index = _; _ } -> { pname = id; p_upper = [ upb ] }
+  | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error _ ->
+      Format.printf "Fallback: it's not  a type\n%!";
+      param_of_yojson j
+  | _ ->
+      Format.printf "Fallback from type to param\n%!";
       param_of_yojson j
 
 let make_param ?(up = []) pname = { pname; p_upper = up }
@@ -146,11 +109,15 @@ type cdecl = {
   (* type parameters *)
   params : (* NEED TO RETURN: params *) param list;
   (* supeclass *)
-  super : jtype option; [@yojson.option]
+  super : jtype option;
   (* superinterfaces *)
   supers : jtype list;
 }
 [@@deriving yojson_of, of_yojson]
+
+let cdecl_of_yojson j =
+  (* Format.printf "\t cdecl_of_yojson: %S\n%!" (Yojson.Safe.to_string j); *)
+  cdecl_of_yojson j
 
 type idecl = {
   iname : class_id;
@@ -174,62 +141,6 @@ type query = {
   neg_lower_bounds : jtype list; [@default []]
 }
 [@@deriving yojson_of, of_yojson]
-
-let%expect_test _ =
-  let table =
-    [
-      I { iname = "A"; iparams = []; isupers = [] };
-      I { iname = "B"; iparams = []; isupers = [ Interface ("A", []) ] };
-      C
-        {
-          cname = "D";
-          supers = [ Class ("Object", []) ];
-          super = Some (Class ("Object", []));
-          params = [];
-        };
-      C
-        {
-          cname = "E";
-          supers = [ Class ("A", []); Class ("D", [ Type (Class ("B", [])) ]) ];
-          super = Some (Class ("Object", []));
-          params = [];
-        };
-    ]
-  in
-  Format.printf "%a\n%!"
-    (Yojson.Safe.pretty_print ~std:true)
-    (yojson_of_table table);
-
-  [%expect
-    {|
-    [
-      [ "I", { "iname": "A", "iparams": [], "isupers": [] } ],
-      [
-        "I",
-        { "iname": "B", "iparams": [], "isupers": [ [ "Interface", "A", [] ] ] }
-      ],
-      [
-        "C",
-        {
-          "cname": "D",
-          "params": [],
-          "super": [ "Class", "Object", [] ],
-          "supers": [ [ "Class", "Object", [] ] ]
-        }
-      ],
-      [
-        "C",
-        {
-          "cname": "E",
-          "params": [],
-          "super": [ "Class", "Object", [] ],
-          "supers": [
-            [ "Class", "A", [] ],
-            [ "Class", "D", [ [ "Type", [ "Class", "B", [] ] ] ] ]
-          ]
-        }
-      ]
-    ] |}]
 
 let make_sample_ct () =
   let open MutableTypeTable in
@@ -357,6 +268,11 @@ let make_classtable table =
                   failwiths "The type names '%s' is not found" name))
   in
 
+  let return x = Some x in
+  let unwrap scru ?(on_error = fun () -> failwith "Can't recover from error") sk
+      =
+    match scru with Some t -> sk t | None -> on_error ()
+  in
   let rec on_decl = function
     | C { cname; params; super; supers } ->
         log "Running on class %s..." cname;
@@ -375,8 +291,9 @@ let make_classtable table =
             (fun _ ->
               match super with
               | None -> CT.object_t
-              | Some super -> on_typ super)
-            (fun _ -> List.map on_typ supers)
+              | Some super ->
+                  unwrap (on_typ super) Fun.id ~on_error:(fun () -> CT.object_t))
+            (fun _ -> Stdlib.List.filter_map on_typ supers)
         in
         log "Adding a class %s with id  = %d" cname cid;
         Hashtbl.add classes cname cid
@@ -392,7 +309,7 @@ let make_classtable table =
                   (fun i p -> Hashtbl.add params_hash p.pname i)
                   iparams;
                 List.mapi on_param iparams)
-              (fun _ -> List.map on_typ isupers)
+              (fun _ -> Stdlib.List.filter_map on_typ isupers)
           in
           log "Adding an interface %s with id = %d" iname iid;
           Hashtbl.add ifaces iname iid)
@@ -405,14 +322,20 @@ let make_classtable table =
     CT.object_t
     (* assert false *)
   and on_arg : _ -> JGS.jtype JGS.targ = function
-    | Type t -> JGS.Type (on_typ t)
     | Wildcard None -> JGS.Wildcard None
-    | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
-  and on_typ = function
+    | Wildcard (Some (kind, typ)) ->
+        unwrap (on_typ typ) (fun x -> JGS.Wildcard (Some (kind, x)))
+    | t -> (
+        match on_typ t with
+        | Some t -> JGS.Type t
+        | None ->
+            failwiths "Can't recover from error in on_typ: \n%a\n"
+              Yojson.Safe.pp (yojson_of_jtype t))
+  and on_typ : _ -> JGS.jtype option = function
     | Class (name, args) when is_current name ->
-        JGS.Class (snd !cur_name, List.map on_arg args)
+        return @@ JGS.Class (snd !cur_name, List.map on_arg args)
     | Interface (name, args) when is_current name ->
-        JGS.Class (snd !cur_name, List.map on_arg args)
+        return @@ JGS.Class (snd !cur_name, List.map on_arg args)
     | Class (name, args) -> (
         match Hashtbl.find params_hash name with
         | param_id ->
@@ -420,13 +343,16 @@ let make_classtable table =
               if args <> [] then
                 failwith "Type variables with arguments do not happen in Java"
             in
-            CT.make_tvar param_id CT.object_t
+            return @@ CT.make_tvar param_id CT.object_t
         | exception Not_found -> (
             match Hashtbl.find classes name with
-            | id -> JGS.Class (id, List.map on_arg args)
+            | id -> return @@ JGS.Class (id, List.map on_arg args)
             | exception Not_found ->
-                failwith (Printf.sprintf "Class '%s' was not yet declared" name)
-            ))
+                Format.eprintf
+                  "The name %S is neither class nor interface. Substiturin \
+                   gobject"
+                  name;
+                Some CT.object_t))
     | Interface (name, args) -> (
         match Hashtbl.find params_hash name with
         | param_id ->
@@ -434,25 +360,37 @@ let make_classtable table =
               if args <> [] then
                 failwith "Type variables with arguments do not happen in Java"
             in
-            CT.make_tvar param_id CT.object_t
+            return @@ CT.make_tvar param_id CT.object_t
         | exception Not_found -> (
             match Hashtbl.find ifaces name with
-            | id -> JGS.Interface (id, List.map on_arg args)
+            | id -> return @@ JGS.Interface (id, List.map on_arg args)
             | exception Not_found ->
-                failwith
-                  (Printf.sprintf "Interface '%s' was not yet declared" name)))
-    | Var { id; upb; lwb; index = _ } ->
+                Format.eprintf
+                  "The name %S is neither class nor interface. Substiturin \
+                   gobject"
+                  name;
+                Some CT.object_t))
+    | Var { id; upb; lwb; index = _ } -> (
         (* log "Looking for param %s " id; *)
-        let class_id = Hashtbl.find params_hash id in
-        JGS.(
-          Var
-            {
-              id = class_id;
-              index = class_id;
-              upb = on_typ upb;
-              lwb = Stdlib.Option.map on_typ lwb;
-            })
-    | _ -> assert false
+        match Hashtbl.find params_hash id with
+        | exception Not_found -> failwiths "Possibly undeclared param '%s'" id
+        | class_id ->
+            return
+            @@ JGS.(
+                 Var
+                   {
+                     id = class_id;
+                     index = class_id;
+                     upb = unwrap (on_typ upb) Fun.id (* Fix HERE *);
+                     lwb =
+                       Option.bind lwb (fun x -> unwrap (on_typ x) Option.some);
+                   }))
+    | Intersect _ ->
+        Format.eprintf "Intersections are not supported. Substituting Object\n";
+        return CT.object_t
+    | t ->
+        Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
+        failwith "unsuported case"
   in
   populate_graph on_decl table;
   ( ct,
@@ -480,9 +418,9 @@ let make_query j =
     | _ -> assert false
   and on_arg : _ -> _ JGS.targ = function
     (* TODO: wildcards are not used, fix that later *)
-    | Type t -> JGS.Type (on_typ t)
     | Wildcard None -> JGS.Wildcard None
     | Wildcard (Some (kind, typ)) -> JGS.Wildcard (Some (kind, on_typ typ))
+    | t -> JGS.Type (on_typ t)
   in
 
   if neg_lower_bounds <> [] || neg_upper_bounds <> [] then

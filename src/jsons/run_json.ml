@@ -1,3 +1,5 @@
+let () = Printexc.record_backtrace true
+
 type test_args = {
   mutable json_name : string;
   mutable run_default : bool;

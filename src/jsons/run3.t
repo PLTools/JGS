@@ -1,4 +1,8 @@
   $ ./run_json.exe test3.json -n 20
+  	 param_of_yojson: "{\"pname\":\"E\",\"p_upper\":[]}"
+  Fallback: it's not  a type
+  	 param_of_yojson: "{\"pname\":\"E\",\"p_upper\":[[\"Class\",\"java.lang.Object\",[]]]}"
+  Fallback: it's not  a type
   Running generated query
   
   [

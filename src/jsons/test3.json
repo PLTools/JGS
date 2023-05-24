@@ -9,7 +9,15 @@
         "supers": []
       }
     ],
-    [ "C", { "cname": "java.lang.Object", "params": [], "supers": [] } ],
+    [
+      "C",
+      {
+        "cname": "java.lang.Object",
+        "params": [],
+        "super": null,
+        "supers": []
+      }
+    ],
     [
       "I",
       {
@@ -28,9 +36,7 @@
             "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
           }
         ],
-        "super": [
-          "Interface", "Collection", [ [ "Type", [ "Class", "E", [] ] ] ]
-        ],
+        "super": null,
         "supers": []
       }
     ]

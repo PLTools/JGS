@@ -90,3 +90,6 @@ val make_query :
     JGS.HO.jtype_injected ->
     OCanren.goal)
   * (int -> string)
+
+exception Id_not_found of int
+exception Name_not_found of class_id

@@ -22,13 +22,38 @@ let () =
     (fun file -> test_args.json_name <- file)
     ""
 
+let is_timer_enabled =
+  match Unix.getenv "NOBENCH" with _ -> false | exception Not_found -> true
+
 let run_jtype pp ?(n = test_args.answers_count) query =
-  let pp_list f l =
-    Printf.sprintf "\n[\n  %s\n]%!"
-    @@ String.concat ";\n  " @@ Stdlib.List.map f l
+  let time =
+    if is_timer_enabled then fun f ->
+      let start = Mtime_clock.elapsed () in
+      let ans = f () in
+      let fin = Mtime_clock.elapsed () in
+      let span = Mtime.Span.abs_diff start fin in
+      let msg =
+        if Mtime.Span.to_ms span > 1000. then
+          Printf.sprintf "%5.1fs" (Mtime.Span.to_s span)
+        else Printf.sprintf "%5.1fms" (Mtime.Span.to_ms span)
+      in
+      (Some msg, ans)
+    else fun f -> (None, f ())
   in
-  pp_list pp @@ OCanren.Stream.take ~n
-  @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+  (* TODO: OCanren.Stream needs iteri_k for stiff like this *)
+  let rec loop i stream =
+    if i > n then ()
+    else
+      match time (fun () -> OCanren.Stream.msplit stream) with
+      | _, None -> ()
+      | Some msg, Some (h, tl) ->
+          Format.printf "%s % 3d)  %a\n%!" msg i pp h;
+          loop (1 + i) tl
+      | None, Some (h, tl) ->
+          Format.printf "% 3d)  %a\n%!" i pp h;
+          loop (1 + i) tl
+  in
+  loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
 
 let class_or_interface typ =
   let open OCanren in
@@ -96,7 +121,7 @@ let () =
        let (_ : hack -> hack -> bool ilogic -> Peano.HO.goal) = ( -<- )
      end in *)
   Format.printf "Running generated query\n%!";
-  let pp x =
+  let pp ppf x =
     let nat_logic_to_int =
       let open OCanren in
       let rec helper acc = function
@@ -113,23 +138,22 @@ let () =
       | id -> name_of_id id
       | exception OCanren.Not_a_value -> assert false
     in
-    Format.asprintf "%a" (JGS_Helpers.pp_jtyp_logic lookup) x
+    Format.fprintf ppf "%a" (JGS_Helpers.pp_jtyp_logic lookup) x
   in
 
   let () =
     if test_args.run_default then
-      Printf.printf "1.1 (?) < Object : %s\n"
-      @@ run_jtype pp ~n:test_args.answers_count (fun typ ->
-             let open OCanren in
-             fresh () (class_or_interface typ)
-               (( -<- ) typ (jtype_inj CT.object_t) !!true))
+      let () = Printf.printf "1.1 (?) < Object :\n" in
+      run_jtype pp ~n:test_args.answers_count (fun typ ->
+          let open OCanren in
+          fresh () (class_or_interface typ)
+            (( -<- ) typ (jtype_inj CT.object_t) !!true))
   in
 
-  print_endline
-  @@ run_jtype pp (fun typ ->
-         let open OCanren in
-         fresh ()
-           (typ =/= intersect __) (* (typ =/= !!HO.Null) *)
-           (typ =/= var __ __ __ __)
-           (*  *)
-           (goal ( -<- ) Fun.id typ))
+  run_jtype pp (fun typ ->
+      let open OCanren in
+      fresh ()
+        (typ =/= intersect __) (* (typ =/= !!HO.Null) *)
+        (typ =/= var __ __ __ __)
+        (*  *)
+        (goal ( -<- ) Fun.id typ))

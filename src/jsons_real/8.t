@@ -1,3 +1,4 @@
+  $ export NOBENCH=1
   $ ../jsons/run_json.exe -n 2 8.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
@@ -4191,8 +4192,5 @@
   
   Running generated query
   	     Processing: _.? <-< com.sun.tools.javac.code.Directive$RequiresDirective ()
-  
-  [
-    null;
-    com.sun.tools.javac.code.Directive$RequiresDirective
-  ]
+    1)  null
+    2)  com.sun.tools.javac.code.Directive$RequiresDirective

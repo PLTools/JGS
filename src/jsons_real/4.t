@@ -1,3 +1,5 @@
+  $ export NOBENCH=1
+For manual run: `dune exec jsons/run_json.exe -- -n 2 jsons_real/4.json`
 # Asking for 3 answers hangs
   $ ../jsons/run_json.exe -n 2 4.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
@@ -4193,8 +4195,5 @@
   
   Running generated query
   	     Processing: _.? <-< org.jcp.xml.dsig.internal.dom.ApacheOctetStreamData ()
-  
-  [
-    null;
-    org.jcp.xml.dsig.internal.dom.ApacheOctetStreamData
-  ]
+    1)  null
+    2)  org.jcp.xml.dsig.internal.dom.ApacheOctetStreamData

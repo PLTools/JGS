@@ -15,4 +15,5 @@ clean:
 
 .PHONY: deps
 deps:
-	opam install benchmark ppx_yojson_conv yojson ocamlformat ocaml-lsp-server mtime.1.4.0 -y
+	opam install -y \
+		benchmark ppx_yojson_conv yojson ocamlformat ocaml-lsp-server mtime.1.4.0 mtime.1.4.0 

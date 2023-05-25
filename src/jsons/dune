@@ -6,7 +6,7 @@
 (executable
  (name run_json)
  (modules run_json)
- (libraries JGS_lib yojson)
+ (libraries JGS_lib yojson unix mtime.clock.os mtime)
  (flags
   (:standard -rectypes))
  (preprocess

@@ -1,3 +1,4 @@
+  $ export NOBENCH=1
 # Test 9 returns only NULLs. WTF?
   $ ../jsons/run_json.exe -n 2 9.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
@@ -4200,8 +4201,5 @@
   	     Processing: _.K <-< java.lang.Object ()
   	     Processing: _.V <-< java.lang.Object ()
   	     Processing: _.? <-< java.lang.Object ()
-  
-  [
-    null;
-    null
-  ]
+    1)  null
+    2)  null

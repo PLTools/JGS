@@ -1,4 +1,5 @@
-  $ ../jsons/run_json.exe -n 3 6.json
+  $ export NOBENCH=1
+  $ ../jsons/run_json.exe -n 3 6.json 
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4191,9 +4192,6 @@
   
   Running generated query
   	     Processing: _.? <-< java.lang.Object ()
-  
-  [
-    null;
-    Array<java.lang.Object>;
-    java.lang.Object
-  ]
+    1)  null
+    2)  Array<java.lang.Object>
+    3)  java.lang.Object

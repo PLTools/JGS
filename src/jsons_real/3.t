@@ -4194,7 +4194,4 @@
   	     Processing: _.? <-< net.bytebuddy.implementation.bind.MethodDelegationBinder$Processor ()
   	     Processing: _.? <-< net.bytebuddy.implementation.bind.MethodDelegationBinder$Record$Illegal ()
   	     Processing: _.? <-< net.bytebuddy.implementation.bind.annotation.TargetMethodAnnotationDrivenBinder$Record ()
-  
-  [
-    null
-  ]
+   36.4ms   1)  null

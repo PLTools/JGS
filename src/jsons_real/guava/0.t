@@ -1097,7 +1097,4 @@
   Running generated query
   	     Processing: _.? <-< java.lang.Object ()
   	     Processing: _.? <-< java.util.ResourceBundle ()
-  
-  [
-    null
-  ]
+   12.0ms   1)  null

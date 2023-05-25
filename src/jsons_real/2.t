@@ -1,3 +1,4 @@
+  $ export NOBENCH=1
 # Asking for three answers hangs
   $ ../jsons/run_json.exe -n 2 2.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
@@ -4192,8 +4193,5 @@
   
   Running generated query
   	     Processing: _.? <-< net.bytebuddy.dynamic.loading.PackageDefinitionStrategy$ManifestReading$SealBaseLocator ()
-  
-  [
-    null;
-    net.bytebuddy.dynamic.loading.PackageDefinitionStrategy$ManifestReading$SealBaseLocator
-  ]
+    1)  null
+    2)  net.bytebuddy.dynamic.loading.PackageDefinitionStrategy$ManifestReading$SealBaseLocator

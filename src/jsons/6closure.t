@@ -4,11 +4,6 @@
   
   Running generated query
   	     Processing: _.? <-< ia ()
-  
-  [
-    null;
-    ia;
-    ib
-  ]
-
-
+    0.1ms   1)  null
+    0.2ms   2)  ia
+    1.1ms   3)  ib

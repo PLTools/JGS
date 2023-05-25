@@ -16,3 +16,4 @@ For example, run `dune b @jsons_real/guava/0` to test Guava table 0
 
     opam install OCanren OCanren-ppx --deps-only -y
     opam install ppx_yojson_conv -y
+    make deps

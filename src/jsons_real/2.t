@@ -1,4 +1,5 @@
-  $ ../jsons/run_json.exe -n 3 2.json
+# Asking for three answers hangs
+  $ ../jsons/run_json.exe -n 2 2.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4193,7 +4194,6 @@
   	     Processing: _.? <-< net.bytebuddy.dynamic.loading.PackageDefinitionStrategy$ManifestReading$SealBaseLocator ()
   
   [
-    (? extends net.bytebuddy.dynamic.loading.PackageDefinitionStrategy$ManifestReading$SealBaseLocator);
     null;
     net.bytebuddy.dynamic.loading.PackageDefinitionStrategy$ManifestReading$SealBaseLocator
   ]

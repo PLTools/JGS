@@ -1,4 +1,5 @@
-  $ ../jsons/run_json.exe -n 3 4.json
+# Asking for 3 answers hangs
+  $ ../jsons/run_json.exe -n 2 4.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4194,7 +4195,6 @@
   	     Processing: _.? <-< org.jcp.xml.dsig.internal.dom.ApacheOctetStreamData ()
   
   [
-    (? extends org.jcp.xml.dsig.internal.dom.ApacheOctetStreamData);
     null;
     org.jcp.xml.dsig.internal.dom.ApacheOctetStreamData
   ]

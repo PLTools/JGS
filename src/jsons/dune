@@ -10,7 +10,7 @@
  (flags
   (:standard -rectypes))
  (preprocess
-  (pps ppx_blob OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
+  (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
 
 (cram
  (deps

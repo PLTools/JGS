@@ -4193,6 +4193,6 @@
   	     Processing: _.? <-< com.sun.tools.javac.code.Directive$RequiresDirective ()
   
   [
-    (? extends com.sun.tools.javac.code.Directive$RequiresDirective);
-    null
+    null;
+    com.sun.tools.javac.code.Directive$RequiresDirective
   ]

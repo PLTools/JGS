@@ -113,7 +113,8 @@ module Verifier (CT : sig
         | _ -> false
       in
       (* Capture conversion, section 5.1.10, page 125 *)
-      let capture_conversion id targs =
+      let capture_conversion id targs = Some targs 
+(*        
         let params = match CT.decl_by_id id with C {params=params} | I {params=params} -> params in
         let raw    =
           Array.mapi (fun i ->
@@ -146,15 +147,16 @@ module Verifier (CT : sig
                          ) targs
         then Some targs
         else None
+ *)
       in
       (* helper function *)
       let class_int_sub id_a targs_a id_b targs_b supers =
         if id_a = id_b
-        then fold_left2 (fun f ta tb -> f && ta <=< tb) true targs_a targs_b
+        then fold_left2 (fun f ta tb -> f && ta (*<=<*) = tb) true targs_a targs_b
         else match List.find_opt (function Class (id, _) | Interface (id, _) -> id = id_b | _ -> false) supers with
              | Some (Class     (_, targs_b'))
              | Some (Interface (_, targs_b')) ->
-                targs_b =  Array.map (fun t -> substitute_arg targs_a t) targs_b'               
+                targs_b = Array.map (fun t -> substitute_arg targs_a t) targs_b'               
              | None -> false          
       in
       let (-<-) = (-<-) (<-<) in

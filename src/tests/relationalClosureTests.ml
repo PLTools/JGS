@@ -4,69 +4,166 @@ open JGS
 open JGS_Helpers
 open MutableTypeTable
 
+let pp_list f l =
+  Printf.sprintf "\n[\n  %s\n]%!"
+  @@ String.concat ";\n  " @@ Stdlib.List.map f l
+
+let run_jtype ?(n = -1) ~msg query =
+  Printf.printf "%s: %s\n\n" msg
+  @@ pp_list pp_ljtype @@ Stream.take ~n
+  @@ run q query (fun q -> q#reify HO.jtype_reify)
+
+let run_jtypes ?(n = -1) ~msg query =
+  Printf.printf "%s: %s\n\n" msg
+  @@ pp_list (GT.show Std.List.logic pp_ljtype)
+  @@ Stream.take ~n
+  @@ run q query (fun q -> q#reify (Std.List.reify HO.jtype_reify))
+
+let rec are_not_equal = function
+  | [] -> success
+  | x :: xs ->
+      Stdlib.List.fold_left
+        (fun acc y -> acc &&& (x =/= y))
+        (are_not_equal xs) xs
+
 let _ =
   let module SampleCT = SampleCT () in
   let module V = FO.Verifier (SampleCT) in
-  let rec is_correct_type t =
-    conde
-      [
-        fresh (id index upb lwb)
-          (t === !!(HO.Var { id; index; upb; lwb = some lwb }))
-          (lwb -<- upb);
-        fresh (id index upb) (t === !!(HO.Var { id; index; upb; lwb = none () }));
-        ( wc @@ fun id ->
-          wc @@ fun index ->
-          wc @@ fun upb ->
-          wc @@ fun lwb -> t =/= !!(HO.Var { id; index; upb; lwb }) );
-      ]
-  and ( <-< ) ta tb b =
-    fresh () (b === !!true)
-      (conde [ ta === tb; fresh ti (tb -<- ti) ((ti <-< ta) b) ])
-  and ( -<- ) ta tb =
-    fresh ()
-      (V.( -<- ) ( <-< ) ta tb !!true)
-      (is_correct_type ta) (is_correct_type tb)
+  let is_correct_type, ( -<- ), ( <-< ) =
+    Closure.make_closure (module SampleCT) V.( -<- )
   in
-
-  let _run_jtype ?(n = -1) query =
-    let pp_list f l =
-      Printf.sprintf "\n[\n  %s\n]%!"
-      @@ String.concat ";\n  " @@ Stdlib.List.map f l
-    in
-    pp_list pp_ljtype @@ Stream.take ~n
-    @@ run q query (fun q -> q#reify HO.jtype_reify)
-  in
-
-  let run_jtypes ?(n = -1) query =
-    let pp_list f l =
-      Printf.sprintf "\n[\n  %s\n]%!"
-      @@ String.concat ";\n  " @@ Stdlib.List.map f l
-    in
-    pp_list (GT.show Std.List.logic pp_ljtype)
-    @@ Stream.take ~n
-    @@ run q query (fun q -> q#reify (Std.List.reify HO.jtype_reify))
-  in
-
+  (* let ( <-< ) ta tb = failwith "Oh..." in
+     let is_correct_type t =
+       Closure.is_correct_type (module SampleCT) ~closure_subtyping:( <-< ) t
+     in
+     let ( -<- ) ta tb =
+       Closure.( -<- )
+         (module SampleCT)
+         ~direct_subtyping:V.( -<- ) ~closure_subtyping:( <-< ) ~is_correct_type ta
+         tb
+     in *)
   let class_a = SampleCT.make_class [] SampleCT.object_t [] in
   let a = Class (class_a, []) in
-  Printf.printf "Class A: %d\n\n" class_a;
-
-  let class_a1 = SampleCT.make_class [] SampleCT.object_t [] in
-  let _a1 = Class (class_a1, []) in
-  Printf.printf "Class A1: %d\n\n" class_a1;
-
+  Printf.printf "Class A: %d\n" class_a;
   let class_b = SampleCT.make_class [] a [] in
   let b = Class (class_b, []) in
-  Printf.printf "Class B: %d\n\n" class_b;
+  Printf.printf "Class B extends A: %d\n" class_b;
 
   let class_c = SampleCT.make_class [] b [] in
   let c = Class (class_c, []) in
-  Printf.printf "Class C: %d\n\n" class_c;
+  Printf.printf "Class C extends B: %d\n" class_c;
 
-  Printf.printf "%s\n"
-  @@ run_jtypes ~n:1 (fun q ->
-         fresh (super sub t1)
-           (super === jtype_inj a)
-           (sub === jtype_inj c)
-           (q === Std.list Fun.id [ super; t1; sub ])
-           (t1 -<- super) (sub -<- t1))
+  let class_a1 = SampleCT.make_class [] SampleCT.object_t [] in
+  let a1 = Class (class_a1, []) in
+  Printf.printf "Class A1: %d\n" class_a1;
+
+  (****************************************************************************)
+
+  (* Many answers with intersects and variables *)
+  let _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
+
+  (* Many repeats of B, no mentions of C *)
+  let _ =
+    run_jtype ~msg:"? <-< A (without intersects vars and null)" ~n:10
+      ( remove_intersercts_and_vars @@ fun q ->
+        fresh () (q =/= !!HO.Null) (q <-< jtype_inj a) )
+  in
+
+  (* But we can get C if we explicitly ask *)
+  let _ =
+    run_jtype ~msg:"C <-< A" ~n:10
+      ( remove_intersercts_and_vars @@ fun q ->
+        fresh () (q === jtype_inj c) (q <-< jtype_inj a) )
+  in
+
+  (* Evaluates without answers? Seems like right behavior *)
+  let __ _ =
+    run_jtype ~msg:"A1 <-< A" ~n:1
+      ( remove_intersercts_and_vars @@ fun q ->
+        fresh () (q === jtype_inj a1) (q <-< jtype_inj a) )
+  in
+
+  (* How much 1 length paths from A to B? Only one. *)
+  let _ =
+    run_jtypes ~msg:"B <-1-< A" ~n:(-1) (fun q ->
+        fresh (sub super)
+          (super === jtype_inj a)
+          (sub === jtype_inj b)
+          (q === OCanren.Std.list Fun.id [ super; sub ])
+          (sub -<- super))
+  in
+
+  (* How much 2 length paths from A to B?
+     Seems like an infinite number of identical answers with the correct variable *)
+  let _ =
+    run_jtypes ~msg:"B <-2-< A" ~n:10 (fun q ->
+        fresh (sub super t1)
+          (are_not_equal [ sub; super; t1 ])
+          (super === jtype_inj a)
+          (sub === jtype_inj b)
+          (q === OCanren.Std.list Fun.id [ super; t1; sub ])
+          (t1 -<- super) (sub -<- t1))
+  in
+
+  (* How much 3 length paths from A to B?
+     Evaluates without answers... *)
+  let __ _ =
+    run_jtypes ~msg:"B <-3-< A" ~n:1 (fun q ->
+        fresh (sub super t1 t2)
+          (are_not_equal [ sub; super; t1; t2 ])
+          (super === jtype_inj a)
+          (sub === jtype_inj b)
+          (q === OCanren.Std.list Fun.id [ super; t1; t2; sub ])
+          (t1 -<- super) (t2 -<- t1) (sub -<- t2))
+  in
+
+  (* How much 3 length paths from A to B?
+     Evaluates without answers... *)
+  let __ _ =
+    run_jtypes ~msg:"B <-4-< A" ~n:1 (fun q ->
+        fresh (sub super t1 t2 t3)
+          (are_not_equal [ sub; super; t1; t2; t3 ])
+          (super === jtype_inj a)
+          (sub === jtype_inj b)
+          (q === OCanren.Std.list Fun.id [ super; t1; t2; t3; sub ])
+          (t1 -<- super) (t2 -<- t1) (t3 -<- t2) (sub -<- t3))
+  in
+
+  (* How much 1 length paths from A to С?
+     Correct, no answers. *)
+  let _ =
+    run_jtypes ~msg:"C <-1-< A" ~n:(-1) (fun q ->
+        fresh (sub super)
+          (super === jtype_inj a)
+          (sub === jtype_inj c)
+          (q === OCanren.Std.list Fun.id [ super; sub ])
+          (sub -<- super))
+  in
+
+  (* How much 1 length paths from A to С?
+     Only one answer is given, then evaluates without answers.
+     Seems like correct behavior. *)
+  let _ =
+    run_jtypes ~msg:"C <-2-< A" ~n:1 (fun q ->
+        fresh (sub super t1)
+          (are_not_equal [ sub; super; t1 ])
+          (super === jtype_inj a)
+          (sub === jtype_inj c)
+          (q === OCanren.Std.list Fun.id [ super; t1; sub ])
+          (t1 -<- super) (sub -<- t1))
+  in
+
+  (* How much 3 length paths from A to C?
+     Evaluates without answers...
+     This is strange, because we have a path like {C} <- {var(C, B)} <- {B} <- {A}.
+     Maybe this answer is too deep in the search tree *)
+  let __ _ =
+    run_jtypes ~msg:"C <-3-< A" ~n:1 (fun q ->
+        fresh (sub super t1 t2)
+          (are_not_equal [ sub; super; t1; t2 ])
+          (super === jtype_inj a)
+          (sub === jtype_inj c)
+          (q === OCanren.Std.list Fun.id [ super; t1; t2; sub ])
+          (t1 -<- super) (t2 -<- t1) (sub -<- t2))
+  in
+  ()

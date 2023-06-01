@@ -60,17 +60,17 @@ let _ =
   (****************************************************************************)
 
   (* Many answers with intersects and variables *)
-  let _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
+  let __ _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
 
   (* Many repeats of B, no mentions of C *)
-  let _ =
+  let __ _ =
     run_jtype ~msg:"? <-< A (without intersects vars and null)" ~n:10
       ( remove_intersercts_and_vars @@ fun q ->
         fresh () (q =/= !!HO.Null) (q <-< jtype_inj a) )
   in
 
   (* But we can get C if we explicitly ask *)
-  let _ =
+  let __ _ =
     run_jtype ~msg:"C <-< A" ~n:10
       ( remove_intersercts_and_vars @@ fun q ->
         fresh () (q === jtype_inj c) (q <-< jtype_inj a) )
@@ -166,4 +166,37 @@ let _ =
           (q === OCanren.Std.list Fun.id [ super; t1; t2; sub ])
           (t1 -<- super) (t2 -<- t1) (sub -<- t2))
   in
+  ()
+
+let _ =
+  let module SampleCT = SampleCT () in
+  let module V = FO.Verifier (SampleCT) in
+  let is_correct_type, ( -<- ), ( <-< ) =
+    Closure.make_closure (module SampleCT) V.( -<- )
+  in
+  let class_int = SampleCT.make_class [] SampleCT.object_t [] in
+  let int = Class (class_int, []) in
+  Printf.printf "Class Int: %d\n" class_int;
+
+  let type_var =
+    Var { id = 42; index = 0; lwb = None; upb = SampleCT.object_t }
+  in
+  let interface_icollection = SampleCT.make_interface [ type_var ] [] in
+  let icollection = Interface (interface_icollection, [ Type type_var ]) in
+  Printf.printf "Interface ICollection: %d\n" interface_icollection;
+
+  let class_list =
+    SampleCT.make_class [ type_var ] SampleCT.object_t [ icollection ]
+  in
+
+  Printf.printf "Class List: %d\n" class_list;
+
+  let int_collection = Interface (interface_icollection, [ Type int ]) in
+
+  run_jtype ~n:1 ~msg:"? <-< ICollection<int>"
+    ( remove_intersercts_and_vars @@ fun q ->
+      fresh super
+        (super === jtype_inj int_collection)
+        (q =/= jtype_inj Null)
+        (q <-< super) );
   ()

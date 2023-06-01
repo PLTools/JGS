@@ -150,6 +150,7 @@ let () =
             (( -<- ) typ (jtype_inj CT.object_t) !!true))
   in
 
+  (* let (_ : JGS.HO.decl) = GT.show JGS.HO.decl @@ CT.decl_by_id 7 in *)
   run_jtype pp (fun typ ->
       let open OCanren in
       fresh ()

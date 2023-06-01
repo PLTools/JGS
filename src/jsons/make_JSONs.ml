@@ -132,14 +132,14 @@ let () =
   wrap "7.json"
     ~upper_bounds:
       [
-        Class ("java.lang.Object", [])
+        (* Class ("java.lang.Object", []) *)
         (* Class ("list", [ Class ("int", []) ]); *)
-        (* Interface ("ICollection", [ Class ("int", []) ]); *);
+        Interface ("ICollection", [ Class ("int", []) ]);
       ]
     [
       make_c "java.lang.Object" ~params:[] [];
       make_c "int" ~params:[] [ Class ("java.lang.Object", []) ];
-      make_c "string" ~params:[] [ Class ("java.lang.Object", []) ];
+      (* make_c "string" ~params:[] [ Class ("java.lang.Object", []) ]; *)
       make_i "ICollection"
         ~params:
           [ { pname = "A"; p_upper = [ Class ("java.lang.Object", []) ] } ]

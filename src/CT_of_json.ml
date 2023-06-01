@@ -162,7 +162,7 @@ let collect_used_typenames =
     | Wildcard (Some (_, t)) -> helper acc t
     | Intersect xs -> List.fold_left helper acc xs
     | Var { upb; lwb; id; _ } ->
-        let acc = SS.add id acc in
+        (* let acc = SS.add id acc in *)
         let acc = match lwb with Some t -> helper acc t | None -> acc in
         helper acc upb
   in

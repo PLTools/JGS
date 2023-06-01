@@ -18,14 +18,14 @@
   test1.json
   2.json
   test3.json
-  ;run4.json
   5.json
   6closure.json
-  ;guava.json
+  7.json
+  ;
   ))
 
 (rule
- (targets test1.json 2.json test3.json 5.json 6closure.json)
+ (targets test1.json 2.json test3.json 5.json 6closure.json 7.json)
  (mode
   (promote (until-clean)))
  (deps ./make_JSONs.exe)

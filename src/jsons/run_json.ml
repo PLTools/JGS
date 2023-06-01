@@ -156,4 +156,4 @@ let () =
         (typ =/= intersect __) (* (typ =/= !!HO.Null) *)
         (typ =/= var __ __ __ __)
         (*  *)
-        (goal ( -<- ) Fun.id typ))
+        (goal ( <-< ) Fun.id typ))

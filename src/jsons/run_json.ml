@@ -55,6 +55,20 @@ let run_jtype pp ?(n = test_args.answers_count) query =
   in
   loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
 
+module HO_PP = struct
+  [@@@ocaml.warnerror "-8-39"]
+
+  open Format
+
+  let rec jtyp ppf = function _ -> fprintf ppf "jtyp"
+  and jtyp_list ppf ps = fprintf ppf "%a" (GT.fmt GT.list jtyp) ps
+
+  let cdecl ppf { JGS.params; super; supers } = fprintf ppf "cdecl"
+
+  let decl : _ -> JGS.decl -> unit =
+   fun ppf -> function C c -> fprintf ppf "C %a" cdecl c
+end
+
 let class_or_interface typ =
   let open OCanren in
   let open JGS_Helpers in
@@ -150,7 +164,7 @@ let () =
             (( -<- ) typ (jtype_inj CT.object_t) !!true))
   in
 
-  (* let (_ : JGS.HO.decl) = GT.show JGS.HO.decl @@ CT.decl_by_id 7 in *)
+  let () = Format.printf "7: %a\n%!" HO_PP.decl (CT.decl_by_id 7) in
   run_jtype pp (fun typ ->
       let open OCanren in
       fresh ()

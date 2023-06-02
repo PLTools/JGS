@@ -487,7 +487,7 @@ let make_classtable table =
                   name (fst !cur_name);
                 Some CT.object_t))
     | Array typ -> Option.map CT.array_t (on_typ typ)
-    | Var { id; upb; lwb; index = _ } -> (
+    | Var { id; upb; lwb; index } -> (
         (* log "Looking for param %s " id; *)
         match Hashtbl.find params_hash id with
         | exception Not_found ->
@@ -501,7 +501,7 @@ let make_classtable table =
                  Var
                    {
                      id = class_id;
-                     index = class_id;
+                     index;
                      upb = unwrap (on_typ upb) Fun.id (* Fix HERE *);
                      lwb =
                        Option.bind lwb (fun x -> unwrap (on_typ x) Option.some);

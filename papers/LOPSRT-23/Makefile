@@ -1,6 +1,6 @@
 .PHONY: celan clean all might might-weasel might-passive might-dups
 
-MAIN=type-solver
+MAIN=main
 .PHONY: $(MAIN).pdf clean
 
 all: $(MAIN).pdf
@@ -10,8 +10,8 @@ OCANREN_TEX=$(MAIN).tex
 COMPILER=pdflatex -interaction=nonstopmode -jobname=$(MAIN)
 
 $(MAIN).pdf: $(OCANREN_TEX)
-#	$(COMPILER) $<
-#	bibtex $(MAIN).aux
+	$(COMPILER) $<
+	bibtex $(MAIN).aux
 	$(COMPILER) $<
 	$(COMPILER) $<
 

@@ -1,0 +1,547 @@
+@InProceedings{Zthree,
+author       = {de Moura, Leonardo and
+                Bj{\o}rner, Nikolaj},
+editor       = {Ramakrishnan, C. R. and
+                Rehof, Jakob},
+title        = {Z3: An Efficient SMT Solver},
+booktitle    = {Tools and Algorithms for the Construction and Analysis of Systems},
+year         = {2008},
+publisher    = {Springer Berlin Heidelberg},
+address      = {Berlin, Heidelberg},
+pages        = {337--340},
+url          = {https://doi.org/10.1007/978-3-540-78800-3_24}
+}
+
+% Daniel P. Friedman, William E.Byrd, Oleg Kiselyov. The Reasoned Schemer. The MIT Press, 2005.
+@BOOK{TRS,
+author       = {Friedman, Daniel P. and
+                Byrd, William E. and
+                Kiselyov, Oleg and
+                Hemann, Jason},
+title        = {The Reasoned Schemer},
+year         = {2005},
+edition      = {2nd},
+publisher    = {The MIT Press},
+url          = {https://doi.org/10.7551/mitpress/5801.001.0001}
+}
+
+@misc{JLS,
+author={James Gosling and Bill Joy and Guy Steele Gilad Bracha and Alex Buckley and Daniel Smith and Gavin Bierman},
+title={The {J}ava {L}anguage {S}pecification; {J}ava {SE} 20 {E}dition},
+url={https://docs.oracle.com/javase/specs/jls/se20/jls20.pdf},
+year={2023},
+month={March},
+day={03}
+}
+
+@misc{ocaml,
+author={Xavier Leroy and Damien Doligez and Alain Frisch, Jacques Garrigue and Didier Rémy and Jérôme Vouillon},
+title={The OCaml System, Release 5.0},
+year={2022},
+}
+
+@InProceedings{certified,
+author="Rozplokhas, Dmitry
+and Vyatkin, Andrey
+and Boulytchev, Dmitry",
+editor="Oliveira, Bruno C. d. S.",
+title="Certified Semantics for Relational Programming",
+booktitle="Programming Languages and Systems",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="167--185",
+abstract="We present a formal study of semantics for the relational programming language miniKanren. First, we formulate a denotational semantics which corresponds to the minimal Herbrand model for definite logic programs. Second, we present operational semantics which models interleaving, the distinctive feature of miniKanren implementation, and prove its soundness and completeness w.r.t. the denotational semantics. Our development is supported by a Coq specification, from which a reference interpreter can be extracted. We also derive from our main result a certified semantics (and a reference interpreter) for SLD resolution with cut and prove its soundness.",
+isbn="978-3-030-64437-6"
+}
+
+@inproceedings{disuni,
+  title={Disunification: A Survey.},
+  author={Hubert Comon},
+  booktitle={Computational Logic~--- Essays in Honor of Alan Robinson},
+  publishers={MIT Press},
+  pages="322–-359",
+  year={1991}  
+}
+
+@article{JSOO,
+author = {Vouillon, Jérôme and Balat, Vincent},
+year = {2014},
+month = {08},
+pages = {},
+title = {From Bytecode to JavaScript: the Js\_of\_ocaml Compiler},
+volume = {44},
+journal = {Software: Practice and Experience},
+doi = {10.1002/spe.2187}
+}
+
+@article{OCanren,
+  author    = {Dmitry Kosarev and
+               Dmitry Boulytchev},
+  title     = {Typed Embedding of a Relational Language in OCaml},
+  booktitle = {Proceedings {ML} Family Workshop / OCaml Users and Developers workshops,
+               {ML/OCAML} 2016, Nara, Japan, September 22-23, 2016},
+  pages     = {1--22},
+  year      = {2016},
+  url       = {https://doi.org/10.4204/EPTCS.285.1},
+  doi       = {10.4204/EPTCS.285.1},
+  timestamp = {Fri, 04 Jan 2019 12:22:11 +0100},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1805-11006},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{lozov2017typed,
+  title={Typed relational conversion},
+  author={Lozov, Petr and Vyatkin, Andrei and Boulytchev, Dmitry},
+  booktitle={International Symposium on Trends in Functional Programming},
+  pages={39--58},
+  year={2017},
+  organization={Springer}
+}
+
+@inproceedings{interleaving,
+author = {Kiselyov, Oleg and Shan, Chung-chieh and Friedman, Daniel P. and Sabry, Amr},
+title = {Backtracking, Interleaving, and Terminating Monad Transformers: (Functional Pearl)},
+year = {2005},
+isbn = {1595930647},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1086365.1086390},
+doi = {10.1145/1086365.1086390},
+abstract = {We design and implement a library for adding backtracking computations to any Haskell monad. Inspired by logic programming, our library provides, in addition to the operations required by the MonadPlus interface, constructs for fair disjunctions, fair conjunctions, conditionals, pruning, and an expressive top-level interface. Implementing these additional constructs is easy in models of backtracking based on streams, but not known to be possible in continuation-based models. We show that all these additional constructs can be generically and monadically realized using a single primitive msplit. We present two implementations of the library: one using success and failure continuations; and the other using control operators for manipulating delimited continuations.},
+booktitle = {Proceedings of the Tenth ACM SIGPLAN International Conference on Functional Programming},
+pages = {192–203},
+numpages = {12},
+keywords = {Prolog, Haskell, streams, continuations, control delimiters, logic programming},
+location = {Tallinn, Estonia},
+series = {ICFP '05}
+}
+
+@Inbook{Abramov2002,
+author="Abramov, Sergei
+and Gl{\"u}ck, Robert",
+editor="Mogensen, Torben {\AE}.
+and Schmidt, David A.
+and Sudborough, I. Hal",
+title="Principles of Inverse Computation and the Universal Resolving Algorithm",
+bookTitle="The Essence of Computation: Complexity, Analysis, Transformation",
+year="2002",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="269--295",
+abstract="We survey fundamental concepts in inverse programming and present the Universal Resolving Algorithm (URA), an algorithm for inverse computation in a first-order, functional programming language. We discuss the principles behind the algorithm, including a three-step approach based on the notion of a perfect process tree, and demonstrate our implementation with several examples. We explain the idea of a semantics modifier for inverse computation which allows us to perform inverse computation in other programming languages via interpreters.",
+isbn="978-3-540-36377-4",
+doi="10.1007/3-540-36377-7_13",
+url="https://doi.org/10.1007/3-540-36377-7_13"
+}
+
+@inproceedings{lozov2019relational,
+  title={Relational interpreters for search problems},
+  author={Lozov, Petr and Verbitskaia, Ekaterina and Boulytchev, Dmitry},
+  booktitle={Relational Programming Workshop},
+  pages={43},
+  year={2019}
+}
+
+% Jason Hemann, Daniel P. Friedman. $\mu$Kanren: A Minimal Functional Core for Relational Programming Proceedings of the 2013 Workshop on Scheme and Functional Programming (Scheme '13).
+@inproceedings{MicroKanren,
+title        = {$\mu$Kanren: A Minimal Functional Core for Relational Programming},
+author       = {Hemann, Jason and
+                Friedman, Daniel P.},
+booktitle    = {Proceedings of the 2013 Workshop on Scheme and Functional Programming},
+series       = {Scheme '13},
+address      = {Alexandria, VA},
+year         = {2013}
+}
+
+
+
+% Claire E. Alvis, Jeremiah J. Willcock, Kyle M. Carter, William E. Byrd, Daniel P. Friedman. cKanren: miniKanren with Constraints. Proceedings of the 2011 Workshop on Scheme and Functional Programming (Scheme '11).
+@inproceedings{cKanren,
+author       = {Alvis, Claire E. and
+                Willcock, Jeremiah J. and
+                Carter, Kyle M. and
+                Byrd, William E. and
+                Friedman, Daniel P.},
+title        = {cKanren: miniKanren with Constraints},
+booktitle    = {Proceedings of the 2011 Annual Workshop on Scheme and Functional Programming},
+series       = {Scheme '11},
+year         = {2011}
+}
+
+
+@InProceedings{PatternMatching,
+author="Kosarev, Dmitry
+and Lozov, Petr
+and Boulytchev, Dmitry",
+editor="Oliveira, Bruno C. d. S.",
+title="Relational Synthesis for Pattern Matching",
+booktitle="Programming Languages and Systems",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="293--310",
+abstract="We present a completely declarative approach to synthesizing pattern matching construct implementations based on application of relational programming, a specific form of constraint logic programming. Our approach is based on relational representations of both the high-level semantics of pattern matching and the semantics of an intermediate-level implementation language. This choice makes our approach, in principle, very scalable as we only need to modify the high-level semantics in order to synthesize the implementation of a pattern matching new feature. Our evaluation on a set of small samples, partially taken from existing literature shows, that our framework is capable of synthesizing optimal implementations quickly. Our in-depth stress evaluation on a number of artificial benchmarks, however, has shown the need for future improvements.",
+isbn="978-3-030-64437-6"
+}
+
+@inproceedings{searchproblems,
+  title={Relational Interpreters for Search Problems},
+  author={Petr Lozov and Ekaterina Verbitskaia and Dmitry Boulytchev},
+  booktitle={miniKanren and Relational Programming Workshop},
+  year={2019}
+}
+
+% William E. Byrd, Eric Holk, Daniel P. Friedman. miniKanren, Live and Untagged: Quine Generation via Relational Interpreters (Programming Pearl). Proceedings of the 2012 Workshop on Scheme and Functional Programming (Scheme '12).
+@inproceedings{Untagged,
+author       = {Byrd, William E. and
+                Holk, Eric and
+                Friedman, Daniel P.},
+title        = {MiniKanren, Live and Untagged: Quine Generation
+                via Relational Interpreters (Programming Pearl)},
+year         = {2012},
+publisher    = {Association for Computing Machinery},
+address      = {New York, NY, USA},
+pages        = {8–-29},
+location     = {Copenhagen, Denmark},
+booktitle    = {Proceedings of the Annual Workshop on Scheme and
+                Functional Programming},
+series       = {Scheme '12},
+url          = {https://doi.org/10.1145/2661103.2661105},
+}
+
+
+
+% JetBrains UI guidelines, \url{https://jetbrains.github.io/ui/principles/layout}
+@online{JBG,
+author       = {JetBrains s.r.o.},
+year         = {2000--2022},
+title        = {IntelliJ Platform UI Guidelines: Layout},
+url          = {https://jetbrains.github.io/ui/principles/layout},
+lastaccessed = {July 20, 2022},
+}
+
+
+@InProceedings{conversion,
+author="Lozov, Petr
+and Vyatkin, Andrei
+and Boulytchev, Dmitry",
+editor="Wang, Meng
+and Owens, Scott",
+title="Typed Relational Conversion",
+booktitle="Trends in Functional Programming",
+year="2018",
+publisher="Springer International Publishing",
+address="Cham",
+pages="39--58",
+abstract="We address the problem of transforming typed functional programs into relational form. In this form, a program can be run in various ``directions'' with some arguments left free, making it possible to acquire different behaviors from a single specification. We specify the syntax, typing rules and semantics for the source language as well as its relational extension, describe the conversion and prove its correctness both in terms of typing and dynamic semantics. We also discuss the limitations of our approach, present the implementation of the conversion for the subset of OCaml and evaluate it on a number of realistic examples.",
+isbn="978-3-319-89719-6"
+}
+
+% M.  Haft,  B.  Humm,  and  J.  Siedersleben,  “The  architect’s dilemma  –  will  reference  architectures  help?,”  First International  Conference  on  the  Quality  of  Software Architectures  (QoSA  2005),  Springer  LNCS  3712,  Sept. 2005
+@InProceedings{UI1,
+author       = {Haft, Martin and
+                Humm, Bernhard and
+                Siedersleben, Johannes},
+editor       = {Reussner, Ralf and
+                Mayer, Johannes and
+                Stafford, Judith A. and
+                Overhage, Sven and
+                Becker, Steffen and
+                Schroeder, Patrick J.},
+title        = {The Architect's Dilemma -- Will Reference Architectures Help?},
+booktitle    = {Quality of Software Architectures and Software Quality},
+year         = {2005},
+publisher    = {Springer Berlin Heidelberg},
+address      = {Berlin, Heidelberg},
+pages        = {106--122},
+url          = {https://doi.org/10.1007/11558569_9}
+}
+
+
+
+% T. Reenskaug, “Thing-Model-View-Editor. An example from a planningsystem,” Xerox PARC technical note, 1979.05.12
+@online{UI2,
+author       = {M. H. Reenskaug, Trygve},
+title        = {Thing-Model-View-Editor -- an Example from a planningsystem},
+year         = {1979},
+organization = {Xerox PARC},
+url          = {https://folk.universitetetioslo.no/trygver/1979/mvc-1/1979-05-MVC.pdf},
+lastaccessed = {July 20, 2022}
+}
+
+
+@online{UI12,
+authir       = {Ingram, Samantha},
+title        = {The Thumb Zone: Designing For Mobile Users},
+organization = {Smashing Magazine},
+year         = {2016},
+url          = {https://www.smashingmagazine.com/2016/09/the-thumb-zone-designing-for-mobile-users/},
+lastaccessed = {July 20, 2022}
+}
+
+% Bengfort; Jacquelyn. "Thin vs. Thick vs. Zero Client: What's the Right Fit for Your Business?". Technology Solutions That Drive Business. Retrieved 2021-10-10
+@online{UI3,
+author       = {Bengfort, Jacquelyn},
+year         = {2018},
+title        = {Thin vs. Thick vs. Zero Client: What's the Right Fit for Your Business?},
+organization = {Technology Solutions That Drive Business},
+url          = {https://biztechmagazine.com/article/2018/10/thin-vs-thick-vs-zero-client-whats-right-fit-your-business-perfcon},
+lastaccessed = {July 20, 2022}
+}
+
+
+
+% https://medium.com/createdd-notes/understanding-mvc-architecture-with-react-6cd38e91fefd
+@online{UI4,
+author       = {Deutsch, Daniel},
+year         = {2017},
+title        = {Understanding MVC Architecture with React},
+url          = {https://medium.com/createdd-notes/understanding-mvc-architecture-with-react-6cd38e91fefd},
+lastaccessed = {July 20, 2022},
+}
+
+
+
+% E. Law, V. Roto, M. Hassenzahl, A. Vermeeren, and J. Kort, "Understanding, scoping and defining user experience". Proceedings of the 27th International Conference on Human Factors in Computing Systems – CHI, 2009. 09.
+@inproceedings{UI4a,
+author       = {Law, Effie Lai-Chong and
+                Roto, Virpi and
+                Hassenzahl, Marc and
+                Vermeeren, Arnold P.O.S. and
+                Kort, Joke},
+title        = {Understanding, Scoping and Defining User Experience:
+                A Survey Approach},
+year         = {2009},
+publisher    = {Association for Computing Machinery},
+address      = {New York, NY, USA},
+url          = {https://doi.org/10.1145/1518701.1518813},
+booktitle    = {Proceedings of the SIGCHI Conference on Human Factors in
+                Computing Systems},
+pages        = {719–-728},
+series       = {CHI '09}
+}
+
+
+
+% ISO 9241-210:2019 Ergonomics of human-system interaction — Part 210: Human-centred design for interactive systems
+@techreport{UI5,
+type        = {Standard},
+key         = {ISO 9241-210:2019},
+year        = {2019},
+title       = {Ergonomics of human-system interaction — Part 210: Human-centred design for interactive systems},
+institution = {International Organization for Standardization}
+}
+
+
+
+% A. Carter, and C. Hundhausen, "How is User Interface Prototyping Really Done in Practice? A Survey of User Interface Designers". 2010 IEEE Symposium on Visual Languages and Human-Centric Computing.
+@InProceedings{UI11,
+author      = {Carter, Adam S. and
+               Hundhausen, Christopher D.},
+booktitle   = {2010 IEEE Symposium on Visual Languages and Human-Centric Computing},
+title       = {How is User Interface Prototyping Really Done in Practice?
+               A Survey of User Interface Designers},
+year        = {2010},
+pages       = {207--211},
+url         = {https://doi.org/10.1109/VLHCC.2010.36}
+}
+
+
+
+% E.Gerber, M. Carroll, "The psychological experience of prototyping". Design studies. 2012.
+@article{UI6,
+title       = {The psychological experience of prototyping},
+journal     = {Design Studies},
+volume      = {33},
+number      = {1},
+pages       = {64--84},
+year        = {2012},
+url         = {https://doi.org/10.1016/j.destud.2011.06.005},
+author      = {Elizabeth Gerber and Maureen Carroll}
+}
+
+
+
+% Medina, P., J. Luis, D. Chessa, Sophie and A. Front, 2007 "A Survey of Model Driven Engineering Tools for User Interface Design", computer science, Springer, Berlin, Heidelberg.
+@InProceedings{UI7,
+author      = {P{\'e}rez-Medina, Jorge-Luis and
+               Dupuy-Chessa, Sophie and
+               Front, Agn{\`e}s},
+editor      = {Winckler, Marco and
+               Johnson, Hilary and
+               Palanque, Philippe},
+title       = {A Survey of Model Driven Engineering Tools for
+               User Interface Design},
+booktitle   = {Task Models and Diagrams for User Interface Design},
+year        = {2007},
+publisher   = {Springer Berlin Heidelberg},
+address     = {Berlin, Heidelberg},
+pages       = {84--97},
+url         = {https://doi.org/10.1007/978-3-540-77222-4_8}
+}
+
+
+
+% https://www.figma.com/community/plugin/747985167520967365/Figma-to-HTML%2C-CSS%2C-React-%26-more!
+@online{UI8,
+author       = {Builder.io},
+year         = {2011},
+title        = {Figma to HTML, CSS, React \& more!},
+url          = {https://www.figma.com/community/plugin/747985167520967365/Figma-to-HTML\%2C-CSS\%2C-React-\%26-more!},
+lastaccessed = {July 20, 2022}
+}
+
+% https://www.interaction-design.org/literature/topics/design-guidelines
+@online{UI9,
+author       = {The Interaction Design Foundation},
+title        = {Design Guidelines},
+year         = { 2022 },
+url          = {https://www.interaction-design.org/literature/topics/design-guidelines},
+lastaccessed = {July 20, 2022}
+}
+
+
+
+% https://jetbrains.github.io/ui/
+@online{UI10,
+author       = {JetBrains s.r.o.},
+year         = {2000--2022},
+title        = {IntelliJ Platform UI Guidelines},
+url          = {https://jetbrains.github.io/ui/},
+lastaccessed = {July 20, 2022},
+}
+
+@inproceedings{aKanren,
+  title={$\alpha$ Kanren A Fresh Name in Nominal Logic Programming},
+  author={William E. Byrd and Daniel P. Friedman},
+  booktitle={Scheme and Functional Programming},
+  year={2007}
+}
+
+@article{WBirdSeven,
+author      = {Byrd, William E. and Ballantyne, Michael and Rosenblatt, Gregory and Might, Matthew},
+title       = {A Unified Approach to Solving Seven Programming Problems (Functional Pearl)},
+year        = {2017},
+publisher   = {Association for Computing Machinery},
+address     = {New York, NY, USA},
+journal     = {Proceedings of  ACM Program. Lang.},
+pages       = {8:1--8:26}
+}
+
+@ARTICLE{leanTAP,
+author      = {Bernhard Beckert and Joachim Posegga},
+title       = {leanTAP: Lean Tableau-based Deduction},
+journal     = {Journal of Automated Reasoning},
+year        = {1995},
+volume      = {15},
+pages       = {339--358}
+}
+
+@online{react,
+author       = {Meta Platforms, Inc},
+year         = {2022},
+title        = {React: A JavaScript library for building user interfaces},
+url          = {https://reactjs.org/},
+lastaccessed = {July 20, 2022},
+}
+
+@online{Jetpack,
+author       = {Android Developers},
+year         = {2022},
+title        = {Jetpack Compose},
+url          = {https://developer.android.com/jetpack/compose},
+lastaccessed = {July 20, 2022},
+}
+
+@online{SwiftUI,
+author       = {Apple Inc.},
+year         = {2022},
+title        = {SwiftUI},
+url          = {https://developer.apple.com/xcode/swiftui/},
+lastaccessed = {July 20, 2022},
+}
+
+@InProceedings{SemanticsModifiers1,
+author="Abramov, Sergei
+and Gl{\"u}ck, Robert",
+editor="Kapoor, Sanjiv
+and Prasad, Sanjiva",
+title="Combining Semantics with Non-standard Interpreter Hierarchies",
+booktitle="FST TCS 2000: Foundations of Software Technology and Theoretical Computer Science",
+year="2000",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="201--213",
+abstract="This paper reports on results concerning the combination of non-standard semantics via interpreters. We define what a semantics combination means and identify under which conditions a combination can be realized by computer programs (robustness, safely combinable). We develop the underlying mathematical theory and examine the meaning of several non-standard interpreter towers. Our results suggest a technique for the implementation of a certain class of programming language dialects by composing a hierarchy of non-standard interpreters.",
+isbn="978-3-540-44450-3"
+}
+
+@Inbook{RevURA,
+author="Abramov, Sergei
+and Gl{\"u}ck, Robert",
+editor="Mogensen, Torben {\AE}.
+and Schmidt, David A.
+and Sudborough, I. Hal",
+title="Principles of Inverse Computation and the Universal Resolving Algorithm",
+bookTitle="The Essence of Computation: Complexity, Analysis, Transformation",
+year="2002",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="269--295",
+abstract="We survey fundamental concepts in inverse programming and present the Universal Resolving Algorithm (URA), an algorithm for inverse computation in a first-order, functional programming language. We discuss the principles behind the algorithm, including a three-step approach based on the notion of a perfect process tree, and demonstrate our implementation with several examples. We explain the idea of a semantics modifier for inverse computation which allows us to perform inverse computation in other programming languages via interpreters.",
+isbn="978-3-540-36377-4",
+doi="10.1007/3-540-36377-7_13",
+url="https://doi.org/10.1007/3-540-36377-7_13"
+}
+
+@article{SemanticsModifiers,
+author = {ABRAMOV, SERGEI and GL\"{U}CK, ROBERT},
+title = {FROM STANDARD TO NON-STANDARD SEMANTICS BY SEMANTICS MODIFIERS},
+journal = {International Journal of Foundations of Computer Science},
+volume = {12},
+number = {02},
+pages = {171-211},
+year = {2001},
+doi = {10.1142/S0129054101000448},
+URL = {https://doi.org/10.1142/S0129054101000448},
+eprint = {https://doi.org/10.1142/S0129054101000448},
+abstract = { An approach for systematically modifying the semantics of programming languages by semantics modifiers is described. Semantics modifiers are a class of programs that allow the development of general and reusable "semantics components". Language independence is achieved through the interpretive approach: an interpreter serves as a mediator between the new language and the language for which the non-standard semantics was implemented. Inverse computation, equivalence transformation and neighborhood analysis are shown to be semantics modifiers. Experiments with these modifiers show the computational feasibility of this approach. Seven modifier projections are given which allow the efficient implementation of non-standard interpreters and non-standard compilers by program specialization or other powerful program transformation methods. }
+}
+
+@article{Cassowary2001,
+	author = {Badros, Greg J. and Borning, Alan and Stuckey, Peter J.},
+	title = {The Cassowary Linear Arithmetic Constraint Solving Algorithm},
+	year = {2001},
+	issue_date = {December 2001},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	volume = {8},
+	number = {4},
+	issn = {1073-0516},
+	url = {https://doi.org/10.1145/504704.504705},
+	doi = {10.1145/504704.504705},
+	abstract = {Linear equality and inequality constraints arise naturally in specifying many aspects of user interfaces, such as requiring that one window be to the left of another, requiring that a pane occupy the leftmost third of a window, or preferring that an object be contained within a rectangle if possible. Previous constraint solvers designed for user interface applications cannot handle simultaneous linear equations and inequalities efficiently. This is a major limitation, as such systems of constraints arise often in natural declarative specifications. We describe Cassowary---an incremental algorithm based on the dual simplex method, which can solve such systems of constraints efficiently. We have implemented the algorithm as part of a constraint-solving toolkit. We discuss the implementation of the toolkit, its application programming interface, and its performance.},
+	journal = {ACM Trans. Comput.-Hum. Interact.},
+	month = {dec},
+	pages = {267–306},
+	numpages = {40},
+	keywords = {constraint-solving toolkit, Cassowary, user interface, constraints}
+}
+@inproceedings{Wallingford2016,
+	author = {Borning, Alan},
+	title = {Wallingford: Toward a Constraint Reactive Programming Language},
+	year = {2016},
+	isbn = {9781450340335},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/2892664.2892667},
+	doi = {10.1145/2892664.2892667},
+	abstract = {Wallingford is an experimental constraint reactive programming language that supports objects with state, persistent constraints on those objects, and reactive constraints that enable the system to respond to events by declaring constraints that become active when an event occurs, or while a condition holds. It is implemented in Rosette, a solver-aided programming language and environment for constructing DSLs in turn implemented in Racket. This short paper is a snapshot of work-in-progress on the system.},
+	booktitle = {Companion Proceedings of the 15th International Conference on Modularity},
+	pages = {45–49},
+	numpages = {5},
+	keywords = {Object constraint languages, Rosette, reactive programming},
+	location = {M\'{a}laga, Spain},
+	series = {MODULARITY Companion 2016}
+}

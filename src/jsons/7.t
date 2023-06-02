@@ -1,7 +1,5 @@
+  $ export NOBENCH=1
   $ ./run_json.exe 7.json -n 6 -v
-  Class   with id=1 was created
-  Interface   with id=2 was created
-  Interface   with id=3 was created
   Add edge: java.lang.Object -> int
   Add edge: java.lang.Object -> ICollection
   Add edge: java.lang.Object -> list
@@ -15,9 +13,9 @@
   
   Running generated query
   	     Processing: _.? <-< ICollection (int ())
-    0.1ms   1)  ICollection<[int]>
-    0.6ms   2)  java.lang.Object
-    0.4ms   3)  null
-    2.5ms   4)  null
-    0.4ms   5)  null
-    1.8ms   6)  Array<java.lang.Object>
+    1)  ICollection<[int]>
+    2)  java.lang.Object
+    3)  null
+    4)  null
+    5)  null
+    6)  Array<java.lang.Object>

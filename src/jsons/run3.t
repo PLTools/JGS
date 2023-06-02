@@ -5,6 +5,6 @@
   
   Running generated query
   	     Processing: _.? <-< java.lang.Object ()
-    0.1ms   1)  null
-    0.1ms   2)  Array<java.lang.Object>
+    0.0ms   1)  java.lang.Object
+    0.2ms   2)  java.lang.Object
     0.1ms   3)  java.lang.Object

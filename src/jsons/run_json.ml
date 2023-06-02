@@ -60,13 +60,35 @@ module HO_PP = struct
 
   open Format
 
-  let rec jtyp ppf = function _ -> fprintf ppf "jtyp"
+  let rec jtyp ppf = function
+    | JGS.Var { id; index; upb; lwb } -> (
+        fprintf ppf "Var { id=%d; index=%d; upb=%a " id index jtyp upb;
+        match lwb with
+        | None -> fprintf ppf "}"
+        | Some n -> fprintf ppf "; lwb=%a }" jtyp n)
+    | JGS.Interface (id, []) -> fprintf ppf "interface %d" id
+    | JGS.Interface (id, ts) ->
+        fprintf ppf "(interface %d<%a>)" id (pp_print_list pp_arg) ts
+    | JGS.Class (id, []) -> fprintf ppf "class %d" id
+    | _ -> fprintf ppf "jtyp"
+
   and jtyp_list ppf ps = fprintf ppf "%a" (GT.fmt GT.list jtyp) ps
 
-  let cdecl ppf { JGS.params; super; supers } = fprintf ppf "cdecl"
+  and pp_arg ppf = function
+    | JGS.Type t -> fprintf ppf "%a" jtyp t
+    | JGS.Wildcard _ -> fprintf ppf "arg?"
+
+  let cdecl ppf { JGS.params; super; supers } =
+    (match params with
+    | [] -> ()
+    | ps -> fprintf ppf "<%a>" (pp_print_list jtyp) ps);
+    fprintf ppf " extends %a" jtyp super;
+    match supers with
+    | [] -> ()
+    | is -> fprintf ppf " implements %a" (pp_print_list jtyp) is
 
   let decl : _ -> JGS.decl -> unit =
-   fun ppf -> function C c -> fprintf ppf "C %a" cdecl c
+   fun ppf -> function C c -> fprintf ppf "class%a" cdecl c
 end
 
 let class_or_interface typ =

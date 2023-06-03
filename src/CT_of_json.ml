@@ -338,6 +338,10 @@ let populate_graph on_decl table =
 exception Id_not_found of int
 exception Name_not_found of class_id
 
+type var_info = { vi_id : int; vi_index : int }
+
+let var_info ~id vi_index = { vi_id = id; vi_index }
+
 let make_classtable table =
   let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
     make_sample_ct ()
@@ -348,7 +352,7 @@ let make_classtable table =
   let ifaces : (string, int) Hashtbl.t =
     Hashtbl.create (List.length table + 1)
   in
-  let params_hash : (string, int) Hashtbl.t =
+  let params_hash : (string, var_info) Hashtbl.t =
     Hashtbl.create (List.length table + 1)
   in
   let name_of_id_hash = Hashtbl.create 10000 in
@@ -389,20 +393,28 @@ let make_classtable table =
         (* log "Running on class %s..." cname; *)
         Hashtbl.clear params_hash;
         Stdlib.List.iteri
-          (fun i { pname; _ } -> Hashtbl.add params_hash pname i)
+          (fun i { pname; _ } ->
+            let id = CT.new_var () in
+            log "Creating new Var with name = %S, id = %d, index = %d" pname id
+              i;
+            Hashtbl.add params_hash pname (var_info ~id i))
           params;
         let cid =
           CT.make_class_fix
             ~params:(fun cur_id ->
+              log "make_class_fix %S. params" cname;
               cur_name := (cname, cur_id);
-              List.mapi on_param params)
+              List.map (fun _ -> CT.object_t) params
+              (* List.mapi on_param params *))
             (fun cur_id ->
+              log "make_class_fix. superclass";
               cur_name := (cname, cur_id);
               match super with
               | None -> CT.object_t
               | Some super ->
                   unwrap (on_typ super) Fun.id ~on_error:(fun () -> CT.object_t))
             (fun cur_id ->
+              log "make_class_fix. superinterfaces";
               cur_name := (cname, cur_id);
               Stdlib.List.filter_map on_typ supers)
         in
@@ -414,7 +426,11 @@ let make_classtable table =
           (* log "Running on interface %s..." iname; *)
           Hashtbl.clear params_hash;
           Stdlib.List.iteri
-            (fun i { pname; _ } -> Hashtbl.add params_hash pname i)
+            (fun i { pname; _ } ->
+              let id = CT.new_var () in
+              log "Creating new Var with name = %S, id = %d, index = %d" pname
+                id i;
+              Hashtbl.add params_hash pname (var_info ~id i))
             iparams;
           let iid =
             CT.make_interface_fix
@@ -432,9 +448,17 @@ let make_classtable table =
           Format.eprintf
             "The interface '%s' seems to be not declared. Skipping.\n%!" iname
   and on_param idx { pname; p_upper } : JGS.jtype =
-    let upper_bounds = p_upper |> List.map on_typ in
+    let upper_bounds =
+      p_upper |> List.map on_typ
+      |> List.map (function
+           | None -> failwith "Can't interpet a parameter"
+           | Some p -> p)
+    in
     (* TODO: read  again if params could have upper bound *)
+    (* CT.make_tvar idx (List.hd upper_bounds) *)
+    (* upper_bounds *)
     CT.object_t
+    (* This works only if we have in the upper bound an Object *)
   and on_arg : _ -> JGS.jtype JGS.targ = function
     | Wildcard None -> JGS.Wildcard None
     | Wildcard (Some (kind, typ)) ->
@@ -452,15 +476,19 @@ let make_classtable table =
         return @@ JGS.Class (snd !cur_name, List.map on_arg args)
     | Class (name, args) -> (
         match Hashtbl.find params_hash name with
-        | param_id ->
+        | { vi_id; vi_index } ->
             let () =
               if args <> [] then
                 failwith "Type variables with arguments do not happen in Java"
             in
-            return @@ CT.make_tvar param_id CT.object_t
+            log "on_typ: Got a parameter with index = %d and id = %d" vi_index
+              vi_id;
+            return @@ CT.make_tvar vi_index CT.object_t
         | exception Not_found -> (
             match Hashtbl.find classes name with
-            | id -> return @@ JGS.Class (id, List.map on_arg args)
+            | id ->
+                log "Building a class id=%d, name = %s" id name;
+                return @@ JGS.Class (id, List.map on_arg args)
             | exception Not_found ->
                 Format.eprintf
                   "   The name %S is not class or parameter. Substituting \
@@ -470,15 +498,19 @@ let make_classtable table =
                 Some CT.object_t))
     | Interface (name, args) -> (
         match Hashtbl.find params_hash name with
-        | param_id ->
+        | { vi_id; vi_index } ->
             let () =
               if args <> [] then
                 failwith "Type variables with arguments do not happen in Java"
             in
-            return @@ CT.make_tvar param_id CT.object_t
+            log "on_typ: Got a parameter with index = %d and id = %d" vi_index
+              vi_id;
+            return @@ CT.make_tvar vi_index CT.object_t
         | exception Not_found -> (
             match Hashtbl.find ifaces name with
-            | id -> return @@ JGS.Interface (id, List.map on_arg args)
+            | id ->
+                log "Building an interface %d" id;
+                return @@ JGS.Interface (id, List.map on_arg args)
             | exception Not_found ->
                 Format.eprintf
                   "  The name %S is not interface or parameter. Substituting \
@@ -495,13 +527,14 @@ let make_classtable table =
               "Possibly undeclared param '%s' in the class '%s'\n%!" id
               (fst !cur_name);
             return CT.object_t
-        | class_id ->
+        | { vi_id; vi_index } ->
+            assert (index = vi_index);
             return
             @@ JGS.(
                  Var
                    {
-                     id = class_id;
-                     index;
+                     id = vi_id;
+                     index = vi_index;
                      upb = unwrap (on_typ upb) Fun.id (* Fix HERE *);
                      lwb =
                        Option.bind lwb (fun x -> unwrap (on_typ x) Option.some);

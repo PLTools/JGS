@@ -37,7 +37,7 @@
         "cname": "list",
         "params": [
           {
-            "pname": "A",
+            "pname": "B",
             "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
           }
         ],
@@ -50,7 +50,7 @@
               [
                 "Var",
                 {
-                  "id": "A",
+                  "id": "B",
                   "index": 0,
                   "upb": [ "Class", "java.lang.Object", [] ],
                   "lwb": null

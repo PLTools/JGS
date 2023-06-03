@@ -146,14 +146,14 @@ let () =
         [];
       make_c "list"
         ~params:
-          [ { pname = "A"; p_upper = [ Class ("java.lang.Object", []) ] } ]
+          [ { pname = "B"; p_upper = [ Class ("java.lang.Object", []) ] } ]
         [
           Interface
             ( "ICollection",
               [
                 Var
                   {
-                    id = "A";
+                    id = "B";
                     index = 0;
                     upb = Class ("java.lang.Object", []);
                     lwb = None;

@@ -87,8 +87,18 @@ module HO_PP = struct
     | [] -> ()
     | is -> fprintf ppf " implements %a" (pp_print_list jtyp) is
 
+  let idecl ppf { JGS.params; supers } =
+    (match params with
+    | [] -> ()
+    | ps -> fprintf ppf "<%a>" (pp_print_list jtyp) ps);
+    match supers with
+    | [] -> ()
+    | is -> fprintf ppf " implements %a" (pp_print_list jtyp) is
+
   let decl : _ -> JGS.decl -> unit =
-   fun ppf -> function C c -> fprintf ppf "class%a" cdecl c
+   fun ppf -> function
+    | C c -> fprintf ppf "class%a" cdecl c
+    | I c -> fprintf ppf "class%a" idecl c
 end
 
 let class_or_interface typ =
@@ -186,7 +196,8 @@ let () =
             (( -<- ) typ (jtype_inj CT.object_t) !!true))
   in
 
-  let () = Format.printf "7: %a\n%!" HO_PP.decl (CT.decl_by_id 7) in
+  let () = Format.printf "%a\n%!" HO_PP.decl (CT.decl_by_id 6) in
+  let () = Format.printf "%a\n%!" HO_PP.decl (CT.decl_by_id 9) in
   run_jtype pp (fun typ ->
       let open OCanren in
       fresh ()

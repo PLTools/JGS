@@ -76,14 +76,14 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
   let add_class_fix (c : int -> cdecl) =
     let id = new_id () in
     let c = c id in
-    let d = C { c with params = make_params c.params } in
+    let d = C { c with params = c.params } in
     m := M.add id d !m;
     id
 
   let add_interface_fix (i : int -> idecl) =
     let id = new_id () in
     let iface = i id in
-    let d = I { iface with params = make_params iface.params } in
+    let d = I { iface with params = iface.params } in
     m := M.add id d !m;
     id
 
@@ -101,10 +101,13 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
   let make_class_fix ~params super supers =
     add_class_fix (fun id ->
-        { params = params id; super = super id; supers = supers id })
+        let params = params id in
+        { params; super = super id; supers = supers id })
 
   let make_interface_fix params supers =
-    add_interface_fix (fun id -> { params = params id; supers = supers id })
+    add_interface_fix (fun id ->
+        let params = params id in
+        { params; supers = supers id })
 
   let top = Class (0, [])
 

@@ -138,7 +138,7 @@ let () =
       ]
     [
       make_c "java.lang.Object" ~params:[] [];
-      make_c "int" ~params:[] [ Class ("java.lang.Object", []) ];
+      make_c "int" ~params:[] ~sup:(Class ("java.lang.Object", [])) [];
       (* make_c "string" ~params:[] [ Class ("java.lang.Object", []) ]; *)
       make_i "ICollection"
         ~params:

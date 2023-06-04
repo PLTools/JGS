@@ -193,6 +193,16 @@ let _ =
 
   let int_collection = Interface (interface_icollection, [ Type int ]) in
 
+  let () =
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl
+      (SampleCT.decl_by_id class_int)
+  in
+  let () =
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 5)
+  in
+  let () =
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 7)
+  in
   run_jtype ~n:1 ~msg:"? <-< ICollection<int>"
     ( remove_intersercts_and_vars @@ fun q ->
       fresh super

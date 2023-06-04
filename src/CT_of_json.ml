@@ -392,29 +392,28 @@ let make_classtable table =
     | C { cname; params; super; supers } ->
         (* log "Running on class %s..." cname; *)
         Hashtbl.clear params_hash;
-        Stdlib.List.iteri
-          (fun i { pname; _ } ->
-            let id = CT.new_var () in
-            log "Creating new Var with name = %S, id = %d, index = %d" pname id
-              i;
-            Hashtbl.add params_hash pname (var_info ~id i))
-          params;
+        (* Stdlib.List.iteri
+           (fun i { pname; _ } ->
+             let id = CT.new_var () in
+             log "Creating new Var with name = %S, id = %d, index = %d" pname id
+               i;
+             Hashtbl.add params_hash pname (var_info ~id i))
+           params; *)
         let cid =
           CT.make_class_fix
             ~params:(fun cur_id ->
-              log "make_class_fix %S. params" cname;
+              log "  make_class_fix %S. params" cname;
               cur_name := (cname, cur_id);
-              List.map (fun _ -> CT.object_t) params
-              (* List.mapi on_param params *))
+              List.mapi on_param params)
             (fun cur_id ->
-              log "make_class_fix. superclass";
+              log "  make_class_fix %S. superclass" cname;
               cur_name := (cname, cur_id);
               match super with
               | None -> CT.object_t
               | Some super ->
                   unwrap (on_typ super) Fun.id ~on_error:(fun () -> CT.object_t))
             (fun cur_id ->
-              log "make_class_fix. superinterfaces";
+              log "  make_class_fix %S. superinterfaces" cname;
               cur_name := (cname, cur_id);
               Stdlib.List.filter_map on_typ supers)
         in
@@ -425,13 +424,13 @@ let make_classtable table =
         if true then (
           (* log "Running on interface %s..." iname; *)
           Hashtbl.clear params_hash;
-          Stdlib.List.iteri
-            (fun i { pname; _ } ->
-              let id = CT.new_var () in
-              log "Creating new Var with name = %S, id = %d, index = %d" pname
-                id i;
-              Hashtbl.add params_hash pname (var_info ~id i))
-            iparams;
+          (* Stdlib.List.iteri
+             (fun i { pname; _ } ->
+               let id = CT.new_var () in
+               log "Creating new Var with name = %S, id = %d, index = %d" pname
+                 id i;
+               Hashtbl.add params_hash pname (var_info ~id i))
+             iparams; *)
           let iid =
             CT.make_interface_fix
               (fun cur_id ->
@@ -454,11 +453,19 @@ let make_classtable table =
            | None -> failwith "Can't interpet a parameter"
            | Some p -> p)
     in
-    (* TODO: read  again if params could have upper bound *)
-    (* CT.make_tvar idx (List.hd upper_bounds) *)
-    (* upper_bounds *)
-    CT.object_t
-    (* This works only if we have in the upper bound an Object *)
+    let new_id = CT.new_var () in
+    Hashtbl.add params_hash pname (var_info ~id:new_id idx);
+    let upb =
+      match upper_bounds with
+      | [] -> CT.object_t
+      | [ x ] -> x
+      | xs -> JGS.Intersect xs
+    in
+    JGS.Var { id = new_id; index = idx; lwb = None; upb }
+  (* CT.make_tvar idx (List.hd upper_bounds) *)
+  (* upper_bounds *)
+  (* CT.object_t *)
+  (* This works only if we have in the upper bound an Object *)
   and on_arg : _ -> JGS.jtype JGS.targ = function
     | Wildcard None -> JGS.Wildcard None
     | Wildcard (Some (kind, typ)) ->

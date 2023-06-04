@@ -55,52 +55,6 @@ let run_jtype pp ?(n = test_args.answers_count) query =
   in
   loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
 
-module HO_PP = struct
-  [@@@ocaml.warnerror "-8-39"]
-
-  open Format
-
-  let rec jtyp ppf = function
-    | JGS.Var { id; index; upb; lwb } -> (
-        fprintf ppf "Var { id=%d; index=%d; upb=%a " id index jtyp upb;
-        match lwb with
-        | None -> fprintf ppf "}"
-        | Some n -> fprintf ppf "; lwb=%a }" jtyp n)
-    | JGS.Interface (id, []) -> fprintf ppf "interface %d" id
-    | JGS.Interface (id, ts) ->
-        fprintf ppf "(interface %d<%a>)" id (pp_print_list pp_arg) ts
-    | JGS.Class (id, []) -> fprintf ppf "class %d" id
-    | _ -> fprintf ppf "jtyp"
-
-  and jtyp_list ppf ps = fprintf ppf "%a" (GT.fmt GT.list jtyp) ps
-
-  and pp_arg ppf = function
-    | JGS.Type t -> fprintf ppf "%a" jtyp t
-    | JGS.Wildcard _ -> fprintf ppf "arg?"
-
-  let cdecl ppf { JGS.params; super; supers } =
-    (match params with
-    | [] -> ()
-    | ps -> fprintf ppf "<%a>" (pp_print_list jtyp) ps);
-    fprintf ppf " extends %a" jtyp super;
-    match supers with
-    | [] -> ()
-    | is -> fprintf ppf " implements %a" (pp_print_list jtyp) is
-
-  let idecl ppf { JGS.params; supers } =
-    (match params with
-    | [] -> ()
-    | ps -> fprintf ppf "<%a>" (pp_print_list jtyp) ps);
-    match supers with
-    | [] -> ()
-    | is -> fprintf ppf " implements %a" (pp_print_list jtyp) is
-
-  let decl : _ -> JGS.decl -> unit =
-   fun ppf -> function
-    | C c -> fprintf ppf "class%a" cdecl c
-    | I c -> fprintf ppf "class%a" idecl c
-end
-
 let class_or_interface typ =
   let open OCanren in
   let open JGS_Helpers in
@@ -196,8 +150,9 @@ let () =
             (( -<- ) typ (jtype_inj CT.object_t) !!true))
   in
 
-  let () = Format.printf "%a\n%!" HO_PP.decl (CT.decl_by_id 6) in
-  let () = Format.printf "%a\n%!" HO_PP.decl (CT.decl_by_id 9) in
+  let () = Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 4) in
+  let () = Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 5) in
+  let () = Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 7) in
   run_jtype pp (fun typ ->
       let open OCanren in
       fresh ()

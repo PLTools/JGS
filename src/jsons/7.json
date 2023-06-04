@@ -14,8 +14,8 @@
       {
         "cname": "int",
         "params": [],
-        "super": null,
-        "supers": [ [ "Class", "java.lang.Object", [] ] ]
+        "super": [ "Class", "java.lang.Object", [] ],
+        "supers": []
       }
     ],
     [

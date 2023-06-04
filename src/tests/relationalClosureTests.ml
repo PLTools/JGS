@@ -60,17 +60,17 @@ let _ =
   (****************************************************************************)
 
   (* Many answers with intersects and variables *)
-  let __ _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
+  let _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
 
   (* Many repeats of B, no mentions of C *)
-  let __ _ =
+  let _ =
     run_jtype ~msg:"? <-< A (without intersects vars and null)" ~n:10
       ( remove_intersercts_and_vars @@ fun q ->
         fresh () (q =/= !!HO.Null) (q <-< jtype_inj a) )
   in
 
   (* But we can get C if we explicitly ask *)
-  let __ _ =
+  let _ =
     run_jtype ~msg:"C <-< A" ~n:10
       ( remove_intersercts_and_vars @@ fun q ->
         fresh () (q === jtype_inj c) (q <-< jtype_inj a) )
@@ -178,29 +178,49 @@ let _ =
   let int = Class (class_int, []) in
   Printf.printf "Class Int: %d\n" class_int;
 
-  let type_var =
-    Var { id = 42; index = 0; lwb = None; upb = SampleCT.object_t }
+  let interface_icollection =
+    SampleCT.make_interface_fix
+      (fun _ ->
+        let type_var =
+          Var
+            {
+              id = SampleCT.new_var ();
+              index = 0;
+              lwb = None;
+              upb = SampleCT.object_t;
+            }
+        in
+        [ type_var ])
+      (fun _ -> [])
   in
-  let interface_icollection = SampleCT.make_interface [ type_var ] [] in
-  let icollection = Interface (interface_icollection, [ Type type_var ]) in
+  (* let icollection = Interface (interface_icollection, [ Type type_var ]) in *)
   Printf.printf "Interface ICollection: %d\n" interface_icollection;
 
+  let fuck = ref 0 in
   let class_list =
-    SampleCT.make_class [ type_var ] SampleCT.object_t [ icollection ]
+    SampleCT.make_class_fix
+      ~params:(fun _ ->
+        fuck := SampleCT.new_var ();
+        let type_var_B =
+          Var { id = !fuck; index = 0; lwb = None; upb = SampleCT.object_t }
+        in
+        [ type_var_B ])
+      (fun _ -> SampleCT.object_t)
+      (fun _ ->
+        let type_var_B =
+          Var { id = !fuck; index = 0; lwb = None; upb = SampleCT.object_t }
+        in
+        [ Interface (interface_icollection, [ Type type_var_B ]) ])
   in
 
   Printf.printf "Class List: %d\n" class_list;
 
   let int_collection = Interface (interface_icollection, [ Type int ]) in
 
-  let () =
+  let __ () =
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl
-      (SampleCT.decl_by_id class_int)
-  in
-  let () =
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 5)
-  in
-  let () =
+      (SampleCT.decl_by_id class_int);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 5);
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 7)
   in
   run_jtype ~n:1 ~msg:"? <-< ICollection<int>"

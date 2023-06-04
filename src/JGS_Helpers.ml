@@ -209,6 +209,6 @@ module JGS_PP = struct
 
   let decl : _ -> JGS.decl -> unit =
    fun ppf -> function
-    | C c -> fprintf ppf "class%a" cdecl c
-    | I c -> fprintf ppf "class%a" idecl c
+    | C c -> fprintf ppf "class %a" cdecl c
+    | I c -> fprintf ppf "interface %a" idecl c
 end

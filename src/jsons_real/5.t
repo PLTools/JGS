@@ -1,5 +1,5 @@
   $ export NOBENCH=1
-  $ ../jsons/run_json.exe -n 1 5.json
+  $ ../jsons/run_json.exe -n 0 5.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -63,6 +63,7 @@
     The type "kotlin.reflect.jvm.internal.impl.renderer.DescriptorRendererOptionsImpl$property$" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.internal.ExceptionsConstructorKt$createConstructor$$inlined" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__MigrationKt$delayEach" is not found (Bad JSON?). Ignored.
+  Possibly undeclared param 'T' in the class 'net.bytebuddy.description.ByteCodeElement$Token'
     The type "kotlinx.metadata.impl.WritersKt$writeType$1$visitExtensions" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.serialization.deserialization.TypeDeserializer$typeConstructor$notFoundClass$classNestingLevel" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.internal.ExceptionsConstructorKt$createSafeConstructor$$inlined" is not found (Bad JSON?). Ignored.
@@ -319,6 +320,7 @@
     The type "kotlin.reflect.jvm.internal.KClassImpl$Data$qualifiedName" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.types.typeUtil.TypeUtilsKt$shouldBeUpdated" is not found (Bad JSON?). Ignored.
     The type "kotlin.coroutines.CombinedContext$toString" is not found (Bad JSON?). Ignored.
+  Possibly undeclared param 'T' in the class 'net.bytebuddy.agent.builder.AgentBuilder$Matchable'
     The type "kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$count" is not found (Bad JSON?). Ignored.
     The type "org.mockito.internal.creation.bytebuddy.MockMethodAdvice" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KClassImpl$getLocalProperty" is not found (Bad JSON?). Ignored.
@@ -690,6 +692,7 @@
     The type "kotlinx.coroutines.flow.FlowKt__TransformKt$filter$$inlined$unsafeTransform" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.utils.FunctionsKt$DO_NOTHING" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__MigrationKt$onErrorReturn" is not found (Bad JSON?). Ignored.
+  Possibly undeclared param 'T' in the class 'org.postgresql.replication.fluent.ChainedCommonStreamBuilder'
     The type "kotlinx.coroutines.JobSupport$addLastAtomic$$inlined" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__CollectKt$launchIn" is not found (Bad JSON?). Ignored.
     The type "kotlin.text.MatcherMatchResult$groups$1$iterator" is not found (Bad JSON?). Ignored.
@@ -898,6 +901,7 @@
     The type "kotlin.reflect.jvm.internal.impl.types.typeUtil.TypeUtilsKt$containsTypeAliasParameters" is not found (Bad JSON?). Ignored.
     The type "com.sun.tools.classfile.Code_attribute" is not found (Bad JSON?). Ignored.
     The type "kotlin.streams.jdk8.StreamsKt$asSequence" is not found (Bad JSON?). Ignored.
+  Possibly undeclared param 'T' in the class 'org.postgresql.replication.fluent.ChainedCommonCreateSlotBuilder'
     The type "kotlinx.coroutines.channels.TickerChannelsKt$fixedDelayTicker" is not found (Bad JSON?). Ignored.
     The type "T3" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__TransformKt$mapNotNull$$inlined$unsafeTransform" is not found (Bad JSON?). Ignored.
@@ -1279,16 +1283,26 @@
     The type "kotlinx.coroutines.flow.FlowKt__TransformKt$runningReduce$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KClassImpl$Data$objectInstance" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__ZipKt$combineUnsafe$" is not found (Bad JSON?). Ignored.
+  Possibly undeclared param 'C' in the class 'org.jooq.Context'
+  Possibly undeclared param 'S' in the class 'net.bytebuddy.description.ByteCodeElement$TypeDependant'
      The name "net.bytebuddy.description.ByteCodeElement$Token" is not class or parameter. Substituting object. (cur_name = net.bytebuddy.description.ByteCodeElement$TypeDependant)
      The name "org.mockito.junit.MockitoJUnitRunner" is not class or parameter. Substituting object. (cur_name = org.mockito.junit.MockitoJUnitRunner$StrictStubs)
      The name "org.mockito.junit.MockitoJUnitRunner" is not class or parameter. Substituting object. (cur_name = org.mockito.junit.MockitoJUnitRunner$Strict)
      The name "org.mockito.junit.MockitoJUnitRunner" is not class or parameter. Substituting object. (cur_name = org.mockito.junit.MockitoJUnitRunner$Silent)
+  Possibly undeclared param 'F' in the class 'java.lang.invoke.TypeDescriptor$OfField'
      The name "org.postgresql.replication.fluent.ChainedCommonStreamBuilder" is not class or parameter. Substituting object. (cur_name = org.postgresql.replication.fluent.AbstractStreamBuilder)
     The name "org.mockito.junit.VerificationCollector" is not interface or parameter. Substituting object  (cur_name = org.mockito.internal.junit.VerificationCollectorImpl)
     The name "org.mockito.junit.MockitoRule" is not interface or parameter. Substituting object  (cur_name = org.mockito.internal.junit.JUnitRule)
      The name "kotlinx.metadata.internal.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.metadata.serialization.TableElementWrapper)
   Intersections are not supported. Substituting Object
+  Possibly undeclared param 'N' in the class 'kotlinx.coroutines.internal.ConcurrentLinkedListNode'
+  Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.types.TypeAttribute'
+  Possibly undeclared param 'K' in the class 'jdk.vm.ci.meta.ValueKind'
+  Possibly undeclared param 'CLV' in the class 'jdk.internal.loader.AbstractClassLoaderValue'
+  Possibly undeclared param 'V' in the class 'jdk.internal.loader.AbstractClassLoaderValue'
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$Node'
   Intersections are not supported. Substituting Object
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.MapMakerInternalMap$InternalEntry'
      The name "com.google.common.collect.AbstractMapBasedMultiset" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.LinkedHashMultiset)
      The name "com.google.common.collect.AbstractMapBasedMultiset" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.HashMultiset)
      The name "org.postgresql.replication.fluent.ChainedCommonCreateSlotBuilder" is not class or parameter. Substituting object. (cur_name = org.postgresql.replication.fluent.AbstractCreateSlotBuilder)
@@ -1296,10 +1310,13 @@
     The name "org.mockito.internal.runners.InternalRunner" is not interface or parameter. Substituting object  (cur_name = org.mockito.internal.runners.DefaultInternalRunner)
      The name "jdk.vm.ci.code.ReferenceMap" is not class or parameter. Substituting object. (cur_name = jdk.vm.ci.hotspot.HotSpotReferenceMap)
      The name "com.sun.tools.javac.jvm.Profile" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.jvm.Profile$1)
+  Possibly undeclared param 'S' in the class 'java.util.stream.BaseStream'
     The name "org.mockito.junit.MockitoTestRule" is not interface or parameter. Substituting object  (cur_name = org.mockito.internal.junit.JUnitTestRule)
     The name "jdk.javadoc.internal.doclets.toolkit.DocletElement" is not interface or parameter. Substituting object  (cur_name = jdk.javadoc.internal.doclets.toolkit.OverviewElement)
     The name "jdk.javadoc.internal.doclets.toolkit.DocletElement" is not interface or parameter. Substituting object  (cur_name = jdk.javadoc.internal.doclets.toolkit.DocFileElement)
      The name "java.lang.invoke.TypeDescriptor$OfField" is not class or parameter. Substituting object. (cur_name = java.lang.invoke.TypeDescriptor$OfMethod)
+  Possibly undeclared param 'M' in the class 'java.lang.invoke.TypeDescriptor$OfMethod'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'A' in the class 'org.postgresql.jdbc.ArrayEncoding$RecursiveArrayEncoder'
   Possibly undeclared param 'T' in the class 'org.mockito.stubbing.Stubbing'
   Possibly undeclared param 'T' in the class 'org.mockito.internal.stubbing.answers.AnswerFunctionalInterfaces$9'
@@ -1315,8 +1332,13 @@
   Possibly undeclared param 'T' in the class 'org.junit.jupiter.api.AssertionsKt$sam$org_junit_jupiter_api_function_ThrowingSupplier$0'
   Possibly undeclared param 'T' in the class 'org.jooq.impl.Internal$1'
      The name "org.jooq.Context" is not class or parameter. Substituting object. (cur_name = org.jooq.impl.AbstractContext)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'org.jooq.Binding$1'
   Possibly undeclared param 'U' in the class 'org.jooq.Binding$1'
+  Possibly undeclared param 'S' in the class 'kotlinx.coroutines.internal.Segment'
   Possibly undeclared param 'T' in the class 'kotlinx.coroutines.flow.FlowKt__ReduceKt$singleOrNull$$inlined$collectWhile$1'
   Possibly undeclared param 'T' in the class 'kotlinx.coroutines.flow.FlowKt__ReduceKt$firstOrNull$$inlined$collectWhile$2'
   Possibly undeclared param 'T' in the class 'kotlinx.coroutines.flow.FlowKt__ReduceKt$firstOrNull$$inlined$collectWhile$1'
@@ -1369,12 +1391,41 @@
   Possibly undeclared param 'T' in the class 'kotlinx.coroutines.flow.EmptyFlow'
   Possibly undeclared param 'E' in the class 'kotlinx.coroutines.channels.ReceiveChannel$onReceiveOrNull$1'
   Possibly undeclared param 'T' in the class 'kotlin.streams.jdk8.StreamsKt$asSequence$$inlined$Sequence$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'kotlin.sequences.SequencesKt__SequenceBuilderKt$sequence$$inlined$Sequence$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
      The name "kotlin.reflect.jvm.internal.impl.load.kotlin.AbstractBinaryClassAnnotationLoader$AnnotationsContainer" is not class or parameter. Substituting object. (cur_name = kotlin.reflect.jvm.internal.impl.load.kotlin.AbstractBinaryClassAnnotationLoader)
   Possibly undeclared param 'N' in the class 'kotlin.reflect.full.KClasses$sam$org_jetbrains_kotlin_utils_DFS_Neighbors$0'
   Possibly undeclared param 'R' in the class 'kotlin.jvm.internal.CallableReference'
   Possibly undeclared param 'T' in the class 'kotlin.coroutines.ContinuationKt$Continuation$1'
   Possibly undeclared param 'T' in the class 'kotlinx.coroutines.flow.FlowKt__TransformKt$withIndex$$inlined$unsafeFlow$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 9
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 8
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 7
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 6
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 5
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 4
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 22
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 21
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 20
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 19
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 18
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 17
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 16
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 15
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 14
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 13
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 12
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 11
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 10
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'K' in the class 'jdk.vm.ci.code.ValueKindFactory'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'V' in the class 'jdk.internal.loader.AbstractClassLoaderValue$Sub'
      The name "javax.tools.Diagnostic" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.api.DiagnosticFormatter)
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$AbstractConcNode)
@@ -1382,24 +1433,40 @@
   Possibly undeclared param 'T' in the class 'org.junit.jupiter.api.AssertionsKt$sam$java_util_function_Supplier$0'
   Possibly undeclared param 'T' in the class 'org.junit.jupiter.api.AssertionsKt$sam$i$java_util_function_Supplier$0'
   Possibly undeclared param 'T' in the class 'org.jooq.impl.Tools$35'
+  Possibly undeclared param 'CLV' in the class 'jdk.internal.loader.AbstractClassLoaderValue$Memoizer'
+  Possibly undeclared param 'V' in the class 'jdk.internal.loader.AbstractClassLoaderValue$Memoizer'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.stream.Collectors$1OptionalBox'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.WhileOps$UnorderedWhileSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.Streams$ConcatSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.Streams$AbstractStreamBuilderImpl)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$UnorderedSliceSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$SliceSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$DelegatingSpliterator)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator)
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.Spliterators$EmptySpliterator)
+  Possibly undeclared param 'T_SPLITR' in the class 'java.util.Spliterator$OfPrimitive'
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.CollectSpliterators$FlatMapSpliterator$Factory)
   Possibly undeclared param 'K' in the class 'kotlin.collections.EmptyMap'
   Possibly undeclared param 'V' in the class 'kotlin.collections.EmptyMap'
   Possibly undeclared param 'E' in the class 'sun.jvm.hotspot.utilities.ConstIterator'
   Possibly undeclared param 'E' in the class 'sun.jvm.hotspot.runtime.ObjectSynchronizer$ObjectMonitorIterator'
   Possibly undeclared param 'T' in the class 'org.jooq.impl.Tools$27'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
   Possibly undeclared param 'T' in the class 'java.util.Spliterators$1Adapter'
   Possibly undeclared param 'T' in the class 'java.util.Spliterators$1Adapter'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'com.google.common.collect.AbstractMapBasedMultiset$MapBasedMultisetIterator'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.AbstractMapBasedMultiset$1'
   Possibly undeclared param 'E' in the class 'java.util.Enumeration$1'
@@ -1422,19 +1489,28 @@
   Possibly undeclared param 'T' in the class 'javax.activation.SecuritySupport$1'
   Possibly undeclared param 'T' in the class 'java.net.NetworkInterface$1'
   Possibly undeclared param 'T' in the class 'org.jooq.impl.Tools$26'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "jdk.vm.ci.meta.Assumptions$Assumption" is not class or parameter. Substituting object. (cur_name = jdk.vm.ci.meta.Assumptions)
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = org.mockito.internal.matchers.CompareTo)
+  Possibly undeclared param 'T' in the class 'kotlinx.metadata.internal.protobuf.FieldSet$FieldDescriptorLite'
+  Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.FieldSet$FieldDescriptorLite'
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = kotlin.ranges.OpenEndRange)
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = kotlin.ranges.ClosedRange)
+  Possibly undeclared param 'E' in the class 'java.lang.Enum'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.RangeSet'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.RangeMap'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.RangeGwtSerializationDependencies'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.DiscreteDomain'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'com.sun.tools.javac.util.Iterators$2'
   Possibly undeclared param 'E' in the class 'com.sun.tools.javac.util.Iterators$1'
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$DottableNode'
      The name "com.sun.tools.javac.util.GraphUtils$Node" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.GraphUtils$NodeVisitor)
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$AbstractNode'
+  Possibly undeclared param 'T' in the class 'com.sun.tools.javac.tree.DCTree$DCEndPosTree'
   Possibly undeclared param 'T' in the class 'com.sun.media.sound.JSSecurityManager$1'
   Possibly undeclared param 'M' in the class 'com.sun.jmx.mbeanserver.PerInterface$InitMaps'
   Possibly undeclared param 'M' in the class 'com.sun.jmx.mbeanserver.MBeanIntrospector$MBeanInfoMaker'
@@ -1474,6 +1550,8 @@
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$1'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$1'
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.Streams$MapWithIndexSpliterator)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.Streams$MapWithIndexSpliterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'com.google.common.collect.AbstractMapBasedMultiset$2'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$9'
   Possibly undeclared param 'V1' in the class 'com.google.common.collect.Maps$9'
@@ -1485,10 +1563,12 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$2'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$11'
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.CollectSpliterators$FlatMapSpliterator)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'com.google.common.collect.CollectSpliterators$1WithCharacteristics'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.CollectSpliterators$1Splitr'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.CollectSpliterators$1Splitr'
   Possibly undeclared param 'OutElementT' in the class 'com.google.common.collect.CollectSpliterators$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'K' in the class 'com.google.common.cache.CacheLoader$1'
   Possibly undeclared param 'V' in the class 'com.google.common.cache.CacheLoader$1'
   Possibly undeclared param 'T' in the class 'com.google.common.base.Optional$1'
@@ -1498,10 +1578,18 @@
      The name "net.bytebuddy.description.type.RecordComponentDescription$Token" is not class or parameter. Substituting object. (cur_name = net.bytebuddy.description.type.RecordComponentDescription)
   Possibly undeclared param 'T' in the class 'java.beans.EventHandler$2'
      The name "java.util.stream.BaseStream" is not class or parameter. Substituting object. (cur_name = java.util.stream.AbstractPipeline)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'M' in the class 'kotlin.reflect.jvm.internal.calls.ThrowingCaller'
   Possibly undeclared param 'M' in the class 'kotlin.reflect.jvm.internal.calls.AnnotationConstructorCaller'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.common.processor.core.NoopProcessor'
   Possibly undeclared param 'T' in the class 'com.google.gson.internal.bind.TypeAdapters$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNulls$ThrowsSmartNullPointer'
     The name "org.mockito.internal.stubbing.defaultanswers.RetrieveGenericsForDefaultAnswers$AnswerCallback" is not interface or parameter. Substituting object  (cur_name = org.mockito.internal.stubbing.defaultanswers.ReturnsSmartNulls$1)
     The name "org.mockito.internal.stubbing.defaultanswers.RetrieveGenericsForDefaultAnswers$AnswerCallback" is not interface or parameter. Substituting object  (cur_name = org.mockito.internal.stubbing.defaultanswers.ReturnsMocks$1)
@@ -1519,6 +1607,11 @@
   Possibly undeclared param 'T' in the class 'org.jooq.impl.DefaultBindingGetResultSetContext$1'
   Possibly undeclared param 'T' in the class 'org.jooq.impl.DefaultBinding$1'
   Possibly undeclared param 'U' in the class 'org.jooq.impl.DefaultBinding$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'S' in the class 'kotlinx.coroutines.internal.SegmentOrClosed'
   Possibly undeclared param 'E' in the class 'kotlinx.coroutines.channels.AbstractSendChannel$onSend$1'
   Possibly undeclared param 'E' in the class 'kotlinx.coroutines.channels.AbstractSendChannel$onSend$1'
   Possibly undeclared param 'R' in the class 'kotlin.sequences.TransformingSequence$iterator$1'
@@ -1532,11 +1625,16 @@
   Possibly undeclared param 'T' in the class 'kotlin.sequences.EmptySequence'
   Possibly undeclared param 'T' in the class 'kotlin.sequences.EmptySequence'
      The name "java.lang.Iterable" is not class or parameter. Substituting object. (cur_name = kotlin.reflect.jvm.internal.impl.utils.DFS$CollectingNodeHandler)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'V' in the class 'kotlin.jvm.internal.PropertyReference'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'kotlin.sequences.IndexingSequence$iterator$1'
   Possibly undeclared param 'R' in the class 'kotlin.jvm.internal.FunctionReference'
   Possibly undeclared param 'R' in the class 'kotlin.jvm.internal.FunctionReference'
   Possibly undeclared param 'R' in the class 'kotlin.jvm.internal.AdaptedFunctionReference'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'R' in the class 'kotlin.jvm.internal.FunctionImpl'
   Possibly undeclared param 'R' in the class 'kotlin.jvm.internal.FunctionImpl'
   Possibly undeclared param 'P1' in the class 'kotlin.jvm.internal.FunctionImpl'
@@ -1814,6 +1912,8 @@
   Possibly undeclared param 'P21' in the class 'kotlin.jvm.internal.FunctionImpl'
   Possibly undeclared param 'P22' in the class 'kotlin.jvm.internal.FunctionImpl'
   Possibly undeclared param 'R' in the class 'kotlin.jvm.internal.FunctionImpl'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Intersections are not supported. Substituting Object
      The name "javax.tools.Diagnostic" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.ForwardingDiagnosticFormatter)
      The name "com.sun.tools.javac.api.DiagnosticFormatter" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.ForwardingDiagnosticFormatter)
@@ -1822,6 +1922,8 @@
   Possibly undeclared param 'T' in the class 'javax.activation.MimetypesFileTypeMap$1'
   Possibly undeclared param 'T' in the class 'javax.activation.MailcapCommandMap$1'
   Possibly undeclared param 'T' in the class 'javax.activation.CommandInfo$Beans$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$13'
   Possibly undeclared param 'V1' in the class 'com.google.common.collect.Maps$13'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$13'
@@ -1833,6 +1935,13 @@
   Possibly undeclared param 'V2' in the class 'com.google.common.collect.Maps$10'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterables$10'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterables$10'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.concurrent.Executors$PrivilegedCallableUsingCurrentClassLoader$1'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.Executors$PrivilegedCallable$1'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$5'
@@ -1841,9 +1950,14 @@
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$2'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$1'
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Streams$ConcatSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$SliceSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$DelegatingSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Node$OfPrimitive)
+  Possibly undeclared param 'T_NODE' in the class 'java.util.stream.Node$OfPrimitive'
   Possibly undeclared param 'E' in the class 'org.postgresql.translation.messages_zh_TW$1'
   Possibly undeclared param 'E' in the class 'org.postgresql.translation.messages_zh_CN$1'
   Possibly undeclared param 'E' in the class 'org.postgresql.translation.messages_tr$1'
@@ -1866,7 +1980,14 @@
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.protobuf.SmallSortedMap)
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = kotlin.reflect.jvm.internal.impl.protobuf.SmallSortedMap)
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$Segment)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.MapMakerInternalMap$Segment'
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.MapMakerInternalMap'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
   Possibly undeclared param 'E' in the class 'kotlin.collections.EmptyIterator'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$PreOrderIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$8'
@@ -1877,6 +1998,7 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$10'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Multisets$5'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Multisets$5'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$3'
@@ -1892,6 +2014,8 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$6'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$BreadthFirstIterator'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$BreadthFirstIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'org.objectweb.asm.tree.InsnList$InsnListIterator'
   Possibly undeclared param 'K' in the class 'org.mockito.internal.util.concurrent.WeakConcurrentMap$SimpleEntry'
   Possibly undeclared param 'V' in the class 'org.mockito.internal.util.concurrent.WeakConcurrentMap$SimpleEntry'
@@ -1900,7 +2024,9 @@
   Possibly undeclared param 'T' in the class 'org.mockito.internal.util.concurrent.DetachedThreadLocal$1'
   Possibly undeclared param 'V' in the class 'org.jooq.impl.ScopeStack$1'
   Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.util.EmptyArrayMap'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
   Possibly undeclared param 'E' in the class 'jdk.internal.org.objectweb.asm.tree.InsnList$InsnListIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'java.util.stream.SpinedBuffer$1Splitr'
   Possibly undeclared param 'S' in the class 'java.util.ServiceLoader$3'
   Possibly undeclared param 'S' in the class 'java.util.ServiceLoader$2'
@@ -1948,15 +2074,36 @@
   Possibly undeclared param 'R' in the class 'org.jooq.impl.Tools$11'
   Possibly undeclared param 'R' in the class 'org.jooq.impl.Tools$10'
   Possibly undeclared param 'R' in the class 'org.jooq.impl.Tools$1'
+  Possibly undeclared param 'R' in the class 'org.jooq.UDTRecord'
+  Possibly undeclared param 'R' in the class 'org.jooq.TableRecord'
+  Possibly undeclared param 'R' in the class 'org.jooq.EmbeddableRecord'
      The name "kotlinx.metadata.internal.protobuf.FieldSet$FieldDescriptorLite" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.protobuf.FieldSet)
      The name "kotlin.reflect.jvm.internal.impl.protobuf.FieldSet$FieldDescriptorLite" is not class or parameter. Substituting object. (cur_name = kotlin.reflect.jvm.internal.impl.protobuf.FieldSet)
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = kotlin.ranges.ComparableOpenEndRange)
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = kotlin.ranges.ComparableRange)
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = kotlin.ranges.ClosedFloatingPointRange)
+  Possibly undeclared param 'U' in the class 'jdk.vm.ci.meta.AbstractJavaProfile'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'E' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldEnumSelector'
   Possibly undeclared param 'E' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldConversionMapping$3'
   Possibly undeclared param 'E' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.ExcludeFieldEnumSelector'
+  Possibly undeclared param 'E' in the class 'org.junit.jupiter.engine.config.EnumConfigurationParameterConverter'
+  Possibly undeclared param 'U' in the class 'org.jooq.impl.EnumConverter'
+  Possibly undeclared param 'U' in the class 'net.bytebuddy.description.annotation.AnnotationValue$ForEnumerationDescription'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  Possibly undeclared param 'T' in the class 'kotlinx.serialization.internal.EnumSerializer'
+  Possibly undeclared param 'E' in the class 'jdk.vm.ci.meta.PlatformKind$EnumKey'
+  Possibly undeclared param 'E' in the class 'jdk.internal.joptsimple.util.EnumConverter'
+  Possibly undeclared param 'K' in the class 'java.util.EnumMap'
+  Possibly undeclared param 'E' in the class 'java.lang.Enum$EnumDesc'
+  Possibly undeclared param 'T' in the class 'com.google.gson.internal.bind.TypeAdapters$EnumTypeAdapter'
+  Possibly undeclared param 'E' in the class 'com.google.common.util.concurrent.CycleDetectingLockFactory$WithExplicitOrdering'
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.CollectCollectors$EnumSetAccumulator'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.CollectCollectors$EnumMapAccumulator'
   Possibly undeclared param 'N' in the class 'kotlin.reflect.jvm.internal.impl.utils.DFS$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'com.google.common.collect.AbstractRangeSet'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.AbstractRangeSet'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeRangeMap'
@@ -1970,12 +2117,17 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut$AboveValue'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut$AboveValue'
      The name "com.sun.tools.javac.util.GraphUtils$DottableNode" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.GraphUtils$DotVisitor)
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$TarjanNode'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T1' in the class 'com.google.gson.internal.bind.TypeAdapters$33$1'
   Possibly undeclared param 'O' in the class 'com.google.common.util.concurrent.Futures$2'
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner$2'
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$2'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
   Possibly undeclared param 'R' in the class 'com.google.common.collect.AbstractTable$1'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.AbstractTable$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractTable$1'
@@ -1992,23 +2144,41 @@
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$3'
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$2'
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.CollectSpliterators$FlatMapSpliteratorOfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.cache.CacheLoader$1$1'
   Possibly undeclared param 'T' in the class 'com.google.common.base.Optional$1$1'
   Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.KDeclarationContainerImpl$sam$java_util_Comparator$0'
   Possibly undeclared param 'T' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.common.processor.core.BeanConversionProcessor$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "net.bytebuddy.agent.builder.AgentBuilder$Matchable" is not class or parameter. Substituting object. (cur_name = net.bytebuddy.agent.builder.AgentBuilder$Default$Delegator$Matchable)
   Possibly undeclared param 'T' in the class 'java.util.stream.Stream$2'
   Possibly undeclared param 'T' in the class 'java.util.stream.Stream$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'com.google.common.reflect.TypeToken$1'
   Possibly undeclared param 'T' in the class 'com.google.common.reflect.TypeToken$2'
+  Possibly undeclared param 'MessageType' in the class 'kotlinx.metadata.internal.protobuf.GeneratedMessageLite$ExtendableMessage'
     The name "kotlinx.metadata.internal.protobuf.GeneratedMessageLite$ExtendableMessageOrBuilder" is not interface or parameter. Substituting object  (cur_name = kotlinx.metadata.internal.protobuf.GeneratedMessageLite$ExtendableMessage)
+  Possibly undeclared param 'MessageType' in the class 'kotlinx.metadata.internal.protobuf.GeneratedMessageLite$ExtendableMessageOrBuilder'
      The name "kotlinx.metadata.internal.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.metadata.serialization.MutableTable)
      The name "kotlinx.metadata.internal.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.metadata.serialization.MutableTable)
   Possibly undeclared param 'R' in the class 'org.mockito.internal.invocation.RealMethod$FromCallable$1'
   Possibly undeclared param 'K' in the class 'org.jooq.impl.Diff$22'
   Possibly undeclared param 'K' in the class 'org.jooq.impl.Diff$21'
+  Possibly undeclared param 'MessageType' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$ExtendableMessage'
     The name "kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$ExtendableMessageOrBuilder" is not interface or parameter. Substituting object  (cur_name = kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$ExtendableMessage)
+  Possibly undeclared param 'MessageType' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$ExtendableMessageOrBuilder'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'P' in the class 'sun.util.locale.provider.SPILocaleProviderAdapter$1'
   Possibly undeclared param 'K' in the class 'sun.java2d.ReentrantContextProviderTL$1'
   Possibly undeclared param 'A' in the class 'org.postgresql.jdbc.ArrayDecoding$ArrayAssistantObjectArrayDecoder'
@@ -2017,22 +2187,60 @@
   Possibly undeclared param 'U' in the class 'org.jooq.Converters$2'
   Possibly undeclared param 'U' in the class 'org.jooq.Converters$1'
   Possibly undeclared param 'T' in the class 'org.jooq.Converters$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'kotlinx.serialization.internal.InlineClassDescriptorKt$InlinePrimitiveDescriptor$1'
      The name "java.util.Map" is not class or parameter. Substituting object. (cur_name = kotlinx.serialization.internal.MapLikeSerializer)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "kotlinx.coroutines.flow.SharedFlowSlot" is not class or parameter. Substituting object. (cur_name = kotlinx.coroutines.flow.SharedFlowImpl)
   Possibly undeclared param 'E' in the class 'kotlinx.coroutines.channels.ConflatedBroadcastChannel$onSend$1'
   Possibly undeclared param 'E' in the class 'kotlinx.coroutines.channels.ConflatedBroadcastChannel$onSend$1'
   Possibly undeclared param 'E' in the class 'kotlinx.coroutines.channels.AbstractChannel$onReceiveCatching$1'
   Possibly undeclared param 'E' in the class 'kotlinx.coroutines.channels.AbstractChannel$onReceive$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'kotlin.sequences.SequencesKt__SequencesKt$asSequence$$inlined$Sequence$1'
   Possibly undeclared param 'T' in the class 'kotlin.sequences.SequencesKt__SequencesKt$Sequence$1'
   Possibly undeclared param 'T' in the class 'kotlin.sequences.TakeSequence$iterator$1'
   Possibly undeclared param 'T' in the class 'kotlin.sequences.SubSequence$iterator$1'
   Possibly undeclared param 'T' in the class 'kotlin.sequences.DropSequence$iterator$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'kotlin.jvm.internal.MutablePropertyReference'
   Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.renderer.DescriptorRendererOptionsImpl$property$$inlined$vetoable$1'
   Possibly undeclared param 'T' in the class 'kotlin.properties.Delegates$vetoable$1'
   Possibly undeclared param 'T' in the class 'kotlin.properties.Delegates$observable$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
      The name "java.util.Collection" is not class or parameter. Substituting object. (cur_name = kotlinx.coroutines.flow.FlowKt__CollectionKt$toCollection$1)
      The name "java.util.Map" is not class or parameter. Substituting object. (cur_name = kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$toMap$2)
      The name "java.util.Collection" is not class or parameter. Substituting object. (cur_name = kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$toCollection$1)
@@ -2040,6 +2248,10 @@
      The name "kotlinx.coroutines.channels.SendChannel" is not class or parameter. Substituting object. (cur_name = kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$filterNotNullTo$3)
      The name "java.util.Collection" is not class or parameter. Substituting object. (cur_name = kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$filterNotNullTo$1)
   Possibly undeclared param 'T' in the class 'kotlin.collections.CollectionsKt__IterablesKt$Iterable$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'R' in the class 'org.junit.jupiter.api.AssertionsKt$assertThrows$2'
   Possibly undeclared param 'R' in the class 'org.junit.jupiter.api.AssertionsKt$assertDoesNotThrow$1'
   Possibly undeclared param 'R' in the class 'mu.internal.LocationAwareKLogger$buildMessagePattern$1'
@@ -2327,9 +2539,13 @@
   Possibly undeclared param 'K' in the class 'kotlin.collections.AbstractMap$toString$1'
   Possibly undeclared param 'V' in the class 'kotlin.collections.AbstractMap$toString$1'
   Possibly undeclared param 'R' in the class 'kotlin.collections.AbstractMap$toString$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
   Possibly undeclared param 'D' in the class 'kotlin.jvm.internal.PropertyReference2'
   Possibly undeclared param 'E' in the class 'kotlin.jvm.internal.PropertyReference2'
   Possibly undeclared param 'V' in the class 'kotlin.jvm.internal.PropertyReference2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'kotlin.jvm.internal.PropertyReference1'
   Possibly undeclared param 'V' in the class 'kotlin.jvm.internal.PropertyReference1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.MemberDeserializer$loadProperty$5'
@@ -2337,18 +2553,45 @@
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaScope$resolveProperty$1'
   Possibly undeclared param 'V' in the class 'kotlin.jvm.internal.PropertyReference0'
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = jdk.tools.jlink.internal.plugins.SystemModulesPlugin$SystemModulesClassGenerator$SetBuilder)
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorRearrangeOp'
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorRearrangeOp'
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorBlendOp'
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorBlendOp'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$IndexOperation'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$UnorderedSliceSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 3
+  Possibly undeclared param 'T' in the class 'com.google.common.base.Enums$StringConverter'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'B' in the class 'com.google.common.base.Converter$1'
+  Possibly undeclared param 'K' in the class 'java.util.stream.ReduceOps$AccumulatingSink'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.stream.MatchOps$1MatchSink'
   Possibly undeclared param 'V' in the class 'javax.swing.SwingWorker$3'
   Possibly undeclared param 'T' in the class 'javax.swing.SwingWorker$1'
   Possibly undeclared param 'T' in the class 'javax.swing.SwingWorker$2'
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ToArrayTask)
+  Possibly undeclared param 'K' in the class 'java.util.stream.Nodes$ToArrayTask'
      The name "java.util.stream.Sink" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$SizedCollectorTask)
+  Possibly undeclared param 'K' in the class 'java.util.stream.Nodes$SizedCollectorTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'K' in the class 'java.util.stream.AbstractTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator$OfPrimitive)
      The name "java.util.stream.Node$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 4
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ConcNode$OfPrimitive)
      The name "java.util.stream.Node$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ConcNode$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 4
   Possibly undeclared param 'K' in the class 'kotlinx.metadata.internal.protobuf.SmallSortedMap$EntryIterator'
   Possibly undeclared param 'V' in the class 'kotlinx.metadata.internal.protobuf.SmallSortedMap$EntryIterator'
   Possibly undeclared param 'K' in the class 'kotlinx.metadata.internal.protobuf.SmallSortedMap$Entry'
@@ -2359,21 +2602,33 @@
   Possibly undeclared param 'K' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.SmallSortedMap$Entry'
   Possibly undeclared param 'V' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.SmallSortedMap$Entry'
   Possibly undeclared param 'FieldDescriptorType' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.SmallSortedMap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
      The name "java.io.ObjectStreamClass$DeserializationConstructorsCache$Key" is not class or parameter. Substituting object. (cur_name = java.io.ObjectStreamClass$DeserializationConstructorsCache)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'org.jooq.tools.json.JSONObject'
   Possibly undeclared param 'V' in the class 'org.jooq.tools.json.JSONObject'
   Possibly undeclared param 'T' in the class 'com.google.gson.internal.LinkedTreeMap$1'
   Possibly undeclared param 'T' in the class 'com.google.gson.internal.LinkedHashTreeMap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'K' in the class 'com.google.common.collect.MapMakerInternalMap$WriteThroughEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.MapMakerInternalMap$WriteThroughEntry'
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$WeakValueReferenceImpl)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$AbstractWeakKeyEntry)
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$AbstractStrongKeyEntry)
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.MapMakerInternalMap$InternalEntryHelper'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.CompactHashMap$MapEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.CompactHashMap$MapEntry'
   Possibly undeclared param 'K' in the class 'com.google.common.cache.LocalCache$WriteThroughEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.cache.LocalCache$WriteThroughEntry'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableEnumMap'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$4'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$3'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.DirectedGraphConnections$4'
@@ -2381,20 +2636,30 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$5'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.JvmFunctionSignature$FakeJavaAnnotationConstructor$asString$1'
   Possibly undeclared param 'T' in the class 'java.io.ClassCache$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'org.mockito.internal.util.concurrent.DetachedThreadLocal$2'
   Possibly undeclared param 'T' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.common.iterators.ParserIterator$1'
   Possibly undeclared param 'V' in the class 'org.jooq.impl.ScopeStack$2'
   Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.util.OneElementArrayMap$iterator$1'
   Possibly undeclared param 'E' in the class 'kotlin.reflect.jvm.internal.impl.util.EmptyArrayMap$iterator$1'
   Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.util.ArrayMapImpl$iterator$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.LazyJavaAnnotations$annotationDescriptors$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.descriptors.annotations.CompositeAnnotations$iterator$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.descriptors.annotations.CompositeAnnotations$findAnnotation$1'
+     The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator)
   Possibly undeclared param 'E' in the class 'java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator'
   Possibly undeclared param 'T_CONS' in the class 'java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator'
-     The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
   Possibly undeclared param 'S' in the class 'java.util.ServiceLoader$ProviderImpl$2'
   Possibly undeclared param 'T' in the class 'java.util.ServiceLoader$LazyClassPathLookupIterator$2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'kotlin.collections.AbstractMap$values$1'
   Possibly undeclared param 'E' in the class 'kotlin.collections.AbstractCollection$toString$1'
   Possibly undeclared param 'R' in the class 'kotlin.collections.AbstractCollection$toString$1'
@@ -2405,8 +2670,10 @@
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaScope$functionNamesLazy$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaScope$classNamesLazy$2'
   Possibly undeclared param 'E' in the class 'kotlin.collections.EmptySet'
+  Possibly undeclared param 'V' in the class 'com.google.common.collect.MultimapBuilder$EnumSetSupplier'
   Possibly undeclared param 'V' in the class 'org.jooq.impl.ScopeStack$3'
   Possibly undeclared param 'V' in the class 'org.jooq.impl.ScopeStack$3'
+  Possibly undeclared param 'S' in the class 'net.bytebuddy.matcher.FilterableList'
   Possibly undeclared param 'R' in the class 'kotlinx.serialization.modules.SerializersModuleCollector$contextual$1'
   Possibly undeclared param 'R' in the class 'kotlinx.metadata.impl.extensions.MetadataExtensions$Companion$INSTANCES$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.TypeDeserializer$simpleType$annotations$1'
@@ -2433,7 +2700,10 @@
   Possibly undeclared param 'V' in the class 'java.util.Hashtable$ValueCollection'
   Possibly undeclared param 'V' in the class 'java.util.HashMap$Values'
   Possibly undeclared param 'V' in the class 'java.util.AbstractMap$2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.MapMakerInternalMap$Values'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractTable$Values'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMultimap$Values'
   Possibly undeclared param 'V' in the class 'com.google.common.cache.LocalCache$Values'
@@ -2443,15 +2713,23 @@
   Possibly undeclared param 'R' in the class 'org.jooq.impl.DefaultDSLContext$8'
   Possibly undeclared param 'R' in the class 'org.jooq.impl.RecordDelegate$1'
      The name "org.jooq.UDTRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.UDT)
+  Possibly undeclared param 'R' in the class 'org.jooq.UpdatableRecord'
      The name "org.jooq.TableRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.DAO)
   Possibly undeclared param 'R' in the class 'org.jooq.impl.DefaultRecordMapperProvider$1'
   Possibly undeclared param 'E' in the class 'org.jooq.impl.DefaultRecordMapperProvider$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  Possibly undeclared param 'T' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.EnumConversion'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.components.JavaDeprecatedAnnotationDescriptor$allValueArguments$2'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$3Splitr'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$3Splitr'
   Possibly undeclared param 'M' in the class 'javax.swing.table.TableRowSorter$TableRowSorterModelWrapper'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$2Splitr'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$2Splitr'
+  Possibly undeclared param 'U' in the class 'net.bytebuddy.description.annotation.AnnotationValue$ForEnumerationDescription$WithUnknownConstant'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  Possibly undeclared param 'V' in the class 'net.bytebuddy.description.annotation.AnnotationValue$ForEnumerationDescription$Loaded'
   Possibly undeclared param 'R' in the class 'kotlinx.serialization.internal.EnumSerializer$descriptor$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.Regex$special$$inlined$fromInt$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.builtins.PrimitiveType$typeFqName$2'
@@ -2476,6 +2754,8 @@
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Range$UpperBoundFn'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Range$LowerBoundFn'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Range$LowerBoundFn'
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$Tarjan'
+  Possibly undeclared param 'T' in the class 'com.sun.jmx.mbeanserver.DefaultMXBeanMappingFactory$EnumMapping'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner5$2'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner5$1'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner4$2'
@@ -2485,6 +2765,8 @@
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner2$2'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner2$1'
   Possibly undeclared param 'K' in the class 'com.google.common.reflect.TypeToken$TypeCollector$4'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'E' in the class 'com.google.common.graph.AbstractNetwork$3'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.AbstractNetwork$3'
   Possibly undeclared param 'E' in the class 'com.google.common.graph.AbstractNetwork$2'
@@ -2527,11 +2809,13 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedTable$1'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Synchronized$SynchronizedTable$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedTable$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$5'
   Possibly undeclared param 'V0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$5'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Multimaps$TransformedEntriesMultimap$1'
   Possibly undeclared param 'V1' in the class 'com.google.common.collect.Multimaps$TransformedEntriesMultimap$1'
   Possibly undeclared param 'V2' in the class 'com.google.common.collect.Multimaps$TransformedEntriesMultimap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$ValueForKeyIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.LinkedListMultimap$NodeIterator'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$NodeIterator'
@@ -2546,6 +2830,9 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMapBasedMultimap$AsMap'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Multimaps$UnmodifiableMultimap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Multimaps$UnmodifiableMultimap$1'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.EnumHashBiMap'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.EnumBiMap'
+  Possibly undeclared param 'V' in the class 'com.google.common.collect.EnumBiMap'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$BiMapEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractBiMap$BiMapEntry'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$1'
@@ -2576,7 +2863,10 @@
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.descriptors.impl.LazyPackageViewDescriptorImpl$empty$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.descriptors.impl.ModuleDescriptorImpl$packages$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.descriptors.impl.ModuleDescriptorImpl$packageFragmentProviderForWholeModuleWithDependencies$2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.ClassDeclaredMemberIndex$methodFilter$1'
+  Possibly undeclared param 'MessageType' in the class 'kotlinx.metadata.internal.protobuf.GeneratedMessageLite$ExtendableBuilder'
+  Possibly undeclared param 'BuilderType' in the class 'kotlinx.metadata.internal.protobuf.GeneratedMessageLite$ExtendableBuilder'
      The name "kotlinx.metadata.internal.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.protobuf.GeneratedMessageLite$ExtendableBuilder)
     The name "kotlinx.metadata.internal.metadata.ProtoBuf$ValueParameterOrBuilder" is not interface or parameter. Substituting object  (cur_name = kotlinx.metadata.internal.metadata.ProtoBuf$ValueParameter)
      The name "kotlinx.metadata.internal.metadata.ProtoBuf$TypeParameter" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.metadata.ProtoBuf$TypeParameterOrBuilder)
@@ -2610,6 +2900,9 @@
   Possibly undeclared param 'E' in the class 'org.jooq.impl.Tools$38'
   Possibly undeclared param 'E' in the class 'org.jooq.impl.Tools$37'
      The name "org.jooq.UDTRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.UDTField)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.descriptors.DeserializedMemberScope$OptimizedImplementation$variableNames$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.descriptors.DeserializedMemberScope$OptimizedImplementation$functionNames$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.descriptors.DeserializedMemberScope$OptimizedImplementation$computeDescriptors$1$1'
@@ -2619,6 +2912,8 @@
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaClassMemberScope$nestedClassIndex$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaClassMemberScope$enumEntryIndex$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaClassMemberScope$computeMemberIndex$1'
+  Possibly undeclared param 'MessageType' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$ExtendableBuilder'
+  Possibly undeclared param 'BuilderType' in the class 'kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$ExtendableBuilder'
      The name "kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$ExtendableBuilder)
   Possibly undeclared param 'MessageType' in the class 'kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf$ValueParameterOrBuilder'
   Possibly undeclared param 'MessageType' in the class 'kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf$TypeParameterOrBuilder'
@@ -2655,11 +2950,14 @@
   Possibly undeclared param 'T' in the class 'kotlinx.serialization.SealedClassSerializer$special$$inlined$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlinx.serialization.SealedClassSerializer$descriptor$2'
   Possibly undeclared param 'R' in the class 'kotlinx.serialization.PolymorphicSerializer$descriptor$2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.Collection" is not class or parameter. Substituting object. (cur_name = kotlinx.serialization.internal.CollectionSerializer)
   Possibly undeclared param 'R' in the class 'kotlinx.coroutines.sync.MutexImpl$LockSelect$completeResumeLockWaiter$1'
   Possibly undeclared param 'R' in the class 'kotlinx.coroutines.sync.MutexImpl$LockCont$tryResumeLockWaiter$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
      The name "kotlinx.coroutines.flow.StateFlowSlot" is not class or parameter. Substituting object. (cur_name = kotlinx.coroutines.flow.StateFlowImpl)
   Possibly undeclared param 'R' in the class 'kotlin.sequences.SequencesKt___SequencesJvmKt$filterIsInstance$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'R' in the class 'kotlin.io.FilesKt__UtilsKt$copyRecursively$2'
   Possibly undeclared param 'P1' in the class 'kotlin.io.FilesKt__UtilsKt$copyRecursively$1'
   Possibly undeclared param 'P2' in the class 'kotlin.io.FilesKt__UtilsKt$copyRecursively$1'
@@ -2802,9 +3100,22 @@
   Possibly undeclared param 'R' in the class 'java.util.stream.ReduceOps$10ReducingSink'
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ToArrayTask$OfPrimitive)
      The name "java.util.stream.Node$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ToArrayTask$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 4
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.stream.ReduceOps$AccumulatingSink" is not class or parameter. Substituting object. (cur_name = java.util.stream.ReduceOps$ReduceTask)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$CollectorTask)
      The name "java.util.stream.Node$Builder" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$CollectorTask)
+  Possibly undeclared param 'K' in the class 'java.util.stream.AbstractShortCircuitTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'V' in the class 'kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMap$equals$4'
   Possibly undeclared param 'R' in the class 'kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMap$equals$4'
   Possibly undeclared param 'V' in the class 'kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMap$equals$3'
@@ -2851,21 +3162,32 @@
   Possibly undeclared param 'R' in the class 'kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilder$equals$2'
   Possibly undeclared param 'V' in the class 'kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilder$equals$1'
   Possibly undeclared param 'R' in the class 'kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilder$equals$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.WeakHashMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.WeakHashMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.WeakHashMap$EntryIterator'
   Possibly undeclared param 'K' in the class 'java.util.ImmutableCollections$MapN$MapNIterator'
   Possibly undeclared param 'V' in the class 'java.util.ImmutableCollections$MapN$MapNIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.IdentityHashMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.IdentityHashMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.IdentityHashMap$EntryIterator'
   Possibly undeclared param 'Key' in the class 'org.postgresql.util.LruCache$LimitedMap'
   Possibly undeclared param 'Value' in the class 'org.postgresql.util.LruCache$LimitedMap'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'V' in the class 'java.util.LinkedHashMap$LinkedValues'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'java.util.HashMap$ValueIterator'
   Possibly undeclared param 'K' in the class 'java.util.HashMap$KeyIterator'
   Possibly undeclared param 'K' in the class 'java.util.HashMap$EntryIterator'
   Possibly undeclared param 'V' in the class 'java.util.HashMap$EntryIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'V' in the class 'com.google.common.collect.HashBiMap$Inverse'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.HashBiMap$Inverse'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.HashBiMap$Inverse'
@@ -2886,6 +3208,7 @@
   Possibly undeclared param 'T' in the class 'com.google.common.cache.LocalCache$EntryIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableSortedMap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableSortedMap$1'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableEnumMap$EnumSerializedForm'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.FluentIterable$3$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ArrayTable$3'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.ArrayTable$1'
@@ -2908,14 +3231,20 @@
   Possibly undeclared param 'E' in the class 'java.util.SortedSet$1'
   Possibly undeclared param 'K' in the class 'java.util.Collections$CheckedMap$CheckedEntrySet$1'
   Possibly undeclared param 'V' in the class 'java.util.Collections$CheckedMap$CheckedEntrySet$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KTypeImpl$arguments$2$parameterizedTypeArguments$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KTypeImpl$arguments$2$1$type$1'
   Possibly undeclared param 'E' in the class 'kotlin.collections.AbstractList$IteratorImpl'
   Possibly undeclared param 'E' in the class 'java.util.concurrent.CopyOnWriteArrayList$COWSubList'
      The name "java.util.concurrent.Flow$Subscriber" is not class or parameter. Substituting object. (cur_name = jdk.internal.net.http.LineSubscriberAdapter)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'com.zaxxer.hikari.util.FastList$1'
   Possibly undeclared param 'E' in the class 'java.util.Collections$UnmodifiableList$1'
   Possibly undeclared param 'E' in the class 'java.util.Collections$CheckedList$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'sun.util.PreHashedMap$2'
   Possibly undeclared param 'K' in the class 'sun.awt.WeakIdentityHashMap$2'
   Possibly undeclared param 'V' in the class 'sun.awt.WeakIdentityHashMap$2'
@@ -2944,6 +3273,7 @@
   Possibly undeclared param 'K' in the class 'java.util.HashMap$KeySet'
   Possibly undeclared param 'K' in the class 'java.util.HashMap$EntrySet'
   Possibly undeclared param 'V' in the class 'java.util.HashMap$EntrySet'
+  Possibly undeclared param 'E' in the class 'java.util.EnumSet'
   Possibly undeclared param 'K' in the class 'java.util.EnumMap$KeySet'
   Possibly undeclared param 'K' in the class 'java.util.EnumMap$EntrySet'
   Possibly undeclared param 'V' in the class 'java.util.EnumMap$EntrySet'
@@ -2970,6 +3300,7 @@
      The name "net.bytebuddy.matcher.FilterableList" is not class or parameter. Substituting object. (cur_name = net.bytebuddy.matcher.FilterableList$Empty)
      The name "net.bytebuddy.matcher.FilterableList" is not class or parameter. Substituting object. (cur_name = net.bytebuddy.matcher.FilterableList$AbstractBase)
   Possibly undeclared param 'E' in the class 'java.util.AbstractList$Itr'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'A' in the class 'com.sun.tools.javac.util.List$3'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractMultimap$Entries'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMultimap$Entries'
@@ -2977,14 +3308,18 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ForwardingMap$StandardValues'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.CompactHashMap$ValuesView'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.CompactHashMap$ValuesView'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.EnumMultiset'
   Possibly undeclared param 'T' in the class 'com.google.common.reflect.TypeToken$TypeSet'
   Possibly undeclared param 'B' in the class 'com.google.common.collect.MutableClassToInstanceMap$2'
   Possibly undeclared param 'B' in the class 'com.google.common.collect.MutableClassToInstanceMap$2'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Maps$4'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractBiMap$ValueSet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$KeySet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$EntrySet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractBiMap$EntrySet'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "org.jooq.UDTRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.impl.UDTImpl)
      The name "org.jooq.UpdatableRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.impl.DAOImpl)
   Possibly undeclared param 'E' in the class 'org.jooq.impl.DefaultRecordUnmapper$PojoUnmapper'
@@ -3062,12 +3397,14 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ArrayTable$ArrayMap$2'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ArrayTable$ArrayMap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ArrayTable$ArrayMap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedAsMapValues$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedAsMapValues$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.FilteredKeySetMultimap$EntrySet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.FilteredKeySetMultimap$EntrySet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.FilteredEntryMultimap$AsMap$1ValuesImpl'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.FilteredEntryMultimap$AsMap$1ValuesImpl'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMultimap$2'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMultimap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMultimap$1'
@@ -3134,6 +3471,7 @@
   Possibly undeclared param 'T' in the class 'java.util.stream.WhileOps$1Op'
   Possibly undeclared param 'T' in the class 'java.util.stream.WhileOps$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.WhileOps$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.stream.SliceOps$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.SliceOps$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.DistinctOps$1'
@@ -3165,6 +3503,7 @@
   Possibly undeclared param 'R' in the class 'kotlinx.metadata.impl.WritersKt$writeFunction$1$visitContract$1'
      The name "kotlinx.metadata.internal.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.metadata.ProtoBuf$Annotation$Argument$Builder)
   Possibly undeclared param 'R' in the class 'org.jooq.impl.AbstractResultQuery$ResultQueryCallable'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'org.jooq.impl.Interpreter$MutableDomain$InterpretedDomain'
   Possibly undeclared param 'E' in the class 'org.jooq.impl.Tools$39$1'
   Possibly undeclared param 'E' in the class 'org.jooq.impl.Tools$38$1'
@@ -3233,6 +3572,8 @@
   Possibly undeclared param 'T' in the class 'kotlin.sequences.SequencesKt___SequencesKt$asIterable$$inlined$Iterable$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KPropertyImpl$Setter$caller$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KPropertyImpl$Getter$caller$2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'R' in the class 'kotlinx.coroutines.flow.internal.CombineKt$zipImpl$1$1$1'
   Possibly undeclared param 'R' in the class 'kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransformUnsafe$1$1'
   Possibly undeclared param 'T' in the class 'kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransformUnsafe$1$1'
@@ -3249,9 +3590,11 @@
   Possibly undeclared param 'R' in the class 'kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2$1'
   Possibly undeclared param 'R' in the class 'kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$1$1'
   Possibly undeclared param 'T' in the class 'kotlinx.coroutines.flow.FlowKt__LimitKt$transformWhile$1$invokeSuspend$$inlined$collectWhile$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
   Possibly undeclared param 'K' in the class 'kotlin.reflect.jvm.internal.impl.storage.LockBasedStorageManager$CacheWithNullableValuesBasedOnMemoizedFunction$1'
   Possibly undeclared param 'V' in the class 'kotlin.reflect.jvm.internal.impl.storage.LockBasedStorageManager$CacheWithNullableValuesBasedOnMemoizedFunction$1'
   Possibly undeclared param 'V' in the class 'kotlin.reflect.jvm.internal.impl.storage.LockBasedStorageManager$CacheWithNullableValuesBasedOnMemoizedFunction$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.storage.LockBasedStorageManager$4'
   Possibly undeclared param 'T' in the class 'java.util.stream.ReduceOps$5'
   Possibly undeclared param 'T' in the class 'java.util.stream.ReduceOps$5'
@@ -3266,12 +3609,23 @@
   Possibly undeclared param 'U' in the class 'java.util.stream.ReduceOps$1'
   Possibly undeclared param 'R' in the class 'java.util.stream.ReduceOps$16'
   Possibly undeclared param 'R' in the class 'java.util.stream.ReduceOps$12'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$EntryIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$DescendingKeyIterator'
   Possibly undeclared param 'K' in the class 'java.util.TreeMap$NavigableSubMap$EntrySetView'
   Possibly undeclared param 'V' in the class 'java.util.TreeMap$NavigableSubMap$EntrySetView'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'java.util.IdentityHashMap$EntryIterator$Entry'
   Possibly undeclared param 'V' in the class 'java.util.IdentityHashMap$EntryIterator$Entry'
   Possibly undeclared param 'V' in the class 'java.util.LinkedHashMap$LinkedValueIterator'
@@ -3280,6 +3634,7 @@
   Possibly undeclared param 'V' in the class 'java.util.LinkedHashMap$LinkedEntryIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$FilteredEntryMap$EntrySet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Maps$FilteredEntryMap$EntrySet'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'T' in the class 'com.google.common.collect.HashBiMap$1'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.HashBiMap$Inverse$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.RegularImmutableBiMap$Inverse'
@@ -3290,12 +3645,15 @@
   Possibly undeclared param 'E' in the class 'java.util.concurrent.ConcurrentLinkedDeque$AbstractItr'
   Possibly undeclared param 'E' in the class 'java.util.ArrayDeque$DeqSpliterator'
   Possibly undeclared param 'E' in the class 'java.util.ArrayDeque$DeqIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = org.jooq.impl.ResultImpl$NaturalComparator)
      The name "net.bytebuddy.description.method.ParameterList" is not class or parameter. Substituting object. (cur_name = net.bytebuddy.matcher.MethodParameterTypesMatcher)
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.DeserializedArrayValue$1'
   Possibly undeclared param 'T' in the class 'kotlin.collections.RingBuffer$iterator$1'
   Possibly undeclared param 'E' in the class 'kotlin.collections.AbstractList$ListIteratorImpl'
      The name "java.util.concurrent.Flow$Subscriber" is not class or parameter. Substituting object. (cur_name = jdk.internal.net.http.ResponseSubscribers$SubscriberAdapter)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'java.util.Collections$UnmodifiableMap$UnmodifiableEntrySet$1'
   Possibly undeclared param 'V' in the class 'java.util.Collections$UnmodifiableMap$UnmodifiableEntrySet$1'
   Possibly undeclared param 'V' in the class 'sun.util.PreHashedMap$2$1'
@@ -3304,6 +3662,9 @@
   Possibly undeclared param 'K' in the class 'sun.awt.WeakIdentityHashMap$1$1'
      The name "java.util.Map$Entry" is not class or parameter. Substituting object. (cur_name = kotlinx.collections.immutable.implementations.immutableMap.AbstractMapBuilderEntries)
      The name "java.util.Map$Entry" is not class or parameter. Substituting object. (cur_name = kotlin.collections.builders.AbstractMapBuilderEntrySet)
+  Possibly undeclared param 'E' in the class 'java.util.RegularEnumSet'
+  Possibly undeclared param 'E' in the class 'java.util.JumboEnumSet'
+  Possibly undeclared param 'E' in the class 'java.util.EnumSet$SerializationProxy'
   Possibly undeclared param 'K' in the class 'java.util.AbstractMap$1$1'
   Possibly undeclared param 'T' in the class 'com.google.gson.internal.LinkedTreeMap$KeySet$1'
   Possibly undeclared param 'T' in the class 'com.google.gson.internal.LinkedTreeMap$EntrySet$1'
@@ -3362,9 +3723,13 @@
   Possibly undeclared param 'E' in the class 'java.util.Vector$Itr'
   Possibly undeclared param 'E' in the class 'java.util.Vector$1'
   Possibly undeclared param 'E' in the class 'org.jooq.tools.json.JSONArray'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KCallableImpl$_parameters$1'
   Possibly undeclared param 'E' in the class 'java.util.ArrayList$Itr'
   Possibly undeclared param 'E' in the class 'java.util.ArrayList$ArrayListSpliterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$1ValuesImpl'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.LinkedListMultimap$1EntriesImpl'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$1EntriesImpl'
@@ -3379,9 +3744,11 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMultimap$EntrySet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets'
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.ImmutableEnumSet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMapValues$1'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$CartesianSet$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.RegularImmutableTable$Values'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.JdkBackedImmutableBiMap$InverseEntries'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.JdkBackedImmutableBiMap$InverseEntries'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.ImmutableRangeSet$ComplementRanges'
@@ -3456,6 +3823,8 @@
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ForwardingNavigableMap$StandardDescendingMap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ForwardingNavigableMap$StandardDescendingMap$1'
   Possibly undeclared param 'T' in the class 'org.junit.jupiter.params.shadow.com.univocity.parsers.common.routine.AbstractRoutines$3$1'
+  Possibly undeclared param 'U' in the class 'net.bytebuddy.description.annotation.AnnotationValue$ForTypeDescription'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KClassImpl$Data$supertypes$2$3'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KClassImpl$Data$supertypes$2$1$1'
   Possibly undeclared param 'R' in the class 'kotlinx.coroutines.ExecutorCoroutineDispatcher$Key$1'
@@ -3536,9 +3905,17 @@
   Possibly undeclared param 'R' in the class 'kotlinx.metadata.impl.ClassWriter$visitConstructor$1'
      The name "kotlinx.metadata.internal.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlinx.metadata.internal.metadata.ProtoBuf$Annotation$Argument$Value$Builder)
      The name "org.jooq.UDTRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.impl.UDTFieldImpl)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
      The name "org.jooq.EmbeddableRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.impl.EmbeddableTableField)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'org.jooq.impl.AbstractRoutine$RoutineField'
      The name "org.jooq.UDTRecord" is not class or parameter. Substituting object. (cur_name = org.jooq.impl.UDTDataType)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.TypeDeserializer$typeConstructor$notFoundClass$typeParametersCount$2'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.impl.serialization.deserialization.TypeDeserializer$typeConstructor$notFoundClass$typeParametersCount$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KPackageImpl$Data$metadata$2'
@@ -3571,9 +3948,12 @@
   Possibly undeclared param 'T' in the class 'kotlin.reflect.jvm.internal.impl.storage.LockBasedStorageManager$5'
   Possibly undeclared param 'V' in the class 'kotlin.reflect.jvm.internal.KMutableProperty0Impl$_setter$1'
   Possibly undeclared param 'R' in the class 'kotlin.reflect.jvm.internal.KMutableProperty0Impl$_setter$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$EntryIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'java.util.TreeMap$NavigableSubMap$SubMapKeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$NavigableSubMap$SubMapKeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$NavigableSubMap$SubMapEntryIterator'
@@ -3607,6 +3987,14 @@
   Possibly undeclared param 'V' in the class 'sun.awt.WeakIdentityHashMap$2$1$1'
   Possibly undeclared param 'R' in the class 'kotlinx.collections.immutable.implementations.persistentOrderedSet.PersistentOrderedSetBuilder$equals$2'
   Possibly undeclared param 'R' in the class 'kotlinx.collections.immutable.implementations.persistentOrderedSet.PersistentOrderedSetBuilder$equals$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  Possibly undeclared param 'E' in the class 'java.util.RegularEnumSet$EnumSetIterator'
+  Possibly undeclared param 'E' in the class 'java.util.JumboEnumSet$EnumSetIterator'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$4$1'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$3$1'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$2$1'
@@ -3664,6 +4052,7 @@
   Possibly undeclared param 'E' in the class 'java.util.ArrayList$ListItr'
   Possibly undeclared param 'E' in the class 'sun.awt.util.IdentityLinkedList$ListItr'
   Possibly undeclared param 'E' in the class 'sun.awt.util.IdentityLinkedList$DescendingIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'java.util.LinkedList$ListItr'
   Possibly undeclared param 'E' in the class 'java.util.LinkedList$DescendingIterator'
   Possibly undeclared param 'F' in the class 'com.google.common.collect.Lists$TransformingSequentialList$1'
@@ -3674,6 +4063,7 @@
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Lists$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets$1'
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.ImmutableEnumSet$EnumSerializedForm'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.ImmutableMultiset$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMultimap$Keys'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMapValues$2'
@@ -3725,6 +4115,9 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedHashMultimap$ValueSet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.LinkedHashMultimap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedHashMultimap$1'
+  Possibly undeclared param 'U' in the class 'net.bytebuddy.description.annotation.AnnotationValue$ForTypeDescription$Loaded'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'U' in the class 'net.bytebuddy.dynamic.DynamicType$Builder$AbstractBase$Adapter$OptionalMethodMatchAdapter'
   Possibly undeclared param 'U' in the class 'net.bytebuddy.dynamic.DynamicType$Builder$AbstractBase$Adapter$OptionalMethodMatchAdapter'
   Possibly undeclared param 'U' in the class 'net.bytebuddy.dynamic.DynamicType$Builder$AbstractBase$Adapter$MethodMatchAdapter'
@@ -4017,6 +4410,13 @@
      The name "kotlin.reflect.jvm.internal.impl.protobuf.GeneratedMessageLite$Builder" is not class or parameter. Substituting object. (cur_name = kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf$Type$Argument$Builder)
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleTask'
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleAsyncTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 3 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 3 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$SubMap$SubMapValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$SubMap$SubMapKeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$SubMap$SubMapEntryIterator'
@@ -4191,6 +4591,3 @@
   Type variables mentioned in constraints: []
   
   Running generated query
-  	     Processing: _.? <-< sun.awt.shell.ShellFolderManager$DirectInvoker ()
-  	     Processing: _.? <-< sun.awt.shell.Win32ShellFolderManager2$ComInvoker ()
-    1)  null

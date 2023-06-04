@@ -1,3 +1,4 @@
+  $ export NOBENCH=1
 # IT can't find more than 1 answer
   $ ../../jsons/run_json.exe -n 1 0.json
     The type "S" is not found (Bad JSON?). Ignored.
@@ -54,35 +55,56 @@
     The type "K2" is not found (Bad JSON?). Ignored.
     The type "sun.tools.jstat.OutputFormatter" is not found (Bad JSON?). Ignored.
     The type "OutConsumerT" is not found (Bad JSON?). Ignored.
+  Possibly undeclared param 'F' in the class 'java.lang.invoke.TypeDescriptor$OfField'
+  Possibly undeclared param 'K' in the class 'jdk.vm.ci.meta.ValueKind'
+  Possibly undeclared param 'CLV' in the class 'jdk.internal.loader.AbstractClassLoaderValue'
+  Possibly undeclared param 'V' in the class 'jdk.internal.loader.AbstractClassLoaderValue'
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$Node'
   Intersections are not supported. Substituting Object
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.MapMakerInternalMap$InternalEntry'
      The name "jdk.internal.foreign.abi.Binding" is not class or parameter. Substituting object. (cur_name = jdk.internal.foreign.abi.Binding$BoxAddress)
      The name "jdk.internal.foreign.abi.Binding" is not class or parameter. Substituting object. (cur_name = jdk.internal.foreign.abi.Binding$BaseAddress)
      The name "jdk.internal.foreign.abi.Binding" is not class or parameter. Substituting object. (cur_name = jdk.internal.foreign.abi.Binding$Allocate)
      The name "jdk.internal.foreign.abi.Binding$Dereference" is not class or parameter. Substituting object. (cur_name = jdk.internal.foreign.abi.Binding$BufferLoad)
+  Possibly undeclared param 'S' in the class 'java.util.stream.BaseStream'
      The name "com.google.common.util.concurrent.AbstractFuture" is not class or parameter. Substituting object. (cur_name = com.google.common.util.concurrent.GwtFluentFutureCatchingSpecialization)
      The name "sun.nio.cs.ext.ISO2022" is not class or parameter. Substituting object. (cur_name = sun.nio.cs.ext.ISO2022_KR)
     The name "sun.tools.jstat.OutputFormatter" is not interface or parameter. Substituting object  (cur_name = sun.tools.jstat.RawOutputFormatter)
     The name "sun.tools.jstat.OutputFormatter" is not interface or parameter. Substituting object  (cur_name = sun.tools.jstat.OptionOutputFormatter)
      The name "java.lang.invoke.TypeDescriptor$OfField" is not class or parameter. Substituting object. (cur_name = java.lang.invoke.TypeDescriptor$OfMethod)
+  Possibly undeclared param 'M' in the class 'java.lang.invoke.TypeDescriptor$OfMethod'
+  Possibly undeclared param 'K' in the class 'jdk.vm.ci.code.ValueKindFactory'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'V' in the class 'jdk.internal.loader.AbstractClassLoaderValue$Sub'
      The name "javax.tools.Diagnostic" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.api.DiagnosticFormatter)
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$AbstractConcNode)
   Possibly undeclared param 'B' in the class 'sun.security.ec.ParametersMap$1'
+  Possibly undeclared param 'CLV' in the class 'jdk.internal.loader.AbstractClassLoaderValue$Memoizer'
+  Possibly undeclared param 'V' in the class 'jdk.internal.loader.AbstractClassLoaderValue$Memoizer'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.stream.Collectors$1OptionalBox'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.WhileOps$UnorderedWhileSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.Streams$ConcatSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.Streams$AbstractStreamBuilderImpl)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$UnorderedSliceSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$SliceSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$DelegatingSpliterator)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator)
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator)
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = java.util.Spliterators$EmptySpliterator)
+  Possibly undeclared param 'T_SPLITR' in the class 'java.util.Spliterator$OfPrimitive'
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.CollectSpliterators$FlatMapSpliterator$Factory)
   Possibly undeclared param 'E' in the class 'sun.jvm.hotspot.utilities.ConstIterator'
   Possibly undeclared param 'E' in the class 'sun.jvm.hotspot.runtime.ObjectSynchronizer$ObjectMonitorIterator'
   Possibly undeclared param 'T' in the class 'java.util.Spliterators$1Adapter'
   Possibly undeclared param 'T' in the class 'java.util.Spliterators$1Adapter'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'java.util.Enumeration$1'
   Possibly undeclared param 'T' in the class 'java.util.Collections$3'
   Possibly undeclared param 'T' in the class 'java.util.Collections$2'
@@ -96,15 +118,19 @@
   Possibly undeclared param 'T' in the class 'java.net.NetworkInterface$1'
      The name "jdk.vm.ci.meta.Assumptions$Assumption" is not class or parameter. Substituting object. (cur_name = jdk.vm.ci.meta.Assumptions)
      The name "jdk.internal.icu.impl.Trie2$Range" is not class or parameter. Substituting object. (cur_name = jdk.internal.icu.impl.Trie2)
+  Possibly undeclared param 'E' in the class 'java.lang.Enum'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.RangeSet'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.RangeMap'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.RangeGwtSerializationDependencies'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.DiscreteDomain'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'com.sun.tools.javac.util.Iterators$2'
   Possibly undeclared param 'E' in the class 'com.sun.tools.javac.util.Iterators$1'
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$DottableNode'
      The name "com.sun.tools.javac.util.GraphUtils$Node" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.GraphUtils$NodeVisitor)
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$AbstractNode'
   Possibly undeclared param 'T' in the class 'com.sun.media.sound.JSSecurityManager$1'
   Possibly undeclared param 'M' in the class 'com.sun.jmx.mbeanserver.PerInterface$InitMaps'
   Possibly undeclared param 'M' in the class 'com.sun.jmx.mbeanserver.MBeanIntrospector$MBeanInfoMaker'
@@ -129,6 +155,8 @@
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$1'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$1'
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.Streams$MapWithIndexSpliterator)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.Streams$MapWithIndexSpliterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$9'
   Possibly undeclared param 'V1' in the class 'com.google.common.collect.Maps$9'
   Possibly undeclared param 'V2' in the class 'com.google.common.collect.Maps$9'
@@ -139,21 +167,34 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$2'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$11'
      The name "java.util.Spliterator" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.CollectSpliterators$FlatMapSpliterator)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'com.google.common.collect.CollectSpliterators$1WithCharacteristics'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.CollectSpliterators$1Splitr'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.CollectSpliterators$1Splitr'
   Possibly undeclared param 'OutElementT' in the class 'com.google.common.collect.CollectSpliterators$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'K' in the class 'com.google.common.cache.CacheLoader$1'
   Possibly undeclared param 'V' in the class 'com.google.common.cache.CacheLoader$1'
   Possibly undeclared param 'T' in the class 'com.google.common.base.Optional$1'
   Possibly undeclared param 'T' in the class 'java.beans.EventHandler$2'
+  Possibly undeclared param 'T' in the class 'com.sun.tools.javac.tree.DCTree$DCEndPosTree'
      The name "java.util.stream.BaseStream" is not class or parameter. Substituting object. (cur_name = java.util.stream.AbstractPipeline)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
      The name "sun.nio.cs.ext.ISO2022$Encoder" is not class or parameter. Substituting object. (cur_name = sun.nio.cs.ext.ISO2022_KR$Encoder)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Intersections are not supported. Substituting Object
      The name "javax.tools.Diagnostic" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.ForwardingDiagnosticFormatter)
      The name "com.sun.tools.javac.api.DiagnosticFormatter" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.ForwardingDiagnosticFormatter)
   Possibly undeclared param 'M' in the class 'javax.swing.DefaultRowSorter$FilterEntry'
   Possibly undeclared param 'I' in the class 'javax.swing.DefaultRowSorter$FilterEntry'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$13'
   Possibly undeclared param 'V1' in the class 'com.google.common.collect.Maps$13'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$13'
@@ -165,6 +206,13 @@
   Possibly undeclared param 'V2' in the class 'com.google.common.collect.Maps$10'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterables$10'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterables$10'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.concurrent.Executors$PrivilegedCallableUsingCurrentClassLoader$1'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.Executors$PrivilegedCallable$1'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$5'
@@ -173,15 +221,22 @@
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$2'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.Streams$1'
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Streams$ConcatSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$SliceSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$DelegatingSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Node$OfPrimitive)
+  Possibly undeclared param 'T_NODE' in the class 'java.util.stream.Node$OfPrimitive'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$7'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Maps$7'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$12'
   Possibly undeclared param 'V2' in the class 'com.google.common.collect.Maps$12'
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$Segment)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.MapMakerInternalMap$Segment'
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.MapMakerInternalMap'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$PreOrderIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$8'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Maps$8'
@@ -191,6 +246,7 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$10'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Multisets$5'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Multisets$5'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$3'
@@ -206,7 +262,10 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$6'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$BreadthFirstIterator'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$BreadthFirstIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'jdk.internal.org.objectweb.asm.tree.InsnList$InsnListIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'java.util.stream.SpinedBuffer$1Splitr'
   Possibly undeclared param 'S' in the class 'java.util.ServiceLoader$3'
   Possibly undeclared param 'S' in the class 'java.util.ServiceLoader$2'
@@ -225,6 +284,17 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.FluentIterable$3'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.FluentIterable$2'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.FluentIterable$1'
+  Possibly undeclared param 'U' in the class 'jdk.vm.ci.meta.AbstractJavaProfile'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  Possibly undeclared param 'E' in the class 'jdk.vm.ci.meta.PlatformKind$EnumKey'
+  Possibly undeclared param 'E' in the class 'jdk.internal.joptsimple.util.EnumConverter'
+  Possibly undeclared param 'K' in the class 'java.util.EnumMap'
+  Possibly undeclared param 'E' in the class 'java.lang.Enum$EnumDesc'
+  Possibly undeclared param 'E' in the class 'com.google.common.util.concurrent.CycleDetectingLockFactory$WithExplicitOrdering'
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.CollectCollectors$EnumSetAccumulator'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.CollectCollectors$EnumMapAccumulator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'com.google.common.collect.AbstractRangeSet'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.AbstractRangeSet'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeRangeMap'
@@ -238,12 +308,17 @@
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut$AboveValue'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Cut$AboveValue'
      The name "com.sun.tools.javac.util.GraphUtils$DottableNode" is not class or parameter. Substituting object. (cur_name = com.sun.tools.javac.util.GraphUtils$DotVisitor)
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$TarjanNode'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
      The name "com.google.common.util.concurrent.AbstractFuture" is not class or parameter. Substituting object. (cur_name = com.google.common.util.concurrent.Futures$InCompletionOrderFuture)
   Possibly undeclared param 'O' in the class 'com.google.common.util.concurrent.Futures$2'
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner$2'
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$2'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
   Possibly undeclared param 'R' in the class 'com.google.common.collect.AbstractTable$1'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.AbstractTable$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractTable$1'
@@ -259,52 +334,102 @@
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$3'
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$2'
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.CollectSpliterators$FlatMapSpliteratorOfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.cache.CacheLoader$1$1'
   Possibly undeclared param 'T' in the class 'com.google.common.base.Optional$1$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.Stream$2'
   Possibly undeclared param 'T' in the class 'java.util.stream.Stream$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "sun.management.MemoryManagerImpl" is not class or parameter. Substituting object. (cur_name = sun.management.GarbageCollectorImpl)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'com.google.common.reflect.TypeToken$1'
   Possibly undeclared param 'T' in the class 'com.google.common.reflect.TypeToken$2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'P' in the class 'sun.util.locale.provider.SPILocaleProviderAdapter$1'
   Possibly undeclared param 'K' in the class 'sun.java2d.ReentrantContextProviderTL$1'
      The name "java.lang.Comparable" is not class or parameter. Substituting object. (cur_name = jdk.tools.jlink.internal.plugins.SystemModulesPlugin$SystemModulesClassGenerator$SetBuilder)
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorRearrangeOp'
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorRearrangeOp'
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorBlendOp'
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$VectorBlendOp'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  Possibly undeclared param 'E' in the class 'jdk.internal.vm.vector.VectorSupport$IndexOperation'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.StreamSpliterators$UnorderedSliceSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 3
+  Possibly undeclared param 'T' in the class 'com.google.common.base.Enums$StringConverter'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'B' in the class 'com.google.common.base.Converter$1'
+  Possibly undeclared param 'K' in the class 'java.util.stream.ReduceOps$AccumulatingSink'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.stream.MatchOps$1MatchSink'
   Possibly undeclared param 'V' in the class 'javax.swing.SwingWorker$3'
   Possibly undeclared param 'T' in the class 'javax.swing.SwingWorker$1'
   Possibly undeclared param 'T' in the class 'javax.swing.SwingWorker$2'
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ToArrayTask)
+  Possibly undeclared param 'K' in the class 'java.util.stream.Nodes$ToArrayTask'
      The name "java.util.stream.Sink" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$SizedCollectorTask)
+  Possibly undeclared param 'K' in the class 'java.util.stream.Nodes$SizedCollectorTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'K' in the class 'java.util.stream.AbstractTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
      The name "com.google.common.util.concurrent.AbstractFuture" is not class or parameter. Substituting object. (cur_name = com.google.common.util.concurrent.AbstractFuture$TrustedFuture)
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator$OfPrimitive)
      The name "java.util.stream.Node$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$InternalNodeSpliterator$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 3
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 4
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ConcNode$OfPrimitive)
      The name "java.util.stream.Node$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ConcNode$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 4
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 2
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'K' in the class 'com.google.common.collect.MapMakerInternalMap$WriteThroughEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.MapMakerInternalMap$WriteThroughEntry'
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$WeakValueReferenceImpl)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$AbstractWeakKeyEntry)
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$AbstractStrongKeyEntry)
      The name "com.google.common.collect.MapMakerInternalMap$InternalEntry" is not class or parameter. Substituting object. (cur_name = com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)
+  Possibly undeclared param 'S' in the class 'com.google.common.collect.MapMakerInternalMap$InternalEntryHelper'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.CompactHashMap$MapEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.CompactHashMap$MapEntry'
   Possibly undeclared param 'K' in the class 'com.google.common.cache.LocalCache$WriteThroughEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.cache.LocalCache$WriteThroughEntry'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableEnumMap'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$4'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.Traverser$Traversal$3'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.DirectedGraphConnections$4'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.TreeTraverser$PostOrderIterator'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$5'
   Possibly undeclared param 'T' in the class 'java.io.ClassCache$1'
+     The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator)
   Possibly undeclared param 'E' in the class 'java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator'
   Possibly undeclared param 'T_CONS' in the class 'java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator'
-     The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.SpinedBuffer$OfPrimitive$BaseSpliterator)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
   Possibly undeclared param 'S' in the class 'java.util.ServiceLoader$ProviderImpl$2'
   Possibly undeclared param 'T' in the class 'java.util.ServiceLoader$LazyClassPathLookupIterator$2'
   Possibly undeclared param 'E' in the class 'sun.nio.ch.Util$2'
+  Possibly undeclared param 'V' in the class 'com.google.common.collect.MultimapBuilder$EnumSetSupplier'
   Possibly undeclared param 'X' in the class 'jdk.internal.util.Preconditions$1'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterators$4'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.Iterables$3'
@@ -316,7 +441,10 @@
   Possibly undeclared param 'V' in the class 'java.util.Hashtable$ValueCollection'
   Possibly undeclared param 'V' in the class 'java.util.HashMap$Values'
   Possibly undeclared param 'V' in the class 'java.util.AbstractMap$2'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.MapMakerInternalMap$Values'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractTable$Values'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMultimap$Values'
   Possibly undeclared param 'V' in the class 'com.google.common.cache.LocalCache$Values'
@@ -348,6 +476,8 @@
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Range$UpperBoundFn'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Range$LowerBoundFn'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Range$LowerBoundFn'
+  Possibly undeclared param 'N' in the class 'com.sun.tools.javac.util.GraphUtils$Tarjan'
+  Possibly undeclared param 'T' in the class 'com.sun.jmx.mbeanserver.DefaultMXBeanMappingFactory$EnumMapping'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner5$2'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner5$1'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner4$2'
@@ -357,6 +487,8 @@
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner2$2'
   Possibly undeclared param 'U' in the class 'com.google.common.util.concurrent.ClosingFuture$Combiner2$1'
   Possibly undeclared param 'K' in the class 'com.google.common.reflect.TypeToken$TypeCollector$4'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'E' in the class 'com.google.common.graph.AbstractNetwork$3'
   Possibly undeclared param 'N' in the class 'com.google.common.graph.AbstractNetwork$3'
   Possibly undeclared param 'E' in the class 'com.google.common.graph.AbstractNetwork$2'
@@ -399,11 +531,13 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedTable$1'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.Synchronized$SynchronizedTable$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedTable$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$5'
   Possibly undeclared param 'V0' in the class 'com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys$5'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Multimaps$TransformedEntriesMultimap$1'
   Possibly undeclared param 'V1' in the class 'com.google.common.collect.Multimaps$TransformedEntriesMultimap$1'
   Possibly undeclared param 'V2' in the class 'com.google.common.collect.Multimaps$TransformedEntriesMultimap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$ValueForKeyIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.LinkedListMultimap$NodeIterator'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$NodeIterator'
@@ -418,6 +552,9 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMapBasedMultimap$AsMap'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Multimaps$UnmodifiableMultimap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Multimaps$UnmodifiableMultimap$1'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.EnumHashBiMap'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.EnumBiMap'
+  Possibly undeclared param 'V' in the class 'com.google.common.collect.EnumBiMap'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$BiMapEntry'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractBiMap$BiMapEntry'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$1'
@@ -446,27 +583,51 @@
   Possibly undeclared param 'R' in the class 'java.util.stream.ReduceOps$10ReducingSink'
      The name "java.util.Spliterator$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ToArrayTask$OfPrimitive)
      The name "java.util.stream.Node$OfPrimitive" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$ToArrayTask$OfPrimitive)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 4
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
      The name "java.util.stream.ReduceOps$AccumulatingSink" is not class or parameter. Substituting object. (cur_name = java.util.stream.ReduceOps$ReduceTask)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 3
      The name "java.util.stream.Node" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$CollectorTask)
      The name "java.util.stream.Node$Builder" is not class or parameter. Substituting object. (cur_name = java.util.stream.Nodes$CollectorTask)
+  Possibly undeclared param 'K' in the class 'java.util.stream.AbstractShortCircuitTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'V' in the class 'java.util.TreeMap$Values'
   Possibly undeclared param 'K' in the class 'java.util.TreeMap$SubMap'
   Possibly undeclared param 'V' in the class 'java.util.TreeMap$SubMap'
   Possibly undeclared param 'K' in the class 'java.util.TreeMap$SubMap'
   Possibly undeclared param 'V' in the class 'java.util.TreeMap$SubMap'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 2 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.WeakHashMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.WeakHashMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.WeakHashMap$EntryIterator'
   Possibly undeclared param 'K' in the class 'java.util.ImmutableCollections$MapN$MapNIterator'
   Possibly undeclared param 'V' in the class 'java.util.ImmutableCollections$MapN$MapNIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.IdentityHashMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.IdentityHashMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.IdentityHashMap$EntryIterator'
   Possibly undeclared param 'V' in the class 'java.util.LinkedHashMap$LinkedValues'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'java.util.HashMap$ValueIterator'
   Possibly undeclared param 'K' in the class 'java.util.HashMap$KeyIterator'
   Possibly undeclared param 'K' in the class 'java.util.HashMap$EntryIterator'
   Possibly undeclared param 'V' in the class 'java.util.HashMap$EntryIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'V' in the class 'com.google.common.collect.HashBiMap$Inverse'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.HashBiMap$Inverse'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.HashBiMap$Inverse'
@@ -487,6 +648,7 @@
   Possibly undeclared param 'T' in the class 'com.google.common.cache.LocalCache$EntryIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableSortedMap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableSortedMap$1'
+  Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableEnumMap$EnumSerializedForm'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.FluentIterable$3$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ArrayTable$3'
   Possibly undeclared param 'R' in the class 'com.google.common.collect.ArrayTable$1'
@@ -507,6 +669,7 @@
   Possibly undeclared param 'V' in the class 'java.util.Collections$CheckedMap$CheckedEntrySet$1'
   Possibly undeclared param 'E' in the class 'java.util.concurrent.CopyOnWriteArrayList$COWSubList'
      The name "java.util.concurrent.Flow$Subscriber" is not class or parameter. Substituting object. (cur_name = jdk.internal.net.http.LineSubscriberAdapter)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'E' in the class 'java.util.Collections$UnmodifiableList$1'
   Possibly undeclared param 'E' in the class 'java.util.Collections$CheckedList$1'
   Possibly undeclared param 'V' in the class 'sun.util.PreHashedMap$2'
@@ -533,6 +696,7 @@
   Possibly undeclared param 'K' in the class 'java.util.HashMap$KeySet'
   Possibly undeclared param 'K' in the class 'java.util.HashMap$EntrySet'
   Possibly undeclared param 'V' in the class 'java.util.HashMap$EntrySet'
+  Possibly undeclared param 'E' in the class 'java.util.EnumSet'
   Possibly undeclared param 'K' in the class 'java.util.EnumMap$KeySet'
   Possibly undeclared param 'K' in the class 'java.util.EnumMap$EntrySet'
   Possibly undeclared param 'V' in the class 'java.util.EnumMap$EntrySet'
@@ -549,6 +713,7 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractTable$CellSet'
   Possibly undeclared param 'V' in the class 'java.util.AbstractMap$2$1'
   Possibly undeclared param 'E' in the class 'java.util.AbstractList$Itr'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'A' in the class 'com.sun.tools.javac.util.List$3'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractMultimap$Entries'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMultimap$Entries'
@@ -556,14 +721,18 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ForwardingMap$StandardValues'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.CompactHashMap$ValuesView'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.CompactHashMap$ValuesView'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.EnumMultiset'
   Possibly undeclared param 'T' in the class 'com.google.common.reflect.TypeToken$TypeSet'
   Possibly undeclared param 'B' in the class 'com.google.common.collect.MutableClassToInstanceMap$2'
   Possibly undeclared param 'B' in the class 'com.google.common.collect.MutableClassToInstanceMap$2'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Maps$4'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractBiMap$ValueSet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$KeySet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.AbstractBiMap$EntrySet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractBiMap$EntrySet'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.EnumMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.EnumMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.EnumMap$EntryIterator'
@@ -612,12 +781,14 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ArrayTable$ArrayMap$2'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ArrayTable$ArrayMap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ArrayTable$ArrayMap$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedAsMapValues$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Synchronized$SynchronizedAsMapValues$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.FilteredKeySetMultimap$EntrySet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.FilteredKeySetMultimap$EntrySet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.FilteredEntryMultimap$AsMap$1ValuesImpl'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.FilteredEntryMultimap$AsMap$1ValuesImpl'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMultimap$2'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMultimap$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMultimap$1'
@@ -658,6 +829,7 @@
   Possibly undeclared param 'T' in the class 'java.util.stream.WhileOps$1Op'
   Possibly undeclared param 'T' in the class 'java.util.stream.WhileOps$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.WhileOps$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.stream.SliceOps$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.SliceOps$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.DistinctOps$1'
@@ -675,14 +847,32 @@
   Possibly undeclared param 'U' in the class 'java.util.stream.ReduceOps$1'
   Possibly undeclared param 'R' in the class 'java.util.stream.ReduceOps$16'
   Possibly undeclared param 'R' in the class 'java.util.stream.ReduceOps$12'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleTask'
   Possibly undeclared param 'V' in the class 'com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleAsyncTask'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 3 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 3 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$EntryIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$DescendingKeyIterator'
   Possibly undeclared param 'K' in the class 'java.util.TreeMap$NavigableSubMap$EntrySetView'
   Possibly undeclared param 'V' in the class 'java.util.TreeMap$NavigableSubMap$EntrySetView'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'java.util.IdentityHashMap$EntryIterator$Entry'
   Possibly undeclared param 'V' in the class 'java.util.IdentityHashMap$EntryIterator$Entry'
   Possibly undeclared param 'V' in the class 'java.util.LinkedHashMap$LinkedValueIterator'
@@ -691,6 +881,7 @@
   Possibly undeclared param 'V' in the class 'java.util.LinkedHashMap$LinkedEntryIterator'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.Maps$FilteredEntryMap$EntrySet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.Maps$FilteredEntryMap$EntrySet'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 2
   Possibly undeclared param 'T' in the class 'com.google.common.collect.HashBiMap$1'
   Possibly undeclared param 'T' in the class 'com.google.common.collect.HashBiMap$Inverse$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.RegularImmutableBiMap$Inverse'
@@ -700,12 +891,17 @@
   Possibly undeclared param 'E' in the class 'java.util.ArrayDeque$DeqSpliterator'
   Possibly undeclared param 'E' in the class 'java.util.ArrayDeque$DeqIterator'
      The name "java.util.concurrent.Flow$Subscriber" is not class or parameter. Substituting object. (cur_name = jdk.internal.net.http.ResponseSubscribers$SubscriberAdapter)
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'java.util.Collections$UnmodifiableMap$UnmodifiableEntrySet$1'
   Possibly undeclared param 'V' in the class 'java.util.Collections$UnmodifiableMap$UnmodifiableEntrySet$1'
   Possibly undeclared param 'V' in the class 'sun.util.PreHashedMap$2$1'
   Possibly undeclared param 'K' in the class 'sun.awt.WeakIdentityHashMap$2$1'
   Possibly undeclared param 'V' in the class 'sun.awt.WeakIdentityHashMap$2$1'
   Possibly undeclared param 'K' in the class 'sun.awt.WeakIdentityHashMap$1$1'
+  Possibly undeclared param 'E' in the class 'java.util.RegularEnumSet'
+  Possibly undeclared param 'E' in the class 'java.util.JumboEnumSet'
+  Possibly undeclared param 'E' in the class 'java.util.EnumSet$SerializationProxy'
   Possibly undeclared param 'K' in the class 'java.util.AbstractMap$1$1'
   Possibly undeclared param 'E' in the class 'com.google.common.graph.UndirectedMultiNetworkConnections$1'
   Possibly undeclared param 'E' in the class 'com.google.common.graph.MultiEdgesConnecting$1'
@@ -760,6 +956,7 @@
   Possibly undeclared param 'E' in the class 'java.util.Vector$1'
   Possibly undeclared param 'E' in the class 'java.util.ArrayList$Itr'
   Possibly undeclared param 'E' in the class 'java.util.ArrayList$ArrayListSpliterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$1ValuesImpl'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.LinkedListMultimap$1EntriesImpl'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.LinkedListMultimap$1EntriesImpl'
@@ -774,9 +971,11 @@
   Possibly undeclared param 'V' in the class 'com.google.common.collect.AbstractMultimap$EntrySet'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets'
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.ImmutableEnumSet'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMapValues$1'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$CartesianSet$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.RegularImmutableTable$Values'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'V' in the class 'com.google.common.collect.JdkBackedImmutableBiMap$InverseEntries'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.JdkBackedImmutableBiMap$InverseEntries'
   Possibly undeclared param 'C' in the class 'com.google.common.collect.ImmutableRangeSet$ComplementRanges'
@@ -875,9 +1074,11 @@
   Possibly undeclared param 'T' in the class 'java.util.stream.DistinctOps$1$2'
   Possibly undeclared param 'T' in the class 'java.util.stream.DistinctOps$1$1'
   Possibly undeclared param 'T' in the class 'java.util.stream.DistinctOps$1$1'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 1 <> 0
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$ValueIterator'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$KeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.concurrent.ConcurrentSkipListMap$EntryIterator'
+  WARNING: Possible issue with indexes in variable declaration site and isage site. 0 <> 1
   Possibly undeclared param 'K' in the class 'java.util.TreeMap$NavigableSubMap$SubMapKeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$NavigableSubMap$SubMapKeyIterator'
   Possibly undeclared param 'T' in the class 'java.util.TreeMap$NavigableSubMap$SubMapEntryIterator'
@@ -903,6 +1104,8 @@
   Possibly undeclared param 'V' in the class 'sun.util.PreHashedMap$2$1$1'
   Possibly undeclared param 'K' in the class 'sun.awt.WeakIdentityHashMap$2$1$1'
   Possibly undeclared param 'V' in the class 'sun.awt.WeakIdentityHashMap$2$1$1'
+  Possibly undeclared param 'E' in the class 'java.util.RegularEnumSet$EnumSetIterator'
+  Possibly undeclared param 'E' in the class 'java.util.JumboEnumSet$EnumSetIterator'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$4$1'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$3$1'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Sets$2$1'
@@ -967,6 +1170,7 @@
   Possibly undeclared param 'E' in the class 'com.google.common.collect.Lists$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets$1'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMap$MapViewOfValuesAsSingletonSets$1'
+  Possibly undeclared param 'E' in the class 'com.google.common.collect.ImmutableEnumSet$EnumSerializedForm'
   Possibly undeclared param 'E' in the class 'com.google.common.collect.ImmutableMultiset$1'
   Possibly undeclared param 'K' in the class 'com.google.common.collect.ImmutableMultimap$Keys'
   Possibly undeclared param 'V' in the class 'com.google.common.collect.ImmutableMapValues$2'
@@ -1097,4 +1301,4 @@
   Running generated query
   	     Processing: _.? <-< java.lang.Object ()
   	     Processing: _.? <-< java.util.ResourceBundle ()
-   12.0ms   1)  null
+    1)  null

@@ -77,26 +77,8 @@ let () =
   let module V = JGS.FO.Verifier (CT) in
   let open OCanren in
   let open JGS in
-  let rec is_correct_type t =
-    conde
-      [
-        fresh (id index upb lwb)
-          (t === !!(HO.Var { id; index; upb; lwb = Std.some lwb }))
-          (( -<- ) lwb upb !!true);
-        fresh (id index upb)
-          (t === !!(HO.Var { id; index; upb; lwb = Std.none () }));
-        ( wc @@ fun id ->
-          wc @@ fun index ->
-          wc @@ fun upb ->
-          wc @@ fun lwb -> t =/= !!(HO.Var { id; index; upb; lwb }) );
-      ]
-  and ( <-< ) ta tb b =
-    fresh () (b === !!true)
-      (conde [ ta === tb; fresh ti (( -<- ) tb ti !!true) ((ti <-< ta) b) ])
-  and ( -<- ) ta tb flg =
-    fresh ()
-      (V.( -<- ) ( <-< ) ta tb flg)
-      (is_correct_type ta) (is_correct_type tb)
+  let _is_correct_type, ( -<- ), ( <-< ) =
+    Closure.make_closure (module CT) V.( -<- )
   in
   (* let module MM = struct
        open OCanren
@@ -132,11 +114,11 @@ let () =
       helper 0
     in
     let lookup id =
-      let id = nat_logic_to_int id in
-      (* Format.printf "lookup %d\n%!" id; *)
-      match id with
+      match nat_logic_to_int id with
       | id -> name_of_id id
-      | exception OCanren.Not_a_value -> assert false
+      | exception OCanren.Not_a_value ->
+          Format.eprintf "ERROR: free variables inside class id\n%!";
+          "_.??"
     in
     Format.fprintf ppf "%a" (JGS_Helpers.pp_jtyp_logic lookup) x
   in
@@ -146,13 +128,15 @@ let () =
       let () = Printf.printf "1.1 (?) < Object :\n" in
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
-          fresh () (class_or_interface typ)
-            (( -<- ) typ (jtype_inj CT.object_t) !!true))
+          fresh () (class_or_interface typ) (typ -<- jtype_inj CT.object_t))
   in
 
-  let () = Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 4) in
-  let () = Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 5) in
-  let () = Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 7) in
+  let __ () =
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 4);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 5);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 7);
+    ()
+  in
   run_jtype pp (fun typ ->
       let open OCanren in
       fresh ()

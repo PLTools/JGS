@@ -237,22 +237,22 @@
   
   Class D<X>: 155
   
-  Class E<X, Y>: 157
+  Class E<X, Y>: 156
   
-  Class F<X, Y>: 162
+  Class F<X, Y>: 159
   
   12.1 (?) < E<D<B>, A> : 
   [
     Null;
-    Class (162, [Type (Class (124, [])); Type (Class (125, []))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.66493, []))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Null)]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Interface (_.126410, []))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Class (_.162005, [])))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Null))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Intersect ([]))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.316221, [Wildcard (None)]))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Interface (_.353463, [])))])
+    Class (159, [Type (Class (124, [])); Type (Class (125, []))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.66810, []))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Null)]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Interface (_.127018, []))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Class (_.169403, [])))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Null))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Intersect ([]))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.344167, [Wildcard (None)]))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Interface (_.391763, [])))])
   ]
   
   
@@ -260,16 +260,16 @@
   
   12.2 (? - is class) < E<D<B>, A> : 
   [
-    Class (162, [Type (Class (124, [])); Type (Class (125, []))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.35274, []))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Null)]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Interface (_.67930, []))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Class (_.87511, [])))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Null))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Intersect ([]))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.175099, [Wildcard (None)]))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Interface (_.195886, [])))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Array (Class (_.589533, []))))])
+    Class (159, [Type (Class (124, [])); Type (Class (125, []))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.35404, []))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Null)]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Interface (_.68259, []))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Class (_.91249, [])))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Null))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Intersect ([]))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Class (_.190251, [Wildcard (None)]))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Interface (_.217114, [])))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, [])); Type (Array (Array (Class (_.625883, []))))])
   ]
   
   
@@ -277,26 +277,26 @@
   
   12.3 F<A, B> < (?) : 
   [
-    Var {id=_.372, index=_.373, upb=_.374, lwb=Some (Class (162, [Type (Class (124, [])); Type (Class (125, []))]))};
-    Interface (162, [Type (Class (124, [])); Type (Class (125, []))]);
-    Class (162, [Type (Class (124, [])); Type (Class (125, []))]);
-    Interface (162, [Type (Class (124, [])); Wildcard (Some ((Extends, Class (125, []))))]);
-    Class (162, [Type (Class (124, [])); Wildcard (Some ((Extends, Class (125, []))))]);
-    Interface (162, [Type (Class (124, [])); Wildcard (Some ((Super, Class (125, []))))]);
-    Class (162, [Type (Class (124, [])); Wildcard (Some ((Super, Class (125, []))))]);
-    Interface (162, [Wildcard (Some ((Extends, Class (124, [])))); Type (Class (125, []))]);
-    Class (162, [Wildcard (Some ((Extends, Class (124, [])))); Type (Class (125, []))]);
-    Interface (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
-    Class (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
-    Interface (162, [Wildcard (Some ((Super, Class (124, [])))); Type (Class (125, []))]);
-    Class (162, [Wildcard (Some ((Super, Class (124, [])))); Type (Class (125, []))]);
-    Interface (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
-    Class (162, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
-    Interface (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
-    Class (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
-    Interface (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
-    Class (162, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
-    Interface (157, [Type (Class (155, [Type (Class (125, []))])); Type (Class (124, []))]);
-    Class (157, [Type (Class (155, [Type (Class (125, []))])); Type (Class (124, []))])
+    Var {id=_.372, index=_.373, upb=_.374, lwb=Some (Class (159, [Type (Class (124, [])); Type (Class (125, []))]))};
+    Interface (159, [Type (Class (124, [])); Type (Class (125, []))]);
+    Class (159, [Type (Class (124, [])); Type (Class (125, []))]);
+    Interface (159, [Type (Class (124, [])); Wildcard (Some ((Extends, Class (125, []))))]);
+    Class (159, [Type (Class (124, [])); Wildcard (Some ((Extends, Class (125, []))))]);
+    Interface (159, [Type (Class (124, [])); Wildcard (Some ((Super, Class (125, []))))]);
+    Class (159, [Type (Class (124, [])); Wildcard (Some ((Super, Class (125, []))))]);
+    Interface (159, [Wildcard (Some ((Extends, Class (124, [])))); Type (Class (125, []))]);
+    Class (159, [Wildcard (Some ((Extends, Class (124, [])))); Type (Class (125, []))]);
+    Interface (159, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Class (159, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Interface (159, [Wildcard (Some ((Super, Class (124, [])))); Type (Class (125, []))]);
+    Class (159, [Wildcard (Some ((Super, Class (124, [])))); Type (Class (125, []))]);
+    Interface (159, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Class (159, [Wildcard (Some ((Extends, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Interface (159, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Class (159, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Extends, Class (125, []))))]);
+    Interface (159, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Class (159, [Wildcard (Some ((Super, Class (124, [])))); Wildcard (Some ((Super, Class (125, []))))]);
+    Interface (156, [Type (Class (155, [Type (Class (125, []))])); Type (Class (124, []))]);
+    Class (156, [Type (Class (155, [Type (Class (125, []))])); Type (Class (124, []))])
   ]
 

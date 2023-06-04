@@ -74,3 +74,11 @@
     [Class (4, []); Class (5, []); Class (6, [])]
   ]
   
+  Class Int: 4
+  Interface ICollection: 5
+  Class List: 7
+  ? <-< ICollection<int>: 
+  [
+    Class (7, [Type (Class (4, []))])
+  ]
+  

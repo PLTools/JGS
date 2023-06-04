@@ -55,12 +55,12 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
   let add_class, add_interface, decl_by_id, decl_by_id_rel =
     ( (fun (c : cdecl) ->
         let id = new_id () in
-        let d = C { c with params = make_params c.params } in
+        let d = C { c with params = (* make_params *) c.params } in
         m := M.add id d !m;
         id),
       (fun (i : idecl) ->
         let id = new_id () in
-        let d = I { i with params = make_params i.params } in
+        let d = I { i with params = (* make_params *) i.params } in
         m := M.add id d !m;
         id),
       (fun id -> M.find id !m),

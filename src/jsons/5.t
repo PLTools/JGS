@@ -5,8 +5,8 @@
   
   Running generated query
   	     Processing: _.? <-< java.lang.Object ()
-    1)  java.lang.Object
-    2)  java.lang.Object
+    1)  null
+    2)  Array<java.lang.Object>
     3)  java.lang.Object
     4)  null
-    5)  null
+    5)  java.lang.Clonable

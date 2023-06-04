@@ -162,7 +162,7 @@ let collect_used_typenames =
     | Wildcard (Some (_, t)) -> helper acc t
     | Intersect xs -> List.fold_left helper acc xs
     | Var { upb; lwb; id; _ } ->
-        (* let acc = SS.add id acc in *)
+        let acc = SS.add id acc in
         let acc = match lwb with Some t -> helper acc t | None -> acc in
         helper acc upb
   in
@@ -402,18 +402,18 @@ let make_classtable table =
         let cid =
           CT.make_class_fix
             ~params:(fun cur_id ->
-              log "  make_class_fix %S. params" cname;
+              (* log "  make_class_fix %S. params" cname; *)
               cur_name := (cname, cur_id);
               List.mapi on_param params)
             (fun cur_id ->
-              log "  make_class_fix %S. superclass" cname;
+              (* log "  make_class_fix %S. superclass" cname; *)
               cur_name := (cname, cur_id);
               match super with
               | None -> CT.object_t
               | Some super ->
                   unwrap (on_typ super) Fun.id ~on_error:(fun () -> CT.object_t))
             (fun cur_id ->
-              log "  make_class_fix %S. superinterfaces" cname;
+              (* log "  make_class_fix %S. superinterfaces" cname; *)
               cur_name := (cname, cur_id);
               Stdlib.List.filter_map on_typ supers)
         in
@@ -494,7 +494,7 @@ let make_classtable table =
         | exception Not_found -> (
             match Hashtbl.find classes name with
             | id ->
-                log "Building a class id=%d, name = %s" id name;
+                (* log "Building a class id=%d, name = %s" id name; *)
                 return @@ JGS.Class (id, List.map on_arg args)
             | exception Not_found ->
                 Format.eprintf
@@ -516,7 +516,7 @@ let make_classtable table =
         | exception Not_found -> (
             match Hashtbl.find ifaces name with
             | id ->
-                log "Building an interface %d" id;
+                (* log "Building an interface %d" id; *)
                 return @@ JGS.Interface (id, List.map on_arg args)
             | exception Not_found ->
                 Format.eprintf
@@ -535,7 +535,12 @@ let make_classtable table =
               (fst !cur_name);
             return CT.object_t
         | { vi_id; vi_index } ->
-            assert (index = vi_index);
+            if index <> vi_index then
+              Format.eprintf
+                "WARNING: Possible issue with indexes in variable declaration \
+                 site and isage site. %d <> %d\n\
+                 %!"
+                index vi_index;
             return
             @@ JGS.(
                  Var
@@ -580,7 +585,7 @@ let pp_var_desc ppf = function
 type result_query =
   (JGS.HO.jtype_injected ->
   JGS.HO.jtype_injected ->
-  bool OCanren.ilogic ->
+  (* bool OCanren.ilogic -> *)
   OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
@@ -690,7 +695,14 @@ let make_query j : _ * result_query * _ =
     let make_vars names k =
       let storage = Hashtbl.create 23 in
       let rec helper = function
-        | [] -> k (fun s -> Hashtbl.find storage s)
+        | [] ->
+            k (fun s ->
+                try Hashtbl.find storage s
+                with Not_found ->
+                  failwiths
+                    "Logic variable for Var named %s should be defined \
+                     beforehand, but doesn't. "
+                    s)
         | h :: tl ->
             OCanren.Fresh.one (fun q ->
                 Hashtbl.add storage h q;
@@ -728,7 +740,13 @@ let make_query j : _ * result_query * _ =
                 | Extends -> !!JGS.HO.Extends
               in
               JGS_Helpers.wildcard (Std.some !!(pol, on_typ typ))
-          | t -> JGS_Helpers.type_ (on_typ t)
+          | t ->
+              let __ () =
+                Format.printf "t = %a\n%!"
+                  (Yojson.Safe.pretty_print ~std:false)
+                  (yojson_of_jtype t)
+              in
+              JGS_Helpers.type_ (on_typ t)
         in
 
         let open OCanren in
@@ -737,7 +755,8 @@ let make_query j : _ * result_query * _ =
           Format.printf "\t%sProcessing: %a <-< %a\n%!"
             (if pos then "     " else " NOT ")
             pp_var_desc name pp_jtype b;
-          is_subtype (ask_var name) (targ_inj (on_typ b)) !!pos
+          is_subtype (ask_var name) (targ_inj (on_typ b))
+          (* TODO: There were bool here to switch positive/negative *)
         in
         let pos_upper_goals = List.map (wrap true) upper_bounds in
         let pos_lower_goals = List.map (wrap true) lower_bounds in

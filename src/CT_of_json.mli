@@ -85,7 +85,7 @@ exception Name_not_found of class_id
 type result_query =
   (JGS.HO.jtype_injected ->
   JGS.HO.jtype_injected ->
-  bool OCanren.ilogic ->
+  (*   bool OCanren.ilogic -> *)
   OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->

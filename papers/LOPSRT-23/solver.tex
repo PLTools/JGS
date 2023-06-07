@@ -1,0 +1,22 @@
+\section{Relational Subtyping Solver}
+\label{sec:solver}
+
+The approach of verifier-to-solver conversion relies on the implementation of functional verifier for the problem in question. In our
+case such verifier should test if two given ground types are in the subtyping relation. This, in particular, requires implementation
+of capture conversion, ``contains'' relation, and direct subtyping verifier. Then a refexive-transitive closure of the latter has to
+be implemented. The functional verifier is then converted into relational form which by construction delivers a subtyping solver for
+non-ground types with free variables.
+
+A simple observation, however, makes its obvious that it is in fact much easier to implement reflexive-transitive closure directly
+in relational language. Indeed, given relation $R$ its reflexive-transitive $R^*$ closure can be expressed by just
+
+\[
+R^*\,(x,\, y) = R\, (x,\, y)\vee x\equiv y\vee\exists\, z\,.\,R\,(x,\,z)\wedge R\,(z,\,y)
+\]
+
+This is rather expected by the very nature of relational programming.
+
+However, from the implementation standpoint the application of this technique imposes a certain problem since ``$\prec$'' and ``$\precprec$''
+are mutually recursive, and we expect ``$\prec$'' to be obtained as a result of relational conversion of functional implementation. In current
+prototype implementation open recursion is used and the knot is tied on the very top level. We hope that this (obvious) solution will be
+scalable enough to be applied in the final functional-relational mixture.

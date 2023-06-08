@@ -19,9 +19,10 @@ let _ =
   in
 
   Printf.printf "1.1 (?) < Object : %s\n"
-  @@ run_jtype ~n:5
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ SampleCT.object_t) !!true );
+  @@ run_jtype ~n:5 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ SampleCT.object_t) !!true));
 
   sep ();
 
@@ -32,9 +33,10 @@ let _ =
   sep ();
 
   Printf.printf "2 (?) < Cloneable : %s\n"
-  @@ run_jtype ~n:3
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ SampleCT.cloneable_t) !!true );
+  @@ run_jtype ~n:3 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ SampleCT.cloneable_t) !!true));
 
   sep ();
 
@@ -45,9 +47,10 @@ let _ =
   sep ();
 
   Printf.printf "4.1 (?) < Object[] : %s\n"
-  @@ run_jtype ~n:10
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ Array SampleCT.object_t) !!true );
+  @@ run_jtype ~n:10 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ Array SampleCT.object_t) !!true));
 
   sep ();
 
@@ -70,9 +73,10 @@ let _ =
   sep ();
 
   Printf.printf "7.1 (?) < Serializable[] : %s\n"
-  @@ run_jtype ~n:10
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ Array SampleCT.serializable_t) !!true );
+  @@ run_jtype ~n:10 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ Array SampleCT.serializable_t) !!true));
 
   sep ();
 
@@ -93,9 +97,10 @@ let _ =
   Printf.printf "Class B: %d\n\n" class_b;
 
   Printf.printf "8.1 (?) < A : %s\n"
-  @@ run_jtype ~n:3
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ Class (class_a, [])) !!true );
+  @@ run_jtype ~n:3 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ Class (class_a, [])) !!true));
 
   sep ();
 
@@ -106,9 +111,10 @@ let _ =
   sep ();
 
   Printf.printf "8.3 (?) < B : %s\n"
-  @@ run_jtype ~n:2
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ Class (class_b, [])) !!true );
+  @@ run_jtype ~n:2 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ Class (class_b, [])) !!true));
 
   sep ();
 
@@ -137,9 +143,10 @@ let _ =
   sep ();
 
   Printf.printf "10.1 (?) < IA : %s\n"
-  @@ run_jtype ~n:3
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ Interface (intf_a, [])) !!true );
+  @@ run_jtype ~n:3 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ Interface (intf_a, [])) !!true));
 
   sep ();
 
@@ -204,9 +211,10 @@ let _ =
   in
 
   Printf.printf "12.1 (?) < E<D<B>, A> : %s\n"
-  @@ run_jtype ~n:10
-       ( remove_intersercts_and_vars @@ fun q ->
-         ( -<- ) q (jtype_inj @@ e_d_b_a) !!true );
+  @@ run_jtype ~n:10 (fun q ->
+         fresh ()
+           (only_classes_interfaces_and_arrays q)
+           (( -<- ) q (jtype_inj @@ e_d_b_a) !!true));
 
   sep ();
 

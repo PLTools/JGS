@@ -77,8 +77,9 @@ let () =
   let module V = JGS.FO.Verifier (CT) in
   let open OCanren in
   let open JGS in
-  let _is_correct_type, ( -<- ), ( <-< ) =
-    Closure.make_closure (module CT) V.( -<- )
+  let open Closure in
+  let { closure = ( -<- ); direct_subtyping = ( <-< ); _ } =
+    Closure.make_closure_subtyping (module CT) V.( -<- )
   in
   (* let module MM = struct
        open OCanren

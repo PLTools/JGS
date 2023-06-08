@@ -29,8 +29,9 @@ let rec are_not_equal = function
 let _ =
   let module SampleCT = SampleCT () in
   let module V = FO.Verifier (SampleCT) in
-  let is_correct_type, ( -<- ), ( <-< ) =
-    Closure.make_closure (module SampleCT) V.( -<- )
+  let open Closure in
+  let { is_correct_type; direct_subtyping = ( -<- ); closure = ( <-< ) } =
+    make_closure_subtyping (module SampleCT) V.( -<- )
   in
   (* let ( <-< ) ta tb = failwith "Oh..." in
      let is_correct_type t =
@@ -63,24 +64,30 @@ let _ =
   let _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
 
   (* Many repeats of B, no mentions of C *)
-  let _ =
-    run_jtype ~msg:"? <-< A (without intersects vars and null)" ~n:10
-      ( remove_intersercts_and_vars @@ fun q ->
-        fresh () (q =/= !!HO.Null) (q <-< jtype_inj a) )
+  let __ _ =
+    run_jtype ~msg:"? <-< A (without intersects vars and null)" ~n:10 (fun q ->
+        fresh ()
+          (only_classes_interfaces_and_arrays q)
+          (q =/= !!HO.Null)
+          (q <-< jtype_inj a))
   in
 
   (* But we can get C if we explicitly ask *)
-  let _ =
-    run_jtype ~msg:"C <-< A" ~n:10
-      ( remove_intersercts_and_vars @@ fun q ->
-        fresh () (q === jtype_inj c) (q <-< jtype_inj a) )
+  let __ _ =
+    run_jtype ~msg:"C <-< A" ~n:10 (fun q ->
+        fresh ()
+          (only_classes_interfaces_and_arrays q)
+          (q === jtype_inj c)
+          (q <-< jtype_inj a))
   in
 
   (* Evaluates without answers? Seems like right behavior *)
   let __ _ =
-    run_jtype ~msg:"A1 <-< A" ~n:1
-      ( remove_intersercts_and_vars @@ fun q ->
-        fresh () (q === jtype_inj a1) (q <-< jtype_inj a) )
+    run_jtype ~msg:"A1 <-< A" ~n:1 (fun q ->
+        fresh ()
+          (only_classes_interfaces_and_arrays q)
+          (q === jtype_inj a1)
+          (q <-< jtype_inj a))
   in
 
   (* How much 1 length paths from A to B? Only one. *)
@@ -171,8 +178,9 @@ let _ =
 let _ =
   let module SampleCT = SampleCT () in
   let module V = FO.Verifier (SampleCT) in
-  let is_correct_type, ( -<- ), ( <-< ) =
-    Closure.make_closure (module SampleCT) V.( -<- )
+  let open Closure in
+  let { is_correct_type; direct_subtyping = ( -<- ); closure = ( <-< ) } =
+    make_closure_subtyping (module SampleCT) V.( -<- )
   in
   let class_int = SampleCT.make_class [] SampleCT.object_t [] in
   let int = Class (class_int, []) in
@@ -223,10 +231,10 @@ let _ =
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 5);
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 7)
   in
-  run_jtype ~n:1 ~msg:"? <-< ICollection<int>"
-    ( remove_intersercts_and_vars @@ fun q ->
+  run_jtype ~n:1 ~msg:"? <-< ICollection<int>" (fun q ->
       fresh super
+        (only_classes_interfaces_and_arrays q)
         (super === jtype_inj int_collection)
         (q =/= jtype_inj Null)
-        (q <-< super) );
+        (q <-< super));
   ()

@@ -155,17 +155,16 @@ let var index id lwb upb = !!(HO.Var { index; id; lwb; upb })
 (*********************************** Relational helpers *******************************************)
 (**************************************************************************************************)
 
-let remove_intersercts_and_vars query q =
+let only_classes_interfaces_and_arrays q =
   let open HO in
   wc @@ fun inter ->
   wc @@ fun id ->
   wc @@ fun lwb ->
   wc @@ fun upb ->
   wc @@ fun index ->
-  fresh ()
+  fresh () (q =/= !!Null)
     (q =/= !!(Intersect inter))
     (q =/= !!(Var { id; lwb; upb; index }))
-    (query q)
 
 module JGS_PP = struct
   [@@@ocaml.warnerror "-8-39"]

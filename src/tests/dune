@@ -45,6 +45,18 @@
    ;
    )))
 
+(executable
+ (name standartClassesTests)
+ (modules standartClassesTests)
+ (libraries JGS_lib OCanren)
+ (flags (-rectypes))
+ (preprocess
+  (pps
+   GT.ppx_all
+   OCanren-ppx.ppx_fresh
+   ;
+   )))
+
 (cram
  (deps
   ./functionalTests.exe
@@ -52,5 +64,6 @@
   ./relationalForwardTests.exe
   ./relationalBackwardTests.exe
   ./relationalClosureTests.exe
+  ./standartClassesTests.exe
   ;
   ))

@@ -1,10 +1,9 @@
 \section{Java Generics}
 
-Here we briefly describe the relevant (at the first glance) subpart of Java type system. All
-information in this section is directly derived from the Java Language Specification~\cite{JLS};
-however the accuracy of this derivation has yet to be scrutineed. We also refrain from
-reiterating on the non-generic part of Java type system assuming reader's familiarity with the
-concepts of reference types, arrays, classes, interfaces, and inheritance.
+Here we briefly describe the relevant subpart of \textsc{Java} type system. All
+information in this section is directly derived from the Java Language Specification~\cite{JLS}.
+We also refrain from reiterating on the non-generic part of \textsc{Java} type system assuming the reader's familiarity
+with the concepts of reference types, arrays, classes, interfaces, and inheritance.
 
 The subsystem we are dealing with contains generic class/interface types, array types,
 type variables, null and intersection types:
@@ -24,7 +23,7 @@ Here $\mathscr{T}_\bot$ denotes optional type.
 Type variables are bounded in the sense that they always have a certain \emph{upper bound}. This upper
 bound can be either specified explicitly or assumed to be \java{java.lang.Object}. In addition
 to the upper bound a type variable can be equipped with a \emph{lower bound}. The lower bound can only
-be derived implicitly as a result of \emph{capture conversion}. We denote the upper bound of a variable
+be derived implicitly as a result of \emph{capture conversion} (see below). We denote the upper bound of a variable
 by  superscript and lower~--- by subscript.
 
 Generic class (or interface) is a class/interface which is equipped with a number of
@@ -44,7 +43,7 @@ an intersection type.
 Type variables in scopes of their declarations behave like regilar types; the scope of a type variable is
 determined by the position of its introduction (either generic class/interface or generic method). It
 is unclear what is the scope of type variables introduced implicitly as a result of capture
-conversion (but this might be irrelevant to the problem we are dealing with).
+conversion, but this might be irrelevant to the problem we are dealing with.
 
 Intersection types can not be declared explicitly; the only positions in which they can be specified are
 upper bounds of type parameters in generic class/interface declarations. However intersection types can be derived

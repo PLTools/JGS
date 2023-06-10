@@ -1,6 +1,26 @@
 \section{Introduction}
 \label{sec:intro}
 
+Java~\cite{java} is one of the most popular high-level programming languages with millions of developers worldwide~\cite{tiobe} and
+thousands of applications written in, including critical ones. There is no surprise that methods, approaches and tools for verification and testing
+of Java code is an active research topic with applicable results. One of the most prominent and ambitious method for software testing  which
+allows to discover some errors invisible for other methods is \emph{symbolic execution}~\cite{Symbolic}.
+
+Our experience shows that a precise Java generics type solver is a crucial part of symbolic execution engine. In SBST-2022 competition~\cite{SBCT} on
+automated test generation our symbolic engine UTBotJava~\cite{UTBot} failed to generate tests for several use cases where generic parameters influenced
+symbolic execution process, and several generics-related issues are still unresolved\footnote{https://github.com/UnitTestBot/UTBotJava/issues/730, https://github.com/UnitTestBot/UTBotJava/issues/1994, https://github.com/UnitTestBot/UTBotJava/issues/924}.
+
+In this paper we consider the problem of solving a system of subtyping inequations for Java generic types with free variables. Using relational programming techniques and
+verifier-to-solver approach we come up with a simple and declarative albeit not very efficient for now solver. As subtyping relation in Java with the presence of
+generics is known to be undecidable~\cite{JGTC} the solver can not be total; however due to the completeness of relational search~\cite{certified} it ultimately
+finds all existing solutions. We do not claim our current result to be an ultimate achievement; 
+however is demonstrates pretty well the advantages and caveats of relational programming approach we investigate. This work is still in its active stage, and we
+plan to apply a number of problem-specific optimizations and modifications for boosting the performance of the solution we have so far.
+
+
+\begin{comment}
+so this paper additionally addresses the problem of developing type solver applicable for accurate symbolic execution.
+
 Java type solver is important because it helps in resolving the types of variables and expressions in a Java program during compilation. This is necessary because Java is a strongly-typed language, meaning that every variable, expression, and function must be explicitly declared with a specific data type. 
 
 Without a type solver, it would be difficult for the compiler to determine the type of a variable or expression, leading to errors and bugs in the program. The type solver helps to ensure that the program is type-safe, meaning that all data types are used correctly and consistently throughout the program.
@@ -12,3 +32,4 @@ In static source code analysis, the type solver is used to resolve the types of 
 Additionally, the type solver can help to improve the accuracy and efficiency of static analysis. By resolving the types at compile-time, the analysis can be performed more quickly and accurately than if the types were resolved at runtime. This can help to identify potential issues earlier in the development process, saving time and resources.
 
 Overall, the Java type solver is an important tool for static source code analysis. It helps to ensure the correctness and efficiency of the analysis, and can help to identify potential issues earlier in the development process.
+\end{comment}

@@ -26,6 +26,7 @@
 \usepackage{verbatim}
 \usepackage{listings}
 \usepackage{amsmath,mathrsfs,amssymb}
+\usepackage{multirow}
 
 \newcommand{\term}[1]{\mbox{\texttt{\textbf{#1}}}}
 \newcommand{\run}[2]{\term{run}^{#1}\,\left[#2\right]}
@@ -85,35 +86,32 @@ morecomment=[s]{(*}{*)}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
-\author{Dmitry Kosarev\inst{2}\orcidID{0000-1111-2222-3333} \and
-Peter Lozov\inst{2}\orcidID{1111-2222-3333-4444} \and
-Dmitry Ivanov\inst{1}\orcidID{2222--3333-4444-5555}\and
-Dmitry Boulytchev\inst{2}\orcidID{}
+\author{
+  Peter Lozov\inst{1}\orcidID{0000-0003-3563-2828} \and
+  Dmitry Kosarev\inst{1}\orcidID{0000-0002-6773-5322} \and
+  Dmitry Ivanov\inst{2}\and
+  Dmitry Boulytchev\inst{1}\orcidID{0000-0001-8363-7143}
 }
 %
 \authorrunning{Dmitry Kosarev et al.}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-\institute{Saint-Petersburg,\\
-\email{korifey@gmail.com}\\
-Saint-Petersburg State University, \\
-\email{\{dboulytchev\}@math.spbu.ru}}
+\institute{
+Saint-Petersburg State University,\\
+Universitetskaya emb., 7-9, 199034, St.Petersburg, Russia\\
+\email{lozov.peter@gmail.com},\email{kakadu.hafanana@gmail.com},\email{dboulytchev@math.spbu.ru}\\
+Saint-Petersburg,\\
+\email{korifey@gmail.com}\\}
 %
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
   We present a solver for Java generics type system implemented using relational verifier-to-solver
-  approach. The solver finds solutions for a system of subtyping inequations
-  
-  This is a zero-iteration analysis for the problem of solving systems of subtyping
-  equations in the Java generics type system. More specifically, we put the
-  problem in the context of relational verifier-to-solver approach, which brings in a certain
-  specificity to the analysis. We reiterate on the Java generics type system, subtyping
-  relation and relevant notions, and discuss the pecularities of relational verifier-to-solver
-  approach application. %, and describe a prototype of functional subtyping verifier.
-
-\keywords{First keyword  \and Second keyword \and Another keyword.}
+  approach. The solver finds solutions for a system of subtyping inequations with free variables
+  and thus can be used to determine a concrete type satisfying a set of constraints. The
+  context of this work is symbolic execution for testing and verification of Java programs.
+\keywords{Java generics \and relational programming \and relational solvers.}
 \end{abstract}
 %
 %

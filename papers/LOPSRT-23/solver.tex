@@ -14,9 +14,40 @@ in relational language. Indeed, given relation $R$ its reflexive-transitive $R^*
 R^*\,(x,\, y) = R\, (x,\, y)\vee x\equiv y\vee\exists\, z\,.\,R\,(x,\,z)\wedge R\,(z,\,y)
 \]
 
-This is rather expected by the very nature of relational programming.
+which can be easily directly encoded in \textsc{OCanren}. However, from the implementation standpoint the application of this technique
+imposes a certain problem since ``$\prec$'' and ``$\precprec$'' are mutually recursive, and we expect ``$\prec$'' to be obtained as a
+result of relational conversion of functional implementation.
 
-However, from the implementation standpoint the application of this technique imposes a certain problem since ``$\prec$'' and ``$\precprec$''
-are mutually recursive, and we expect ``$\prec$'' to be obtained as a result of relational conversion of functional implementation. In current
-prototype implementation open recursion is used and the knot is tied on the very top level. We hope that this (obvious) solution will be
-scalable enough to be applied in the final functional-relational mixture.
+We discuss now the implementation of functional verifier. We do not present the code right here for space considerations but provide
+a link\footnote{https://github.com/dboulytchev/JGS/blob/main/src/JGS.ml} to a complete commented source code. The verifier is
+implemented in \textsc{OCaml} in a rather direct manner: we encode types as data structures of certain types and give a
+direct implementation for all components of subtyping relation except the transitive closure. All these definitions are ``wrapped'' in a
+functor (an \textsc{OCaml} module parameterized by a module) which takes \emph{class table} as a parameter. The class table
+contains the definitions of relevant set of classes with their direct supertyping encoding, description of their type parameters, etc.
+The concrete contents of the class table is supplied by the symbolic execution engine.
+
+To build a mixture of relationally-converted code and relational implementation of transitive closure we use open recursion: the functional
+implementation of direct supertyping relation ``$\prec$'' is parameterized by subtyping relation  ``$\precprec$''. In functional implementation
+the knot is tied not by transitive closure of ``$\prec$'' but by ``$\prec$'' itself:
+
+\begin{lstlisting}[language=ocanren,mathescape=true]
+  let rec ($\precprec$) ta tb = ta $\prec$ tb 
+  and ($\prec$) ta tb     = Verify.($\prec$) ($\precprec$) ta tb
+\end{lstlisting}
+
+Here ``\lstinline|Verify|'' is a module acquired by an instantiation of the verifier for a simple hand-written testing class table.
+Thus, functional verifier can only check the subtyping of types no more then two ``steps'' away from each other.
+
+The next step is applying relational conversion for this functional verifier. For technical reasons this requires a mild
+``massaging'' of initial \textsc{OCaml} implementation: arrays (more efficient in functional world) have to be replaced
+with lists, and some changes have to be made in order to compensate for the incompleteness of current relational
+conversion implementation. Again, we do not show the code here, but provide a link to a complete implementation\footnote{https://github.com/Lozov-Petr/JGS/blob/noCanren/src/JGS.noc.ml}.
+After the relational conversion and the parameterization of verifier functor with a classtable a proper recursive knot is tied by a transitive closure of ``$\prec$'', which
+completes the construction of the solver. While functional verifier can only work for ground types and return a boolean value, its relational counterpart
+searches for all substitution for free variables in incomplete types is order to make them subtype each other.
+
+Upon reading this section one may feel dissatisfaction~--- indeed, the (presumably) most interesting and essential part of the paper discusses nothing more
+than some technical issues of encoding the set of formal definitions given earlier. But this is, actually, the very essence of the approach we advocate~---
+no specific efforts have to be made in order to come up with domain-specific solver. 
+
+

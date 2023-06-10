@@ -7,9 +7,28 @@
   \label{fig:class-graph}
 \end{figure}
 
-
+\begin{comment}
     On pic.~\ref{fig:class-graph} class \textbf{AbstractCollection} extends class \textbf{Object}. Also classes \textbf{ArrayList}, \textbf{Vector}, \textbf{LinkedList}, \textbf{HashSet}, \textbf{TreeSet}, \textbf{ConcurrentSkipListSet} and \textbf{LinkedHashSet} implements interfaces \textbf{Cloneable} and \textbf{Serializable}. Classes \textbf{BlockingQueue} and \textbf{LinkedBlockingDeque} implements interface \textbf{Serializable} only.
+\end{comment}
 
+To perform the evaluation of the solver we came up with we prepared a sample class table using a subset of standard \textsc{Java} collection classes and interfaces. The
+inheritance graph for this subset is shown in Fig.~\ref{fig:class-graph}; the nodes with sold border correspond to classes, with dashed border~--- to interfaces.
+
+Our first attempt discovered the fact that the solver was unsound~--- it established the subtyping relation for two arbitrary types. This finding constitutes a drastic
+contradiction with the theory which predicts that the solver has to be correct by construction. The careful analysis, however, discovered that functional
+vefifier was unsound as well! The reason was very simple: let us have two arbitrary types $A$ and $B$. To establish, for example, that $A \precprec B$, take a
+type variable $\alpha^B_A$ with upper bound $B$ and lower bound $A$. Then, by definition
+
+\[
+A\precprec \alpha^B_A \wedge \alpha^B_A\precprec B \Rightarrow A\precprec B
+\]
+
+In the JLS there were no explicit requirement for lower/upper bounds of type variables to respect the subtyping relation, thus this requirement was not
+encoded in the verifier.
+
+Another finding of the evaluation was that, contrary to the expectation, the direct supertyping relation is actually reflexive (in full accordance with the JLS).
+
+\begin{figure}[h]
     \begin{tabular}{c|c|c|c|c}
         \multirow{2}{*}{Test} & \multicolumn{2}{c|}{JGS} & \multicolumn{2}{c}{Simplified JGS} \\
         \cline{2-5}
@@ -51,7 +70,26 @@
         TreeSet\textlangle Object\textrangle $\,\precprec$ ?
         &&&&
     \end{tabular}
+    \caption{The results of evaluation for some queries}
+    \label{fig:eva}
+\end{figure}
 
+After we added explicit subtyping constraint for the bounds of type variables, we could, indeed, obtain all correct subtyping results
+    for queries we took for evaluation. The results are shown in Fig.~\ref{fig:eva}.
+
+    We encountered a few other issues. First, in the presence of capture conversion the solver works very slow and can not always
+    provide answers in a reasonable time even for very simple queries (see column JGS). However, capture conversion makes the
+    solver return wildcard types which are not instantiable (can not be used as types of concrete data values). In the
+    scenario of usage we are aimed at such types are meaningless. Thus we evaluated a simplified version of the solver with
+    capture conversion switched off (see Simplified JGS column).    
+    
+    Another issue is that the solver tends to return duplicating answers. In the columns ``Answers'' the numerator gives the number of
+    returned answers while denominator~--- the total number of correct pairwise distinct solutions.
+
+    We can conclude that, first, our approach discovers the incompleteness in specifications and, second, that the simplified version
+    with capture conversion switched off shows a promising performance results.
+    
+    
     \begin{comment}
     \newpage
 

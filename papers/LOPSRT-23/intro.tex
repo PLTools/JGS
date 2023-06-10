@@ -1,17 +1,17 @@
 \section{Introduction}
 \label{sec:intro}
 
-Java~\cite{java} is one of the most popular high-level programming languages with millions of developers worldwide~\cite{tiobe} and
+\textsc{Java}~\cite{java} is one of the most popular high-level programming languages with millions of developers worldwide~\cite{tiobe} and
 thousands of applications written in, including critical ones. There is no surprise that methods, approaches and tools for verification and testing
-of Java code is an active research topic with applicable results. One of the most prominent and ambitious method for software testing  which
+of \textsc{Java} code is an active research topic with applicable results. One of the most prominent and ambitious method for software testing  which
 allows to discover some errors invisible for other methods is \emph{symbolic execution}~\cite{Symbolic}.
 
-Our experience shows that a precise Java generics type solver is a crucial part of symbolic execution engine. In SBST-2022 competition~\cite{SBCT} on
+Our experience shows that a precise \textsc{Java} generics type solver is a crucial part of symbolic execution engine. In SBST-2022 competition~\cite{SBCT} on
 automated test generation our symbolic engine UTBotJava~\cite{UTBot} failed to generate tests for several use cases where generic parameters influenced
 symbolic execution process, and several generics-related issues are still unresolved\footnote{https://github.com/UnitTestBot/UTBotJava/issues/730, https://github.com/UnitTestBot/UTBotJava/issues/1994, https://github.com/UnitTestBot/UTBotJava/issues/924}.
 
-In this paper we consider the problem of solving a system of subtyping inequations for Java generic types with free variables. Using relational programming techniques and
-verifier-to-solver approach we come up with a simple and declarative albeit not very efficient for now solver. As subtyping relation in Java with the presence of
+In this paper we consider the problem of solving a system of subtyping inequations for \textsc{Java} generic types with free variables. Using relational programming techniques and
+verifier-to-solver approach we come up with a simple and declarative albeit not very efficient for now solver. As subtyping relation in \textsc{Java} with the presence of
 generics is known to be undecidable~\cite{JGTC} the solver can not be total; however due to the completeness of relational search~\cite{certified} it ultimately
 finds all existing solutions. We do not claim our current result to be an ultimate achievement; 
 however is demonstrates pretty well the advantages and caveats of relational programming approach we investigate. This work is still in its active stage, and we

@@ -42,42 +42,35 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       incr n;
       i
 
-  module M = Map.Make (struct
-    type t = int
-
-    let compare = compare
-  end)
+  module M = Map.Make (Int)
 
   let make_tvar index upb = Var { id = new_id (); index; upb; lwb = None }
   let m = ref M.empty
+  let table_was_changed = ref true
   let make_params params = Stdlib.List.mapi (fun i p -> make_tvar i p) params
 
-  let add_class, add_interface, decl_by_id, decl_by_id_rel =
-    ( (fun (c : cdecl) ->
-        let id = new_id () in
-        let d = C { c with params = (* make_params *) c.params } in
-        m := M.add id d !m;
-        id),
-      (fun (i : idecl) ->
-        let id = new_id () in
-        let d = I { i with params = (* make_params *) i.params } in
-        m := M.add id d !m;
-        id),
-      (fun id -> M.find id !m),
-      fun id rez ->
-        fresh id_val (id id_val)
-          (let disjs =
-             Stdlib.List.map (fun (k, v) ->
-                 fresh () (id_val === Std.nat k) (rez === decl_inj v))
-             @@ M.bindings !m
-           in
-           match disjs with [] -> failure | _ -> conde disjs) )
+  let add_class (c : cdecl) =
+    let id = new_id () in
+    let d = C { c with params = (* make_params *) c.params } in
+    m := M.add id d !m;
+    table_was_changed := true;
+    id
+
+  let add_interface (i : idecl) =
+    let id = new_id () in
+    let d = I { i with params = (* make_params *) i.params } in
+    m := M.add id d !m;
+    table_was_changed := true;
+    id
+
+  let decl_by_id id = M.find id !m
 
   let add_class_fix (c : int -> cdecl) =
     let id = new_id () in
     let c = c id in
     let d = C { c with params = c.params } in
     m := M.add id d !m;
+    table_was_changed := true;
     id
 
   let add_interface_fix (i : int -> idecl) =
@@ -85,6 +78,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     let iface = i id in
     let d = I { iface with params = iface.params } in
     m := M.add id d !m;
+    table_was_changed := true;
     id
 
   let make_tvar index upb = Var { id = new_id (); index; upb; lwb = None }
@@ -146,7 +140,26 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
   let new_var = new_id
 
   module HO = struct
-    let decl_by_id = decl_by_id_rel
+    let decl_by_id =
+      let disjs_args = ref [] in
+      let update_disjs_args () =
+        if !table_was_changed then (
+          disjs_args :=
+            Stdlib.List.map (fun (k, v) -> (Std.nat k, decl_inj v))
+            @@ M.bindings !m;
+          table_was_changed := false)
+      in
+      fun id rez ->
+        update_disjs_args ();
+        fresh id_val (id id_val)
+          (match
+             Stdlib.List.map
+               (fun (k, v) -> id_val === k &&& (rez === v))
+               !disjs_args
+           with
+          | [] -> failure
+          | disjs -> conde disjs)
+
     let top = Class (-1, [])
     let object_t x = x === jtype_inj object_t
     let cloneable_t x = x === jtype_inj cloneable_t

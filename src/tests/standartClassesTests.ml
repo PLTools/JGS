@@ -165,6 +165,28 @@ module CollectionClasses = struct
     mk_generic_class "ConcurrentSkipListSet" ~super:abstract_set
       ~supers:[ navigable_set; cloneable; serializable ]
 
+  let linked_hash_set =
+    mk_generic_class "LinkedHashSet" ~super:hash_set
+      ~supers:[ set; cloneable; serializable ]
+
+  let abstract_queue =
+    mk_generic_class "AbstractQueue" ~super:abstract_collection
+      ~supers:[ queue ]
+
+  let blocking_queue =
+    mk_generic_interface "BlockingQueue" ~supers:[ queue; serializable ]
+
+  let array_blocking_queue =
+    mk_generic_class "ArrayBlockingQueue" ~super:abstract_queue
+      ~supers:[ blocking_queue ]
+
+  let blocking_deque =
+    mk_generic_interface "BlockingDeque" ~supers:[ blocking_queue; deque ]
+
+  let linked_blocking_deque =
+    mk_generic_class "LinkedBlockingDeque" ~super:abstract_queue
+      ~supers:[ blocking_deque; serializable ]
+
   module Types = struct
     let int = get_simple_type int
     let float = get_simple_type float
@@ -226,7 +248,10 @@ let _ =
     Format.printf "\n\nUniq answers:\n";
     List.iter
       (fun (ans, count) -> Format.printf "  %3d - %a\n" count f ans)
-      counts
+      counts;
+
+    Format.printf "\nTotal answers amount:      %d\n" (List.length l);
+    Format.printf "Total uniq answers amount: %d\n%!" (List.length counts)
   in
 
   let run_jtype ?(n = -1) ~msg query =
@@ -237,16 +262,21 @@ let _ =
     @@ Stream.take ~n
     @@ run q query (fun q -> q#reify JGS.HO.jtype_reify)
   in
-  let _ =
-    run_jtype ~n:10 (*41*) ~msg:"? <-< Iterable<Object>" (fun q ->
+  let __ _ =
+    run_jtype ~n:(-1) (*15*) ~msg:"? <-< Iterable<Object>" (fun q ->
         fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (iterable obj)))
   in
-  let _ =
-    run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q ->
+  let __ _ =
+    run_jtype ~n:(-1) (*8*) ~msg:"? <-< AbstractList<Object>" (fun q ->
+        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (abstract_list obj)))
+  in
+  let __ _ =
+    run_jtype ~n:(-1) (*22*) ~msg:"RoleList <-< ?" (fun q ->
         fresh () (q =/= !!JGS.HO.Null) (jtype_inj role_list <=< q))
   in
-  let _ =
-    run_jtype ~n:1 (*41*) ~msg:"? <-< Iterable<Object> & ? <-< RandomAccess"
+  (* After 2 answers was exeption from Disequality (removed assert) *)
+  let __ _ =
+    run_jtype ~n:24 (*24*) ~msg:"? <-< RandomAccess & ? <-< Iterable<Object>"
       (fun q ->
         fresh () (q =/= !!JGS.HO.Null)
           (q <-< jtype_inj random_access)
@@ -254,10 +284,15 @@ let _ =
         (* *))
   in
   let _ =
-    run_jtype
-      ~n:10
-        (* ~n:(-1) *)
-        (* Can find all answers *)
+    run_jtype ~n:20 (*8*)
+      ~msg:"? <-< RandomAccess & ? <-< AbstractCollection<Object>" (fun q ->
+        fresh () (q =/= !!JGS.HO.Null)
+          (q <-< jtype_inj random_access)
+          (q <-< jtype_inj (abstract_collection obj))
+        (* *))
+  in
+  let __ _ =
+    run_jtype ~n:(-1) (*69*)
       ~msg:"LinkedList<Object> <-< ? & TreeSet<Object> <-< ?" (fun q ->
         fresh () (q =/= !!JGS.HO.Null)
           (jtype_inj (linked_list obj) <=< q)

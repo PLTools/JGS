@@ -717,13 +717,12 @@ let make_query j : _ * result_query * _ =
         let rec on_typ : _ -> JGS.HO.jtype_injected = function
           | Class (name, args) -> (
               match id_of_name name with
-              | cid -> JGS_Helpers.class_ (Std.nat cid) (Std.list on_arg args)
+              | cid -> JGS_Helpers.class_ !!cid (Std.list on_arg args)
               | exception Not_found ->
                   failwiths "Can't find class name '%s'" name)
           | Interface (name, args) -> (
               match id_of_name name with
-              | cid ->
-                  JGS_Helpers.interface (Std.nat cid) (Std.list on_arg args)
+              | cid -> JGS_Helpers.interface !!cid (Std.list on_arg args)
               | exception Not_found ->
                   failwiths "Can't find class name '%s'" name)
           | Var { id; _ } -> lookup id

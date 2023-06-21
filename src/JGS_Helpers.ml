@@ -21,6 +21,8 @@ let pp_lnat : Std.Nat.logic -> string =
   | n, None -> Printf.sprintf "%d" n
   | n, Some v -> Printf.sprintf "%d + %s" n @@ [%show: Std.Nat.logic] () v
 
+let pp_lint n = GT.show OCanren.logic Int.to_string n
+
 type 'a x = 'a HO.targ
 
 let rec pp_ltarg : HO.jtype_logic HO.targ_logic -> string =
@@ -36,7 +38,7 @@ and pp_ljtype : HO.jtype_logic -> string =
   GT.show OCanren.logic
     (GT.show HO.jtype_fuly
        (GT.show Std.List.logic pp_ltarg)
-       pp_lnat pp_ljtype
+       pp_lint pp_lnat pp_ljtype
        (GT.show Std.Option.logic pp_ljtype)
        (GT.show Std.List.logic pp_ljtype))
     t
@@ -46,6 +48,7 @@ let rec pp_jtyp_logic name_of : Format.formatter -> HO.jtype_logic -> unit =
   let open OCanren.Std in
   let rec helper ppf :
       ( HO.jtype_logic HO.targ_logic List.logic,
+        int logic,
         Nat.logic,
         HO.jtype_logic,
         HO.jtype_logic Option.logic,
@@ -112,13 +115,12 @@ let rec targ_inj : jtype targ -> HO.jtype_injected HO.targ_injected = function
 and jtype_inj : jtype -> HO.jtype_injected = function
   | Null -> !!HO.Null
   | Array t -> !!(HO.Array (jtype_inj t))
-  | Class (id, args) -> !!(HO.Class (Std.nat id, Std.list targ_inj args))
-  | Interface (id, args) ->
-      !!(HO.Interface (Std.nat id, Std.list targ_inj args))
+  | Class (id, args) -> !!(HO.Class (!!id, Std.list targ_inj args))
+  | Interface (id, args) -> !!(HO.Interface (!!id, Std.list targ_inj args))
   | Var { id; index; upb; lwb } ->
       !!(HO.Var
            {
-             id = Std.nat id;
+             id = !!id;
              index = Std.nat index;
              upb = jtype_inj upb;
              lwb = option_inj jtype_inj lwb;

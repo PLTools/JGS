@@ -24,13 +24,13 @@ type jtype =
   (* array type *)
   | Array of jtype
   (* class type *)
-  | Class of (* NEED TO RETURN: id *) nat * jtype targ list
+  | Class of (* NEED TO RETURN: id *) int * jtype targ list
   (* interface type *)
-  | Interface of (* NEED TO RETURN: id *) nat * jtype targ list
+  | Interface of (* NEED TO RETURN: id *) int * jtype targ list
   (* type variable: *)
   | Var of {
       (* 1. identity *)
-      id : (* NEED TO RETURN: id *) nat;
+      id : (* NEED TO RETURN: id *) int;
       (* 2. index in declaration list *)
       index : nat;
       (* 3. upper bound *)
@@ -78,7 +78,7 @@ type capture_conversion_subst = CC_inter of jtype * jtype | CC_subst of jtype
 type capture_conversion_type =
   | CC_type of jtype
   | CC_var of
-      (* NEED TO RETURN: id *) nat
+      (* NEED TO RETURN: id *) int
       * (* NEED TO RETURN: id *) nat
       * capture_conversion_subst
       * jtype option
@@ -101,9 +101,9 @@ and substitute_arg subst = function
 (* Subtyping verifier functor parameterized by a class table CT*)
 module Verifier (CT : sig
   (* Gets a class/interface declaration by is *)
-  val decl_by_id : (* NEED TO RETURN: id *) nat -> decl
-  val get_superclass : nat -> nat -> jtype option
-  val is_root_interface : nat -> bool
+  val decl_by_id : (* NEED TO RETURN: id *) int -> decl
+  val get_superclass : int -> int -> jtype option
+  val is_root_interface : int -> bool
 
   (* Synonyms for some specific classes *)
   val object_t : jtype
@@ -115,7 +115,7 @@ module Verifier (CT : sig
   val serializable_t : jtype
 
   (* Gets a new var's id *)
-  val new_var : unit -> (* NEED TO RETURN: id *) nat
+  val new_var : unit -> (* NEED TO RETURN: id *) int
 end) =
 struct
   (* Direct subtyping relation; only for non-raw types, section 4.10.2, page 82.

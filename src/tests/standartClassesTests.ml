@@ -22,15 +22,16 @@ module JGS_builder = struct
     ref @@ M.add 1 "Object" @@ M.add 2 "Cloneable"
     @@ M.add 3 "Serializable" M.empty
 
-  let get_name : Std.Nat.logic -> string = function
+  let get_name : int logic -> string = function
     | Var _ -> "*ANY*"
-    | logic_id ->
-        let rec helper = function
-          | Value (Std.Nat.S n) -> 1 + helper n
-          | Value Std.Nat.O -> 0
-          | _ -> failwith "Unexpected logic number"
-        in
-        M.find (helper logic_id) !names_by_id
+    | Value x -> Int.to_string x
+  (* | logic_id ->
+      let rec helper = function
+        | Value (Std.Nat.S n) -> 1 + helper n
+        | Value Std.Nat.O -> 0
+        | _ -> failwith "Unexpected logic number"
+      in
+      M.find (helper logic_id) !names_by_id *)
 
   let apply_type t arg =
     match (t, arg) with

@@ -105,14 +105,16 @@ let () =
      end in *)
   Format.printf "Running generated query\n%!";
   let pp ppf x =
-    let nat_logic_to_int =
-      let open OCanren in
-      let rec helper acc = function
-        | Value Std.Nat.O -> acc
-        | Value (S p) -> helper (acc + 1) p
-        | Var _ -> raise OCanren.Not_a_value
-      in
-      helper 0
+    let nat_logic_to_int = function
+      | Value n -> n
+      | _ -> raise OCanren.Not_a_value
+      (* let open OCanren in
+         let rec helper acc = function
+           | Value Std.Nat.O -> acc
+           | Value (S p) -> helper (acc + 1) p
+           | Var _ -> raise OCanren.Not_a_value
+         in
+         helper 0 *)
     in
     let lookup id =
       match nat_logic_to_int id with

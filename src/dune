@@ -12,6 +12,7 @@
   (:standard -rectypes))
  (preprocess
   (pps
+   OCanren-ppx.ppx_wildcard
    OCanren-ppx.ppx_repr
    OCanren-ppx.ppx_fresh
    OCanren-ppx.ppx_distrib
@@ -21,13 +22,13 @@
    GT.ppx_all))
  (inline_tests))
 
-(rule
- (targets JGS.ml)
- (deps
-  (:input JGS.noc.ml)
-  (package noCanren))
- (action
-  (run
-   sh
-   -c
-   "noCanren -w -8 %{input} -I `ocamlfind -query OCanren` -rectypes -o %{targets} | ocamlformat --enable-outside-detected-project --impl -")))
+; (rule
+;  (targets JGS.ml)
+;  (deps
+;   (:input JGS.noc.ml)
+;   (package noCanren))
+;  (action
+;   (run
+;    sh
+;    -c
+;    "noCanren -w -8 %{input} -I `ocamlfind -query OCanren` -rectypes -o %{targets} | ocamlformat --enable-outside-detected-project --impl -")))

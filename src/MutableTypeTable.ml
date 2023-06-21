@@ -8,6 +8,8 @@ open JGS_Helpers
 
 module type SAMPLE_CLASSTABLE = sig
   val decl_by_id : int -> decl
+  val get_superclass : int -> int -> jtype option
+  val is_root_interface : int -> bool
   val object_t : jtype
   val array_t : jtype -> jtype
   val primitive_t : string -> jtype
@@ -24,13 +26,21 @@ module type SAMPLE_CLASSTABLE = sig
   val make_interface_fix : (int -> jtype list) -> (int -> jtype list) -> int
 
   module HO : sig
-    val decl_by_id :
-      (OCanren__.Nat.injected -> goal) -> HO.decl_injected -> goal
+    val decl_by_id : (Std.Nat.injected -> goal) -> HO.decl_injected -> goal
+
+    val get_superclass :
+      (Std.Nat.injected -> goal) ->
+      (Std.Nat.injected -> goal) ->
+      HO.jtype_injected Std.Option.injected ->
+      goal
+
+    val is_root_interface :
+      (Std.Nat.injected -> goal) -> bool OCanren.ilogic -> goal
 
     val object_t : HO.jtype_injected -> goal
     val cloneable_t : HO.jtype_injected -> goal
     val serializable_t : HO.jtype_injected -> goal
-    val new_var : (GT.unit ilogic -> goal) -> OCanren__.Nat.injected -> goal
+    val new_var : (GT.unit ilogic -> goal) -> Std.Nat.injected -> goal
   end
 end
 
@@ -64,6 +74,30 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     id
 
   let decl_by_id id = M.find id !m
+
+  let get_superclass sub_id super_id =
+    let open Stdlib in
+    List.find_map (fun (id, decl) ->
+        if id = sub_id then
+          let supers =
+            match decl with
+            | C { super; supers; _ } -> super :: supers
+            | I { supers; _ } -> supers
+          in
+          List.find_map
+            (fun super ->
+              match super with
+              | (Class (id, _) | Interface (id, _)) when id = super_id ->
+                  Some super
+              | _ -> None)
+            supers
+        else None)
+    @@ M.bindings !m
+
+  let is_root_interface id =
+    match M.find_opt id !m with
+    | Some (I { supers = []; _ }) -> true
+    | _ -> false
 
   let add_class_fix (c : int -> cdecl) =
     let id = new_id () in
@@ -140,27 +174,102 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
   let new_var = new_id
 
   module HO = struct
-    let decl_by_id =
-      let disjs_args = ref [] in
-      let update_disjs_args () =
-        if !table_was_changed then (
-          disjs_args :=
-            Stdlib.List.map (fun (k, v) -> (Std.nat k, decl_inj v))
-            @@ M.bindings !m;
-          table_was_changed := false)
-      in
-      fun id rez ->
-        update_disjs_args ();
-        fresh id_val (id id_val)
-          (match
-             Stdlib.List.map
-               (fun (k, v) -> id_val === k &&& (rez === v))
-               !disjs_args
-           with
-          | [] -> failure
-          | disjs -> conde disjs)
+    type disj_args = {
+      decl_by_id : (Std.Nat.groundi * HO.decl_injected) list lazy_t;
+      is_direct_subclass :
+        (Std.Nat.groundi * Std.Nat.groundi * HO.jtype_injected) list lazy_t;
+      is_root_interface : Std.Nat.groundi list lazy_t;
+    }
 
-    let top = Class (-1, [])
+    let update_disj_args =
+      let decl_by_id_disjs_args = ref (lazy []) in
+      let is_direct_subclass_disjs_args = ref (lazy []) in
+      let is_root_interface_disj_args = ref (lazy []) in
+      fun () ->
+        if !table_was_changed then (
+          let bindings = M.bindings !m in
+          decl_by_id_disjs_args :=
+            lazy
+              (Stdlib.List.map (fun (k, v) -> (Std.nat k, decl_inj v)) bindings);
+          is_direct_subclass_disjs_args :=
+            lazy
+              (Stdlib.List.concat_map
+                 (fun (sub_id, decl) ->
+                   let supers =
+                     match decl with
+                     | C { super; supers; _ } -> super :: supers
+                     | I { supers; _ } -> supers
+                   in
+                   Stdlib.List.filter_map
+                     (fun super ->
+                       match super with
+                       | Class (super_id, _) | Interface (super_id, _) ->
+                           Some
+                             (Std.nat sub_id, Std.nat super_id, jtype_inj super)
+                       | _ -> None)
+                     supers)
+                 bindings);
+          is_root_interface_disj_args :=
+            lazy
+              (Stdlib.List.filter_map
+                 (fun (k, v) ->
+                   match v with
+                   | I { supers = []; _ } -> Some (Std.nat k)
+                   | _ -> None)
+                 bindings);
+          table_was_changed := false);
+        {
+          decl_by_id = !decl_by_id_disjs_args;
+          is_direct_subclass = !is_direct_subclass_disjs_args;
+          is_root_interface = !is_root_interface_disj_args;
+        }
+
+    let get_decl_by_id_disjs_args () =
+      Lazy.force (update_disj_args ()).decl_by_id
+
+    let get_is_direct_subclass_disjs_args () =
+      Lazy.force (update_disj_args ()).is_direct_subclass
+
+    let get_is_root_interface_disjs_args () =
+      Lazy.force (update_disj_args ()).is_root_interface
+
+    let decl_by_id id rez =
+      fresh id_val (id id_val)
+        (let disj_args = get_decl_by_id_disjs_args () in
+         let disjs =
+           Stdlib.List.map
+             (fun (k, v) -> id_val === k &&& (rez === v))
+             disj_args
+         in
+         match disjs with [] -> failure | _ -> conde disjs)
+
+    let get_superclass :
+        (Std.Nat.injected -> goal) ->
+        (Std.Nat.injected -> goal) ->
+        HO.jtype_injected Std.Option.injected ->
+        goal =
+     fun sub_id super_id some_rez ->
+      fresh
+        (sub_id_val super_id_val rez)
+        (sub_id sub_id_val) (super_id super_id_val)
+        (some_rez === Std.some rez)
+        (let disj_args = get_is_direct_subclass_disjs_args () in
+         let disjs =
+           Stdlib.List.map
+             (fun (sub, sup, super) ->
+               sub_id_val === sub &&& (super_id_val === sup) &&& (rez === super))
+             disj_args
+         in
+         match disjs with [] -> failure | _ -> conde disjs)
+
+    let is_root_interface :
+        (Std.Nat.injected -> goal) -> bool OCanren.ilogic -> goal =
+     fun id rez ->
+      fresh id_val (id id_val) (rez === !!true)
+        (let disj_args = get_is_root_interface_disjs_args () in
+         let disjs = Stdlib.List.map (( === ) id_val) disj_args in
+         match disjs with [] -> failure | _ -> conde disjs)
+
     let object_t x = x === jtype_inj object_t
     let cloneable_t x = x === jtype_inj cloneable_t
     let serializable_t x = x === jtype_inj serializable_t

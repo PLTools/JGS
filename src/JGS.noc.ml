@@ -8,6 +8,7 @@
 open Option
 open Peano
 open List
+open Option
 
 (* A type to identify various objects *)
 (* NEED TO RETURN: type id = int *)
@@ -101,6 +102,8 @@ and substitute_arg subst = function
 module Verifier (CT : sig
   (* Gets a class/interface declaration by is *)
   val decl_by_id : (* NEED TO RETURN: id *) nat -> decl
+  val get_superclass : nat -> nat -> jtype option
+  val is_root_interface : nat -> bool
 
   (* Synonyms for some specific classes *)
   val object_t : jtype
@@ -192,16 +195,11 @@ struct
       else None
     in
     (* helper function *)
-    let class_int_sub id_a targs_a id_b targs_b supers =
+    let class_int_sub id_a targs_a id_b targs_b =
       if id_a = id_b then
         List.fold_left2 (fun f ta tb -> f && ta <=< tb) true targs_a targs_b
       else
-        match
-          List.find_opt
-            (function
-              | Class (id, _) | Interface (id, _) -> id = id_b | _ -> false)
-            supers
-        with
+        match CT.get_superclass id_a id_b with
         | Some (Class (_, targs_b')) | Some (Interface (_, targs_b')) ->
             targs_b = List.map (fun t -> substitute_arg targs_a t) targs_b'
         | None -> false
@@ -215,8 +213,6 @@ struct
             match tb with
             | Interface (id_b, targs_b) | Class (id_b, targs_b) ->
                 class_int_sub id_a targs_a id_b targs_b
-                  (let (C decl) = CT.decl_by_id id_a in
-                   decl.super :: decl.supers)
             | Var { lwb = Some typ } -> typ = ta
             | _ -> false))
     | Interface (id_a, targs_a) -> (
@@ -224,14 +220,9 @@ struct
         | None -> false
         | Some targs_a -> (
             match tb with
-            | Class (id_b, targs_b) | Interface (id_b, targs_b) -> (
-                let supers =
-                  let (I decl) = CT.decl_by_id id_a in
-                  decl.supers
-                in
-                match supers with
-                | [] -> tb = CT.object_t
-                | _ -> class_int_sub id_a targs_a id_b targs_b supers)
+            | Class (id_b, targs_b) | Interface (id_b, targs_b) ->
+                if class_int_sub id_a targs_a id_b targs_b then true
+                else tb = CT.object_t && CT.is_root_interface id_a
             | Var { lwb = Some typ } -> typ = ta
             | _ -> false))
     | Array ta -> (

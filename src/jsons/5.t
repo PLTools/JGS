@@ -8,5 +8,5 @@
     1)  null
     2)  Array<java.lang.Object>
     3)  java.lang.Object
-    4)  null
-    5)  java.lang.Clonable
+    4)  java.lang.Clonable
+    5)  java.io.Serializable

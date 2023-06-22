@@ -248,79 +248,103 @@ let populate_graph on_decl table =
     let g = G.create ~size:(List.length table) () in
     let decl_of_name = Hashtbl.create (List.length table) in
 
+    let params_hash = Hashtbl.create 20 in
+    let add_params =
+      List.iter (fun { pname; _ } -> Hashtbl.add params_hash pname ())
+    in
+    let is_a_param name =
+      try
+        let () = Hashtbl.find params_hash name in
+        true
+      with Not_found -> false
+    in
     let rec traverse_typ dest = function
-      | Class (name, _) | Interface (name, _) -> G.add_edge g name dest
+      | Class (name, _) | Interface (name, _) ->
+          if is_a_param name then () else G.add_edge g name dest
       | Var { upb; _ } -> traverse_typ dest upb
       | _ -> ()
     in
+
     let traverse_param dest { p_upper; _ } =
       Stdlib.List.iter (traverse_typ dest) p_upper
     in
     table
-    |> Stdlib.List.iter (function
-         | I { iname; isupers; iparams } as d ->
-             G.add_vertex g iname;
-             Hashtbl.add decl_of_name iname d;
-             iparams |> Stdlib.List.iter (traverse_param iname);
-             let used_typenames =
-               List.fold_left
-                 (fun acc p -> SS.union acc (collect_used_typenames p))
-                 SS.empty isupers
-             in
-             SS.iter (fun name -> G.add_edge g name iname) used_typenames
-         | C { cname; supers; super; params } as d ->
-             (* log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__; *)
-             G.add_vertex g cname;
-             assert (
-               match Hashtbl.find decl_of_name cname with
-               | exception Not_found -> true
-               | C
-                   {
-                     cname = "org.intellij.lang.annotations.PrintFormatPattern";
-                     _;
-                   }
-               | C { cname = "org.intellij.lang.annotations.JdkConstants"; _ }
-                 ->
-                   true
-               | _ ->
-                   Format.eprintf "Already present: '%s'\n%!" cname;
-                   false);
-             Hashtbl.add decl_of_name cname d;
-             let () =
-               (* If it is an inner class, we should add dependencies to parents  *)
-               add_parent_edges (G.add_edge g) cname
-             in
+    |> Stdlib.List.iter (fun decl ->
+           Hashtbl.clear params_hash;
+           match decl with
+           | I { iname; isupers; iparams } as d ->
+               G.add_vertex g iname;
+               Hashtbl.add decl_of_name iname d;
+               add_params iparams;
 
-             params |> Stdlib.List.iter (traverse_param cname);
-             (* TODO: should we lookup references in params? *)
-             let used_typenames =
-               let acc =
-                 Stdlib.Option.fold ~none:SS.empty
-                   ~some:(fun t ->
-                     (* Format.printf "Superclass = %s\n%!"
-                        (Yojson.Safe.pretty_to_string (yojson_of_jtype t)); *)
-                     collect_used_typenames t)
-                   super
+               iparams |> Stdlib.List.iter (traverse_param iname);
+               let used_typenames =
+                 List.fold_left
+                   (fun acc p -> SS.union acc (collect_used_typenames p))
+                   SS.empty isupers
                in
-               List.fold_left
-                 (fun acc p -> SS.union acc (collect_used_typenames p))
-                 acc supers
-               |> SS.to_seq |> List.of_seq
-             in
-             let __ () =
-               if
-                 cname
-                 = "net.bytebuddy.pool.TypePool$Default$AnnotationRegistrant$ForTypeVariable$WithIndex$DoubleIndexed"
-               then
-                 let () =
-                   Format.printf "Used typenames for %S: %s\n%!" cname
-                     (String.concat " " used_typenames)
+               SS.iter
+                 (fun name ->
+                   if is_a_param name then () else G.add_edge g name iname)
+                 used_typenames
+           | C { cname; supers; super; params } as d ->
+               log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__;
+               G.add_vertex g cname;
+               assert (
+                 match Hashtbl.find decl_of_name cname with
+                 | exception Not_found -> true
+                 | C
+                     {
+                       cname =
+                         "org.intellij.lang.annotations.PrintFormatPattern";
+                       _;
+                     }
+                 | C { cname = "org.intellij.lang.annotations.JdkConstants"; _ }
+                   ->
+                     true
+                 | _ ->
+                     Format.eprintf "Already present: '%s'\n%!" cname;
+                     false);
+               Hashtbl.add decl_of_name cname d;
+               add_params params;
+               let () =
+                 (* If it is an inner class, we should add dependencies to parents  *)
+                 add_parent_edges (G.add_edge g) cname
+               in
+
+               params |> Stdlib.List.iter (traverse_param cname);
+               (* TODO: should we lookup references in params? *)
+               let used_typenames =
+                 let acc =
+                   Stdlib.Option.fold ~none:SS.empty
+                     ~some:(fun t ->
+                       (* Format.printf "Superclass = %s\n%!"
+                          (Yojson.Safe.pretty_to_string (yojson_of_jtype t)); *)
+                       collect_used_typenames t)
+                     super
                  in
-                 (* Format.printf "%s\n%!"
-                    (Yojson.Safe.pretty_to_string (yojson_of_decl d)); *)
-                 ()
-             in
-             List.iter (fun name -> G.add_edge g name cname) used_typenames);
+                 List.fold_left
+                   (fun acc p -> SS.union acc (collect_used_typenames p))
+                   acc supers
+                 |> SS.to_seq |> List.of_seq
+               in
+               let __ () =
+                 if
+                   cname
+                   = "net.bytebuddy.pool.TypePool$Default$AnnotationRegistrant$ForTypeVariable$WithIndex$DoubleIndexed"
+                 then
+                   let () =
+                     Format.printf "Used typenames for %S: %s\n%!" cname
+                       (String.concat " " used_typenames)
+                   in
+                   (* Format.printf "%s\n%!"
+                      (Yojson.Safe.pretty_to_string (yojson_of_decl d)); *)
+                   ()
+               in
+               List.iter
+                 (fun name ->
+                   if is_a_param name then () else G.add_edge g name cname)
+                 used_typenames);
 
     (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
        (G.nb_edges g) __FILE__ __LINE__; *)

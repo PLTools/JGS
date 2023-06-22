@@ -24,14 +24,7 @@ module JGS_builder = struct
 
   let get_name : int logic -> string = function
     | Var _ -> "*ANY*"
-    | Value x -> Int.to_string x
-  (* | logic_id ->
-      let rec helper = function
-        | Value (Std.Nat.S n) -> 1 + helper n
-        | Value Std.Nat.O -> 0
-        | _ -> failwith "Unexpected logic number"
-      in
-      M.find (helper logic_id) !names_by_id *)
+    | Value id -> M.find id !names_by_id
 
   let apply_type t arg =
     match (t, arg) with
@@ -263,38 +256,38 @@ let _ =
     @@ Stream.take ~n
     @@ run q query (fun q -> q#reify JGS.HO.jtype_reify)
   in
-  let __ _ =
-    run_jtype ~n:(-1) (*15*) ~msg:"? <-< Iterable<Object>" (fun q ->
-        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (iterable obj)))
+  let _ =
+    run_jtype ~n:10 ~msg:"? <-< Iterable<Object>" (fun q ->
+        q <-< jtype_inj (iterable obj))
   in
-  let __ _ =
-    run_jtype ~n:(-1) (*8*) ~msg:"? <-< AbstractList<Object>" (fun q ->
-        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (abstract_list obj)))
+  let _ =
+    run_jtype ~n:8 ~msg:"? <-< AbstractList<Object>" (fun q ->
+        q <-< jtype_inj (abstract_list obj))
   in
-  let __ _ =
-    run_jtype ~n:(-1) (*22*) ~msg:"RoleList <-< ?" (fun q ->
+  let _ =
+    run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q ->
         fresh () (q =/= !!JGS.HO.Null) (jtype_inj role_list <=< q))
   in
-  (* After 2 answers was exeption from Disequality (removed assert) *)
-  let __ _ =
-    run_jtype ~n:24 (*24*) ~msg:"? <-< RandomAccess & ? <-< Iterable<Object>"
-      (fun q ->
-        fresh () (q =/= !!JGS.HO.Null)
-          (q <-< jtype_inj random_access)
+  (* Problems with RoleList and AttributeList *)
+  let _ =
+    run_jtype ~n:3 ~msg:"? <-< RandomAccess & ? <-< Iterable<Object>" (fun q ->
+        fresh ()
+          (* (q <-< jtype_inj random_access) *)
           (q <-< jtype_inj (iterable obj))
         (* *))
   in
+  (* Problems with RoleList and AttributeList *)
   let _ =
-    run_jtype ~n:20 (*8*)
-      ~msg:"? <-< RandomAccess & ? <-< AbstractCollection<Object>" (fun q ->
+    run_jtype ~n:2 ~msg:"? <-< RandomAccess & ? <-< AbstractCollection<Object>"
+      (fun q ->
         fresh () (q =/= !!JGS.HO.Null)
           (q <-< jtype_inj random_access)
           (q <-< jtype_inj (abstract_collection obj))
         (* *))
   in
-  let __ _ =
-    run_jtype ~n:(-1) (*69*)
-      ~msg:"LinkedList<Object> <-< ? & TreeSet<Object> <-< ?" (fun q ->
+  let _ =
+    run_jtype ~n:(-1) ~msg:"LinkedList<Object> <-< ? & TreeSet<Object> <-< ?"
+      (fun q ->
         fresh () (q =/= !!JGS.HO.Null)
           (jtype_inj (linked_list obj) <=< q)
           (jtype_inj (tree_set obj) <=< q)

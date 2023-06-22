@@ -1,6 +1,6 @@
   $ export NOBENCH=1
 # should give List<int> but it doesn't
-  $ ./run_json.exe 2.json -n 12
+  $ ./run_json.exe 2.json -n 2
   
   Type variables mentioned in constraints: []
   

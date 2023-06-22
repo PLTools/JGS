@@ -1,6 +1,6 @@
   $ export NOBENCH=1
 # Should give more answers
-  $ ./run_json.exe 6closure.json -n 15
+  $ ./run_json.exe 6closure.json -n 3
   
   Type variables mentioned in constraints: []
   

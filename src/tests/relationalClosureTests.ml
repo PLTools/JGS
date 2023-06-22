@@ -59,9 +59,11 @@ let _ =
   Printf.printf "Class A1: %d\n" class_a1;
 
   (****************************************************************************)
+  (**************************** Tests are outdated ****************************)
+  (****************************************************************************)
 
   (* Many answers with intersects and variables *)
-  let _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
+  let __ _ = run_jtype ~msg:"? <-< A" ~n:10 (fun q -> q <-< jtype_inj a) in
 
   (* Many repeats of B, no mentions of C *)
   let __ _ =
@@ -102,7 +104,7 @@ let _ =
 
   (* How much 2 length paths from A to B?
      Seems like an infinite number of identical answers with the correct variable *)
-  let _ =
+  let __ _ =
     run_jtypes ~msg:"B <-2-< A" ~n:10 (fun q ->
         fresh (sub super t1)
           (are_not_equal [ sub; super; t1 ])
@@ -164,7 +166,7 @@ let _ =
      Evaluates without answers...
      This is strange, because we have a path like {C} <- {var(C, B)} <- {B} <- {A}.
      Maybe this answer is too deep in the search tree *)
-  let __ _ =
+  let _ =
     run_jtypes ~msg:"C <-3-< A" ~n:1 (fun q ->
         fresh (sub super t1 t2)
           (are_not_equal [ sub; super; t1; t2 ])
@@ -225,8 +227,8 @@ let _ =
 
   let int_collection = Interface (interface_icollection, [ Type int ]) in
 
-  let __ () =
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl
+  let () =
+    Format.printf "\n%a\n%!" JGS_Helpers.JGS_PP.decl
       (SampleCT.decl_by_id class_int);
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 5);
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 7)

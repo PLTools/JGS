@@ -1,5 +1,5 @@
   $ export NOBENCH=1
-  $ ./run_json.exe test3.json -n 3
+  $ ./run_json.exe test3.json -n 10
     The type "E" is not found (Bad JSON?). Ignored.
   
   Type variables mentioned in constraints: []

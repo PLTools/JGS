@@ -710,7 +710,7 @@ let make_query j : _ * result_query * _ =
       List.fold_left
         (fun acc t ->
           let rez, t = fold t in
-          acc ++ ([ (Queried, t) ], []) ++ rez)
+          acc ++ ([], [ (Queried, t) ]) ++ rez)
         ([], []) lower_bounds
     in
     upper_rez ++ lower_rez
@@ -774,18 +774,35 @@ let make_query j : _ * result_query * _ =
 
         let open OCanren in
         let ask_var = function Queried -> answer_typ | Named v -> lookup v in
-        let wrap pos (name, b) =
-          Format.printf "\t%sProcessing: %a <-< %a\n%!"
-            (if pos then "     " else " NOT ")
-            pp_var_desc name pp_jtype b;
-          is_subtype (ask_var name) (targ_inj (on_typ b))
+        let wrap ~upper ~pos (name, b) =
+          let show_processing pp_a a pp_b b =
+            Format.printf "\t%sProcessing: %a <-< %a\n%!"
+              (if pos then "     " else " NOT ")
+              pp_a a pp_b b
+          in
+          if upper then show_processing pp_var_desc name pp_jtype b
+          else show_processing pp_jtype b pp_var_desc name;
+
+          let sub, super =
+            if upper then (ask_var name, targ_inj (on_typ b))
+            else (targ_inj (on_typ b), ask_var name)
+          in
+          is_subtype sub super
           (* TODO: There were bool here to switch positive/negative *)
         in
-        let pos_upper_goals = List.map (wrap true) upper_bounds in
-        let pos_lower_goals = List.map (wrap true) lower_bounds in
-        let neg_upper_goals = [] (* List.map (wrap false) upper_bounds  *) in
+
+        let pos_upper_goals =
+          List.map (wrap ~upper:true ~pos:true) upper_bounds
+        in
+        let pos_lower_goals =
+          List.map (wrap ~upper:false ~pos:true) lower_bounds
+        in
+        let neg_upper_goals =
+          []
+          (* List.map (wrap ~upper:true ~pos:false) upper_bounds *)
+        in
         let neg_lower_goals =
-          (* List.map (wrap false) lower_bounds *)
+          (* List.map (wrap ~upper:false ~pos:false) upper_bounds *)
           []
         in
         let all_goals =

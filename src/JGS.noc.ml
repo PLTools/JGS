@@ -103,7 +103,6 @@ module Verifier (CT : sig
   (* Gets a class/interface declaration by is *)
   val decl_by_id : (* NEED TO RETURN: id *) int -> decl
   val get_superclass : int -> int -> jtype option
-  val is_root_interface : int -> bool
 
   (* Synonyms for some specific classes *)
   val object_t : jtype
@@ -221,8 +220,7 @@ struct
         | Some targs_a -> (
             match tb with
             | Class (id_b, targs_b) | Interface (id_b, targs_b) ->
-                if class_int_sub id_a targs_a id_b targs_b then true
-                else tb = CT.object_t && CT.is_root_interface id_a
+                class_int_sub id_a targs_a id_b targs_b
             | Var { lwb = Some typ } -> typ = ta
             | _ -> false))
     | Array ta -> (

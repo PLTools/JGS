@@ -326,7 +326,7 @@ let populate_graph on_decl table =
                  List.fold_left
                    (fun acc p -> SS.union acc (collect_used_typenames p))
                    acc supers
-                 |> SS.to_seq |> List.of_seq
+                 |> SS.elements
                in
                let __ () =
                  if

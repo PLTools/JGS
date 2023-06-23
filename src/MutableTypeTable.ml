@@ -175,19 +175,18 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
   module HO = struct
     type disj_args = {
       decl_by_id : (int ilogic * HO.decl_injected) list lazy_t;
-      is_direct_subclass :
-        (int ilogic * int ilogic * HO.jtype_injected) list lazy_t;
+      get_superclass : (int ilogic * int ilogic * HO.jtype_injected) list lazy_t;
     }
 
     let update_disj_args =
       let decl_by_id_disjs_args = ref (lazy []) in
-      let is_direct_subclass_disjs_args = ref (lazy []) in
+      let get_superclass_disjs_args = ref (lazy []) in
       fun () ->
         if !table_was_changed then (
           let bindings = M.bindings !m in
           decl_by_id_disjs_args :=
             lazy (Stdlib.List.map (fun (k, v) -> (!!k, decl_inj v)) bindings);
-          is_direct_subclass_disjs_args :=
+          get_superclass_disjs_args :=
             lazy
               (Stdlib.List.concat_map
                  (fun (sub_id, decl) ->
@@ -210,25 +209,28 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
           table_was_changed := false);
         {
           decl_by_id = !decl_by_id_disjs_args;
-          is_direct_subclass = !is_direct_subclass_disjs_args;
+          get_superclass = !get_superclass_disjs_args;
         }
 
     let get_decl_by_id_disjs_args () =
       Lazy.force (update_disj_args ()).decl_by_id
 
-    let get_is_direct_subclass_disjs_args () =
-      Lazy.force (update_disj_args ()).is_direct_subclass
+    let get_superclass_disjs_args () =
+      Lazy.force (update_disj_args ()).get_superclass
 
     let decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal =
      fun id rez ->
       fresh id_val (id id_val)
-        (let disj_args = get_decl_by_id_disjs_args () in
-         let disjs =
-           Stdlib.List.map
-             (fun (k, v) -> id_val === k &&& (rez === v))
-             disj_args
-         in
-         match disjs with [] -> failure | _ -> conde disjs)
+        (debug_var id_val (Fun.flip OCanren.reify) (function
+          | [ Value id ] -> rez === decl_inj (M.find id !m)
+          | _ -> (
+              let disj_args = get_decl_by_id_disjs_args () in
+              let disjs =
+                Stdlib.List.map
+                  (fun (k, v) -> id_val === k &&& (rez === v))
+                  disj_args
+              in
+              match disjs with [] -> failure | _ -> conde disjs)))
 
     let get_superclass :
         (int ilogic -> goal) ->
@@ -240,7 +242,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
         (sub_id_val super_id_val rez)
         (sub_id sub_id_val) (super_id super_id_val)
         (some_rez === Std.some rez)
-        (let disj_args = get_is_direct_subclass_disjs_args () in
+        (let disj_args = get_superclass_disjs_args () in
          let disjs =
            Stdlib.List.map
              (fun (sub, sup, super) ->
@@ -249,9 +251,18 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
          in
          match disjs with [] -> failure | _ -> conde disjs)
 
-    let object_t x = x === jtype_inj object_t
-    let cloneable_t x = x === jtype_inj cloneable_t
-    let serializable_t x = x === jtype_inj serializable_t
+    let object_t =
+      let object_t = jtype_inj object_t in
+      fun x -> x === object_t
+
+    let cloneable_t =
+      let cloneable_t = jtype_inj cloneable_t in
+      fun x -> x === cloneable_t
+
+    let serializable_t =
+      let serializable_t = jtype_inj serializable_t in
+      fun x -> x === serializable_t
+
     let new_var _ x = x === !!(new_id ())
   end
 end

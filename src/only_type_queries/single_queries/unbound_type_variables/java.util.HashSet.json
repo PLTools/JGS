@@ -1,0 +1,86 @@
+{
+  "upperBound": [
+    "Class",
+    "java.util.HashSet",
+    [
+      [
+        "Type",
+        [
+          "Var",
+          {
+            "id": "E",
+            "index": 0,
+            "upb": [
+              "Class",
+              "java.lang.Object",
+              []
+            ],
+            "lwb": null
+          }
+        ]
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 5,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.sun.tools.javac.file.Locations$SearchPath",
+      []
+    ],
+    [
+      "Class",
+      "java.util.HashSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.LinkedHashSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "javax.print.attribute.standard.JobStateReasons",
+      []
+    ],
+    [
+      "Class",
+      "sun.tools.jar.Main$1",
+      []
+    ]
+  ]
+}

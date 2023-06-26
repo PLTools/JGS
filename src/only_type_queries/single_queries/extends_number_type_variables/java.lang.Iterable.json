@@ -1,0 +1,94 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.lang.Iterable",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.Number",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 11,
+  "rawExpectedAnswers": [
+    [
+      "Interface",
+      "java.lang.Iterable",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysKt$asIterable$$inlined$Iterable$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysKt$asIterable$$inlined$Iterable$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysKt$asIterable$$inlined$Iterable$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysKt$asIterable$$inlined$Iterable$5",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysKt$asIterable$$inlined$Iterable$6",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysKt$asIterable$$inlined$Iterable$7",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.ranges.IntProgression",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.ranges.LongProgression",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.ByteString",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.ByteString",
+      []
+    ]
+  ]
+}

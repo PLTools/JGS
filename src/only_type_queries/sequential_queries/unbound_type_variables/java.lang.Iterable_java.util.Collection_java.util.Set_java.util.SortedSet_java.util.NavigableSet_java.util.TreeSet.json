@@ -1,0 +1,161 @@
+{
+  "upperBounds": [
+    [
+      "Interface",
+      "java.lang.Iterable",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Collection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Set",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.SortedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.NavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.TreeSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 1,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "java.util.TreeSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+}

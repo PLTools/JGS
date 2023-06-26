@@ -1,0 +1,44 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.util.NavigableSet",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.String",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 1,
+  "rawExpectedAnswers": [
+    [
+      "Interface",
+      "java.util.NavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+}

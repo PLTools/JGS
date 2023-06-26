@@ -1,0 +1,724 @@
+{
+  "upperBounds": [
+    [
+      "Interface",
+      "java.lang.Iterable",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Collection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Set",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.NavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.SortedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 30,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.google.common.collect.AbstractMapBasedMultimap$NavigableKeySet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.AbstractMapBasedMultimap$WrappedNavigableSet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.ContiguousSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "C",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "java.lang.Comparable",
+                [
+                  [
+                    "Type",
+                    [
+                      "Var",
+                      {
+                        "id": "T",
+                        "index": 0,
+                        "upb": [
+                          "Class",
+                          "java.lang.Object",
+                          []
+                        ],
+                        "lwb": null
+                      }
+                    ]
+                  ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.DescendingImmutableSortedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.EmptyContiguousSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "C",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "java.lang.Comparable",
+                [
+                  [
+                    "Type",
+                    [
+                      "Var",
+                      {
+                        "id": "T",
+                        "index": 0,
+                        "upb": [
+                          "Class",
+                          "java.lang.Object",
+                          []
+                        ],
+                        "lwb": null
+                      }
+                    ]
+                  ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.ForwardingNavigableMap$StandardNavigableKeySet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.ForwardingNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.ForwardingNavigableSet$StandardDescendingSet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.ForwardingSortedMultiset$StandardElementSet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.ImmutableRangeSet$AsSet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.ImmutableSortedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Maps$6",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Maps$FilteredEntryNavigableMap$1",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Maps$NavigableKeySet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.RegularContiguousSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "C",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "java.lang.Comparable",
+                [
+                  [
+                    "Type",
+                    [
+                      "Var",
+                      {
+                        "id": "T",
+                        "index": 0,
+                        "upb": [
+                          "Class",
+                          "java.lang.Object",
+                          []
+                        ],
+                        "lwb": null
+                      }
+                    ]
+                  ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.RegularImmutableSortedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Sets$DescendingSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Sets$FilteredNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Sets$UnmodifiableNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.SortedMultisets$NavigableElementSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Synchronized$SynchronizedNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SynchronizedNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$UnmodifiableNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.NavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.TreeMap$KeySet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.TreeSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.concurrent.ConcurrentSkipListMap$KeySet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.concurrent.ConcurrentSkipListSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+}

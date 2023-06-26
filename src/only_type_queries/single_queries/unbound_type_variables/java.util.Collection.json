@@ -1,0 +1,2036 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.util.Collection",
+    [
+      [
+        "Type",
+        [
+          "Var",
+          {
+            "id": "E",
+            "index": 0,
+            "upb": [
+              "Class",
+              "java.lang.Object",
+              []
+            ],
+            "lwb": null
+          }
+        ]
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 117,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.google.common.collect.ForwardingCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "com.google.common.collect.Multiset",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.common.collect.Synchronized$SynchronizedCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.google.gson.internal.LinkedHashTreeMap$EntrySet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.gson.internal.LinkedHashTreeMap$KeySet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.gson.internal.LinkedTreeMap$EntrySet",
+      []
+    ],
+    [
+      "Class",
+      "com.google.gson.internal.LinkedTreeMap$KeySet",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.jmx.remote.internal.ArrayQueue",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.beans.beancontext.BeanContext",
+      []
+    ],
+    [
+      "Class",
+      "java.lang.ProcessEnvironment$CheckedEntrySet",
+      []
+    ],
+    [
+      "Class",
+      "java.lang.ProcessEnvironment$CheckedKeySet",
+      []
+    ],
+    [
+      "Class",
+      "java.lang.ProcessEnvironment$CheckedValues",
+      []
+    ],
+    [
+      "Class",
+      "java.lang.invoke.AbstractConstantGroup$AsList",
+      []
+    ],
+    [
+      "Class",
+      "java.util.AbstractCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractList$RandomAccessSubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractList$SubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractMap$1",
+      []
+    ],
+    [
+      "Class",
+      "java.util.AbstractMap$2",
+      []
+    ],
+    [
+      "Class",
+      "java.util.AbstractQueue",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractSequentialList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.ArrayDeque",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.ArrayList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.ArrayList$SubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Arrays$ArrayList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Collection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$AsLIFOQueue",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedMap$CheckedEntrySet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedQueue",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedRandomAccessList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedSortedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CopiesList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$EmptyList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$EmptySet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SetFromMap",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SingletonList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SingletonSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SynchronizedCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SynchronizedList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SynchronizedNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SynchronizedRandomAccessList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SynchronizedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SynchronizedSortedSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$UnmodifiableCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$UnmodifiableList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$UnmodifiableMap$UnmodifiableEntrySet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$UnmodifiableNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.List",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Queue",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Set",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.concurrent.ConcurrentHashMap$CollectionView",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 2,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.concurrent.ConcurrentHashMap$ValuesView",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "javax.management.AttributeList",
+      []
+    ],
+    [
+      "Class",
+      "javax.management.relation.RoleList",
+      []
+    ],
+    [
+      "Class",
+      "javax.management.relation.RoleUnresolvedList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.UByteArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.UIntArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.ULongArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.UShortArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractList$SubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractMap$keys$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractMap$values$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractMutableCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractMutableList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractMutableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.AbstractSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArrayAsCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArrayDeque",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$5",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$6",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$7",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$8",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.EmptyList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.EmptySet",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.MovingSubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ReversedList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ReversedListReadOnly",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.RingBuffer",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.builders.AbstractMapBuilderEntrySet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "java.util.Map$Entry",
+                [
+                  [
+                    "Wildcard",
+                    {
+                      "first": "Extends",
+                      "second": [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                      ]
+                    }
+                  ],
+                  [
+                    "Wildcard",
+                    {
+                      "first": "Extends",
+                      "second": [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                      ]
+                    }
+                  ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 2,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.builders.ListBuilder",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.builders.MapBuilderEntries",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.builders.MapBuilderKeys",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.builders.MapBuilderValues",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.builders.SetBuilder",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.platform.TargetPlatform",
+      []
+    ],
+    [
+      "Interface",
+      "kotlin.text.MatchGroupCollection",
+      []
+    ],
+    [
+      "Interface",
+      "kotlin.text.MatchNamedGroupCollection",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.text.MatcherMatchResult$groupValues$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.text.MatcherMatchResult$groups$1",
+      []
+    ],
+    [
+      "Interface",
+      "kotlinx.collections.immutable.ImmutableCollection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "kotlinx.collections.immutable.PersistentCollection$Builder",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.collections.immutable.adapters.ImmutableCollectionAdapter",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilderValues",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMapBuilderValues",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "K",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "V",
+              "index": 1,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.coroutines.debug.internal.ConcurrentWeakMap$KeyValueSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "org.jooq.impl.QueryPartCollectionView",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "org.jooq.QueryPart",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "org.postgresql.hostchooser.MultiHostChooser$1",
+      []
+    ],
+    [
+      "Class",
+      "org.postgresql.hostchooser.MultiHostChooser$2",
+      []
+    ],
+    [
+      "Class",
+      "org.postgresql.hostchooser.MultiHostChooser$3",
+      []
+    ],
+    [
+      "Class",
+      "org.postgresql.jdbc.ArrayDecoding$PgArrayList",
+      []
+    ],
+    [
+      "Class",
+      "sun.tools.jar.Main$1",
+      []
+    ]
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "upperBound": [
+    "Class",
+    "java.util.HashSet",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Interface",
+            "java.lang.Comparable",
+            [
+              [
+                "Type",
+                [
+                  "Var",
+                  {
+                    "id": "T",
+                    "index": 0,
+                    "upb": [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ],
+                    "lwb": null
+                  }
+                ]
+              ]
+            ]
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 2,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.sun.tools.javac.file.Locations$SearchPath",
+      []
+    ],
+    [
+      "Class",
+      "java.util.HashSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+}

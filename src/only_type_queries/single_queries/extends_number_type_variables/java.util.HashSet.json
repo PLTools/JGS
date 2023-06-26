@@ -1,0 +1,44 @@
+{
+  "upperBound": [
+    "Class",
+    "java.util.HashSet",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.Number",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 1,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "java.util.HashSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+}

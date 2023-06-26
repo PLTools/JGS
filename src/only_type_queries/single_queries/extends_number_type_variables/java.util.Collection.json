@@ -1,0 +1,74 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.util.Collection",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.Number",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 7,
+  "rawExpectedAnswers": [
+    [
+      "Interface",
+      "java.util.Collection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$5",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$6",
+      []
+    ]
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.util.Collection",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Interface",
+            "java.lang.Comparable",
+            [
+              [
+                "Type",
+                [
+                  "Var",
+                  {
+                    "id": "T",
+                    "index": 0,
+                    "upb": [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ],
+                    "lwb": null
+                  }
+                ]
+              ]
+            ]
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 18,
+  "rawExpectedAnswers": [
+    [
+      "Interface",
+      "java.util.Collection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.UByteArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.UIntArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.ULongArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.UShortArray",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$5",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$6",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$7",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$8",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.unsigned.UArraysKt___UArraysJvmKt$asList$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.text.MatcherMatchResult$groupValues$1",
+      []
+    ]
+  ]
+}

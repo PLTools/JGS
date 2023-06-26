@@ -1,0 +1,59 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.util.Set",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.String",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 4,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "java.lang.ProcessEnvironment$CheckedKeySet",
+      []
+    ],
+    [
+      "Interface",
+      "java.util.Set",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "sun.util.PreHashedMap$1",
+      []
+    ],
+    [
+      "Class",
+      "sun.util.resources.ParallelListResourceBundle$KeySet",
+      []
+    ]
+  ]
+}

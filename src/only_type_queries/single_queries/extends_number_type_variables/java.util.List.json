@@ -1,0 +1,84 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.util.List",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.Number",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 9,
+  "rawExpectedAnswers": [
+    [
+      "Interface",
+      "com.sun.org.apache.xerces.internal.xs.ShortList",
+      []
+    ],
+    [
+      "Interface",
+      "com.sun.org.apache.xerces.internal.xs.datatypes.ByteList",
+      []
+    ],
+    [
+      "Interface",
+      "java.util.List",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$5",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$6",
+      []
+    ]
+  ]
+}

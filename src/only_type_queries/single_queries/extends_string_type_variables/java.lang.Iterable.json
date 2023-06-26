@@ -1,0 +1,84 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.lang.Iterable",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.String",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 9,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.google.common.base.Splitter$5",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack",
+      []
+    ],
+    [
+      "Interface",
+      "java.lang.Iterable",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.LazyStringArrayList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlinx.metadata.internal.protobuf.LazyStringList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlinx.metadata.internal.protobuf.ProtocolStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.serialization.descriptors.SerialDescriptorKt$special$$inlined$Iterable$2",
+      []
+    ],
+    [
+      "Class",
+      "worker.org.gradle.internal.classloader.FilteringClassLoader$TrieSet",
+      []
+    ]
+  ]
+}

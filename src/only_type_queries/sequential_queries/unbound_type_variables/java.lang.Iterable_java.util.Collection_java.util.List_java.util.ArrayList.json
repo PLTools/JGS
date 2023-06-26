@@ -1,0 +1,189 @@
+{
+  "upperBounds": [
+    [
+      "Interface",
+      "java.lang.Iterable",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.Collection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "java.util.List",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.ArrayList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 12,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.sun.tools.jdi.EventSetImpl",
+      []
+    ],
+    [
+      "Class",
+      "java.util.ArrayList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "javax.management.AttributeList",
+      []
+    ],
+    [
+      "Class",
+      "javax.management.relation.RoleList",
+      []
+    ],
+    [
+      "Class",
+      "javax.management.relation.RoleUnresolvedList",
+      []
+    ],
+    [
+      "Class",
+      "jdk.internal.org.objectweb.asm.tree.MethodNode$1",
+      []
+    ],
+    [
+      "Class",
+      "jdk.jshell.DiagList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.types.model.ArgumentList",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.tools.json.JSONArray",
+      []
+    ],
+    [
+      "Class",
+      "org.objectweb.asm.tree.MethodNode$1",
+      []
+    ],
+    [
+      "Class",
+      "org.postgresql.jdbc.ArrayDecoding$PgArrayList",
+      []
+    ],
+    [
+      "Class",
+      "sun.swing.BakedArrayList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+}

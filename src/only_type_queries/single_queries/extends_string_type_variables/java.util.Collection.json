@@ -1,0 +1,84 @@
+{
+  "upperBound": [
+    "Interface",
+    "java.util.Collection",
+    [
+      [
+        "Wildcard",
+        {
+          "first": "Extends",
+          "second": [
+            "Class",
+            "java.lang.String",
+            []
+          ]
+        }
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 9,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.PSVIErrorList",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl",
+      []
+    ],
+    [
+      "Interface",
+      "com.sun.org.apache.xerces.internal.xs.StringList",
+      []
+    ],
+    [
+      "Interface",
+      "java.util.Collection",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.LazyStringArrayList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlinx.metadata.internal.protobuf.LazyStringList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlinx.metadata.internal.protobuf.ProtocolStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.UnmodifiableLazyStringList",
+      []
+    ]
+  ]
+}

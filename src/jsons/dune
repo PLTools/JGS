@@ -12,9 +12,19 @@
  (preprocess
   (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
 
+(executable
+ (name run_json2)
+ (modules run_json2)
+ (libraries JGS_lib yojson unix mtime.clock.os mtime)
+ (flags
+  (:standard -rectypes))
+ (preprocess
+  (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
+
 (cram
  (deps
   run_json.exe
+  run_json2.exe
   test1.json
   2.json
   test3.json

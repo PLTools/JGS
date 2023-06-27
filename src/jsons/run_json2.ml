@@ -73,8 +73,14 @@ let () =
     let upper, lower =
       match query with
       | `Assoc vals -> (
-          ( (try List.assoc "upperBounds" vals with Not_found -> `List []),
-            try List.assoc "lowerBounds" vals with Not_found -> `List [] ))
+          ( (try List.assoc "upperBounds" vals
+             with Not_found -> (
+               try `List [ List.assoc "upperBound" vals ]
+               with Not_found -> `List [])),
+            try List.assoc "lowerBounds" vals
+            with Not_found -> (
+              try `List [ List.assoc "lowerBound" vals ]
+              with Not_found -> `List []) ))
       | _ -> assert false
     in
 

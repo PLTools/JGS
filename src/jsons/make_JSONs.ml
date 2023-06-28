@@ -128,36 +128,50 @@ let () =
       make_i "id" ~params:[] [ Interface ("ic", []) ];
     ]
 
+let java_lang_object = Class ("java.lang.Object", [])
+let java_lang_string = Class ("java.lang.String", [])
+let java_util_list arg = Interface ("java.util.List", [ arg ])
+
+let big_class_table_approx =
+  [
+    make_c "java.lang.Object" ~params:[] [];
+    make_i "java.io.Serializable" ~params:[] [];
+    make_i "java.lang.Comparable"
+      ~params:[ { pname = "A"; p_upper = [ java_lang_object ] } ]
+      [];
+    make_c "int" ~params:[] ~sup:java_lang_object [];
+    make_c "java.lang.String" ~params:[] ~sup:java_lang_object
+      [
+        Interface ("java.io.Serializable", []);
+        Interface ("java.lang.Comparable", [ java_lang_string ]);
+      ];
+    make_i "ICollection"
+      ~params:[ { pname = "A"; p_upper = [ java_lang_object ] } ]
+      [];
+    make_i "java.util.List"
+      ~params:[ { pname = "B"; p_upper = [ java_lang_object ] } ]
+      [
+        Interface
+          ( "ICollection",
+            [ Var { id = "B"; index = 0; upb = java_lang_object; lwb = None } ]
+          );
+      ];
+    make_c "kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList"
+      ~params:[]
+      [ java_util_list java_lang_string ];
+  ]
+
 let () =
   wrap "7.json"
-    ~upper_bounds:
-      [
-        (* Class ("java.lang.Object", []) *)
-        (* Class ("list", [ Class ("int", []) ]); *)
-        Interface ("ICollection", [ Class ("int", []) ]);
-      ]
-    [
-      make_c "java.lang.Object" ~params:[] [];
-      make_c "int" ~params:[] ~sup:(Class ("java.lang.Object", [])) [];
-      (* make_c "string" ~params:[] [ Class ("java.lang.Object", []) ]; *)
-      make_i "ICollection"
-        ~params:
-          [ { pname = "A"; p_upper = [ Class ("java.lang.Object", []) ] } ]
-        [];
-      make_c "list"
-        ~params:
-          [ { pname = "B"; p_upper = [ Class ("java.lang.Object", []) ] } ]
-        [
-          Interface
-            ( "ICollection",
-              [
-                Var
-                  {
-                    id = "B";
-                    index = 0;
-                    upb = Class ("java.lang.Object", []);
-                    lwb = None;
-                  };
-              ] );
-        ];
-    ]
+    ~upper_bounds:[ Interface ("ICollection", [ Class ("int", []) ]) ]
+    big_class_table_approx
+
+let () =
+  wrap "8.json"
+    ~upper_bounds:[ Interface ("ICollection", [ java_lang_string ]) ]
+    big_class_table_approx
+
+let () =
+  wrap "9.json"
+    ~upper_bounds:[ Interface ("java.util.List", [ java_lang_string ]) ]
+    big_class_table_approx

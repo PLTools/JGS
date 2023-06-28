@@ -109,7 +109,7 @@
     ]
   ],
   "upper_bounds": [
-    [ "Interface", "ICollection", [ [ "Class", "int", [] ] ] ]
+    [ "Interface", "ICollection", [ [ "Class", "java.lang.String", [] ] ] ]
   ],
   "lower_bounds": [],
   "neg_upper_bounds": [],

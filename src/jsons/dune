@@ -31,11 +31,21 @@
   5.json
   6closure.json
   7.json
+  8.json
+  9.json
   ;
   ))
 
 (rule
- (targets test1.json 2.json test3.json 5.json 6closure.json 7.json)
+ (targets
+  test1.json
+  2.json
+  test3.json
+  5.json
+  6closure.json
+  7.json
+  8.json
+  9.json)
  (mode
   (promote (until-clean)))
  (deps ./make_JSONs.exe)

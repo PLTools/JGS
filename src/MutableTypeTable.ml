@@ -222,7 +222,11 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
      fun id rez ->
       fresh id_val (id id_val)
         (debug_var id_val (Fun.flip OCanren.reify) (function
-          | [ Value id ] -> rez === decl_inj (M.find id !m)
+          | [ Value id ] -> (
+              match M.find id !m with
+              | d -> rez === decl_inj d
+              | exception Not_found ->
+                  failwith (Printf.sprintf "Not_found: id = %d" id))
           | _ -> (
               let disj_args = get_decl_by_id_disjs_args () in
               let disjs =

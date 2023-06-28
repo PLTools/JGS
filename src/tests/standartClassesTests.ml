@@ -98,6 +98,7 @@ module CollectionClasses = struct
 
   let int = mk_simple_class "Int" ~supers:[]
   let float = mk_simple_class "Float" ~supers:[]
+  let string = mk_simple_class "String" ~supers:[]
   let iterable = mk_generic_interface "Iterable" ~supers:[]
   let collection = mk_generic_interface "Collection" ~supers:[ iterable ]
 
@@ -184,6 +185,7 @@ module CollectionClasses = struct
   module Types = struct
     let int = get_simple_type int
     let float = get_simple_type float
+    let string = get_simple_type string
     let obj = SampleCT.object_t
     let cloneable = SampleCT.cloneable_t
     let serializable = SampleCT.serializable_t
@@ -264,7 +266,7 @@ let _ =
     run_jtype ~n:8 ~msg:"? <-< AbstractList<Object>" (fun q ->
         q <-< jtype_inj (abstract_list obj))
   in
-  let _ =
+  let __ _ =
     run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q ->
         fresh () (q =/= !!JGS.HO.Null) (jtype_inj role_list <=< q))
   in
@@ -293,5 +295,9 @@ let _ =
           (jtype_inj (tree_set obj) <=< q)
         (* *))
   in
-
+  let _ =
+    run_jtype ~n:(-1) ~msg:"? <-< Collection<String>" (fun q ->
+        fresh () (q =/= !!JGS.HO.Null) (q <=< jtype_inj (collection string))
+        (* *))
+  in
   ()

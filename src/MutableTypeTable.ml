@@ -136,7 +136,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     (* Printf.printf "Interface   with id=%d was created\n%!" id; *)
     id
 
-  let top = Class (0, [])
+  let top_id = 0
+  let top = Class (top_id, [])
 
   let object_t =
     let id = make_class [] top [] in
@@ -199,7 +200,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                    Stdlib.List.filter_map
                      (fun super ->
                        match super with
-                       | Class (super_id, _) | Interface (super_id, _) ->
+                       | (Class (super_id, _) | Interface (super_id, _))
+                         when super_id <> top_id ->
                            (* Printf.printf "sub_id: %d, super_id: %d\n" sub_id
                               super_id; *)
                            Some (!!sub_id, !!super_id, jtype_inj super)
@@ -222,6 +224,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
      fun id rez ->
       fresh id_val (id id_val)
         (debug_var id_val (Fun.flip OCanren.reify) (function
+          | [ Value id ] when id = top_id -> failure
           | [ Value id ] -> (
               match M.find id !m with
               | d -> rez === decl_inj d

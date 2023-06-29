@@ -266,7 +266,7 @@ let _ =
     run_jtype ~n:8 ~msg:"? <-< AbstractList<Object>" (fun q ->
         q <-< jtype_inj (abstract_list obj))
   in
-  let __ _ =
+  let _ =
     run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q ->
         fresh () (q =/= !!JGS.HO.Null) (jtype_inj role_list <=< q))
   in
@@ -296,7 +296,7 @@ let _ =
         (* *))
   in
   let _ =
-    run_jtype ~n:(-1) ~msg:"? <-< Collection<String>" (fun q ->
+    run_jtype ~n:5 ~msg:"? <-< Collection<String>" (fun q ->
         fresh () (q =/= !!JGS.HO.Null) (q <=< jtype_inj (collection string))
         (* *))
   in

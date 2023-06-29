@@ -1,5 +1,6 @@
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -n 1 -ct ../../../jsons_real/0.json java.util.List.json 
+$ ls ../../../
+  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.List.json -n 20
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4566,8 +4567,28 @@
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
   
-  Type variables mentioned in constraints: []
+  Type variables mentioned in constraints: [ E ]
   
   Running generated query
-  	     Processing: _.? <-< java.util.List (? extends java.lang.String ())
-    1)  java.util.List<[java.lang.String]>
+  	     Processing: _.? <-< java.util.List ((E <: java.lang.Object ()))
+  	     Processing: _.E <-< java.lang.Object ()
+    1)  kotlinx.metadata.internal.protobuf.ProtocolStringList
+    2)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
+    3)  kotlin.collections.EmptyList
+    4)  com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList
+    5)  com.sun.org.apache.xerces.internal.xs.XSObjectList
+    6)  java.util.List<[java.lang.Object]>
+    7)  com.sun.org.apache.xerces.internal.xs.XSNamespaceItemList
+    8)  org.jooq.Result<[java.lang.Object]>
+    9)  com.sun.org.apache.xerces.internal.xs.StringList
+   10)  com.sun.org.apache.xerces.internal.xs.LSInputList
+   11)  kotlinx.collections.immutable.ImmutableList<[java.lang.Object]>
+   12)  java.util.concurrent.CopyOnWriteArrayList$COWSubList
+   13)  java.util.List<[java.lang.Cloneable]>
+   14)  java.util.List<[java.io.Serializable]>
+   15)  java.util.List<[net.bytebuddy.dynamic.loading.ClassInjector$UsingUnsafe$System]>
+   16)  java.util.List<[jdk.vm.ci.code.stack.InspectedFrame]>
+   17)  java.util.List<[com.sun.org.apache.xerces.internal.xs.XSModel]>
+   18)  java.util.List<[net.bytebuddy.implementation.InvokeDynamic$InvocationProvider$ArgumentProvider]>
+   19)  kotlin.collections.AbstractList<[java.lang.Object]>
+   20)  java.util.List<[jdk.tools.jlink.internal.StringTable]>

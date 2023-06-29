@@ -1,5 +1,5 @@
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -n 2 -ct ../../../jsons_real/0.json java.util.Collection.json
+  $ ../../../jsons/run_json2.exe -n 1 -ct ../../../jsons_real/0.json java.util.Collection.json
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4570,5 +4570,4 @@
   
   Running generated query
   	     Processing: _.? <-< java.util.Collection (? extends java.lang.String ())
-    1)  null
-    2)  java.util.Collection<[java.lang.String]>
+    1)  java.util.Collection<[java.lang.String]>

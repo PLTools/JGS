@@ -418,10 +418,23 @@ let make_classtable table =
     match scru with Some t -> sk t | None -> on_error ()
   in
   let rec on_decl = function
-    | C { cname = "java.lang.Object"; _ }
-    | I { iname = "java.lang.Cloneable"; _ }
-    | I { iname = "java.io.Serializable"; _ } ->
-        ()
+    | C { cname = "java.lang.Object"; _ } -> ()
+    | I { iname = "java.lang.Cloneable" as iname; _ } ->
+        let id =
+          match CT.cloneable_t with
+          | Interface (id, _) -> id
+          | _ -> assert false
+        in
+        Hashtbl.add name_of_id_hash id iname;
+        Hashtbl.add ifaces iname id
+    | I { iname = "java.io.Serializable" as iname; _ } ->
+        let id =
+          match CT.serializable_t with
+          | Interface (id, _) -> id
+          | _ -> assert false
+        in
+        Hashtbl.add name_of_id_hash id iname;
+        Hashtbl.add ifaces iname id
     | C { cname; params; super; supers } ->
         (* log "Running on class %s..." cname; *)
         Hashtbl.clear params_hash;
@@ -750,7 +763,7 @@ let make_query j : _ * result_query * _ =
       (SS.to_seq varnames |> List.of_seq)
       (fun lookup ->
         let open OCanren in
-        let rec on_typ : _ -> JGS.HO.jtype_injected = function
+        let rec on_typ : jtype -> JGS.HO.jtype_injected = function
           | Class (name, args) -> (
               match id_of_name name with
               | cid -> JGS_Helpers.class_ !!cid (Std.list on_arg args)
@@ -802,7 +815,9 @@ let make_query j : _ * result_query * _ =
           is_subtype sub super
           (* TODO: There were bool here to switch positive/negative *)
         in
-
+        (*
+        Format.printf "%d Upper bouds, %d lower bounds\n%!"
+          (List.length upper_bounds) (List.length lower_bounds); *)
         let pos_upper_goals =
           List.map (wrap ~upper:true ~pos:true) upper_bounds
         in

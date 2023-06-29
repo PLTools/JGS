@@ -73,12 +73,11 @@ let () =
         Format.eprintf "%a\n%!" (Yojson.Safe.pretty_print ~std:true) j;
         exit 1
   in
-
   let module V = JGS.FO.Verifier (CT) in
   let open OCanren in
   let open JGS in
   let open Closure in
-  let { closure = ( -<- ); direct_subtyping = ( <-< ); _ } =
+  let { closure = ( <-< ); direct_subtyping = ( -<- ); _ } =
     Closure.make_closure_subtyping (module CT) V.( -<- )
   in
   (* let module MM = struct
@@ -133,13 +132,16 @@ let () =
           let open OCanren in
           fresh () (class_or_interface typ) (typ -<- jtype_inj CT.object_t))
   in
-
-  let __ () =
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 4);
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 5);
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 7);
-    ()
-  in
+  (*
+  let () =
+    let wrap n =
+      Format.printf "decl %d: %a\n" n JGS_Helpers.JGS_PP.decl (CT.decl_by_id n)
+    in
+    wrap 4;
+    wrap 6;
+    wrap 8;
+    wrap 9
+  in *)
   run_jtype pp (fun typ ->
       let open OCanren in
       fresh ()

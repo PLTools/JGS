@@ -179,6 +179,16 @@ module CollectionClasses = struct
   end
 end
 
+(* let () =
+   let wrap n =
+     Format.printf "decl %d: %a\n" n JGS_Helpers.JGS_PP.decl
+       (SampleCT.decl_by_id n)
+   in
+   wrap 4;
+   wrap 6;
+   wrap 8;
+   wrap 9 *)
+
 let _ =
   let open CollectionClasses.Types in
   let pp_list f l =
@@ -228,12 +238,13 @@ let _ =
   in
 
   let _ =
+    let upper_bound1 = collection string in
+    (* Format.printf "upper_boudn1: %a\n" JGS_Helpers.JGS_PP.jtyp upper_bound1; *)
     (* A remake of the test
        dune exec jsons/run_json.exe -- -n 5 jsons/8.json
     *)
     (* On three answers it hangs *)
     run_jtype ~n:3 ~msg:"? <-< Collection<String>" (fun q ->
-        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (collection string))
-        (* *))
+        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj upper_bound1) (* *))
   in
   ()

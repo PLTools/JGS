@@ -112,49 +112,49 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     table_was_changed := true;
     id
 
-  let make_tvar ?name index upb =
+  let make_tvar ?name:_ index upb =
     let id = new_id () in
-    Printf.printf "Create variable %s with id = %d\n%!"
-      (Stdlib.Option.value name ~default:"")
-      id;
+    (* Printf.printf "Create variable %s with id = %d\n%!"
+       (Stdlib.Option.value name ~default:"")
+       id; *)
     Var { id; index; upb; lwb = None }
 
   let padding = -35
 
-  let make_class ?name params super supers =
+  let make_class ?name:_ params super supers =
     let id = add_class { params; super; supers } in
-    Printf.printf "%*s with id=%d was created\n%!" padding
-      ("Class     " ^ Stdlib.Option.value name ~default:"")
-      id;
+    (* Printf.printf "%*s with id=%d was created\n%!" padding
+       ("Class     " ^ Stdlib.Option.value name ~default:"")
+       id; *)
     id
 
-  let make_interface ?name params supers =
+  let make_interface ?name:_ params supers =
     let id = add_interface { params; supers } in
-    Printf.printf "%*s with id=%d was created\n%!" padding
-      ("Interface " ^ Stdlib.Option.value name ~default:"")
-      id;
+    (* Printf.printf "%*s with id=%d was created\n%!" padding
+       ("Interface " ^ Stdlib.Option.value name ~default:"")
+       id; *)
     id
 
-  let make_class_fix ?name ~params super supers =
+  let make_class_fix ?name:_ ~params super supers =
     let id =
       add_class_fix (fun id ->
           let params = params id in
           { params; super = super id; supers = supers id })
     in
-    Printf.printf "%*s with id=%d was created\n%!" padding
-      ("Class     " ^ Stdlib.Option.value name ~default:"")
-      id;
+    (* Printf.printf "%*s with id=%d was created\n%!" padding
+       ("Class     " ^ Stdlib.Option.value name ~default:"")
+       id; *)
     id
 
-  let make_interface_fix ?name params supers =
+  let make_interface_fix ?name:_ params supers =
     let id =
       add_interface_fix (fun id ->
           let params = params id in
           { params; supers = supers id })
     in
-    Printf.printf "%*s with id=%d was created\n%!" padding
-      ("Interface " ^ Stdlib.Option.value name ~default:"")
-      id;
+    (* Printf.printf "%*s with id=%d was created\n%!" padding
+       ("Interface " ^ Stdlib.Option.value name ~default:"")
+       id; *)
     id
 
   let top_id = 0

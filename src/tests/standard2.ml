@@ -124,6 +124,7 @@ module CollectionClasses = struct
     mk_simple_class
       "kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList"
       ~super:(Simple (get_generic_type list (get_simple_type string)))
+      ~supers:[]
 
   module Types = struct
     let int = get_simple_type int
@@ -189,7 +190,7 @@ let _ =
        dune exec jsons/run_json.exe -- -n 5 jsons/8.json
     *)
     (* On three answers it hangs *)
-    run_jtype ~n:2 ~msg:"? <-< Collection<String>" (fun q ->
+    run_jtype ~n:3 ~msg:"? <-< Collection<String>" (fun q ->
         fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (collection string))
         (* *))
   in

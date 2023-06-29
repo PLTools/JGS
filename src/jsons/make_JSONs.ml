@@ -139,7 +139,7 @@ let big_class_table_approx =
     make_i "java.lang.Comparable"
       ~params:[ { pname = "A"; p_upper = [ java_lang_object ] } ]
       [];
-    make_c "int" ~params:[] ~sup:java_lang_object [];
+    (* make_c "int" ~params:[] ~sup:java_lang_object []; *)
     make_c "java.lang.String" ~params:[] ~sup:java_lang_object
       [
         Interface ("java.io.Serializable", []);

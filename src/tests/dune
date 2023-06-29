@@ -57,6 +57,19 @@
    ;
    )))
 
+(executable
+ (name standard2)
+ (modules standard2)
+ (libraries JGS_lib OCanren)
+ (flags
+  (:standard -rectypes))
+ (preprocess
+  (pps
+   GT.ppx_all
+   OCanren-ppx.ppx_fresh
+   ;
+   )))
+
 (cram
  (deps
   ./functionalTests.exe
@@ -65,5 +78,6 @@
   ./relationalBackwardTests.exe
   ./relationalClosureTests.exe
   ./standartClassesTests.exe
+  ./standard2.exe
   ;
   ))

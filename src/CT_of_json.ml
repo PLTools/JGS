@@ -247,6 +247,10 @@ let populate_graph on_decl table =
   let iter () =
     let g = G.create ~size:(List.length table) () in
     let decl_of_name = Hashtbl.create (List.length table) in
+    let add_decl_and_name name d =
+      (* log "\t%s: add %s" __FUNCTION__ name; *)
+      Hashtbl.add decl_of_name name d
+    in
 
     let params_hash = Hashtbl.create 20 in
     let add_params =
@@ -273,8 +277,9 @@ let populate_graph on_decl table =
            Hashtbl.clear params_hash;
            match decl with
            | I { iname; isupers; iparams } as d ->
+               log "Adding an interface %s to graph. %d" iname __LINE__;
                G.add_vertex g iname;
-               Hashtbl.add decl_of_name iname d;
+               add_decl_and_name iname d;
                add_params iparams;
 
                iparams |> Stdlib.List.iter (traverse_param iname);
@@ -305,7 +310,7 @@ let populate_graph on_decl table =
                  | _ ->
                      Format.eprintf "Already present: '%s'\n%!" cname;
                      false);
-               Hashtbl.add decl_of_name cname d;
+               add_decl_and_name cname d;
                add_params params;
                let () =
                  (* If it is an inner class, we should add dependencies to parents  *)
@@ -346,8 +351,8 @@ let populate_graph on_decl table =
                    if is_a_param name then () else G.add_edge g name cname)
                  used_typenames);
 
-    (* log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
-       (G.nb_edges g) __FILE__ __LINE__; *)
+    log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
+      (G.nb_edges g) __FILE__ __LINE__;
     TopSort.iter
       (fun name ->
         match Hashtbl.find decl_of_name name with
@@ -384,17 +389,18 @@ let make_classtable table =
   let is_current name = name = fst !cur_name in
 
   let () =
+    let full_name = "java.lang.Object" in
     match CT.object_t with
     | Class (id, _) ->
-        Hashtbl.add classes "java.lang.Object" id;
-        Hashtbl.add name_of_id_hash id "java.lang.Object"
+        Hashtbl.add classes full_name id;
+        Hashtbl.add name_of_id_hash id full_name
     | _ -> assert false
   in
   let () =
     let full_name = "java.lang.Clonable" in
     match CT.cloneable_t with
     | Interface (id, _) ->
-        Hashtbl.add classes full_name id;
+        Hashtbl.add ifaces full_name id;
         Hashtbl.add name_of_id_hash id full_name
     | _ -> assert false
   in
@@ -402,7 +408,7 @@ let make_classtable table =
     let full_name = "java.io.Serializable" in
     match CT.serializable_t with
     | Interface (id, _) ->
-        Hashtbl.add classes full_name id;
+        Hashtbl.add ifaces full_name id;
         Hashtbl.add name_of_id_hash id full_name
     | _ -> assert false
   in
@@ -412,7 +418,10 @@ let make_classtable table =
     match scru with Some t -> sk t | None -> on_error ()
   in
   let rec on_decl = function
-    | C { cname = "java.lang.Object"; _ } -> ()
+    | C { cname = "java.lang.Object"; _ }
+    | I { iname = "java.lang.Cloneable"; _ }
+    | I { iname = "java.io.Serializable"; _ } ->
+        ()
     | C { cname; params; super; supers } ->
         (* log "Running on class %s..." cname; *)
         Hashtbl.clear params_hash;
@@ -424,7 +433,7 @@ let make_classtable table =
              Hashtbl.add params_hash pname (var_info ~id i))
            params; *)
         let cid =
-          CT.make_class_fix
+          CT.make_class_fix ~name:cname
             ~params:(fun cur_id ->
               (* log "  make_class_fix %S. params" cname; *)
               cur_name := (cname, cur_id);
@@ -456,7 +465,7 @@ let make_classtable table =
                Hashtbl.add params_hash pname (var_info ~id i))
              iparams; *)
           let iid =
-            CT.make_interface_fix
+            CT.make_interface_fix ~name:iname
               (fun cur_id ->
                 cur_name := (iname, cur_id);
                 List.mapi on_param iparams)
@@ -477,15 +486,18 @@ let make_classtable table =
            | None -> failwith "Can't interpet a parameter"
            | Some p -> p)
     in
-    let new_id = CT.new_var () in
-    Hashtbl.add params_hash pname (var_info ~id:new_id idx);
+
+    (* let new_id = CT.new_var () in *)
     let upb =
       match upper_bounds with
       | [] -> CT.object_t
       | [ x ] -> x
       | xs -> JGS.Intersect xs
     in
-    JGS.Var { id = new_id; index = idx; lwb = None; upb }
+    let ans = CT.make_tvar ~name:pname idx upb in
+    let id = match ans with JGS.Var { id; _ } -> id | _ -> assert false in
+    Hashtbl.add params_hash pname (var_info ~id idx);
+    ans
   (* CT.make_tvar idx (List.hd upper_bounds) *)
   (* upper_bounds *)
   (* CT.object_t *)

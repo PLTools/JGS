@@ -43,7 +43,7 @@ module JGS_builder = struct
           | _ -> failwith "Generic parameter of simple interface")
         supers
     in
-    let id = SampleCT.make_interface [] supers in
+    let id = SampleCT.make_interface ~name [] supers in
     names_by_id := M.add id name !names_by_id;
     Simple (JGS.Interface (id, []))
 
@@ -59,7 +59,7 @@ module JGS_builder = struct
       | Simple s -> s
       | _ -> failwith "Generic parameter of simple class"
     in
-    let id = SampleCT.make_class [] super supers in
+    let id = SampleCT.make_class ~name [] super supers in
     names_by_id := M.add id name !names_by_id;
     Simple (JGS.Class (id, []))
 
@@ -68,7 +68,7 @@ module JGS_builder = struct
     let supers =
       List.map (function Simple s -> s | Generic f -> f var) supers
     in
-    let id = SampleCT.make_interface [ var ] supers in
+    let id = SampleCT.make_interface ~name [ var ] supers in
     names_by_id := M.add id name !names_by_id;
     Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
 
@@ -78,7 +78,7 @@ module JGS_builder = struct
       List.map (function Simple s -> s | Generic f -> f var) supers
     in
     let super = match super with Simple s -> s | Generic f -> f var in
-    let id = SampleCT.make_class [ var ] super supers in
+    let id = SampleCT.make_class ~name [ var ] super supers in
     names_by_id := M.add id name !names_by_id;
     Generic (fun var -> JGS.Class (id, [ JGS.Type var ]))
 
@@ -98,14 +98,34 @@ module CollectionClasses = struct
     | Generic f -> f
     | _ -> failwith "Isn't generic class or interface"
 
-  let int = mk_simple_class "Int" ~supers:[]
-  let serializable = mk_simple_inteface "java.io.Serializable" ~supers:[]
-  let comparable = mk_generic_interface "java.lang.Comparable" ~supers:[]
+  (* let int = mk_simple_class "Int" ~supers:[] *)
+  (* let serializable = mk_simple_inteface "java.io.Serializable" ~supers:[] *)
+  let comparable =
+    let name = "java.lang.Comparable" in
+
+    let id =
+      SampleCT.make_interface_fix ~name
+        (fun _ -> [ SampleCT.make_tvar 0 SampleCT.object_t ])
+        (fun _self_id -> [])
+    in
+    names_by_id := M.add id name !names_by_id;
+    Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
+
+  let collection =
+    let name = "ICollection" in
+
+    let id =
+      SampleCT.make_interface_fix ~name
+        (fun _ -> [ SampleCT.make_tvar 0 SampleCT.object_t ])
+        (fun _self_id -> [])
+    in
+    names_by_id := M.add id name !names_by_id;
+    Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
 
   let string =
     let name = "java.lang.String" in
     let id =
-      SampleCT.make_class_fix
+      SampleCT.make_class_fix ~name
         ~params:(fun _ -> [])
         (fun _ -> SampleCT.object_t)
         (fun self_id ->
@@ -117,8 +137,30 @@ module CollectionClasses = struct
     names_by_id := M.add id name !names_by_id;
     Simple (JGS.Class (id, []))
 
-  let collection = mk_generic_interface "ICollection" ~supers:[]
-  let list = mk_generic_interface "java.util.List" ~supers:[ collection ]
+  let list =
+    let name = "java.util.List" in
+
+    (* let id =
+         SampleCT.make_interface_fix ~name
+           (fun _ -> [ SampleCT.make_tvar ~name:"A" 0 SampleCT.object_t ])
+           (fun _self_id ->
+             let v = SampleCT.make_tvar ~name:"B" 0 SampleCT.object_t in
+             [ get_generic_type collection v ])
+       in *)
+    let var1 = ref (Obj.magic ()) in
+    (* TODO: This is full of shit *)
+    let id =
+      SampleCT.make_interface_fix ~name
+        (fun _ ->
+          var1 := SampleCT.make_tvar ~name:"A" 0 SampleCT.object_t;
+          [ !var1 ])
+        (fun _self_id ->
+          (* let v = SampleCT.make_tvar ~name:"B" 0 SampleCT.object_t in *)
+          [ get_generic_type collection !var1 ])
+    in
+    names_by_id := M.add id name !names_by_id;
+    Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
+  (* mk_generic_interface "java.util.List" ~supers:[ collection ] *)
 
   let protocol_string_list =
     mk_simple_class
@@ -127,7 +169,7 @@ module CollectionClasses = struct
       ~supers:[]
 
   module Types = struct
-    let int = get_simple_type int
+    (* let int = get_simple_type int *)
     let string = get_simple_type string
     let obj = SampleCT.object_t
     let cloneable = SampleCT.cloneable_t

@@ -15,14 +15,20 @@ module type SAMPLE_CLASSTABLE = sig
   val cloneable_t : jtype
   val serializable_t : jtype
   val new_var : unit -> int
-  val make_class : jtype list -> jtype -> jtype list -> int
-  val make_tvar : int -> jtype -> jtype
-  val make_interface : jtype list -> jtype list -> int
+  val make_class : ?name:string -> jtype list -> jtype -> jtype list -> int
+  val make_tvar : ?name:string -> int -> jtype -> jtype
+  val make_interface : ?name:string -> jtype list -> jtype list -> int
 
   val make_class_fix :
-    params:(int -> jtype list) -> (int -> jtype) -> (int -> jtype list) -> int
+    ?name:string ->
+    params:(int -> jtype list) ->
+    (int -> jtype) ->
+    (int -> jtype list) ->
+    int
 
-  val make_interface_fix : (int -> jtype list) -> (int -> jtype list) -> int
+  val make_interface_fix :
+    ?name:string -> (int -> jtype list) -> (int -> jtype list) -> int
+  (** [make_interface_fix make_params make_superinterfaces] creates a new interface in open recursion style *)
 
   module HO : sig
     val decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal
@@ -50,10 +56,10 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
   module M = Map.Make (Int)
 
-  let make_tvar index upb = Var { id = new_id (); index; upb; lwb = None }
+  (* let make_tvar index upb = Var { id = new_id (); index; upb; lwb = None } *)
   let m = ref M.empty
   let table_was_changed = ref true
-  let make_params params = Stdlib.List.mapi (fun i p -> make_tvar i p) params
+  (* let make_params params = Stdlib.List.mapi (fun i p -> make_tvar i p) params *)
 
   let add_class (c : cdecl) =
     let id = new_id () in
@@ -106,51 +112,66 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     table_was_changed := true;
     id
 
-  let make_tvar index upb = Var { id = new_id (); index; upb; lwb = None }
+  let make_tvar ?name index upb =
+    let id = new_id () in
+    Printf.printf "Create variable %s with id = %d\n%!"
+      (Stdlib.Option.value name ~default:"")
+      id;
+    Var { id; index; upb; lwb = None }
 
-  let make_class params super supers =
+  let padding = -35
+
+  let make_class ?name params super supers =
     let id = add_class { params; super; supers } in
-    (* Printf.printf "Class   with id=%d was created\n%!" id; *)
+    Printf.printf "%*s with id=%d was created\n%!" padding
+      ("Class     " ^ Stdlib.Option.value name ~default:"")
+      id;
     id
 
-  let make_interface params supers =
+  let make_interface ?name params supers =
     let id = add_interface { params; supers } in
-    (* Printf.printf "Interface   with id=%d was created\n%!" id; *)
+    Printf.printf "%*s with id=%d was created\n%!" padding
+      ("Interface " ^ Stdlib.Option.value name ~default:"")
+      id;
     id
 
-  let make_class_fix ~params super supers =
+  let make_class_fix ?name ~params super supers =
     let id =
       add_class_fix (fun id ->
           let params = params id in
           { params; super = super id; supers = supers id })
     in
-    (* Printf.printf "Class   with id=%d was created\n%!" id; *)
+    Printf.printf "%*s with id=%d was created\n%!" padding
+      ("Class     " ^ Stdlib.Option.value name ~default:"")
+      id;
     id
 
-  let make_interface_fix params supers =
+  let make_interface_fix ?name params supers =
     let id =
       add_interface_fix (fun id ->
           let params = params id in
           { params; supers = supers id })
     in
-    (* Printf.printf "Interface   with id=%d was created\n%!" id; *)
+    Printf.printf "%*s with id=%d was created\n%!" padding
+      ("Interface " ^ Stdlib.Option.value name ~default:"")
+      id;
     id
 
   let top_id = 0
   let top = Class (top_id, [])
 
   let object_t =
-    let id = make_class [] top [] in
+    let id = make_class ~name:"java.lang.Object" [] top [] in
     assert (id = 1);
     Class (id, [])
 
   let cloneable_t =
-    let id = make_interface [] [] in
+    let id = make_interface ~name:"java.lang.Cloneable" [] [] in
     assert (id = 2);
     Interface (id, [])
 
   let serializable_t =
-    let id = make_interface [] [] in
+    let id = make_interface ~name:"java.io.Serializable" [] [] in
     assert (id = 3);
     Interface (id, [])
 

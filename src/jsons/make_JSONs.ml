@@ -135,6 +135,7 @@ let java_util_list arg = Interface ("java.util.List", [ arg ])
 let big_class_table_approx =
   [
     make_c "java.lang.Object" ~params:[] [];
+    make_i "java.lang.Cloneable" ~params:[] [];
     make_i "java.io.Serializable" ~params:[] [];
     make_i "java.lang.Comparable"
       ~params:[ { pname = "A"; p_upper = [ java_lang_object ] } ]

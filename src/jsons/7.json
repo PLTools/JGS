@@ -10,7 +10,20 @@
       }
     ],
     [
-      "I", { "iname": "java.io.Serializable", "iparams": [], "isupers": [] }
+      "I",
+      {
+        "iname": "java.lang.Cloneable",
+        "iparams": [],
+        "isupers": []
+      }
+    ],
+    [
+      "I",
+      {
+        "iname": "java.io.Serializable",
+        "iparams": [],
+        "isupers": []
+      }
     ],
     [
       "I",
@@ -19,7 +32,13 @@
         "iparams": [
           {
             "pname": "A",
-            "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
+            "p_upper": [
+              [
+                "Class",
+                "java.lang.Object",
+                []
+              ]
+            ]
           }
         ],
         "isupers": []
@@ -28,24 +47,29 @@
     [
       "C",
       {
-        "cname": "int",
-        "params": [],
-        "super": [ "Class", "java.lang.Object", [] ],
-        "supers": []
-      }
-    ],
-    [
-      "C",
-      {
         "cname": "java.lang.String",
         "params": [],
-        "super": [ "Class", "java.lang.Object", [] ],
+        "super": [
+          "Class",
+          "java.lang.Object",
+          []
+        ],
         "supers": [
-          [ "Interface", "java.io.Serializable", [] ],
+          [
+            "Interface",
+            "java.io.Serializable",
+            []
+          ],
           [
             "Interface",
             "java.lang.Comparable",
-            [ [ "Class", "java.lang.String", [] ] ]
+            [
+              [
+                "Class",
+                "java.lang.String",
+                []
+              ]
+            ]
           ]
         ]
       }
@@ -57,7 +81,13 @@
         "iparams": [
           {
             "pname": "A",
-            "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
+            "p_upper": [
+              [
+                "Class",
+                "java.lang.Object",
+                []
+              ]
+            ]
           }
         ],
         "isupers": []
@@ -69,8 +99,14 @@
         "iname": "java.util.List",
         "iparams": [
           {
-            "pname": "B",
-            "p_upper": [ [ "Class", "java.lang.Object", [] ] ]
+            "pname": "A",
+            "p_upper": [
+              [
+                "Class",
+                "java.lang.Object",
+                []
+              ]
+            ]
           }
         ],
         "isupers": [
@@ -83,7 +119,11 @@
                 {
                   "id": "B",
                   "index": 0,
-                  "upb": [ "Class", "java.lang.Object", [] ],
+                  "upb": [
+                    "Class",
+                    "java.lang.Object",
+                    []
+                  ],
                   "lwb": null
                 }
               ]
@@ -102,14 +142,30 @@
           [
             "Interface",
             "java.util.List",
-            [ [ "Class", "java.lang.String", [] ] ]
+            [
+              [
+                "Class",
+                "java.lang.String",
+                []
+              ]
+            ]
           ]
         ]
       }
     ]
   ],
   "upper_bounds": [
-    [ "Interface", "ICollection", [ [ "Class", "int", [] ] ] ]
+    [
+      "Interface",
+      "ICollection",
+      [
+        [
+          "Class",
+          "int",
+          []
+        ]
+      ]
+    ]
   ],
   "lower_bounds": [],
   "neg_upper_bounds": [],

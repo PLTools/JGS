@@ -9,6 +9,7 @@
         "supers": []
       }
     ],
+    [ "I", { "iname": "java.lang.Cloneable", "iparams": [], "isupers": [] } ],
     [
       "I", { "iname": "java.io.Serializable", "iparams": [], "isupers": [] }
     ],
@@ -23,15 +24,6 @@
           }
         ],
         "isupers": []
-      }
-    ],
-    [
-      "C",
-      {
-        "cname": "int",
-        "params": [],
-        "super": [ "Class", "java.lang.Object", [] ],
-        "supers": []
       }
     ],
     [

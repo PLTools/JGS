@@ -1,5 +1,5 @@
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.List.json -n 20
+  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.Set.json -n 21
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4569,17 +4569,26 @@
   Type variables mentioned in constraints: [ E ]
   
   Running generated query
-  	     Processing: _.? <-< java.util.List ((E <: java.lang.Object ()))
+  	     Processing: _.? <-< java.util.Set ((E <: java.lang.Object ()))
   	     Processing: _.E <-< java.lang.Object ()
-    1)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    2)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    3)  kotlin.collections.EmptyList
-    4)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    5)  com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList
-    6)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    7)  com.sun.org.apache.xerces.internal.xs.XSObjectList
-    8)  java.util.List<[java.lang.Object]>
-    9)  com.sun.org.apache.xerces.internal.xs.XSNamespaceItemList
-   10)  kotlinx.metadata.internal.protobuf.LazyStringList
-  Terminated
-  [143]
+    1)  sun.nio.ch.Util$2
+    2)  org.mockito.internal.util.collections.HashCodeAndEqualsSafeSet
+    3)  kotlin.collections.EmptySet
+    4)  java.util.Properties$EntrySet
+    5)  java.util.Set<[java.lang.Object]>
+    6)  kotlinx.collections.immutable.ImmutableSet<[java.lang.Object]>
+    7)  java.util.Set<[sun.util.calendar.CalendarDate]>
+    8)  kotlin.collections.AbstractSet<[java.lang.Object]>
+    9)  java.util.Set<[sun.text.UCompactIntArray]>
+   10)  java.util.Set<[sun.text.SupplementaryCharacterData]>
+   11)  java.util.Set<[sun.text.CompactByteArray]>
+   12)  java.util.Set<[sun.security.x509.GeneralSubtrees]>
+   13)  java.util.Set<[sun.security.ssl.SSLConfiguration]>
+   14)  javax.security.auth.Subject$SecureSet<[java.lang.Object]>
+   15)  java.util.Set<[sun.security.pkcs11.wrapper.CK_DATE]>
+   16)  java.util.Set<[sun.security.krb5.internal.Ticket]>
+   17)  kotlinx.collections.immutable.ImmutableSet<[sun.util.calendar.CalendarDate]>
+   18)  java.util.Set<[sun.security.krb5.internal.HostAddresses]>
+   19)  java.util.Set<[sun.security.krb5.internal.HostAddress]>
+   20)  kotlinx.collections.immutable.ImmutableSet<[sun.text.UCompactIntArray]>
+   21)  java.util.Set<[sun.security.krb5.internal.AuthorizationDataEntry]>

@@ -1,5 +1,5 @@
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.List.json -n 20
+  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.HashSet.json -n  5
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4569,17 +4569,10 @@
   Type variables mentioned in constraints: [ E ]
   
   Running generated query
-  	     Processing: _.? <-< java.util.List ((E <: java.lang.Object ()))
+  	     Processing: _.? <-< java.util.HashSet ((E <: java.lang.Object ()))
   	     Processing: _.E <-< java.lang.Object ()
-    1)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    2)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    3)  kotlin.collections.EmptyList
-    4)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    5)  com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList
-    6)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    7)  com.sun.org.apache.xerces.internal.xs.XSObjectList
-    8)  java.util.List<[java.lang.Object]>
-    9)  com.sun.org.apache.xerces.internal.xs.XSNamespaceItemList
-   10)  kotlinx.metadata.internal.protobuf.LazyStringList
-  Terminated
-  [143]
+    1)  sun.tools.jar.Main$1
+    2)  sun.tools.jar.Main$1
+    3)  java.util.HashSet<[java.lang.Object]>
+    4)  java.util.LinkedHashSet<[java.lang.Object]>
+    5)  java.util.HashSet<[java.lang.Cloneable]>

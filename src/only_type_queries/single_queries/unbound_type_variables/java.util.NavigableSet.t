@@ -1,5 +1,5 @@
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.List.json -n 20
+  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.NavigableSet.json -n 20
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4569,17 +4569,25 @@
   Type variables mentioned in constraints: [ E ]
   
   Running generated query
-  	     Processing: _.? <-< java.util.List ((E <: java.lang.Object ()))
+  	     Processing: _.? <-< java.util.NavigableSet ((E <: java.lang.Object ()))
   	     Processing: _.E <-< java.lang.Object ()
-    1)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    2)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    3)  kotlin.collections.EmptyList
-    4)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    5)  com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList
-    6)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    7)  com.sun.org.apache.xerces.internal.xs.XSObjectList
-    8)  java.util.List<[java.lang.Object]>
-    9)  com.sun.org.apache.xerces.internal.xs.XSNamespaceItemList
-   10)  kotlinx.metadata.internal.protobuf.LazyStringList
-  Terminated
-  [143]
+    1)  com.google.common.collect.AbstractMapBasedMultimap$WrappedNavigableSet
+    2)  com.google.common.collect.AbstractMapBasedMultimap$NavigableKeySet
+    3)  java.util.NavigableSet<[java.lang.Object]>
+    4)  java.util.concurrent.ConcurrentSkipListSet<[java.lang.Object]>
+    5)  java.util.TreeSet<[java.lang.Object]>
+    6)  java.util.NavigableSet<[sun.util.calendar.CalendarDate]>
+    7)  java.util.TreeMap$KeySet<[java.lang.Object]>
+    8)  java.util.NavigableSet<[sun.text.UCompactIntArray]>
+    9)  java.util.NavigableSet<[sun.text.SupplementaryCharacterData]>
+   10)  java.util.NavigableSet<[sun.text.CompactByteArray]>
+   11)  java.util.NavigableSet<[sun.security.x509.GeneralSubtrees]>
+   12)  java.util.NavigableSet<[sun.security.ssl.SSLConfiguration]>
+   13)  java.util.concurrent.ConcurrentSkipListSet<[sun.util.calendar.CalendarDate]>
+   14)  java.util.NavigableSet<[sun.security.pkcs11.wrapper.CK_DATE]>
+   15)  java.util.NavigableSet<[sun.security.krb5.internal.Ticket]>
+   16)  java.util.Collections$UnmodifiableNavigableSet<[java.lang.Object]>
+   17)  java.util.concurrent.ConcurrentSkipListSet<[sun.text.UCompactIntArray]>
+   18)  java.util.NavigableSet<[sun.security.krb5.internal.HostAddresses]>
+   19)  java.util.NavigableSet<[sun.security.krb5.internal.HostAddress]>
+   20)  java.util.concurrent.ConcurrentSkipListSet<[sun.text.SupplementaryCharacterData]>

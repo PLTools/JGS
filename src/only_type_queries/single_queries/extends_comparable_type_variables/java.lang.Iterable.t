@@ -1,5 +1,6 @@
+dune exec jsons/run_json2.exe -- -n 5 -ct jsons_real/0.json only_type_queries/single_queries/extends_comparable_type_variables/java.lang.Iterable.json
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.List.json -n 20
+  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.lang.Iterable.json -n 5
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4566,20 +4567,13 @@
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
   
-  Type variables mentioned in constraints: [ E ]
+  Type variables mentioned in constraints: [ T ]
   
   Running generated query
-  	     Processing: _.? <-< java.util.List ((E <: java.lang.Object ()))
-  	     Processing: _.E <-< java.lang.Object ()
-    1)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    2)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    3)  kotlin.collections.EmptyList
-    4)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    5)  com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList
-    6)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    7)  com.sun.org.apache.xerces.internal.xs.XSObjectList
-    8)  java.util.List<[java.lang.Object]>
-    9)  com.sun.org.apache.xerces.internal.xs.XSNamespaceItemList
-   10)  kotlinx.metadata.internal.protobuf.LazyStringList
-  Terminated
-  [143]
+  	     Processing: _.? <-< java.lang.Iterable (? extends java.lang.Comparable ((T <: java.lang.Object ())))
+  	     Processing: _.T <-< java.lang.Object ()
+    1)  java.lang.Iterable<[java.lang.Comparable<[java.lang.Object]>]>
+    2)  java.lang.Iterable<[java.lang.Comparable<[sun.util.calendar.CalendarDate]>]>
+    3)  java.lang.Iterable<[java.lang.Comparable<[sun.text.UCompactIntArray]>]>
+    4)  java.lang.Iterable<[java.lang.Comparable<[sun.text.SupplementaryCharacterData]>]>
+    5)  java.lang.Iterable<[java.lang.Comparable<[sun.text.CompactByteArray]>]>

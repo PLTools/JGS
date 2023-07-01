@@ -1,5 +1,5 @@
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.List.json -n 20
+  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.SortedSet.json -n 40
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4569,17 +4569,45 @@
   Type variables mentioned in constraints: [ E ]
   
   Running generated query
-  	     Processing: _.? <-< java.util.List ((E <: java.lang.Object ()))
+  	     Processing: _.? <-< java.util.SortedSet ((E <: java.lang.Object ()))
   	     Processing: _.E <-< java.lang.Object ()
-    1)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    2)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    3)  kotlin.collections.EmptyList
-    4)  kotlinx.metadata.internal.protobuf.ProtocolStringList
-    5)  com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList
-    6)  kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
-    7)  com.sun.org.apache.xerces.internal.xs.XSObjectList
-    8)  java.util.List<[java.lang.Object]>
-    9)  com.sun.org.apache.xerces.internal.xs.XSNamespaceItemList
-   10)  kotlinx.metadata.internal.protobuf.LazyStringList
-  Terminated
-  [143]
+    1)  com.google.common.collect.AbstractMapBasedMultimap$WrappedSortedSet
+    2)  com.google.common.collect.Maps$FilteredEntrySortedMap$SortedKeySet
+    3)  com.google.common.collect.AbstractMapBasedMultimap$SortedKeySet
+    4)  java.util.SortedSet<[java.lang.Object]>
+    5)  java.util.NavigableSet<[java.lang.Object]>
+    6)  java.util.Collections$UnmodifiableSortedSet<[java.lang.Object]>
+    7)  com.google.common.collect.AbstractMapBasedMultimap$WrappedNavigableSet
+    8)  java.util.SortedSet<[sun.util.calendar.CalendarDate]>
+    9)  java.util.Collections$SynchronizedSortedSet<[java.lang.Object]>
+   10)  java.util.SortedSet<[sun.text.UCompactIntArray]>
+   11)  java.util.SortedSet<[sun.text.SupplementaryCharacterData]>
+   12)  java.util.SortedSet<[sun.text.CompactByteArray]>
+   13)  java.util.SortedSet<[sun.security.x509.GeneralSubtrees]>
+   14)  java.util.SortedSet<[sun.security.ssl.SSLConfiguration]>
+   15)  java.util.NavigableSet<[sun.util.calendar.CalendarDate]>
+   16)  java.util.SortedSet<[sun.security.pkcs11.wrapper.CK_DATE]>
+   17)  java.util.Collections$CheckedSortedSet<[java.lang.Object]>
+   18)  java.util.SortedSet<[sun.security.krb5.internal.Ticket]>
+   19)  java.util.NavigableSet<[sun.text.UCompactIntArray]>
+   20)  java.util.SortedSet<[sun.security.krb5.internal.HostAddresses]>
+   21)  java.util.SortedSet<[sun.security.krb5.internal.HostAddress]>
+   22)  java.util.NavigableSet<[sun.text.SupplementaryCharacterData]>
+   23)  java.util.SortedSet<[sun.security.krb5.internal.AuthorizationDataEntry]>
+   24)  java.util.SortedSet<[sun.security.krb5.internal.AuthorizationData]>
+   25)  java.util.NavigableSet<[sun.text.CompactByteArray]>
+   26)  java.util.SortedSet<[sun.security.krb5.Realm]>
+   27)  java.util.SortedSet<[sun.security.krb5.PrincipalName]>
+   28)  java.util.NavigableSet<[sun.security.x509.GeneralSubtrees]>
+   29)  java.util.SortedSet<[sun.security.krb5.EncryptionKey]>
+   30)  java.util.SortedSet<[sun.security.krb5.EncryptedData]>
+   31)  java.util.NavigableSet<[sun.security.ssl.SSLConfiguration]>
+   32)  java.util.SortedSet<[sun.rmi.transport.LiveRef]>
+   33)  java.util.SortedSet<[sun.net.www.MimeEntry]>
+   34)  java.util.SortedSet<[sun.jvm.hotspot.runtime.RegisterMap]>
+   35)  java.util.Collections$UnmodifiableSortedSet<[sun.util.calendar.CalendarDate]>
+   36)  java.util.SortedSet<[sun.jvm.hotspot.runtime.Frame]>
+   37)  java.util.NavigableSet<[sun.security.pkcs11.wrapper.CK_DATE]>
+   38)  java.util.SortedSet<[sun.jvm.hotspot.memory.MemRegion]>
+   39)  com.google.common.collect.ForwardingSortedSet<[java.lang.Object]>
+   40)  java.util.SortedSet<[sun.java2d.loops.FontInfo]>

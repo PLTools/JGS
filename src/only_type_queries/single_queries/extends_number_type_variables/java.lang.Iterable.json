@@ -16,8 +16,83 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 11,
+  "expectedAnswersNumber": 46,
   "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.google.common.primitives.Bytes$ByteArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Doubles$DoubleArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Floats$FloatArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.ImmutableDoubleArray$AsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.ImmutableIntArray$AsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.ImmutableLongArray$AsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Ints$IntArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Longs$LongArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Shorts$ShortArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.util.ByteListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.Base64BinaryDV$XBase64",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.HexBinaryDV$XHex",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.ShortListImpl",
+      []
+    ],
+    [
+      "Interface",
+      "com.sun.org.apache.xerces.internal.xs.ShortList",
+      []
+    ],
+    [
+      "Interface",
+      "com.sun.org.apache.xerces.internal.xs.datatypes.ByteList",
+      []
+    ],
     [
       "Interface",
       "java.lang.Iterable",
@@ -39,6 +114,66 @@
           ]
         ]
       ]
+    ],
+    [
+      "Class",
+      "java.util.stream.Nodes$DoubleSpinedNodeBuilder",
+      []
+    ],
+    [
+      "Class",
+      "java.util.stream.Nodes$IntSpinedNodeBuilder",
+      []
+    ],
+    [
+      "Class",
+      "java.util.stream.Nodes$LongSpinedNodeBuilder",
+      []
+    ],
+    [
+      "Class",
+      "java.util.stream.SpinedBuffer$OfDouble",
+      []
+    ],
+    [
+      "Class",
+      "java.util.stream.SpinedBuffer$OfInt",
+      []
+    ],
+    [
+      "Class",
+      "java.util.stream.SpinedBuffer$OfLong",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$2",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$3",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$4",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$5",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.collections.ArraysKt___ArraysJvmKt$asList$6",
+      []
     ],
     [
       "Class",
@@ -77,7 +212,22 @@
     ],
     [
       "Class",
+      "kotlin.ranges.IntRange",
+      []
+    ],
+    [
+      "Class",
       "kotlin.ranges.LongProgression",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.ranges.LongRange",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.BoundedByteString",
       []
     ],
     [
@@ -87,7 +237,32 @@
     ],
     [
       "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.LiteralByteString",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.RopeByteString",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.BoundedByteString",
+      []
+    ],
+    [
+      "Class",
       "kotlinx.metadata.internal.protobuf.ByteString",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.LiteralByteString",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.RopeByteString",
       []
     ]
   ]

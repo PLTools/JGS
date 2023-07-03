@@ -33,7 +33,7 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 34,
+  "expectedAnswersNumber": 46,
   "rawExpectedAnswers": [
     [
       "Class",
@@ -98,6 +98,41 @@
     [
       "Class",
       "com.google.common.primitives.Shorts$ShortArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.util.ByteListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.Base64BinaryDV$XBase64",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.HexBinaryDV$XHex",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.PSVIErrorList",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.ShortListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl",
       []
     ],
     [
@@ -214,12 +249,37 @@
     ],
     [
       "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
       "kotlin.text.MatcherMatchResult$groupValues$1",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.LazyStringArrayList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlinx.metadata.internal.protobuf.LazyStringList",
       []
     ],
     [
       "Interface",
       "kotlinx.metadata.internal.protobuf.ProtocolStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlinx.metadata.internal.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
+      "sun.security.x509.AttributeNameEnumeration",
       []
     ]
   ]

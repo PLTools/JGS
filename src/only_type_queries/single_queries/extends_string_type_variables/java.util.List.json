@@ -16,7 +16,7 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 11,
+  "expectedAnswersNumber": 15,
   "rawExpectedAnswers": [
     [
       "Class",
@@ -61,8 +61,28 @@
       ]
     ],
     [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.LazyStringArrayList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlin.reflect.jvm.internal.impl.protobuf.LazyStringList",
+      []
+    ],
+    [
       "Interface",
       "kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.text.MatcherMatchResult$groupValues$1",
       []
     ],
     [

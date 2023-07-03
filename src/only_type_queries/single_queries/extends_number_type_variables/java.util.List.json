@@ -16,8 +16,73 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 9,
+  "expectedAnswersNumber": 22,
   "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.google.common.primitives.Bytes$ByteArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Doubles$DoubleArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Floats$FloatArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.ImmutableDoubleArray$AsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.ImmutableIntArray$AsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.ImmutableLongArray$AsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Ints$IntArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Longs$LongArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.google.common.primitives.Shorts$ShortArrayAsList",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.util.ByteListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.Base64BinaryDV$XBase64",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.HexBinaryDV$XHex",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.ShortListImpl",
+      []
+    ],
     [
       "Interface",
       "com.sun.org.apache.xerces.internal.xs.ShortList",

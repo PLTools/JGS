@@ -16,7 +16,7 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 9,
+  "expectedAnswersNumber": 19,
   "rawExpectedAnswers": [
     [
       "Class",
@@ -36,6 +36,16 @@
     [
       "Interface",
       "com.sun.org.apache.xerces.internal.xs.StringList",
+      []
+    ],
+    [
+      "Class",
+      "java.lang.ProcessEnvironment$CheckedKeySet",
+      []
+    ],
+    [
+      "Class",
+      "java.lang.ProcessEnvironment$CheckedValues",
       []
     ],
     [
@@ -62,6 +72,31 @@
     ],
     [
       "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.LazyStringArrayList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlin.reflect.jvm.internal.impl.protobuf.LazyStringList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.text.MatcherMatchResult$groupValues$1",
+      []
+    ],
+    [
+      "Class",
       "kotlinx.metadata.internal.protobuf.LazyStringArrayList",
       []
     ],
@@ -78,6 +113,21 @@
     [
       "Class",
       "kotlinx.metadata.internal.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
+      "sun.security.x509.AttributeNameEnumeration",
+      []
+    ],
+    [
+      "Class",
+      "sun.util.PreHashedMap$1",
+      []
+    ],
+    [
+      "Class",
+      "sun.util.resources.ParallelListResourceBundle$KeySet",
       []
     ]
   ]

@@ -33,8 +33,18 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 1,
+  "expectedAnswersNumber": 5,
   "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.sun.tools.javac.file.Locations$SearchPath",
+      []
+    ],
+    [
+      "Class",
+      "java.lang.ProcessEnvironment$CheckedKeySet",
+      []
+    ],
     [
       "Interface",
       "java.util.Set",
@@ -56,6 +66,16 @@
           ]
         ]
       ]
+    ],
+    [
+      "Class",
+      "sun.util.PreHashedMap$1",
+      []
+    ],
+    [
+      "Class",
+      "sun.util.resources.ParallelListResourceBundle$KeySet",
+      []
     ]
   ]
 }

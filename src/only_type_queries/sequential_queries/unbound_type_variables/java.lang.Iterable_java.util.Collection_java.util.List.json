@@ -67,7 +67,7 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 127,
+  "expectedAnswersNumber": 276,
   "rawExpectedAnswers": [
     [
       "Class",
@@ -820,6 +820,103 @@
       []
     ],
     [
+      "Class",
+      "com.sun.jmx.remote.internal.ArrayQueue",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.util.ByteListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.Base64BinaryDV$XBase64",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.HexBinaryDV$XHex",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.ListDV$ListData",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.XSSimpleTypeDecl$2",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.XSSimpleTypeDecl$3",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.dv.xs.XSSimpleTypeDecl$AbstractObjectList",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.PSVIErrorList",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.XSModelImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.LSInputListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.ObjectListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.ShortListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl",
+      []
+    ],
+    [
+      "Class",
+      "com.sun.org.apache.xerces.internal.impl.xs.util.XSObjectListImpl",
+      []
+    ],
+    [
       "Interface",
       "com.sun.org.apache.xerces.internal.xs.LSInputList",
       []
@@ -888,6 +985,11 @@
     ],
     [
       "Class",
+      "com.sun.tools.jdi.EventSetImpl",
+      []
+    ],
+    [
+      "Class",
       "com.zaxxer.hikari.util.FastList",
       [
         [
@@ -910,7 +1012,78 @@
     ],
     [
       "Class",
+      "java.lang.invoke.AbstractConstantGroup$AsList",
+      []
+    ],
+    [
+      "Class",
       "java.util.AbstractList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractList$RandomAccessSubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractList$SubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.AbstractSequentialList",
       [
         [
           "Type",
@@ -954,7 +1127,139 @@
     ],
     [
       "Class",
+      "java.util.ArrayList$SubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Arrays$ArrayList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
       "java.util.Collections$CheckedList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CheckedRandomAccessList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$CopiesList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$EmptyList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Collections$SingletonList",
       [
         [
           "Type",
@@ -998,6 +1303,28 @@
     ],
     [
       "Class",
+      "java.util.Collections$SynchronizedRandomAccessList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
       "java.util.Collections$UnmodifiableList",
       [
         [
@@ -1020,7 +1347,95 @@
     ],
     [
       "Class",
+      "java.util.Collections$UnmodifiableRandomAccessList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
       "java.util.ImmutableCollections$AbstractImmutableList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.ImmutableCollections$List12",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.ImmutableCollections$ListN",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.ImmutableCollections$SubList",
       [
         [
           "Type",
@@ -1065,6 +1480,28 @@
     [
       "Interface",
       "java.util.List",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "java.util.Stack",
       [
         [
           "Type",
@@ -1131,6 +1568,31 @@
     [
       "Class",
       "java.util.concurrent.CopyOnWriteArrayList$COWSubList",
+      []
+    ],
+    [
+      "Class",
+      "javax.management.AttributeList",
+      []
+    ],
+    [
+      "Class",
+      "javax.management.relation.RoleList",
+      []
+    ],
+    [
+      "Class",
+      "javax.management.relation.RoleUnresolvedList",
+      []
+    ],
+    [
+      "Class",
+      "javax.swing.JEditorPane$JEditorPaneAccessibleHypertextSupport$LinkVector",
+      []
+    ],
+    [
+      "Class",
+      "jdk.internal.org.objectweb.asm.tree.MethodNode$1",
       []
     ],
     [
@@ -1402,9 +1864,51 @@
       []
     ],
     [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.LazyStringArrayList",
+      []
+    ],
+    [
+      "Interface",
+      "kotlin.reflect.jvm.internal.impl.protobuf.LazyStringList",
+      []
+    ],
+    [
       "Interface",
       "kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList",
       []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.types.model.ArgumentList",
+      []
+    ],
+    [
+      "Class",
+      "kotlin.reflect.jvm.internal.impl.utils.SmartList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
     ],
     [
       "Class",
@@ -1436,6 +1940,28 @@
     [
       "Class",
       "kotlinx.collections.immutable.ImmutableList$SubList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "kotlinx.collections.immutable.PersistentList",
       [
         [
           "Type",
@@ -1501,6 +2027,94 @@
     ],
     [
       "Class",
+      "kotlinx.collections.immutable.implementations.immutableList.AbstractPersistentList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.collections.immutable.implementations.immutableList.PersistentVector",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.collections.immutable.implementations.immutableList.PersistentVectorBuilder",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "kotlinx.collections.immutable.implementations.immutableList.SmallPersistentVector",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
       "kotlinx.metadata.internal.protobuf.LazyStringArrayList",
       []
     ],
@@ -1527,6 +2141,651 @@
     [
       "Class",
       "kotlinx.metadata.internal.protobuf.UnmodifiableLazyStringList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.ByteCodeElement$Token$TokenList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.ByteCodeElement$Token",
+                [
+                  [
+                    "Type",
+                    [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ]
+                  ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Interface",
+      "net.bytebuddy.description.annotation.AnnotationList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.annotation.AnnotationList$AbstractBase",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.annotation.AnnotationList$Empty",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.annotation.AnnotationList$Explicit",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.annotation.AnnotationList$ForLoadedAnnotations",
+      []
+    ],
+    [
+      "Interface",
+      "net.bytebuddy.description.field.FieldList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.field.FieldDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.field.FieldList$AbstractBase",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.field.FieldDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.field.FieldList$Empty",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.field.FieldDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.field.FieldList$Explicit",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.field.FieldDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.field.FieldList$ForLoadedFields",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.field.FieldList$ForTokens",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.field.FieldList$TypeSubstituting",
+      []
+    ],
+    [
+      "Interface",
+      "net.bytebuddy.description.method.MethodList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.MethodDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.MethodList$AbstractBase",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.MethodDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.MethodList$Empty",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.MethodDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.MethodList$Explicit",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.MethodDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.MethodList$ForLoadedMethods",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.MethodList$ForTokens",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.MethodList$TypeSubstituting",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterDescription$Token$TypeList",
+      []
+    ],
+    [
+      "Interface",
+      "net.bytebuddy.description.method.ParameterList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.ParameterDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$AbstractBase",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.ParameterDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$Empty",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.ParameterDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$Explicit",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.method.ParameterDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$Explicit$ForTypes",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$ForLoadedExecutable",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$OfConstructor",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$OfLegacyVmConstructor",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$OfLegacyVmMethod",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$ForLoadedExecutable$OfMethod",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$ForTokens",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.method.ParameterList$TypeSubstituting",
+      []
+    ],
+    [
+      "Interface",
+      "net.bytebuddy.description.type.RecordComponentList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.type.RecordComponentDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.RecordComponentList$AbstractBase",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.type.RecordComponentDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.RecordComponentList$Empty",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.type.RecordComponentDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.RecordComponentList$Explicit",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.description.type.RecordComponentDescription",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.RecordComponentList$ForLoadedRecordComponents",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.RecordComponentList$ForTokens",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.RecordComponentList$TypeSubstituting",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeDescription$Generic$LazyProjection$WithLazyNavigation$LazyInterfaceList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeDescription$Generic$OfParameterizedType$ForLoadedType$ParameterArgumentTypeList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeDescription$Generic$OfTypeVariable$ForLoadedType$TypeVariableBoundList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeDescription$Generic$OfWildcardType$ForLoadedType$WildcardLowerBoundTypeList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeDescription$Generic$OfWildcardType$ForLoadedType$WildcardUpperBoundTypeList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeDescription$SuperTypeLoading$ClassLoadingTypeList",
+      []
+    ],
+    [
+      "Interface",
+      "net.bytebuddy.description.type.TypeList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$AbstractBase",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Empty",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Explicit",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$ForLoadedTypes",
+      []
+    ],
+    [
+      "Interface",
+      "net.bytebuddy.description.type.TypeList$Generic",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$AbstractBase",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$Empty",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$Explicit",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$ForDetachedTypes",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$ForDetachedTypes$OfTypeVariables",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$ForDetachedTypes$WithResolvedErasure",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$ForLoadedTypes",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$ForLoadedTypes$OfTypeVariables",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$OfConstructorExceptionTypes",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$OfLoadedInterfaceTypes",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.description.type.TypeList$Generic$OfMethodExceptionTypes",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.dynamic.Transformer$ForMethod$TransformedMethod$TransformedParameterList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.dynamic.scaffold.MethodGraph$NodeList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.dynamic.scaffold.TypeWriter$Default$ForInlining$WithDecorationOnly$LazyFieldList",
       []
     ],
     [
@@ -1585,6 +2844,186 @@
       ]
     ],
     [
+      "Class",
+      "net.bytebuddy.matcher.FilterableList$AbstractBase",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 1,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.matcher.FilterableList",
+                [
+                  [
+                    "Type",
+                    [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ]
+                  ],
+                  [
+                    "Type",
+                    [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ]
+                  ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.matcher.FilterableList$Empty",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ],
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "S",
+              "index": 1,
+              "upb": [
+                "Interface",
+                "net.bytebuddy.matcher.FilterableList",
+                [
+                  [
+                    "Type",
+                    [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ]
+                  ],
+                  [
+                    "Type",
+                    [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ]
+                  ]
+                ]
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$FieldTokenList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$GenericTypeToken$ForTypeVariable$Formal$LazyTypeVariable$LazyBoundTokenList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$GenericTypeToken$LazyTokenList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$GenericTypeToken$LazyTokenList$ForWildcardBound",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$GenericTypeToken$Resolution$Raw$RawAnnotatedType$LazyRawAnnotatedTypeList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$LazyMethodDescription$LazyParameterList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$LazyMethodDescription$LazyParameterizedReceiverType$TypeArgumentList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$LazyNestMemberList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$LazyTypeList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$MethodTokenList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$RecordComponentTokenList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$TokenizedGenericType$Malformed$TokenList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$TokenizedGenericType$TokenList",
+      []
+    ],
+    [
+      "Class",
+      "net.bytebuddy.pool.TypePool$Default$LazyTypeDescription$TokenizedGenericType$TypeVariableList",
+      []
+    ],
+    [
       "Interface",
       "org.jooq.Result",
       [
@@ -1613,6 +3052,82 @@
     ],
     [
       "Class",
+      "org.jooq.impl.CommonTableExpressionList",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.impl.FieldMapsForInsert$1",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.impl.InCondition$PaddedList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "org.jooq.impl.Interpreter$MutableNamedList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "N",
+              "index": 0,
+              "upb": [
+                "Class",
+                "org.jooq.impl.Interpreter$MutableNamed",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "org.jooq.impl.QueryPartList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "T",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "org.jooq.QueryPart",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
       "org.jooq.impl.QueryPartListView",
       [
         [
@@ -1632,6 +3147,85 @@
           ]
         ]
       ]
+    ],
+    [
+      "Class",
+      "org.jooq.impl.ResultImpl",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "R",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "org.jooq.Record",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "org.jooq.impl.ResultsImpl",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.impl.SelectFieldList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "F",
+              "index": 0,
+              "upb": [
+                "Interface",
+                "org.jooq.SelectFieldOrAsterisk",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "org.jooq.impl.SortFieldList",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.impl.TableList",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.impl.Tools$36",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.impl.TopLevelCte",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.impl.WindowList",
+      []
+    ],
+    [
+      "Class",
+      "org.jooq.tools.json.JSONArray",
+      []
     ],
     [
       "Class",
@@ -1683,6 +3277,48 @@
     [
       "Class",
       "sun.awt.util.IdentityLinkedList",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ],
+    [
+      "Class",
+      "sun.net.www.http.KeepAliveStreamCleaner",
+      []
+    ],
+    [
+      "Class",
+      "sun.security.jca.ProviderList$3",
+      []
+    ],
+    [
+      "Class",
+      "sun.security.jca.ProviderList$ServiceList",
+      []
+    ],
+    [
+      "Class",
+      "sun.security.x509.AttributeNameEnumeration",
+      []
+    ],
+    [
+      "Class",
+      "sun.swing.BakedArrayList",
       [
         [
           "Type",

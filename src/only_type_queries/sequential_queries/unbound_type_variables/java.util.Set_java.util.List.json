@@ -45,6 +45,12 @@
       ]
     ]
   ],
-  "expectedAnswersNumber": 0,
-  "rawExpectedAnswers": []
+  "expectedAnswersNumber": 1,
+  "rawExpectedAnswers": [
+    [
+      "Class",
+      "com.sun.tools.jdi.EventSetImpl",
+      []
+    ]
+  ]
 }

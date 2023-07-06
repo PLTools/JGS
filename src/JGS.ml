@@ -272,6 +272,114 @@ module HO = struct
     end
   end) =
   struct
+    let capture_conversion ( <-< ) id targs q205 =
+      if need_simpified then q205 === !!(Some targs)
+      else
+        fresh ()
+          (let params q98 =
+             fresh (q99 q100 q101 q102) (CT.HO.decl_by_id id q99)
+               (conde
+                  [
+                    q99 === !!(C (ctor_cdecl q98 q100 q101));
+                    q99 === !!(I (ctor_idecl q98 q102));
+                  ])
+           in
+           let raw =
+             List.FO.mapi
+               (fun i q107 q133 ->
+                 conde
+                   [
+                     fresh t (q107 === !!(Type t)) (q133 === !!(CC_type t));
+                     fresh (q114 q117)
+                       (q107 === !!(Wildcard !!None))
+                       (q133
+                       === !!(CC_var
+                                (q114, i, !!(CC_subst q117), !!(Some !!Null))))
+                       (CT.HO.new_var (( === ) !!()) q114)
+                       (List.HO.nth params (( === ) i) q117);
+                     fresh (t q119 q122)
+                       (q107 === !!(Wildcard !!(Some (Std.pair !!Super t))))
+                       (q133
+                       === !!(CC_var (q119, i, !!(CC_subst q122), !!(Some t))))
+                       (CT.HO.new_var (( === ) !!()) q119)
+                       (List.HO.nth params (( === ) i) q122);
+                     fresh (t q126 q130)
+                       (q107 === !!(Wildcard !!(Some (Std.pair !!Extends t))))
+                       (q133
+                       === !!(CC_var
+                                ( q126,
+                                  i,
+                                  !!(CC_inter (t, q130)),
+                                  !!(Some !!Null) )))
+                       (CT.HO.new_var (( === ) !!()) q126)
+                       (List.HO.nth params (( === ) i) q130);
+                   ])
+               targs
+           in
+           let subst =
+             List.HO.map
+               (fun q136 q137 ->
+                 fresh q138 (q136 q138)
+                   (conde
+                      [
+                        fresh t (q138 === !!(CC_type t)) (q137 === !!(Type t));
+                        fresh (id i q142 q143)
+                          (q138 === !!(CC_var (id, i, q142, q143)))
+                          (q137 === !!(Type (var id i !!Null !!None)));
+                      ]))
+               raw
+           in
+           let targs =
+             List.HO.map
+               (fun q151 q152 ->
+                 fresh q153 (q151 q153)
+                   (conde
+                      [
+                        fresh (t q154) (q153 === !!(CC_type t))
+                          (q152 === !!(Type q154))
+                          (substitute_typ subst t q154);
+                        fresh (id i p lwb q159)
+                          (q153 === !!(CC_var (id, i, !!(CC_subst p), lwb)))
+                          (q152 === !!(Type (var id i q159 lwb)))
+                          (substitute_typ subst p q159);
+                        fresh (id i t p lwb q168 q170)
+                          (q153 === !!(CC_var (id, i, !!(CC_inter (t, p)), lwb)))
+                          (q152 === !!(Type (var id i q168 lwb)))
+                          (substitute_typ subst p q170)
+                          (conde
+                             [
+                               fresh ts
+                                 (q170 === !!(Intersect ts))
+                                 (q168 === !!(Intersect (Std.( % ) t ts)));
+                               fresh ()
+                                 (q168
+                                 === !!(Intersect (Std.list Fun.id [ t; q170 ]))
+                                 )
+                                 (q170 =/= !!(Intersect __));
+                             ]);
+                      ]))
+               raw
+           in
+           fresh q186
+             (List.HO.for_all
+                (fun q191 q192 ->
+                  fresh q193 (q191 q193)
+                    (conde
+                       [
+                         fresh (q194 q195 upb lwb)
+                           (q193 === !!(Type (var q194 q195 upb !!(Some lwb))))
+                           (( <-< ) lwb upb q192);
+                         fresh () (q192 === !!true)
+                           (q193 =/= !!(Type (var __ __ __ !!(Some __))));
+                       ]))
+                targs q186)
+             (conde
+                [
+                  fresh q189 (q186 === !!true) (q205 === !!(Some q189))
+                    (targs q189);
+                  fresh () (q186 === !!false) (q205 === !!None);
+                ]))
+
     let rec ( -<- ) ( <-< ) type_a type_b res =
       let ( <=< ) type_a type_b res =
         if need_simpified then
@@ -360,117 +468,6 @@ module HO = struct
                    ]);
             ]
       in
-      let capture_conversion id targs q205 =
-        if need_simpified then q205 === !!(Some targs)
-        else
-          fresh ()
-            (let params q98 =
-               fresh (q99 q100 q101 q102) (CT.HO.decl_by_id id q99)
-                 (conde
-                    [
-                      q99 === !!(C (ctor_cdecl q98 q100 q101));
-                      q99 === !!(I (ctor_idecl q98 q102));
-                    ])
-             in
-             let raw =
-               List.FO.mapi
-                 (fun i q107 q133 ->
-                   conde
-                     [
-                       fresh t (q107 === !!(Type t)) (q133 === !!(CC_type t));
-                       fresh (q114 q117)
-                         (q107 === !!(Wildcard !!None))
-                         (q133
-                         === !!(CC_var
-                                  (q114, i, !!(CC_subst q117), !!(Some !!Null)))
-                         )
-                         (CT.HO.new_var (( === ) !!()) q114)
-                         (List.HO.nth params (( === ) i) q117);
-                       fresh (t q119 q122)
-                         (q107 === !!(Wildcard !!(Some (Std.pair !!Super t))))
-                         (q133
-                         === !!(CC_var (q119, i, !!(CC_subst q122), !!(Some t)))
-                         )
-                         (CT.HO.new_var (( === ) !!()) q119)
-                         (List.HO.nth params (( === ) i) q122);
-                       fresh (t q126 q130)
-                         (q107 === !!(Wildcard !!(Some (Std.pair !!Extends t))))
-                         (q133
-                         === !!(CC_var
-                                  ( q126,
-                                    i,
-                                    !!(CC_inter (t, q130)),
-                                    !!(Some !!Null) )))
-                         (CT.HO.new_var (( === ) !!()) q126)
-                         (List.HO.nth params (( === ) i) q130);
-                     ])
-                 targs
-             in
-             let subst =
-               List.HO.map
-                 (fun q136 q137 ->
-                   fresh q138 (q136 q138)
-                     (conde
-                        [
-                          fresh t (q138 === !!(CC_type t)) (q137 === !!(Type t));
-                          fresh (id i q142 q143)
-                            (q138 === !!(CC_var (id, i, q142, q143)))
-                            (q137 === !!(Type (var id i !!Null !!None)));
-                        ]))
-                 raw
-             in
-             let targs =
-               List.HO.map
-                 (fun q151 q152 ->
-                   fresh q153 (q151 q153)
-                     (conde
-                        [
-                          fresh (t q154) (q153 === !!(CC_type t))
-                            (q152 === !!(Type q154))
-                            (substitute_typ subst t q154);
-                          fresh (id i p lwb q159)
-                            (q153 === !!(CC_var (id, i, !!(CC_subst p), lwb)))
-                            (q152 === !!(Type (var id i q159 lwb)))
-                            (substitute_typ subst p q159);
-                          fresh (id i t p lwb q168 q170)
-                            (q153
-                            === !!(CC_var (id, i, !!(CC_inter (t, p)), lwb)))
-                            (q152 === !!(Type (var id i q168 lwb)))
-                            (substitute_typ subst p q170)
-                            (conde
-                               [
-                                 fresh ts
-                                   (q170 === !!(Intersect ts))
-                                   (q168 === !!(Intersect (Std.( % ) t ts)));
-                                 fresh ()
-                                   (q168
-                                   === !!(Intersect
-                                            (Std.list Fun.id [ t; q170 ])))
-                                   (q170 =/= !!(Intersect __));
-                               ]);
-                        ]))
-                 raw
-             in
-             fresh q186
-               (List.HO.for_all
-                  (fun q191 q192 ->
-                    fresh q193 (q191 q193)
-                      (conde
-                         [
-                           fresh (q194 q195 upb lwb)
-                             (q193 === !!(Type (var q194 q195 upb !!(Some lwb))))
-                             (( <-< ) lwb upb q192);
-                           fresh () (q192 === !!true)
-                             (q193 =/= !!(Type (var __ __ __ !!(Some __))));
-                         ]))
-                  targs q186)
-               (conde
-                  [
-                    fresh q189 (q186 === !!true) (q205 === !!(Some q189))
-                      (targs q189);
-                    fresh () (q186 === !!false) (q205 === !!None);
-                  ]))
-      in
       let class_int_sub id_a targs_a id_b targs_b res =
         conde
           [
@@ -512,7 +509,7 @@ module HO = struct
            [
              fresh (id_a targs_a q243)
                (type_a === !!(Class (id_a, targs_a)))
-               (capture_conversion (( === ) id_a) targs_a q243)
+               (capture_conversion ( <-< ) (( === ) id_a) targs_a q243)
                (conde
                   [
                     fresh () (q243 === !!None) (res === !!false);
@@ -544,7 +541,7 @@ module HO = struct
                   ]);
              fresh (id_a targs_a q271)
                (type_a === !!(Interface (id_a, targs_a)))
-               (capture_conversion (( === ) id_a) targs_a q271)
+               (capture_conversion ( <-< ) (( === ) id_a) targs_a q271)
                (conde
                   [
                     fresh () (q271 === !!None) (res === !!false);

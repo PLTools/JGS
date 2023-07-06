@@ -1,0 +1,14 @@
+(cram
+ (deps %{project_root}/jsons/run_json2.exe %{project_root}/jsons_real/0.json))
+
+(cram
+ (applies_to Iterable_of_object)
+ (deps Iterable_of_object.json))
+
+(cram
+ (applies_to Cloneable)
+ (deps Cloneable.json))
+
+(cram
+ (applies_to Serializable)
+ (deps Serializable.json))

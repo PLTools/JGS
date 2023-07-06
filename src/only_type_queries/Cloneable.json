@@ -1,0 +1,9 @@
+{
+  "upperBound":  [
+    "Interface",
+    "java.lang.Cloneable",
+    []
+  ],
+  "expectedAnswersNumber": 0,
+  "rawExpectedAnswers": []
+}

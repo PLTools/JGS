@@ -36,7 +36,7 @@ let rec substitute_typ subst = function
   | Null -> Null
 
 and substitute_arg subst = function
-  | Type (Var { index }) -> List.nth subst index
+  | Type (Var { index; _ }) -> List.nth subst index
   | Type typ -> Type (substitute_typ subst typ)
   | Wildcard None -> Wildcard None
   | Wildcard (Some (p, typ1)) -> Wildcard (Some (p, substitute_typ subst typ1))
@@ -54,10 +54,10 @@ struct
     let ( <=< ) ta tb =
       match (ta, tb) with
       | Wildcard (Some (Extends, t)), Wildcard (Some (Extends, s)) -> t <-< s
-      | Wildcard (Some (Extends, t)), Wildcard None -> true
+      | Wildcard (Some (Extends, _)), Wildcard None -> true
       | Wildcard (Some (Super, t)), Wildcard (Some (Super, s)) -> s <-< t
-      | Wildcard (Some (Super, t)), Wildcard None -> true
-      | Wildcard (Some (Super, t)), Wildcard (Some (Extends, o)) ->
+      | Wildcard (Some (Super, _)), Wildcard None -> true
+      | Wildcard (Some (Super, _)), Wildcard (Some (Extends, o)) ->
           o = CT.object_t
       | Type t1, Type t2
       | Type t1, Wildcard (Some (Extends, t2))
@@ -67,7 +67,8 @@ struct
     in
     let capture_conversion id targs =
       let params =
-        match CT.decl_by_id id with C { params } | I { params } -> params
+        match CT.decl_by_id id with
+        | C { params; _ } | I { params; _ } -> params
       in
       let raw =
         List.mapi
@@ -114,7 +115,7 @@ struct
       if
         List.for_all
           (function
-            | Type (Var { upb; lwb = Some lwb }) -> lwb <-< upb | _ -> true)
+            | Type (Var { upb; lwb = Some lwb; _ }) -> lwb <-< upb | _ -> true)
           targs
       then Some targs
       else None
@@ -137,7 +138,7 @@ struct
             match tb with
             | Interface (id_b, targs_b) | Class (id_b, targs_b) ->
                 class_int_sub id_a targs_a id_b targs_b
-            | Var { lwb = Some typ } -> typ = ta
+            | Var { lwb = Some typ; _ } -> typ = ta
             | _ -> false))
     | Interface (id_a, targs_a) -> (
         match capture_conversion id_a targs_a with
@@ -146,7 +147,7 @@ struct
             match tb with
             | Class (id_b, targs_b) | Interface (id_b, targs_b) ->
                 class_int_sub id_a targs_a id_b targs_b
-            | Var { lwb = Some typ } -> typ = ta
+            | Var { lwb = Some typ; _ } -> typ = ta
             | _ -> false))
     | Array ta -> (
         if ta = CT.object_t then
@@ -155,7 +156,7 @@ struct
           else match tb with Array tb -> ta -<- tb | _ -> false
         else match tb with Array tb -> ta -<- tb | _ -> false)
     | Intersect ts -> List.mem tb ts
-    | Var { upb = typ } -> typ = tb
+    | Var { upb = typ; _ } -> typ = tb
     | Null -> tb <> Null
 end
 
@@ -169,6 +170,8 @@ module HO = struct
   open Peano.HO
   open List.HO
   open Option.HO
+
+  [@@@ocaml.warning "-27"]
 
   [%%distrib
   type polarity = Extends | Super [@@deriving gt ~options:{ show; fmt; gmap }]]
@@ -215,6 +218,8 @@ module HO = struct
     | CC_type of jtype
     | CC_var of int * nat * capture_conversion_subst * jtype option
   [@@deriving gt ~options:{ show; fmt; gmap }]]
+
+  [@@@ocaml.warning "+27"]
 
   let rec substitute_typ subst q0 q30 =
     conde
@@ -272,7 +277,13 @@ module HO = struct
     end
   end) =
   struct
-    let capture_conversion ( <-< ) id targs q205 =
+    let capture_conversion :
+        (jtype_injected -> jtype_injected -> bool ilogic -> goal) ->
+        (int ilogic -> goal) ->
+        jtype_injected targ_injected Std.List.injected ->
+        jtype_injected targ_injected Std.List.injected option ilogic ->
+        goal =
+     fun ( <-< ) id targs q205 ->
       if need_simpified then q205 === !!(Some targs)
       else
         fresh ()
@@ -380,7 +391,13 @@ module HO = struct
                   fresh () (q186 === !!false) (q205 === !!None);
                 ]))
 
-    let rec ( -<- ) ( <-< ) type_a type_b res =
+    let rec ( -<- ) :
+        (jtype_injected -> jtype_injected -> protobool ilogic -> Option.HO.goal) ->
+        jtype_injected ->
+        jtype_injected ->
+        bool ilogic ->
+        goal =
+     fun ( <-< ) type_a type_b res ->
       let ( <=< ) type_a type_b res =
         if need_simpified then
           conde

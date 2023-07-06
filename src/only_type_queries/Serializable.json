@@ -1,0 +1,9 @@
+{
+  "upperBound":  [
+    "Interface",
+    "java.io.Serializable",
+    []
+  ],
+  "expectedAnswersNumber": 0,
+  "rawExpectedAnswers": []
+}

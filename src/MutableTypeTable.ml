@@ -247,6 +247,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
         (debug_var id_val (Fun.flip OCanren.reify) (function
           | [ Value id ] when id = top_id -> failure
           | [ Value id ] -> (
+              (* TODO: Kakadu: should we memoize already injeted values? *)
               match M.find id !m with
               | d -> rez === decl_inj d
               | exception Not_found ->

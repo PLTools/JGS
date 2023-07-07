@@ -17,6 +17,9 @@ let () =
         Arg.Unit (fun () -> test_args.run_default <- true),
         " Run a default table-agnostic query (tests only)" );
       ("-v", Arg.Unit CT_of_json.set_verbose, " More verbose output");
+      ( "-silent",
+        Arg.Unit (fun () -> CT_of_json.verbose_errors := false),
+        " Silent JSON errors" );
       ( "-n",
         Arg.Int (fun n -> test_args.answers_count <- n),
         " Numer of answers requested (default 1)" );

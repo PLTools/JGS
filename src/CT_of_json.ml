@@ -1,6 +1,11 @@
 open Stdlib
 
 let failwiths fmt = Format.kasprintf failwith fmt
+let verbose_errors = ref true
+
+let log_error fmt =
+  if !verbose_errors then Format.eprintf fmt
+  else Format.ifprintf Format.std_formatter fmt
 
 type polarity = JGS.polarity = Extends | Super
 [@@deriving yojson_of, of_yojson]
@@ -308,7 +313,7 @@ let populate_graph on_decl table =
                    ->
                      true
                  | _ ->
-                     Format.eprintf "Already present: '%s'\n%!" cname;
+                     log_error "Already present: '%s'\n%!" cname;
                      false);
                add_decl_and_name cname d;
                add_params params;
@@ -357,8 +362,8 @@ let populate_graph on_decl table =
       (fun name ->
         match Hashtbl.find decl_of_name name with
         | exception Not_found ->
-            Format.eprintf
-              "  The type %S is not found (Bad JSON?). Ignored.\n%!" name
+            log_error "  The type %S is not found (Bad JSON?). Ignored.\n%!"
+              name
         | x -> on_decl x)
       g
   in
@@ -546,7 +551,7 @@ let make_classtable table =
                 (* log "Building a class id=%d, name = %s" id name; *)
                 return @@ JGS.Class (id, List.map on_arg args)
             | exception Not_found ->
-                Format.eprintf
+                log_error
                   "   The name %S is not class or parameter. Substituting \
                    object. (cur_name = %s)\n\
                    %!"
@@ -568,7 +573,7 @@ let make_classtable table =
                 (* log "Building an interface %d" id; *)
                 return @@ JGS.Interface (id, List.map on_arg args)
             | exception Not_found ->
-                Format.eprintf
+                log_error
                   "  The name %S is not interface or parameter. Substituting \
                    object  (cur_name = %s)\n\
                    %!"
@@ -579,13 +584,12 @@ let make_classtable table =
         (* log "Looking for param %s " id; *)
         match Hashtbl.find params_hash id with
         | exception Not_found ->
-            Format.eprintf
-              "Possibly undeclared param '%s' in the class '%s'\n%!" id
+            log_error "Possibly undeclared param '%s' in the class '%s'\n%!" id
               (fst !cur_name);
             return CT.object_t
         | { vi_id; vi_index } ->
             if index <> vi_index then
-              Format.eprintf
+              log_error
                 "WARNING: Possible issue with indexes in variable declaration \
                  site and isage site. %d <> %d\n\
                  %!"
@@ -601,13 +605,12 @@ let make_classtable table =
                        Option.bind lwb (fun x -> unwrap (on_typ x) Option.some);
                    }))
     | Intersect _ ->
-        Format.eprintf
-          "Intersections are not supported. Substituting Object\n%!";
+        log_error "Intersections are not supported. Substituting Object\n%!";
         return CT.object_t
     | Primitive s -> return (CT.primitive_t s)
     | t ->
-        Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
-        failwith "unsuported case"
+        log_error "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
+        failwith "unsupported case"
   in
   populate_graph on_decl table;
   let name_of_id id =

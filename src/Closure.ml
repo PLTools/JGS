@@ -21,6 +21,7 @@ let is_correct_type (module CT : SCT) ~closure_subtyping t =
         (id actual_params expected_params super supers length)
         (t === !!(Class (id, actual_params)))
         (decl_by_id id !!(C !!{ params = expected_params; super; supers }))
+        (* TODO (Kakadu): write a relation same_length *)
         (List.lengtho expected_params length)
         (List.lengtho actual_params length);
       (* Interface: should be metioned in interface declarations with the same arguments amount *)
@@ -51,18 +52,19 @@ let ( -<- ) (module CT : SCT) ~direct_subtyping ~closure_subtyping
        ta tb !!true)
     (is_correct_type ta) (is_correct_type tb)
 
-let rec ( <-< ) ~direct_subtyping ta tb =
-  fresh ()
-    (JGS_Helpers.only_classes_interfaces_and_arrays ta)
-    (JGS_Helpers.only_classes_interfaces_and_arrays tb)
-    (conde
-       [
-         direct_subtyping ta tb;
-         fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
-           (JGS_Helpers.only_classes_interfaces_and_arrays ti)
-           (direct_subtyping ti tb)
-           (( <-< ) ~direct_subtyping ta ti);
-       ])
+let rec ( <-< ) ~direct_subtyping ta tb st =
+  st
+  |> fresh ()
+       (JGS_Helpers.only_classes_interfaces_and_arrays ta)
+       (JGS_Helpers.only_classes_interfaces_and_arrays tb)
+       (conde
+          [
+            direct_subtyping ta tb;
+            fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
+              (JGS_Helpers.only_classes_interfaces_and_arrays ti)
+              (direct_subtyping ti tb)
+              (( <-< ) ~direct_subtyping ta ti);
+          ])
 
 let rec ( <=< ) ~direct_subtyping ta tb =
   fresh ()
@@ -96,5 +98,23 @@ let make_closure_supertyping (module CT : SCT) direct_subtyping =
       (module CT)
       ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
       ta tb
-  and closure ta tb = ( <=< ) ~direct_subtyping:direct ta tb in
+  and closure ta tb st =
+    let () =
+      let open JGS_stats in
+      let ta_is_g = ref false in
+      let tb_is_g = ref false in
+      OCanren.is_ground ta st (fun b -> ta_is_g := b);
+      OCanren.is_ground tb st (fun b -> tb_is_g := b);
+      set_fish stats
+        ((if !ta_is_g then fun ((a, b), c) -> ((a, b + 1), c)
+          else fun ((a, b), c) -> ((a, b + 1), c))
+           (get_fish stats));
+      set_fish stats
+        ((if !tb_is_g then fun (c, (a, b)) -> (c, (a, b + 1))
+          else fun (c, (a, b)) -> (c, (a, b + 1)))
+           (get_fish stats))
+    in
+    let _ = failwith "WTF" in
+    ( <=< ) ~direct_subtyping:direct ta tb st
+  in
   { is_correct_type = is_correct; direct_subtyping = direct; closure }

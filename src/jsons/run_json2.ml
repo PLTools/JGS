@@ -41,20 +41,22 @@ let is_timer_enabled =
 
 let run_jtype pp ?(n = test_args.answers_count) query =
   let time =
-    if is_timer_enabled then fun f ->
+    if is_timer_enabled then (fun f ->
+      JGS_stats.clear_statistics ();
       let start = Mtime_clock.elapsed () in
       let ans = f () in
       let fin = Mtime_clock.elapsed () in
+      JGS_stats.report_counters ();
       let span = Mtime.Span.abs_diff start fin in
       let msg =
         if Mtime.Span.to_ms span > 1000. then
           Printf.sprintf "%5.1fs" (Mtime.Span.to_s span)
         else Printf.sprintf "%5.1fms" (Mtime.Span.to_ms span)
       in
-      (Some msg, ans)
+      (Some msg, ans))
     else fun f -> (None, f ())
   in
-  (* TODO: OCanren.Stream needs iteri_k for stiff like this *)
+  (* TODO: OCanren.Stream needs iteri_k for stuff like this *)
   let rec loop i stream =
     if i > n then ()
     else

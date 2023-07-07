@@ -5,7 +5,14 @@
 
 (library
  (name JGS_lib)
- (modules JGS CT_of_json JGS_Helpers MutableTypeTable test_of_json Closure)
+ (modules
+  JGS_stats
+  JGS
+  CT_of_json
+  JGS_Helpers
+  MutableTypeTable
+  test_of_json
+  Closure)
  (wrapped false)
  (libraries yojson GT OCanren noCanren.Option noCanren.List ocamlgraph str)
  (flags

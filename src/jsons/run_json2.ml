@@ -5,10 +5,17 @@ type test_args = {
   mutable query_file : string;
   mutable run_default : bool;
   mutable answers_count : int;
+  mutable fifo : string option;
 }
 
 let test_args =
-  { ct_file = ""; query_file = ""; run_default = false; answers_count = 1 }
+  {
+    ct_file = "";
+    query_file = "";
+    run_default = false;
+    answers_count = 1;
+    fifo = None;
+  }
 
 let () =
   Arg.parse
@@ -24,6 +31,7 @@ let () =
         Arg.Int (fun n -> test_args.answers_count <- n),
         " Numer of answers requested (default 1)" );
       ("-ct", Arg.String (fun s -> test_args.ct_file <- s), " class table file");
+      ("-perffifo", Arg.String (fun s -> test_args.fifo <- Some s), " ");
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -176,6 +184,11 @@ let () =
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 5);
     Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 7);
     ()
+  in
+  let () =
+    test_args.fifo
+    |> Stdlib.Option.iter (fun s ->
+           ignore @@ Sys.command ("echo 'enable\n' > " ^ s))
   in
   run_jtype pp (fun typ ->
       let open OCanren in

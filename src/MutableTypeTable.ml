@@ -247,19 +247,28 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
         (debug_var id_val (Fun.flip OCanren.reify) (function
           | [ Value id ] when id = top_id -> failure
           | [ Value id ] -> (
-              (* TODO: Kakadu: should we memoize already injeted values? *)
+              (* TODO: Kakadu: should we memoize already injected values? *)
               match M.find id !m with
               | d -> rez === decl_inj d
               | exception Not_found ->
                   failwith (Printf.sprintf "Not_found: id = %d" id))
           | _ -> (
               let disj_args = get_decl_by_id_disjs_args () in
-              let disjs =
-                Stdlib.List.map
-                  (fun (k, v) -> id_val === k &&& (rez === v))
-                  disj_args
-              in
-              match disjs with [] -> failure | _ -> conde disjs)))
+              let on_element (k, v) = id_val === k &&& (rez === v) in
+              let optimized_by_kakadu = true in
+              (* The same trick which happens in the function [get_superclass] below *)
+              if optimized_by_kakadu then
+                (* Generating list of the size of class table is bad.
+                   Not doing that could easily five 2x speedup *)
+                let rec loop : _ -> goal = function
+                  | [] -> failure
+                  | h :: tl ->
+                      OCanren.disj (on_element h) (delay (fun () -> loop tl))
+                in
+                loop disj_args
+              else
+                let disjs = Stdlib.List.map on_element disj_args in
+                match disjs with [] -> failure | _ -> conde disjs)))
 
     let get_superclass :
         (int ilogic -> goal) ->
@@ -272,13 +281,32 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
         (sub_id sub_id_val) (super_id super_id_val)
         (some_rez === Std.some rez)
         (let disj_args = get_superclass_disjs_args () in
-         let disjs =
-           Stdlib.List.map
-             (fun (sub, sup, super) ->
-               sub_id_val === sub &&& (super_id_val === sup) &&& (rez === super))
-             disj_args
-         in
-         match disjs with [] -> failure | _ -> conde disjs)
+
+         (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
+            (List.length disj_args); *)
+         let optimized_by_kakadu = true in
+         if optimized_by_kakadu then
+           (* Generating list of the size of class table is bad.
+              Not doing that could easily five 2x speedup *)
+           let rec loop : _ -> goal = function
+             | [] -> failure
+             | (sub, sup, super) :: tl ->
+                 OCanren.disj
+                   (sub_id_val === sub &&& (super_id_val === sup)
+                  &&& (rez === super))
+                   (delay (fun () -> loop tl))
+           in
+           loop disj_args
+         else
+           (* Peter's implementation *)
+           let disjs =
+             Stdlib.List.map
+               (fun (sub, sup, super) ->
+                 sub_id_val === sub &&& (super_id_val === sup)
+                 &&& (rez === super))
+               disj_args
+           in
+           match disjs with [] -> failure | _ -> conde disjs)
 
     let object_t =
       let object_t = jtype_inj object_t in

@@ -20,6 +20,9 @@ include struct
     mutable fat_fish : bool_counters;  (** [<=<] *)
     mutable arrow : bool_counters;  (** [-<-] *)
     mutable class_int_sub : cross_bool;
+    mutable cc_ground_id : int * int;
+    mutable cc_ground_args : int * int; (* challow groundness *)
+    mutable cc_args_fully_ground : int * int;
   }
 
   let get_fish st = st.fish
@@ -28,6 +31,12 @@ include struct
   let set_fat_fish st x = st.fat_fish <- x
   let get_arr st = st.arrow
   let set_arr st x = st.arrow <- x
+  let get_cc st = st.cc_ground_id
+  let set_cc st x = st.cc_ground_id <- x
+  let get_cc_args st = st.cc_ground_args
+  let set_cc_args st x = st.cc_ground_args <- x
+  let get_cc_args_fully_ground st = st.cc_args_fully_ground
+  let set_cc_args_fully_ground st x = st.cc_args_fully_ground <- x
 
   let stats =
     {
@@ -35,12 +44,20 @@ include struct
       class_int_sub = cross_bool_empty ();
       fat_fish = empty_counters;
       arrow = empty_counters;
+      cc_ground_id = (0, 0);
+      cc_ground_args = (0, 0);
+      cc_args_fully_ground = (0, 0);
     }
 
   let clear_statistics () =
     set_fish stats ((0, 0), (0, 0));
+    stats.class_int_sub <- cross_bool_empty ();
     set_fat_fish stats empty_counters;
-    set_arr stats empty_counters
+    set_arr stats empty_counters;
+    set_cc stats (0, 0);
+    set_cc_args stats (0, 0);
+    set_cc_args_fully_ground stats (0, 0);
+    ()
 
   let report_counters () =
     let wrap v sum =
@@ -76,6 +93,29 @@ include struct
         "class_int_sub" (to_percent cb_both) (to_percent cb_left)
         (to_percent cb_right) (to_percent cb_both_false)
     in
+    let () =
+      let id_is_g, id_is_v = stats.cc_ground_id in
+      let sum = id_is_g + id_is_v in
+      let to_percent x = wrap x sum in
+      Printf.printf "\t\t%s:  g %3d%%, v %3d%% (total = %d)\n" "cc_id"
+        (to_percent id_is_g) (to_percent id_is_v) sum
+    in
+    let () =
+      let id_is_g, id_is_v = stats.cc_ground_args in
+      let sum = id_is_g + id_is_v in
+      let to_percent x = wrap x sum in
+      Printf.printf "\t\t%s:  g %3d%%, v %3d%% (total = %d)\n"
+        "cc_args are shallow ground" (to_percent id_is_g) (to_percent id_is_v)
+        sum
+    in
+    let () =
+      let id_is_g, id_is_v = stats.cc_args_fully_ground in
+      let sum = id_is_g + id_is_v in
+      let to_percent x = wrap x sum in
+      Printf.printf "\t\t%s:  g %3d%%, v %3d%% (total = %d)\n"
+        "cc_args_fully_ground" (to_percent id_is_g) (to_percent id_is_v) sum
+    in
+
     ()
 
   let st_add_var (get : statistics -> bool_counters)

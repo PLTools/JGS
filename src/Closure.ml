@@ -10,6 +10,17 @@ type closure = {
   closure : jtype_injected -> jtype_injected -> goal;
 }
 
+let rec list_same_length : _ Std.List.injected -> _ Std.List.injected -> goal =
+ fun xs ys ->
+  conde
+    [
+      fresh (h1 h2 tl1 tl2)
+        (xs === Std.List.cons h1 tl1)
+        (ys === Std.List.cons h2 tl2)
+        (list_same_length tl1 tl2);
+      xs === Std.nil () &&& (ys === Std.nil ());
+    ]
+
 let is_correct_type (module CT : SCT) ~closure_subtyping t =
   let decl_by_id id decl = CT.HO.decl_by_id (( === ) id) decl in
   conde
@@ -22,8 +33,9 @@ let is_correct_type (module CT : SCT) ~closure_subtyping t =
         (t === !!(Class (id, actual_params)))
         (decl_by_id id !!(C !!{ params = expected_params; super; supers }))
         (* TODO (Kakadu): write a relation same_length *)
-        (List.lengtho expected_params length)
-        (List.lengtho actual_params length);
+        (* (List.lengtho expected_params length)
+           (List.lengtho actual_params length) *)
+        (list_same_length expected_params actual_params);
       (* Interface: should be metioned in interface declarations with the same arguments amount *)
       fresh
         (id actual_params expected_params supers length)

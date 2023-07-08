@@ -31,7 +31,11 @@ module type SAMPLE_CLASSTABLE = sig
   (** [make_interface_fix make_params make_superinterfaces] creates a new interface in open recursion style *)
 
   module HO : sig
+    val decl_by_id_fo : int ilogic -> HO.decl_injected -> OCanren.goal
     val decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal
+
+    val get_superclass_fo :
+      int ilogic -> int ilogic -> HO.jtype_injected Std.Option.injected -> goal
 
     val get_superclass :
       (int ilogic -> goal) ->
@@ -39,10 +43,25 @@ module type SAMPLE_CLASSTABLE = sig
       HO.jtype_injected Std.Option.injected ->
       goal
 
-    val object_t : HO.jtype_injected -> goal
-    val cloneable_t : HO.jtype_injected -> goal
-    val serializable_t : HO.jtype_injected -> goal
+    val object_t_ho : HO.jtype_injected -> goal
+    val object_t : HO.jtype_injected
+    val cloneable_t_ho : HO.jtype_injected -> goal
+    val cloneable_t : HO.jtype_injected
+    val serializable_t_ho : HO.jtype_injected -> goal
+    val serializable_t : HO.jtype_injected
     val new_var : (GT.unit ilogic -> goal) -> int ilogic -> goal
+
+    val pp_targ :
+      (int OCanren.logic -> string) ->
+      Format.formatter ->
+      HO.jtype_logic HO.targ_logic ->
+      unit
+
+    val pp_jtyp :
+      (int OCanren.logic -> string) ->
+      Format.formatter ->
+      HO.jtype_logic ->
+      unit
   end
 end
 
@@ -241,44 +260,44 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     let get_superclass_disjs_args () =
       Lazy.force (update_disj_args ()).get_superclass
 
-    let decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal =
+    let decl_by_id_fo : int ilogic -> HO.decl_injected -> goal =
      fun id rez ->
-      fresh id_val (id id_val)
-        (debug_var id_val (Fun.flip OCanren.reify) (function
-          | [ Value id ] when id = top_id -> failure
-          | [ Value id ] -> (
-              (* TODO: Kakadu: should we memoize already injected values? *)
-              match M.find id !m with
-              | d -> rez === decl_inj d
-              | exception Not_found ->
-                  failwith (Printf.sprintf "Not_found: id = %d" id))
-          | _ -> (
-              let disj_args = get_decl_by_id_disjs_args () in
-              let on_element (k, v) = id_val === k &&& (rez === v) in
-              let optimized_by_kakadu = true in
-              (* The same trick which happens in the function [get_superclass] below *)
-              if optimized_by_kakadu then
-                (* Generating list of the size of class table is bad.
-                   Not doing that could easily five 2x speedup *)
-                let rec loop : _ -> goal = function
-                  | [] -> failure
-                  | h :: tl ->
-                      OCanren.disj (on_element h) (delay (fun () -> loop tl))
-                in
-                loop disj_args
-              else
-                let disjs = Stdlib.List.map on_element disj_args in
-                match disjs with [] -> failure | _ -> conde disjs)))
+      debug_var id (Fun.flip OCanren.reify) (function
+        | [ Value id ] when id = top_id -> failure
+        | [ Value id ] -> (
+            (* TODO: Kakadu: should we memoize already injected values? *)
+            match M.find id !m with
+            | d -> rez === decl_inj d
+            | exception Not_found ->
+                failwith (Printf.sprintf "Not_found: id = %d" id))
+        | _ -> (
+            let disj_args = get_decl_by_id_disjs_args () in
+            let on_element (k, v) = id === k &&& (rez === v) in
+            let optimized_by_kakadu = true in
+            (* The same trick which happens in the function [get_superclass] below *)
+            if optimized_by_kakadu then
+              (* Generating list of the size of class table is bad.
+                 Not doing that could easily five 2x speedup *)
+              let rec loop : _ -> goal = function
+                | [] -> failure
+                | h :: tl ->
+                    OCanren.disj (on_element h) (delay (fun () -> loop tl))
+              in
+              loop disj_args
+            else
+              let disjs = Stdlib.List.map on_element disj_args in
+              match disjs with [] -> failure | _ -> conde disjs))
 
-    let get_superclass :
-        (int ilogic -> goal) ->
-        (int ilogic -> goal) ->
+    let decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal =
+     fun id d -> fresh id_val (id id_val) (decl_by_id_fo id_val d)
+
+    let get_superclass_fo :
+        int ilogic ->
+        int ilogic ->
         HO.jtype_injected Std.Option.injected ->
         goal =
-     fun sub_id super_id some_rez ->
-      fresh
-        (sub_id_val super_id_val rez)
-        (sub_id sub_id_val) (super_id super_id_val)
+     fun sub_id_val super_id_val some_rez ->
+      fresh rez
         (some_rez === Std.some rez)
         (let disj_args = get_superclass_disjs_args () in
 
@@ -308,18 +327,25 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
            in
            match disjs with [] -> failure | _ -> conde disjs)
 
-    let object_t =
-      let object_t = jtype_inj object_t in
-      fun x -> x === object_t
+    let get_superclass :
+        (int ilogic -> goal) ->
+        (int ilogic -> goal) ->
+        HO.jtype_injected Std.Option.injected ->
+        goal =
+     fun hoa hob jtyp ->
+      fresh (a b) (hoa a) (hob b) (get_superclass_fo a b jtyp)
 
-    let cloneable_t =
-      let cloneable_t = jtype_inj cloneable_t in
-      fun x -> x === cloneable_t
+    let object_t = jtype_inj object_t
+    let object_t_ho : HO.jtype_injected -> goal = fun x -> x === object_t
+    let cloneable_t = jtype_inj cloneable_t
+    let cloneable_t_ho : HO.jtype_injected -> goal = fun x -> x === cloneable_t
+    let serializable_t = jtype_inj serializable_t
 
-    let serializable_t =
-      let serializable_t = jtype_inj serializable_t in
-      fun x -> x === serializable_t
+    let serializable_t_ho : HO.jtype_injected -> goal =
+     fun x -> x === serializable_t
 
     let new_var _ x = x === !!(new_id ())
+    let pp_jtyp = JGS_Helpers.pp_jtyp_logic
+    let pp_targ = JGS_Helpers.pp_targ_logic
   end
 end

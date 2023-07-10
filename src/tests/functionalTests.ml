@@ -89,12 +89,22 @@ let _ =
   let class_collection =
     SampleCT.make_class [ SampleCT.object_t ] (Class (1 (* object *), [])) []
   in
-  (* returns false, but should return true *)
-  Printf.printf "13 Collection<A> < Collection< A extends Object> : %b\n"
+
+  Printf.printf "13 Collection<A> < Collection< VB extends Object> : %b\n"
     (Class (class_collection, [ Type (Class (class_a, [])) ])
     -<- Class
           ( class_collection,
             [
               Type
-                (Var { id = 0; lwb = None; index = 0; upb = SampleCT.object_t });
-            ] ))
+                (Var
+                   { id = 101; lwb = None; index = 1; upb = SampleCT.object_t });
+            ] ));
+
+  Printf.printf "14 Collection<VA extends Object> < Collection< Object > : %b\n"
+    (Class
+       ( class_collection,
+         [
+           Type
+             (Var { id = 100; lwb = None; index = 0; upb = SampleCT.object_t });
+         ] )
+    -<- Class (class_collection, [ Type (Class (1 (* object *), [])) ]))

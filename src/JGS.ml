@@ -8,9 +8,9 @@
 (* A fold for two arrays *)
 let fold_left2 f c a b =
   fst (Array.fold_left (fun (c, i) a -> f c a b.(i), i+1) (c, 0) a)
-                       
+
 (* A type to identify various objects *)
-type id = int 
+type id = int
 
 (* Types; only reference types since primitive types seem not to be involved;
    section 4.3, page 63.
@@ -24,23 +24,23 @@ type jtype =
     index : int;               (*   2. index in declaration list *)
     upb   : jtype;             (*   3. upper bound               *)
     lwb   : jtype option       (*   4. lower bound               *)
-  }    
+  }
 | Null                         (* null type                      *)
 | Intersect of jtype list      (* intersection type              *)
-   
+
 (* Type arguments; section 4.5.1, page 71 *)
-and  polarity = Extends | Super 
+and  polarity = Extends | Super
 
 and  targ =
 | Type     of jtype
-| Wildcard of (polarity * jtype) option 
+| Wildcard of (polarity * jtype) option
 
 (* Type parameters:
    1. represented implicitly by their indices;
    2. the number of parameters is the length of the bounds' array.
-*)            
-type  params = jtype array 
-             
+*)
+type  params = jtype array
+
 (* Class declaration; only type-specific informanion is retained.
    Section 8.1, page 237, section 8.1.2, page 241.
 *)
@@ -48,7 +48,7 @@ type cdecl = {
   params : params;    (* type parameters *)
   super  : jtype;     (* supeclass       *)
   supers : jtype list (* superinterfaces *)
-} 
+}
 
 (* Interface declaration; only type-specific informanion is retained.
    Section 9.1, page 342, section 9.1.2, page 344.
@@ -56,16 +56,16 @@ type cdecl = {
 type idecl = {
   params : params;    (* type parameters *)
   supers : jtype list (* superinterfaces *)
-} 
+}
 
-(* Type declaration: a class or an interface *)           
-type decl =           
+(* Type declaration: a class or an interface *)
+type decl =
 | C of cdecl
-| I of idecl 
-   
+| I of idecl
+
 (* Substitution of type parameters *)
 let rec substitute_typ (subst : targ array) = function
-| Array      typ       -> Array     (substitute_typ subst typ) 
+| Array      typ       -> Array     (substitute_typ subst typ)
 | Class     (id, args) -> Class     (id, Array.map (substitute_arg subst) args)
 | Interface (id, args) -> Interface (id, Array.map (substitute_arg subst) args)
 | Intersect typs       -> Intersect (List.map  (substitute_typ subst) typs)
@@ -74,12 +74,12 @@ let rec substitute_typ (subst : targ array) = function
 and substitute_arg (subst : targ array) = function
 | Type (Var {index=n})     -> subst.(n)
 | Type typ                 -> Type (substitute_typ subst typ)
-| Wildcard None            -> Wildcard None                     
+| Wildcard None            -> Wildcard None
 | Wildcard (Some (p, typ)) -> Wildcard (Some (p, substitute_typ subst typ))
 
-(* Subtyping verifier functor parameterized by a class table CT*)                            
+(* Subtyping verifier functor parameterized by a class table CT*)
 module Verifier (CT : sig
-             
+
                         val decl_by_id     : id -> decl (* Gets a class/interface declaration by is *)
 
                         val object_t       : jtype      (* Synonyms for some specific classes       *)
@@ -87,17 +87,17 @@ module Verifier (CT : sig
                         val serializable_t : jtype      (*                                          *)
 
                         val new_var        : unit -> id (* Gets a new var's id                      *)
-                          
+
                       end) =
   struct
 
-       
+
     (* Direct subtyping relation; only for non-raw types, section 4.10.2, page 82.
        The first argument is suptyping relation which has to be a transitive-reflexive closure
        of the direct syptyping.
-    *)     
+    *)
     let rec (-<-) ((<-<) : jtype -> jtype -> bool) (ta : jtype) (tb : jtype) =
-      (* "Contains" relation, section 4.5.1, page 72 *)    
+      (* "Contains" relation, section 4.5.1, page 72 *)
       let (<=<) (ta : targ) (tb : targ) =
         match ta, tb with
         | Wildcard (Some (Extends, t)), Wildcard (Some (Extends, s))      -> t <-< s
@@ -105,11 +105,11 @@ module Verifier (CT : sig
         | Wildcard (Some (Super  , t)), Wildcard (Some (Super  , s))      -> s <-< t
         | Wildcard (Some (Super  , t)), Wildcard None                     -> true
         | Wildcard (Some (Super  , t)), Wildcard (Some (Extends, o)) when o = CT.object_t -> true
-                                                                                           
-        | Type      t1                , Type      t2                   
+
+        | Type      t1                , Type      t2
         | Type      t1                , Wildcard (Some (Extends, t2))
         | Type      t1                , Wildcard (Some (Super  , t2)) -> t1 = t2
-                                                                         
+
         | _ -> false
       in
       (* Capture conversion, section 5.1.10, page 125 *)
@@ -154,8 +154,8 @@ module Verifier (CT : sig
         else match List.find_opt (function Class (id, _) | Interface (id, _) -> id = id_b | _ -> false) supers with
              | Some (Class     (_, targs_b'))
              | Some (Interface (_, targs_b')) ->
-                targs_b =  Array.map (fun t -> substitute_arg targs_a t) targs_b'               
-             | None -> false          
+                targs_b =  Array.map (fun t -> substitute_arg targs_a t) targs_b'
+             | None -> false
       in
       let (-<-) = (-<-) (<-<) in
       match ta with
@@ -172,16 +172,16 @@ module Verifier (CT : sig
               | _                  -> false
              )
          )
-         
+
       | Interface (id_a, targs_a) ->
          (match capture_conversion id_a targs_a with
           | None         -> false
           | Some targs_a ->
              (match tb with
-              | Class     (id_b, targs_b) 
+              | Class     (id_b, targs_b)
               | Interface (id_b, targs_b) ->
                  let supers =
-                   let I decl = CT.decl_by_id id_a in 
+                   let I decl = CT.decl_by_id id_a in
                    decl.supers
                  in
                  (match supers with
@@ -192,7 +192,7 @@ module Verifier (CT : sig
               | _                  -> false
              )
          )
-         
+
       | Array ta ->
          if ta = CT.object_t
          then if tb = CT.object_t       ||
@@ -201,13 +201,13 @@ module Verifier (CT : sig
               then true
               else (match tb with Array tb -> ta -<- tb | _ -> false)
          else (match tb with Array tb -> ta -<- tb | _ -> false)
-        
+
       | Intersect ts -> List.mem tb ts
-        
+
       | Var {upb=typ} -> typ = tb
 
       | Null -> tb <> Null
-    
+
   end
 
 module SampleCT =
@@ -223,7 +223,7 @@ module SampleCT =
     module M = Map.Make (struct type t = id let compare = compare end)
 
     let make_tvar index upb = Var {id=new_id (); index=index; upb=upb; lwb=None}
-    
+
     let add_class, add_interface, add_class_fix, add_interface_fix, decl_by_id =
       let make_params params =
         Array.mapi (fun i p -> make_tvar i p) params
@@ -239,9 +239,9 @@ module SampleCT =
     let make_interface     params supers       = add_interface     {params; supers}
     let make_class_fix     params super supers = add_class_fix     (fun id -> {params=params id; super=super id; supers=supers id})
     let make_interface_fix params supers       = add_interface_fix (fun id -> {params=params id; supers=supers id})
-                                           
+
     let top = Class (-1, [||])
-      
+
     let object_t =
       let id = make_class [||] top [] in
       Class (id, [||])
@@ -255,23 +255,23 @@ module SampleCT =
       Interface (id, [||])
 
     let new_var = new_id
-                  
+
   end
 
-module Verify = Verifier (SampleCT) 
+module Verify = Verifier (SampleCT)
 
 let rec (<-<) ta tb = ta -<- tb (* not complete! *)
 and (-<-) ta tb     = Verify.(-<-) (<-<) ta tb
 
-let _ =  
+let _ =
   Printf.printf " 1 Object[]     < Object         (true) : %b\n" ((Array SampleCT.object_t) -<- SampleCT.object_t);
   Printf.printf " 2 Object[]     < Cloneable      (true) : %b\n" ((Array SampleCT.object_t) -<- SampleCT.cloneable_t);
   Printf.printf " 3 Object[]     < Serializable   (true) : %b\n" ((Array SampleCT.object_t) -<- SampleCT.serializable_t);
-  
+
   Printf.printf " 4 Object       < Object[]       (false): %b\n" (SampleCT.object_t -<- (Array SampleCT.object_t));
   Printf.printf " 5 Cloneable    < Object[]       (false): %b\n" (SampleCT.cloneable_t -<- (Array SampleCT.object_t));
   Printf.printf " 6 Serializable < Object[]       (false): %b\n" (SampleCT.serializable_t -<- (Array SampleCT.object_t));
-  
+
   Printf.printf " 7 Object[][]   < Serializable[] (true) : %b\n" (Array (Array SampleCT.object_t) -<- Array SampleCT.serializable_t);
 
   (* class A {...} *)
@@ -295,7 +295,7 @@ let _ =
 
   (* class D<X> {...} *)
   let class_d = SampleCT.make_class [|SampleCT.object_t|] SampleCT.object_t [] in
-  
+
   (* class E<X, Y> {...} *)
   let class_e = SampleCT.make_class [|SampleCT.object_t; SampleCT.object_t|] SampleCT.object_t [] in
 
@@ -305,7 +305,7 @@ let _ =
                   (fun self -> (Class (class_d, [|Type (Class (self, [|Type (Class (class_a, [||]))|]))|])))
                   (fun self -> [])
   in
-  
+
   (* class F<X, Y> extends E<D<Y>, X> {...} *)
   let class_f = SampleCT.make_class
                   [|SampleCT.object_t; SampleCT.object_t|]

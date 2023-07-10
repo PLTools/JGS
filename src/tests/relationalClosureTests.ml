@@ -239,4 +239,25 @@ let _ =
         (super === jtype_inj int_collection)
         (q =/= jtype_inj Null)
         (q <-< super));
+
+  let col_of_var_objects =
+    Interface
+      ( interface_icollection,
+        [
+          Type
+            (Var
+               {
+                 id = SampleCT.new_var ();
+                 index = 0;
+                 lwb = None;
+                 upb = SampleCT.object_t;
+               });
+        ] )
+  in
+  run_jtype ~n:1 ~msg:"? <-< ICollection< T extends Object >" (fun q ->
+      fresh super
+        (only_classes_interfaces_and_arrays q)
+        (super === jtype_inj col_of_var_objects)
+        (q =/= jtype_inj Null)
+        (q <-< super));
   ()

@@ -392,7 +392,7 @@ module HO = struct
                 ]))
 
     let rec ( -<- ) :
-        (jtype_injected -> jtype_injected -> protobool ilogic -> Option.HO.goal) ->
+        (jtype_injected -> jtype_injected -> bool ilogic -> Option.HO.goal) ->
         jtype_injected ->
         jtype_injected ->
         bool ilogic ->

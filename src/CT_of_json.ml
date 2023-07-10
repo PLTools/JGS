@@ -643,7 +643,12 @@ type result_query =
   JGS.HO.jtype_injected ->
   OCanren.goal
 
-let make_query j : _ * result_query * _ =
+let show_processing pos pp_a a pp_b b =
+  Format.printf "\t%sProcessing: %a <-< %a\n%!"
+    (if pos then "     " else " NOT ")
+    pp_a a pp_b b
+
+let make_query ?(hack_goal = false) j : _ * result_query * _ =
   let { table; neg_upper_bounds; neg_lower_bounds; upper_bounds; lower_bounds }
       =
     query_of_yojson j
@@ -653,199 +658,264 @@ let make_query j : _ * result_query * _ =
   if neg_lower_bounds <> [] || neg_upper_bounds <> [] then
     Format.eprintf "Negatives bound are not yet supported\n%!";
 
-  let varnames =
-    let acc =
-      List.fold_left
-        (fun acc x -> SS.union acc (collect_used_typenames x))
-        SS.empty upper_bounds
-    in
-    let acc =
-      List.fold_left
-        (fun acc x -> SS.union acc (collect_used_typenames x))
-        acc lower_bounds
-    in
-    acc
-    |> SS.filter (fun name ->
-           match id_of_name name with
-           | _ -> false
-           | exception Name_not_found _ -> true)
-  in
-
-  let () =
-    Format.printf "\nType variables mentioned in constraints: [";
-    SS.to_seq varnames |> Seq.iter (Format.printf " %s ");
-    Format.printf "]\n\n%!"
-  in
-
-  (* TODO: negative bound too *)
-  let upper_bounds, lower_bounds =
-    let ( ++ ) (a, b) (c, d) = (a @ c, b @ d) in
-    let fold :
-        jtype -> ((var_desc * jtype) list * (var_desc * jtype) list) * jtype =
-      let empty = ([], []) in
-      let rec helper : _ -> _ * _ = function
-        | Var { id; upb; lwb; _ } as t ->
-            let ans1, upb = helper upb in
-            let acc = ((Named id, upb) :: fst ans1, snd ans1) in
-            let ans2 =
-              match lwb with
-              | None -> ([], [])
-              | Some t ->
-                  let ans, lwb = helper t in
-                  (fst ans, (Named id, lwb) :: snd ans)
-            in
-            (acc ++ ans2, t)
-        | Interface (name, args) ->
-            let acc, new_args =
-              List.fold_right
-                (fun x (acc, args) ->
-                  let acc0, x = helper x in
-                  (acc0 ++ acc, x :: args))
-                args
-                (([], []), [])
-            in
-            (acc, Interface (name, new_args))
-        | Class (name, args) ->
-            let acc, new_args =
-              List.fold_right
-                (fun x (acc, args) ->
-                  let acc0, x = helper x in
-                  (acc0 ++ acc, x :: args))
-                args
-                (([], []), [])
-            in
-            (acc, Class (name, new_args))
-        | Wildcard None as v -> (empty, v)
-        | Wildcard (Some (pol, t)) ->
-            let acc0, t = helper t in
-            (acc0, Wildcard (Some (pol, t)))
-        | t ->
-            Format.eprintf "%s\n%!"
-              (Yojson.Safe.pretty_to_string (yojson_of_jtype t));
-            assert false
-      in
-      fun typ -> helper typ
-    in
-
-    let upper_rez =
-      List.fold_left
-        (fun acc t ->
-          let rez, t = fold t in
-          acc ++ ([ (Queried, t) ], []) ++ rez)
-        ([], []) upper_bounds
-    in
-    let lower_rez =
-      List.fold_left
-        (fun acc t ->
-          let rez, t = fold t in
-          acc ++ ([], [ (Queried, t) ]) ++ rez)
-        ([], []) lower_bounds
-    in
-    upper_rez ++ lower_rez
-  in
-  let goal is_subtype targ_inj answer_typ =
-    let make_vars names k =
-      let storage = Hashtbl.create 23 in
-      let rec helper = function
-        | [] ->
-            k (fun s ->
-                try Hashtbl.find storage s
-                with Not_found ->
-                  failwiths
-                    "Logic variable for Var named %s should be defined \
-                     beforehand, but doesn't. "
-                    s)
-        | h :: tl ->
-            OCanren.Fresh.one (fun q ->
-                Hashtbl.add storage h q;
-                helper tl)
-      in
-      helper names
-    in
-    make_vars
-      (SS.to_seq varnames |> List.of_seq)
-      (fun lookup ->
-        let open OCanren in
-        let rec on_typ : jtype -> JGS.HO.jtype_injected = function
-          | Class (name, args) -> (
-              match id_of_name name with
-              | cid -> JGS_Helpers.class_ !!cid (Std.list on_arg args)
-              | exception Not_found ->
-                  failwiths "Can't find class name '%s'" name)
-          | Interface (name, args) -> (
-              match id_of_name name with
-              | cid -> JGS_Helpers.interface !!cid (Std.list on_arg args)
-              | exception Not_found ->
-                  failwiths "Can't find class name '%s'" name)
-          | Var { id; _ } -> lookup id
-          | t ->
-              Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
-              failwith "unsuported case"
-        and on_arg : _ -> _ JGS.HO.targ_injected = function
-          (* TODO: wildcards are not used, fix that later *)
-          | Wildcard None -> JGS_Helpers.wildcard (Std.none ())
-          | Wildcard (Some (kind, typ)) ->
-              let pol : JGS.HO.polarity_injected =
-                match kind with
-                | Super -> !!JGS.HO.Super
-                | Extends -> !!JGS.HO.Extends
-              in
-              JGS_Helpers.wildcard (Std.some !!(pol, on_typ typ))
-          | t ->
-              let __ () =
-                Format.printf "t = %a\n%!"
-                  (Yojson.Safe.pretty_print ~std:false)
-                  (yojson_of_jtype t)
-              in
-              JGS_Helpers.type_ (on_typ t)
-        in
-
-        let open OCanren in
-        let ask_var = function Queried -> answer_typ | Named v -> lookup v in
-        let wrap ~upper ~pos (name, b) =
-          let show_processing pp_a a pp_b b =
-            Format.printf "\t%sProcessing: %a <-< %a\n%!"
-              (if pos then "     " else " NOT ")
-              pp_a a pp_b b
+  let prepare_goal_attempt () : result_query =
+    let open OCanren in
+    let rec on_typ : jtype -> JGS.HO.jtype_injected = function
+      | Class (name, args) -> (
+          match id_of_name name with
+          | cid -> JGS_Helpers.class_ !!cid (Std.list on_arg args)
+          | exception Not_found -> failwiths "Can't find class name '%s'" name)
+      | Interface (name, args) -> (
+          match id_of_name name with
+          | cid -> JGS_Helpers.interface !!cid (Std.list on_arg args)
+          | exception Not_found -> failwiths "Can't find class name '%s'" name)
+      | Var { id; index; upb; lwb } ->
+          (* let id = Std.Nat.inj (Std.Nat.of_int (CT.new_var ())) in *)
+          let make_var : index:_ -> _ -> _ -> _ -> JGS.HO.jtype_injected =
+            JGS_Helpers.var
           in
-          if upper then show_processing pp_var_desc name pp_jtype b
-          else show_processing pp_jtype b pp_var_desc name;
-
-          let sub, super =
-            if upper then (ask_var name, targ_inj (on_typ b))
-            else (targ_inj (on_typ b), ask_var name)
+          (make_var
+             ~index:(Std.Nat.nat (Std.Nat.of_int index))
+             !!(CT.new_var ())
+             (Std.Option.option (Stdlib.Option.map on_typ lwb))
+             (on_typ upb)
+            : JGS.HO.jtype_injected)
+      | t ->
+          Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
+          failwith "unsupported case"
+    and on_arg : _ -> _ JGS.HO.targ_injected = function
+      (* TODO: wildcards are not used, fix that later *)
+      | Wildcard None -> JGS_Helpers.wildcard (Std.none ())
+      | Wildcard (Some (kind, typ)) ->
+          let pol : JGS.HO.polarity_injected =
+            match kind with
+            | Super -> !!JGS.HO.Super
+            | Extends -> !!JGS.HO.Extends
           in
-          is_subtype sub super
-          (* TODO: There were bool here to switch positive/negative *)
+          JGS_Helpers.wildcard (Std.some !!(pol, on_typ typ))
+      | t ->
+          let __ () =
+            Format.printf "t = %a\n%!"
+              (Yojson.Safe.pretty_print ~std:false)
+              (yojson_of_jtype t)
+          in
+          JGS_Helpers.type_ (on_typ t)
+    in
+    let goal : result_query =
+     fun is_subtype targ_inj answer ->
+      if lower_bounds <> [] then
+        Printf.eprintf "TODO: implement lower bounds\n%!";
+
+      List.fold_right
+        (fun x acc ->
+          let pos = true in
+
+          show_processing pos Format.pp_print_string "?" pp_jtype x;
+
+          let sub, super = (answer, targ_inj (on_typ x)) in
+
+          is_subtype sub super &&& acc)
+        upper_bounds OCanren.success
+    in
+    goal
+  in
+
+  if not hack_goal then (ct, prepare_goal_attempt (), name_of_id)
+  else
+    let varnames =
+      let acc =
+        List.fold_left
+          (fun acc x -> SS.union acc (collect_used_typenames x))
+          SS.empty upper_bounds
+      in
+      let acc =
+        List.fold_left
+          (fun acc x -> SS.union acc (collect_used_typenames x))
+          acc lower_bounds
+      in
+      acc
+      |> SS.filter (fun name ->
+             match id_of_name name with
+             | _ -> false
+             | exception Name_not_found _ -> true)
+    in
+
+    let () =
+      Printf.printf "\nType variables mentioned in constraints: [";
+      SS.to_seq varnames |> Seq.iter (Printf.printf " %s ");
+      Printf.printf "]\n\n%!"
+    in
+
+    (* TODO: negative bound too *)
+    let upper_bounds, lower_bounds =
+      let ( ++ ) (a, b) (c, d) = (a @ c, b @ d) in
+      let fold :
+          jtype -> ((var_desc * jtype) list * (var_desc * jtype) list) * jtype =
+        let empty = ([], []) in
+        let rec helper : _ -> _ * _ = function
+          | Var { id; upb; lwb; _ } as t ->
+              let ans1, upb = helper upb in
+              let acc = ((Named id, upb) :: fst ans1, snd ans1) in
+              let ans2 =
+                match lwb with
+                | None -> ([], [])
+                | Some t ->
+                    let ans, lwb = helper t in
+                    (fst ans, (Named id, lwb) :: snd ans)
+              in
+              (acc ++ ans2, t)
+          | Interface (name, args) ->
+              let acc, new_args =
+                List.fold_right
+                  (fun x (acc, args) ->
+                    let acc0, x = helper x in
+                    (acc0 ++ acc, x :: args))
+                  args
+                  (([], []), [])
+              in
+              (acc, Interface (name, new_args))
+          | Class (name, args) ->
+              let acc, new_args =
+                List.fold_right
+                  (fun x (acc, args) ->
+                    let acc0, x = helper x in
+                    (acc0 ++ acc, x :: args))
+                  args
+                  (([], []), [])
+              in
+              (acc, Class (name, new_args))
+          | Wildcard None as v -> (empty, v)
+          | Wildcard (Some (pol, t)) ->
+              let acc0, t = helper t in
+              (acc0, Wildcard (Some (pol, t)))
+          | t ->
+              Format.eprintf "%s\n%!"
+                (Yojson.Safe.pretty_to_string (yojson_of_jtype t));
+              assert false
         in
-        (*
+        fun typ -> helper typ
+      in
+
+      let upper_rez =
+        List.fold_left
+          (fun acc t ->
+            let rez, t = fold t in
+            acc ++ ([ (Queried, t) ], []) ++ rez)
+          ([], []) upper_bounds
+      in
+      let lower_rez =
+        List.fold_left
+          (fun acc t ->
+            let rez, t = fold t in
+            acc ++ ([], [ (Queried, t) ]) ++ rez)
+          ([], []) lower_bounds
+      in
+      upper_rez ++ lower_rez
+    in
+    let goal is_subtype targ_inj answer_typ =
+      let make_vars names k =
+        let storage = Hashtbl.create 23 in
+        let rec helper = function
+          | [] ->
+              k (fun s ->
+                  try Hashtbl.find storage s
+                  with Not_found ->
+                    failwiths
+                      "Logic variable for Var named %s should be defined \
+                       beforehand, but doesn't. "
+                      s)
+          | h :: tl ->
+              OCanren.Fresh.one (fun q ->
+                  Hashtbl.add storage h q;
+                  helper tl)
+        in
+        helper names
+      in
+      make_vars
+        (SS.to_seq varnames |> List.of_seq)
+        (fun lookup ->
+          let open OCanren in
+          let rec on_typ : jtype -> JGS.HO.jtype_injected = function
+            | Class (name, args) -> (
+                match id_of_name name with
+                | cid -> JGS_Helpers.class_ !!cid (Std.list on_arg args)
+                | exception Not_found ->
+                    failwiths "Can't find class name '%s'" name)
+            | Interface (name, args) -> (
+                match id_of_name name with
+                | cid -> JGS_Helpers.interface !!cid (Std.list on_arg args)
+                | exception Not_found ->
+                    failwiths "Can't find class name '%s'" name)
+            | Var { id; _ } -> lookup id
+            | t ->
+                Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
+                failwith "unsupported case"
+          and on_arg : _ -> _ JGS.HO.targ_injected = function
+            (* TODO: wildcards are not used, fix that later *)
+            | Wildcard None -> JGS_Helpers.wildcard (Std.none ())
+            | Wildcard (Some (kind, typ)) ->
+                let pol : JGS.HO.polarity_injected =
+                  match kind with
+                  | Super -> !!JGS.HO.Super
+                  | Extends -> !!JGS.HO.Extends
+                in
+                JGS_Helpers.wildcard (Std.some !!(pol, on_typ typ))
+            | t ->
+                let __ () =
+                  Format.printf "t = %a\n%!"
+                    (Yojson.Safe.pretty_print ~std:false)
+                    (yojson_of_jtype t)
+                in
+                JGS_Helpers.type_ (on_typ t)
+          in
+
+          let open OCanren in
+          let ask_var = function
+            | Queried -> answer_typ
+            | Named v -> lookup v
+          in
+          let wrap ~upper ~pos (name, b) =
+            if upper then show_processing pos pp_var_desc name pp_jtype b
+            else show_processing pos pp_jtype b pp_var_desc name;
+
+            let sub, super =
+              if upper then (ask_var name, targ_inj (on_typ b))
+              else (targ_inj (on_typ b), ask_var name)
+            in
+            is_subtype sub super
+            (* TODO: There were bool here to switch positive/negative *)
+          in
+          (*
         Format.printf "%d Upper bouds, %d lower bounds\n%!"
           (List.length upper_bounds) (List.length lower_bounds); *)
-        let pos_upper_goals =
-          List.map (wrap ~upper:true ~pos:true) upper_bounds
-        in
-        let pos_lower_goals =
-          List.map (wrap ~upper:false ~pos:true) lower_bounds
-        in
-        let neg_upper_goals =
-          []
-          (* List.map (wrap ~upper:true ~pos:false) upper_bounds *)
-        in
-        let neg_lower_goals =
-          (* List.map (wrap ~upper:false ~pos:false) upper_bounds *)
-          []
-        in
-        let all_goals =
-          List.concat
-            [
-              pos_upper_goals; pos_lower_goals; neg_upper_goals; neg_lower_goals;
-            ]
-        in
-        match all_goals with
-        | [] ->
-            Format.printf "The are not bounds. Exit\n%!";
-            exit 1
-        | _ -> List.fold_right ( &&& ) all_goals success)
-  in
+          let pos_upper_goals =
+            List.map (wrap ~upper:true ~pos:true) upper_bounds
+          in
+          let pos_lower_goals =
+            List.map (wrap ~upper:false ~pos:true) lower_bounds
+          in
+          let neg_upper_goals =
+            []
+            (* List.map (wrap ~upper:true ~pos:false) upper_bounds *)
+          in
+          let neg_lower_goals =
+            (* List.map (wrap ~upper:false ~pos:false) upper_bounds *)
+            []
+          in
+          let all_goals =
+            List.concat
+              [
+                pos_upper_goals;
+                pos_lower_goals;
+                neg_upper_goals;
+                neg_lower_goals;
+              ]
+          in
+          match all_goals with
+          | [] ->
+              Format.printf "The are not bounds. Exit\n%!";
+              exit 1
+          | _ -> List.fold_right ( &&& ) all_goals success)
+    in
 
-  (ct, goal, name_of_id)
+    (ct, goal, name_of_id)

@@ -7,7 +7,7 @@
         "Var",
         {
           "id": "T",
-          "index": 0,
+          "index": 10,
           "upb": [
             "Class",
             "java.lang.Object",

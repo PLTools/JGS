@@ -306,20 +306,19 @@ module HO = struct
         goal =
      fun ?(from = 0) ( <-< ) id targs q205 st ->
       let () =
-        Format.printf
-          "capture_conversion(%d): id = %a, targs = %a, rez = %a\n%!" from
-          (GT.fmt OCanren.logic (GT.fmt GT.int))
-          (OCanren.reify_in_state st OCanren.reify id)
-          (GT.fmt OCanren.Std.List.logic (CT.HO.pp_targ (fun _ -> "")))
-          (OCanren.reify_in_state st
-             (Std.List.reify @@ targ_reify jtype_reify)
-             targs)
-          (GT.fmt Std.Option.logic
-          @@ GT.fmt OCanren.Std.List.logic (CT.HO.pp_targ (fun _ -> "")))
-          (OCanren.reify_in_state st
-             (Std.Option.reify (Std.List.reify @@ targ_reify jtype_reify))
-             q205);
-
+        (* Format.printf
+           "capture_conversion(%d): id = %a, targs = %a, rez = %a\n%!" from
+           (GT.fmt OCanren.logic (GT.fmt GT.int))
+           (OCanren.reify_in_state st OCanren.reify id)
+           (GT.fmt OCanren.Std.List.logic (CT.HO.pp_targ (fun _ -> "")))
+           (OCanren.reify_in_state st
+              (Std.List.reify @@ targ_reify jtype_reify)
+              targs)
+           (GT.fmt Std.Option.logic
+           @@ GT.fmt OCanren.Std.List.logic (CT.HO.pp_targ (fun _ -> "")))
+           (OCanren.reify_in_state st
+              (Std.Option.reify (Std.List.reify @@ targ_reify jtype_reify))
+              q205); *)
         let open JGS_stats in
         let change b =
           let open Stdlib in
@@ -566,12 +565,12 @@ module HO = struct
         OCanren.is_ground_bool res st
           ~on_ground:(fun b ->
             (if b then st_add_true else st_add_false) get_arr set_arr stats)
-          ~onvar:(fun () -> st_add_var get_arr set_arr stats);
-        Format.printf " -<-: type_a = %a, type_b = %a\n%!"
-          (CT.HO.pp_jtyp (fun _ -> ""))
-          (OCanren.reify_in_state st jtype_reify type_a)
-          (CT.HO.pp_jtyp (fun _ -> ""))
-          (OCanren.reify_in_state st jtype_reify type_b)
+          ~onvar:(fun () -> st_add_var get_arr set_arr stats)
+        (* Format.printf " -<-: type_a = %a, type_b = %a\n%!"
+           (CT.HO.pp_jtyp (fun _ -> ""))
+           (OCanren.reify_in_state st jtype_reify type_a)
+           (CT.HO.pp_jtyp (fun _ -> ""))
+           (OCanren.reify_in_state st jtype_reify type_b) *)
       in
       let class_int_sub :
           int ilogic ->

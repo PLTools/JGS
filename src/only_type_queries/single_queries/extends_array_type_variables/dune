@@ -1,0 +1,13 @@
+(cram
+ (deps
+  %{project_root}/jsons/run_json2.exe
+  %{project_root}/jsons_real/0.json
+  ./java.util.NavigableSet.json
+  ./java.util.HashSet.json
+  ./java.util.SortedSet.json
+  ./java.util.List.json
+  ./java.lang.Iterable.json
+  ./java.util.Set.json
+  ./java.util.Collection.json
+  ;
+  ))

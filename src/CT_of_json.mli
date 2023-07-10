@@ -93,5 +93,6 @@ type result_query =
   OCanren.goal
 
 val make_query :
+  ?hack_goal:bool ->
   Yojson.Safe.t ->
   (module MutableTypeTable.SAMPLE_CLASSTABLE) * result_query * (int -> string)

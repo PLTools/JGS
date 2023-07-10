@@ -6,6 +6,7 @@ type test_args = {
   mutable run_default : bool;
   mutable answers_count : int;
   mutable fifo : string option;
+  mutable query_hack : bool;
 }
 
 let test_args =
@@ -15,6 +16,7 @@ let test_args =
     run_default = false;
     answers_count = 1;
     fifo = None;
+    query_hack = true;
   }
 
 let () =
@@ -27,6 +29,7 @@ let () =
       ( "-silent",
         Arg.Unit (fun () -> CT_of_json.verbose_errors := false),
         " Silent JSON errors" );
+      ("-hack", Arg.Unit (fun () -> test_args.query_hack <- false), " hack");
       ( "-n",
         Arg.Int (fun n -> test_args.answers_count <- n),
         " Numer of answers requested (default 1)" );
@@ -113,7 +116,7 @@ let () =
       Yojson.Safe.pretty_to_channel ch j);
 
   let (module CT : MutableTypeTable.SAMPLE_CLASSTABLE), goal, name_of_id =
-    match CT_of_json.make_query j with
+    match CT_of_json.make_query ~hack_goal:test_args.query_hack j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->
         Format.eprintf "%s\n%!" (Printexc.to_string exn);
@@ -197,6 +200,6 @@ let () =
       fresh ()
         (typ =/= intersect __)
         (typ =/= !!HO.Null)
-        (typ =/= var __ __ __ __)
+        (typ =/= var ~index:__ __ __ __)
         (*  *)
         (goal ( <-< ) Fun.id typ))

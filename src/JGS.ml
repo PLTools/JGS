@@ -316,4 +316,16 @@ let _ =
   Printf.printf "12 F<A, B>      < E<D<B>, A>     (true) : %b\n" (Class (class_f, [|Type (Class (class_a, [||]));
                                                                                     Type (Class (class_b, [||]))|]) -<-
                                                                   Class (class_e, [|Type (Class (class_d, [|Type (Class (class_b, [||]))|]));
-                                                                                    Type (Class (class_a, [||]))|]))
+                                                                                    Type (Class (class_a, [||]))|]));
+   let class_collection =
+     SampleCT.make_class [| SampleCT.object_t |] (Class (1 (* object *), [| |])) []
+   in
+
+  Printf.printf "14 Collection<VA extends Object> < Collection< Object > : %b\n"
+    (Class
+       ( class_collection,
+         [|
+           Type
+             (Var { id = 100; lwb = None; index = 0; upb = SampleCT.object_t });
+         |] )
+    -<- Class (class_collection, [| Type (Class (1 (* object *), [| |])) |]))

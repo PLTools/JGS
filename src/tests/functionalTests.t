@@ -11,3 +11,4 @@
   10 C < IA (true) : true
   11 IB < IA (true) : true
   12 F<A, B> < E<D<B>, A> (true) : true
+  13 Collection<A> < Collection< A extends Object> : false

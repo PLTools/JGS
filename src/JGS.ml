@@ -346,6 +346,9 @@ module HO = struct
                  fresh q153 (q151 q153)
                    (conde
                       [
+                        fresh vvv (q153 === !!(CC_type vvv))
+                          (vvv === var __ __ __ __)
+                          (q152 === !!(Type vvv));
                         fresh (t q154) (q153 === !!(CC_type t))
                           (q152 === !!(Type q154))
                           (substitute_typ subst t q154);

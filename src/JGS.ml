@@ -132,6 +132,7 @@ module Verifier (CT : sig
         in
         let targs =
           Array.map (function
+                     | `Type (Var _ as v) -> Type v
                      | `Type t                          -> Type (substitute_typ subst t)
                      | `Var (id, i, `Subst p, lwb)      -> Type (Var {id=id; index=i; upb=substitute_typ subst p; lwb=lwb})
                      | `Var (id, i, `Inter (t, p), lwb) ->

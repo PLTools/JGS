@@ -285,16 +285,10 @@ module HO = struct
 
       val new_var :
         (unit OCanren.ilogic -> OCanren.goal) -> int ilogic -> OCanren.goal
-
-      val pp_targ :
-        (int logic -> string) ->
-        Format.formatter ->
-        jtype_logic targ_logic ->
-        unit
-
-      val pp_jtyp :
-        (int logic -> string) -> Format.formatter -> jtype_logic -> unit
     end
+
+    val pp_targ : Format.formatter -> jtype_logic targ_logic -> unit
+    val pp_jtyp : Format.formatter -> jtype_logic -> unit
   end) =
   struct
     let capture_conversion :
@@ -311,12 +305,11 @@ module HO = struct
             "capture_conversion(%d): id = %a, targs = %a, rez = %a\n%!" from
             (GT.fmt OCanren.logic (GT.fmt GT.int))
             (OCanren.reify_in_state st OCanren.reify id)
-            (GT.fmt OCanren.Std.List.logic (CT.HO.pp_targ (fun _ -> "")))
+            (GT.fmt OCanren.Std.List.logic CT.pp_targ)
             (OCanren.reify_in_state st
                (Std.List.reify @@ targ_reify jtype_reify)
                targs)
-            (GT.fmt Std.Option.logic
-            @@ GT.fmt OCanren.Std.List.logic (CT.HO.pp_targ (fun _ -> "")))
+            (GT.fmt Std.Option.logic @@ GT.fmt OCanren.Std.List.logic CT.pp_targ)
             (OCanren.reify_in_state st
                (Std.Option.reify (Std.List.reify @@ targ_reify jtype_reify))
                q205);
@@ -567,18 +560,17 @@ module HO = struct
         goal =
      fun ( <-< ) type_a type_b res st ->
       let () =
-        if JGS_stats.config.enable_counters then (
-          let open JGS_stats in
-          OCanren.is_ground_bool res st
-            ~on_ground:(fun b ->
-              (if b then st_add_true else st_add_false) get_arr set_arr stats)
-            ~onvar:(fun () -> st_add_var get_arr set_arr stats);
-          (* if JGS_stats.config.trace_arrow then *)
-          Format.printf " -<-: type_a = %a, type_b = %a\n%!"
-            (CT.HO.pp_jtyp (fun _ -> ""))
+        (if JGS_stats.config.enable_counters then
+         let open JGS_stats in
+         OCanren.is_ground_bool res st
+           ~on_ground:(fun b ->
+             (if b then st_add_true else st_add_false) get_arr set_arr stats)
+           ~onvar:(fun () -> st_add_var get_arr set_arr stats));
+        if JGS_stats.config.trace_arrow then
+          Format.printf " -<-: type_a = %a, type_b = %a\n%!" CT.pp_jtyp
             (OCanren.reify_in_state st jtype_reify type_a)
-            (CT.HO.pp_jtyp (fun _ -> ""))
-            (OCanren.reify_in_state st jtype_reify type_b))
+            CT.pp_jtyp
+            (OCanren.reify_in_state st jtype_reify type_b)
       in
       let class_int_sub :
           int ilogic ->
@@ -821,16 +813,10 @@ module FO = struct
 
       val new_var :
         (unit OCanren.ilogic -> OCanren.goal) -> int ilogic -> OCanren.goal
-
-      val pp_targ :
-        (int logic -> string) ->
-        Format.formatter ->
-        jtype_logic targ_logic ->
-        unit
-
-      val pp_jtyp :
-        (int logic -> string) -> Format.formatter -> jtype_logic -> unit
     end
+
+    val pp_targ : Format.formatter -> jtype_logic targ_logic -> unit
+    val pp_jtyp : Format.formatter -> jtype_logic -> unit
   end) =
   struct
     open Verifier (CT)

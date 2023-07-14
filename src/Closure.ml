@@ -65,6 +65,12 @@ let ( -<- ) (module CT : SCT) ~direct_subtyping ~closure_subtyping
     (is_correct_type ta) (is_correct_type tb)
 
 let rec ( <-< ) ~direct_subtyping ta tb st =
+  if JGS_stats.config.trace_closure_subtyping then
+    Format.printf "Closure.(<-<): ta = %a, tb = %a\n%!"
+      (JGS_Helpers.pp_jtyp_logic ([%show: GT.int OCanren.logic] ()))
+      (OCanren.reify_in_state st jtype_reify ta)
+      (JGS_Helpers.pp_jtyp_logic ([%show: GT.int OCanren.logic] ()))
+      (OCanren.reify_in_state st jtype_reify tb);
   st
   |> fresh ()
        (JGS_Helpers.only_classes_interfaces_and_arrays ta)
@@ -119,11 +125,11 @@ let make_closure_supertyping (module CT : SCT) direct_subtyping =
       OCanren.is_ground tb st (fun b -> tb_is_g := b);
       set_fish stats
         ((if !ta_is_g then fun ((a, b), c) -> ((a, b + 1), c)
-          else fun ((a, b), c) -> ((a, b + 1), c))
+         else fun ((a, b), c) -> ((a, b + 1), c))
            (get_fish stats));
       set_fish stats
         ((if !tb_is_g then fun (c, (a, b)) -> (c, (a, b + 1))
-          else fun (c, (a, b)) -> (c, (a, b + 1)))
+         else fun (c, (a, b)) -> (c, (a, b + 1)))
            (get_fish stats))
     in
     let _ = failwith "WTF" in

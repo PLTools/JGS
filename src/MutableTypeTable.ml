@@ -30,6 +30,9 @@ module type SAMPLE_CLASSTABLE = sig
     ?name:string -> (int -> jtype list) -> (int -> jtype list) -> int
   (** [make_interface_fix make_params make_superinterfaces] creates a new interface in open recursion style *)
 
+  val pp_targ : Format.formatter -> HO.jtype_logic HO.targ_logic -> unit
+  val pp_jtyp : Format.formatter -> HO.jtype_logic -> unit
+
   module HO : sig
     val decl_by_id_fo : int ilogic -> HO.decl_injected -> OCanren.goal
     val decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal
@@ -50,18 +53,6 @@ module type SAMPLE_CLASSTABLE = sig
     val serializable_t_ho : HO.jtype_injected -> goal
     val serializable_t : HO.jtype_injected
     val new_var : (GT.unit ilogic -> goal) -> int ilogic -> goal
-
-    val pp_targ :
-      (int OCanren.logic -> string) ->
-      Format.formatter ->
-      HO.jtype_logic HO.targ_logic ->
-      unit
-
-    val pp_jtyp :
-      (int OCanren.logic -> string) ->
-      Format.formatter ->
-      HO.jtype_logic ->
-      unit
   end
 end
 
@@ -345,7 +336,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
      fun x -> x === serializable_t
 
     let new_var _ x = x === !!(new_id ())
-    let pp_jtyp = JGS_Helpers.pp_jtyp_logic
-    let pp_targ = JGS_Helpers.pp_targ_logic
   end
+
+  let pp_jtyp = JGS_Helpers.pp_jtyp_logic (fun _ -> "?")
+  let pp_targ = JGS_Helpers.pp_targ_logic (fun _ -> "?")
 end

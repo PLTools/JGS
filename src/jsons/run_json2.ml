@@ -38,6 +38,9 @@ let () =
       ( "-trace-arrow",
         Arg.Unit (fun () -> JGS_stats.set_trace_arrow true),
         " trace -<- relation" );
+      ( "-trace-closure",
+        Arg.Unit (fun () -> JGS_stats.set_trace_closure_subtyping true),
+        " trace closure subtyping" );
       ( "-n",
         Arg.Int (fun n -> test_args.answers_count <- n),
         " Numer of answers requested (default 1)" );
@@ -134,7 +137,19 @@ let () =
         Format.eprintf "%a\n%!" (Yojson.Safe.pretty_print ~std:true) j;
         exit 1
   in
+  let module CT = struct
+    include CT
 
+    let pp_targ =
+      JGS_Helpers.pp_targ_logic (function
+        | Var (idx, _) -> Printf.sprintf "_.%d" idx
+        | Value idx -> name_of_id idx)
+
+    let pp_jtyp =
+      JGS_Helpers.pp_jtyp_logic (function
+        | Var (idx, _) -> Printf.sprintf "_.%d" idx
+        | Value idx -> name_of_id idx)
+  end in
   let module V = JGS.FO.Verifier (CT) in
   let open OCanren in
   let open JGS in

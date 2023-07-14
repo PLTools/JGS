@@ -16,7 +16,7 @@ let test_args =
     run_default = false;
     answers_count = 1;
     fifo = None;
-    query_hack = true;
+    query_hack = false;
   }
 
 let () =
@@ -29,12 +29,23 @@ let () =
       ( "-silent",
         Arg.Unit (fun () -> CT_of_json.verbose_errors := false),
         " Silent JSON errors" );
-      ("-hack", Arg.Unit (fun () -> test_args.query_hack <- false), " hack");
+      ( "-hack",
+        Arg.Unit (fun () -> test_args.query_hack <- true),
+        " Use old style of query construction" );
+      ( "-trace-cc",
+        Arg.Unit (fun () -> JGS_stats.set_trace_cc true),
+        " trace capture conversion" );
+      ( "-trace-arrow",
+        Arg.Unit (fun () -> JGS_stats.set_trace_arrow true),
+        " trace -<- relation" );
       ( "-n",
         Arg.Int (fun n -> test_args.answers_count <- n),
         " Numer of answers requested (default 1)" );
       ("-ct", Arg.String (fun s -> test_args.ct_file <- s), " class table file");
-      ("-perffifo", Arg.String (fun s -> test_args.fifo <- Some s), " ");
+      ( "-perffifo",
+        Arg.String (fun s -> test_args.fifo <- Some s),
+        " <file> Specify pipe file to start performace metrics only after JSON \
+         parsing" );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -45,11 +56,11 @@ let is_timer_enabled =
 let run_jtype pp ?(n = test_args.answers_count) query =
   let time =
     if is_timer_enabled then (fun f ->
-      JGS_stats.clear_statistics ();
+      if JGS_stats.config.enable_counters then JGS_stats.clear_statistics ();
       let start = Mtime_clock.elapsed () in
       let ans = f () in
       let fin = Mtime_clock.elapsed () in
-      JGS_stats.report_counters ();
+      if JGS_stats.config.enable_counters then JGS_stats.report_counters ();
       let span = Mtime.Span.abs_diff start fin in
       let msg =
         if Mtime.Span.to_ms span > 1000. then

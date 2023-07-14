@@ -1,3 +1,14 @@
+type config = {
+  mutable trace_cc : bool;
+  mutable trace_arrow : bool;
+  mutable enable_counters : bool;
+}
+
+let config = { trace_cc = false; trace_arrow = false; enable_counters = false }
+let set_trace_cc x = config.trace_cc <- x
+let set_trace_arrow x = config.trace_arrow <- x
+let set_enable_counters x = config.enable_counters <- x
+
 include struct
   open Stdlib
 

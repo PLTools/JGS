@@ -1,4 +1,4 @@
-let need_simpified = false
+let need_simpified = ref false
 
 [@@@ocaml.warning "-8"]
 
@@ -338,7 +338,7 @@ module HO = struct
 
       st
       |>
-      if need_simpified then q205 === !!(Some targs)
+      if !need_simpified then q205 === !!(Some targs)
       else
         (* fresh params
            (fresh (q99 q100 q101 q102)
@@ -466,7 +466,7 @@ module HO = struct
                  get_fat_fish set_fat_fish stats)
              ~onvar:(fun () -> st_add_var get_fat_fish set_fat_fish stats)
        in
-       if need_simpified then
+       if !need_simpified then
          conde
            [
              fresh () (type_a === type_b) (res === !!true);
@@ -552,6 +552,69 @@ module HO = struct
            ]
            st
 
+    and class_int_sub :
+        (jtype_injected -> jtype_injected -> bool ilogic -> goal) ->
+        int ilogic ->
+        (jtype_injected targ_injected Std.List.injected -> goal) ->
+        int ilogic ->
+        (jtype_injected targ_injected Std.List.injected -> goal) ->
+        bool ilogic ->
+        goal =
+     fun ( <-< ) id_a targs_a id_b targs_b res st ->
+      let () =
+        let open JGS_stats in
+        let open Stdlib in
+        let ta_is_g = ref false in
+        let tb_is_g = ref false in
+        OCanren.is_ground id_a st (fun b -> ta_is_g := b);
+        OCanren.is_ground id_b st (fun b -> tb_is_g := b);
+        match (!ta_is_g, !tb_is_g) with
+        | true, true ->
+            stats.class_int_sub.cb_both <- stats.class_int_sub.cb_both + 1
+        | true, false ->
+            stats.class_int_sub.cb_left <- stats.class_int_sub.cb_left + 1
+        | false, true ->
+            stats.class_int_sub.cb_right <- stats.class_int_sub.cb_right + 1
+        | false, false ->
+            stats.class_int_sub.cb_both_false <-
+              stats.class_int_sub.cb_both_false + 1
+      in
+
+      st
+      |> conde
+           [
+             fresh () (id_a === id_b)
+               (List.HO.fold_left2
+                  (fun f ta tb q228 ->
+                    fresh (q226 ta_val tb_val) (ta ta_val) (tb tb_val) (f q226)
+                      (conde
+                         [
+                           fresh () (q226 === !!false) (q228 === !!false);
+                           fresh () (q226 === !!true)
+                             (( <=< ) ( <-< ) ta_val tb_val q228);
+                         ]))
+                  (( === ) !!true) targs_a targs_b res);
+             fresh q211 (id_a =/= id_b)
+               (CT.HO.get_superclass_fo id_a id_b q211)
+               (conde
+                  [
+                    fresh (targs_b' q217 q218)
+                      (conde
+                         [
+                           q211 === !!(Some !!(Class (__, targs_b')));
+                           q211 === !!(Some !!(Interface (__, targs_b')));
+                         ])
+                      (targs_b q217)
+                      (Std.List.mapo (substitute_arg targs_a) targs_b' q218)
+                      (conde
+                         [
+                           fresh () (q217 === q218) (res === !!true);
+                           fresh () (res === !!false) (q217 =/= q218);
+                         ]);
+                    fresh () (q211 === !!None) (res === !!false);
+                  ]);
+           ]
+
     and ( -<- ) :
         (jtype_injected -> jtype_injected -> bool ilogic -> goal) ->
         jtype_injected ->
@@ -561,81 +624,22 @@ module HO = struct
      fun ( <-< ) type_a type_b res st ->
       let () =
         (if JGS_stats.config.enable_counters then
-         let open JGS_stats in
-         OCanren.is_ground_bool res st
-           ~on_ground:(fun b ->
-             (if b then st_add_true else st_add_false) get_arr set_arr stats)
-           ~onvar:(fun () -> st_add_var get_arr set_arr stats));
+           let open JGS_stats in
+           OCanren.is_ground_bool res st
+             ~on_ground:(fun b ->
+               (if b then st_add_true else st_add_false) get_arr set_arr stats)
+             ~onvar:(fun () -> st_add_var get_arr set_arr stats));
         if JGS_stats.config.trace_arrow then
-          Format.printf " -<-: type_a = %a, type_b = %a\n%!" CT.pp_jtyp
+          Format.printf " -<-: type_a = %a, type_b = %a, rez = %a\n%!"
+            CT.pp_jtyp
             (OCanren.reify_in_state st jtype_reify type_a)
             CT.pp_jtyp
             (OCanren.reify_in_state st jtype_reify type_b)
+            (GT.fmt OCanren.logic (GT.fmt GT.bool))
+            (OCanren.reify_in_state st OCanren.reify res)
       in
-      let class_int_sub :
-          int ilogic ->
-          (jtype_injected targ_injected Std.List.injected -> goal) ->
-          int ilogic ->
-          (jtype_injected targ_injected Std.List.injected -> goal) ->
-          bool ilogic ->
-          goal =
-       fun id_a targs_a id_b targs_b res st ->
-        let () =
-          let open JGS_stats in
-          let open Stdlib in
-          let ta_is_g = ref false in
-          let tb_is_g = ref false in
-          OCanren.is_ground id_a st (fun b -> ta_is_g := b);
-          OCanren.is_ground id_b st (fun b -> tb_is_g := b);
-          match (!ta_is_g, !tb_is_g) with
-          | true, true ->
-              stats.class_int_sub.cb_both <- stats.class_int_sub.cb_both + 1
-          | true, false ->
-              stats.class_int_sub.cb_left <- stats.class_int_sub.cb_left + 1
-          | false, true ->
-              stats.class_int_sub.cb_right <- stats.class_int_sub.cb_right + 1
-          | false, false ->
-              stats.class_int_sub.cb_both_false <-
-                stats.class_int_sub.cb_both_false + 1
-        in
 
-        st
-        |> conde
-             [
-               fresh () (id_a === id_b)
-                 (List.HO.fold_left2
-                    (fun f ta tb q228 ->
-                      fresh (q226 ta_val tb_val) (ta ta_val) (tb tb_val)
-                        (f q226)
-                        (conde
-                           [
-                             fresh () (q226 === !!false) (q228 === !!false);
-                             fresh () (q226 === !!true)
-                               (( <=< ) ( <-< ) ta_val tb_val q228);
-                           ]))
-                    (( === ) !!true) targs_a targs_b res);
-               fresh q211 (id_a =/= id_b)
-                 (CT.HO.get_superclass_fo id_a id_b q211)
-                 (conde
-                    [
-                      fresh (targs_b' q217 q218)
-                        (conde
-                           [
-                             q211 === !!(Some !!(Class (__, targs_b')));
-                             q211 === !!(Some !!(Interface (__, targs_b')));
-                           ])
-                        (targs_b q217)
-                        (Std.List.mapo (substitute_arg targs_a) targs_b' q218)
-                        (conde
-                           [
-                             fresh () (q217 === q218) (res === !!true);
-                             fresh () (res === !!false) (q217 =/= q218);
-                           ]);
-                      fresh () (q211 === !!None) (res === !!false);
-                    ]);
-             ]
-      in
-      let ( -<- ) = ( -<- ) ( <-< ) in
+      (* let ( -<- ) = ( -<- ) ( <-< ) in *)
       st
       |> fresh ()
            (conde
@@ -656,8 +660,8 @@ module HO = struct
                                      type_b === !!(Interface (id_b, targs_b));
                                      type_b === !!(Class (id_b, targs_b));
                                    ])
-                                (class_int_sub id_a (( === ) targs_a) id_b
-                                   (( === ) targs_b) res);
+                                (class_int_sub ( <-< ) id_a (( === ) targs_a)
+                                   id_b (( === ) targs_b) res);
                               fresh typ
                                 (fresh ()
                                    (type_b === var __ __ __ !!(Some typ))
@@ -690,8 +694,8 @@ module HO = struct
                                      type_b === !!(Class (id_b, targs_b));
                                      type_b === !!(Interface (id_b, targs_b));
                                    ])
-                                (class_int_sub id_a (( === ) targs_a) id_b
-                                   (( === ) targs_b) res);
+                                (class_int_sub ( <-< ) id_a (( === ) targs_a)
+                                   id_b (( === ) targs_b) res);
                               fresh (q289 q290 q291 typ)
                                 (type_b === var q289 q290 q291 !!(Some typ))
                                 (conde
@@ -740,7 +744,7 @@ module HO = struct
                                 (conde
                                    [
                                      fresh tb (type_b === !!(Array tb))
-                                       (( -<- ) ta tb res);
+                                       (( -<- ) ( <-< ) ta tb res);
                                      fresh q323 (type_b === q323)
                                        (res === !!false)
                                        (type_b =/= !!(Array __));
@@ -750,7 +754,7 @@ module HO = struct
                          (conde
                             [
                               fresh tb (type_b === !!(Array tb))
-                                (( -<- ) ta tb res);
+                                (( -<- ) ( <-< ) ta tb res);
                               fresh q315 (type_b === q315) (res === !!false)
                                 (type_b =/= !!(Array __));
                             ]);

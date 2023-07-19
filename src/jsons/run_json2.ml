@@ -45,6 +45,7 @@ let () =
         Arg.Int (fun n -> test_args.answers_count <- n),
         " Numer of answers requested (default 1)" );
       ("-ct", Arg.String (fun s -> test_args.ct_file <- s), " class table file");
+      ("-need-simplified", Arg.Unit (fun () -> JGS.need_simpified := true), "");
       ( "-perffifo",
         Arg.String (fun s -> test_args.fifo <- Some s),
         " <file> Specify pipe file to start performace metrics only after JSON \

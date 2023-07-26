@@ -1,6 +1,6 @@
 [submodule "src/OCanren"]
 	path = src/OCanren
-	url = git@github.com:Lozov-Petr/OCanren.git
+	url = https://github.com/Lozov-Petr/OCanren.git
 	branch = wildcards+var_ordering
 [submodule "src/noCanren"]
 	path = src/noCanren

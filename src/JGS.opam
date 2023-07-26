@@ -21,6 +21,7 @@ depends: [
   "yojson" {>= "2.1"}
   "ppx_yojson_conv_lib" {>= "v0.15.0"}
   "ppx_yojson_conv" {>= "v0.15.1"}
+  "base" {= "0.15.1"}
   "benchmark" {with-test}
   "ppx_inline_test"
   "GT" {>= "0.5"}

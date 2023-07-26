@@ -4,7 +4,7 @@
 
 (generate_opam_files true)
 
-(license LGPL-3)
+(license LGPL-3.0-or-later)
 
 (source
  (github PLTools/OCanren))
@@ -23,7 +23,14 @@
   OCanren
   OCanren-ppx
   noCanren
-  yojson
+  ; From the discussion with Kate it maybe we need strict versions of yojson related libs
+  (yojson
+   (>= 2.1))
+  (ppx_yojson_conv_lib
+   (>= v0.15.0))
+  (ppx_yojson_conv
+   (>= v0.15.1))
+  (benchmark :with-test)
   ppx_inline_test
   (GT
    (>= 0.5))

@@ -1,1 +1,41 @@
 (lang dune 3.3)
+
+(cram enable)
+
+(generate_opam_files true)
+
+(license LGPL-3)
+
+(source
+ (github PLTools/OCanren))
+
+(name JGS)
+
+(package
+ (version 0.1.0)
+ (name JGS)
+ (allow_empty)
+ (synopsis "JGS")
+ (description "JGS")
+ (depends
+  (ocaml
+   (>= 4.10))
+  OCanren
+  OCanren-ppx
+  noCanren
+  yojson
+  ppx_inline_test
+  (GT
+   (>= 0.5))
+  (ocamlformat
+   (and
+    :with-test
+    (>= 0.22)))
+  (mtime
+   (< 2.0.0)))
+ (authors
+  "Dmitrii Boulytchev https://github.com/dboulytchev"
+  "Dmitrii Kosarev https://github.com/Kakadu"
+  "Petr Lozov https://github.com/Lozov-Petr")
+ (bug_reports "https://github.com/PLTools/JGS/issues")
+ (maintainers "Dmitrii Kosarev Kakadu@pm.me"))

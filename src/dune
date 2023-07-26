@@ -9,7 +9,7 @@
  (wrapped false)
  (libraries yojson GT OCanren noCanren.Option noCanren.List ocamlgraph str)
  (flags
-  (:standard -rectypes))
+  (:standard -rectypes -dsource))
  (preprocess
   (pps
    OCanren-ppx.ppx_wildcard

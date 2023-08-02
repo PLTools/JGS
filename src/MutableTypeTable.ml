@@ -213,12 +213,20 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
   module HO = struct
     type disj_args = {
       decl_by_id : (int ilogic * HO.decl_injected) list lazy_t;
-      get_superclass : (int ilogic * int ilogic * HO.jtype_injected) list lazy_t;
+      get_superclass :
+        (int ilogic * int ilogic * HO.jtype_injected) list lazy_t;
+      subclass_map : (int ilogic * HO.jtype_injected) list M.t lazy_t;
     }
 
     let update_disj_args =
+      let get_supers = function
+        | C { super; supers; _ } -> super :: supers
+        | I { supers = []; _ } -> [ object_t ]
+        | I { supers; _ } -> supers
+      in
       let decl_by_id_disjs_args = ref (lazy []) in
       let get_superclass_disjs_args = ref (lazy []) in
+      let subclass_map = ref (lazy M.empty) in
       fun () ->
         if !table_was_changed then (
           let bindings = M.bindings !m in
@@ -228,12 +236,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
             lazy
               (Stdlib.List.concat_map
                  (fun (sub_id, decl) ->
-                   let supers =
-                     match decl with
-                     | C { super; supers; _ } -> super :: supers
-                     | I { supers = []; _ } -> [ object_t ]
-                     | I { supers; _ } -> supers
-                   in
+                   let supers = get_supers decl in
                    Stdlib.List.filter_map
                      (fun super ->
                        match super with
@@ -245,10 +248,30 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                        | _ -> None)
                      supers)
                  bindings);
+          subclass_map :=
+            lazy
+              (Stdlib.List.fold_left
+                 (fun map (sub_id, decl) ->
+                   let supers = get_supers decl in
+                   Stdlib.List.fold_left
+                     (fun map super ->
+                       match super with
+                       | (Class (super_id, _) | Interface (super_id, _))
+                         when super_id <> top_id ->
+                           M.update super_id
+                             (function
+                               | Some l ->
+                                   Some ((!!sub_id, jtype_inj super) :: l)
+                               | None -> Some [ (!!sub_id, jtype_inj super) ])
+                             map
+                       | _ -> map)
+                     map supers)
+                 M.empty bindings);
           table_was_changed := false);
         {
           decl_by_id = !decl_by_id_disjs_args;
           get_superclass = !get_superclass_disjs_args;
+          subclass_map = !subclass_map;
         }
 
     let get_decl_by_id_disjs_args () =
@@ -256,6 +279,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
     let get_superclass_disjs_args () =
       Lazy.force (update_disj_args ()).get_superclass
+
+    let get_subclass_map () = Lazy.force (update_disj_args ()).subclass_map
 
     let decl_by_id_fo : int ilogic -> HO.decl_injected -> goal =
      fun id rez ->
@@ -316,22 +341,18 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
            | [ Value super_id ] ->
                fresh rez
                  (some_rez === Std.some rez)
-                 (let disj_args = get_superclass_disjs_args () in
-                  let filtered_by_super =
-                    Stdlib.List.filter_map
-                      (fun (sub, super, decl) ->
-                        if Obj.magic super = super_id then Some (sub, decl)
-                        else None)
-                      disj_args
-                  in
-                  let rec loop : _ -> goal = function
-                    | [] -> failure
-                    | (sub, super) :: tl ->
-                        OCanren.disj
-                          (sub_id_val === sub &&& (rez === super))
-                          (delay (fun () -> loop tl))
-                  in
-                  loop filtered_by_super)
+                 (let subclass_map = get_subclass_map () in
+                  match M.find_opt super_id subclass_map with
+                  | None -> failure
+                  | Some filtered_by_super ->
+                      let rec loop : _ -> goal = function
+                        | [] -> failure
+                        | (sub, super) :: tl ->
+                            OCanren.disj
+                              (sub_id_val === sub &&& (rez === super))
+                              (delay (fun () -> loop tl))
+                      in
+                      loop filtered_by_super)
            | _ ->
                fresh rez
                  (some_rez === Std.some rez)

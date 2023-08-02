@@ -271,6 +271,7 @@ module HO = struct
         OCanren.goal
 
       val get_superclass_fo :
+        ?from:int ->
         int ilogic ->
         int ilogic ->
         jtype_injected option_injected ->
@@ -595,7 +596,7 @@ module HO = struct
                          ]))
                   (( === ) !!true) targs_a targs_b res);
              fresh q211 (id_a =/= id_b)
-               (CT.HO.get_superclass_fo id_a id_b q211)
+               (CT.HO.get_superclass_fo ~from:__LINE__ id_a id_b q211)
                (conde
                   [
                     fresh (targs_b' q217 q218)
@@ -624,11 +625,11 @@ module HO = struct
      fun ( <-< ) type_a type_b res st ->
       let () =
         (if JGS_stats.config.enable_counters then
-           let open JGS_stats in
-           OCanren.is_ground_bool res st
-             ~on_ground:(fun b ->
-               (if b then st_add_true else st_add_false) get_arr set_arr stats)
-             ~onvar:(fun () -> st_add_var get_arr set_arr stats));
+         let open JGS_stats in
+         OCanren.is_ground_bool res st
+           ~on_ground:(fun b ->
+             (if b then st_add_true else st_add_false) get_arr set_arr stats)
+           ~onvar:(fun () -> st_add_var get_arr set_arr stats));
         if JGS_stats.config.trace_arrow then
           Format.printf " -<-: type_a = %a, type_b = %a, rez = %a\n%!"
             CT.pp_jtyp
@@ -803,6 +804,7 @@ module FO = struct
         OCanren.goal
 
       val get_superclass_fo :
+        ?from:int ->
         int ilogic ->
         int ilogic ->
         jtype_injected option_injected ->

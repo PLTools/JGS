@@ -38,7 +38,11 @@ module type SAMPLE_CLASSTABLE = sig
     val decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal
 
     val get_superclass_fo :
-      int ilogic -> int ilogic -> HO.jtype_injected Std.Option.injected -> goal
+      ?from:int ->
+      int ilogic ->
+      int ilogic ->
+      HO.jtype_injected Std.Option.injected ->
+      goal
 
     val get_superclass :
       (int ilogic -> goal) ->
@@ -203,6 +207,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       Class (id, [])
 
   let new_var = new_id
+  let pp_jtyp = JGS_Helpers.pp_jtyp_logic (fun _ -> "?")
+  let pp_targ = JGS_Helpers.pp_targ_logic (fun _ -> "?")
 
   module HO = struct
     type disj_args = {
@@ -283,40 +289,58 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
      fun id d -> fresh id_val (id id_val) (decl_by_id_fo id_val d)
 
     let get_superclass_fo :
+        ?from:int ->
         int ilogic ->
         int ilogic ->
         HO.jtype_injected Std.Option.injected ->
         goal =
-     fun sub_id_val super_id_val some_rez ->
-      fresh rez
-        (some_rez === Std.some rez)
-        (let disj_args = get_superclass_disjs_args () in
+     fun ?(from = 0) sub_id_val super_id_val some_rez st ->
+      let () =
+        if JGS_stats.config.trace_get_superclass then
+          Format.printf
+            "get_superclass(%d): sub_id_val = %a, super_id_val = %a, some_rez \
+             = %a\n\
+             %!"
+            from
+            (GT.fmt OCanren.logic (GT.fmt GT.int))
+            (OCanren.reify_in_state st OCanren.reify sub_id_val)
+            (GT.fmt OCanren.logic (GT.fmt GT.int))
+            (OCanren.reify_in_state st OCanren.reify super_id_val)
+            (GT.fmt Std.Option.logic pp_jtyp)
+            (OCanren.reify_in_state st
+               (Std.Option.reify JGS.HO.jtype_reify)
+               some_rez)
+      in
+      st
+      |> fresh rez
+           (some_rez === Std.some rez)
+           (let disj_args = get_superclass_disjs_args () in
 
-         (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
-            (List.length disj_args); *)
-         let optimized_by_kakadu = true in
-         if optimized_by_kakadu then
-           (* Generating list of the size of class table is bad.
-              Not doing that could easily five 2x speedup *)
-           let rec loop : _ -> goal = function
-             | [] -> failure
-             | (sub, sup, super) :: tl ->
-                 OCanren.disj
-                   (sub_id_val === sub &&& (super_id_val === sup)
-                  &&& (rez === super))
-                   (delay (fun () -> loop tl))
-           in
-           loop disj_args
-         else
-           (* Peter's implementation *)
-           let disjs =
-             Stdlib.List.map
-               (fun (sub, sup, super) ->
-                 sub_id_val === sub &&& (super_id_val === sup)
-                 &&& (rez === super))
-               disj_args
-           in
-           match disjs with [] -> failure | _ -> conde disjs)
+            (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
+               (List.length disj_args); *)
+            let optimized_by_kakadu = true in
+            if optimized_by_kakadu then
+              (* Generating list of the size of class table is bad.
+                 Not doing that could easily five 2x speedup *)
+              let rec loop : _ -> goal = function
+                | [] -> failure
+                | (sub, sup, super) :: tl ->
+                    OCanren.disj
+                      (sub_id_val === sub &&& (super_id_val === sup)
+                     &&& (rez === super))
+                      (delay (fun () -> loop tl))
+              in
+              loop disj_args
+            else
+              (* Peter's implementation *)
+              let disjs =
+                Stdlib.List.map
+                  (fun (sub, sup, super) ->
+                    sub_id_val === sub &&& (super_id_val === sup)
+                    &&& (rez === super))
+                  disj_args
+              in
+              match disjs with [] -> failure | _ -> conde disjs)
 
     let get_superclass :
         (int ilogic -> goal) ->
@@ -337,7 +361,4 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
     let new_var _ x = x === !!(new_id ())
   end
-
-  let pp_jtyp = JGS_Helpers.pp_jtyp_logic (fun _ -> "?")
-  let pp_targ = JGS_Helpers.pp_targ_logic (fun _ -> "?")
 end

@@ -218,12 +218,12 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       subclass_map : (int ilogic * HO.jtype_injected) list M.t lazy_t;
     }
 
+    let get_supers = function
+      | C { super; supers; _ } -> super :: supers
+      | I { supers = []; _ } -> [ object_t ]
+      | I { supers; _ } -> supers
+
     let update_disj_args =
-      let get_supers = function
-        | C { super; supers; _ } -> super :: supers
-        | I { supers = []; _ } -> [ object_t ]
-        | I { supers; _ } -> supers
-      in
       let decl_by_id_disjs_args = ref (lazy []) in
       let get_superclass_disjs_args = ref (lazy []) in
       let subclass_map = ref (lazy M.empty) in
@@ -337,52 +337,71 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                some_rez)
       in
       st
-      |> debug_var super_id_val (Fun.flip OCanren.reify) (function
-           | [ Value super_id ] ->
-               fresh rez
-                 (some_rez === Std.some rez)
-                 (let subclass_map = get_subclass_map () in
-                  match M.find_opt super_id subclass_map with
-                  | None -> failure
-                  | Some filtered_by_super ->
-                      let rec loop : _ -> goal = function
-                        | [] -> failure
-                        | (sub, super) :: tl ->
-                            OCanren.disj
-                              (sub_id_val === sub &&& (rez === super))
-                              (delay (fun () -> loop tl))
-                      in
-                      loop filtered_by_super)
-           | _ ->
-               fresh rez
-                 (some_rez === Std.some rez)
-                 (let disj_args = get_superclass_disjs_args () in
+      |> fresh rez
+           (some_rez === Std.some rez)
+           (debug_var super_id_val (Fun.flip OCanren.reify) (function
+             (* If id of superclass is ground *)
+             | [ Value super_id ] -> (
+                 let subclass_map = get_subclass_map () in
+                 match M.find_opt super_id subclass_map with
+                 | None -> failure
+                 | Some filtered_by_super ->
+                     let rec loop : _ -> goal = function
+                       | [] -> failure
+                       | (sub, super) :: tl ->
+                           OCanren.disj
+                             (sub_id_val === sub &&& (rez === super))
+                             (delay (fun () -> loop tl))
+                     in
+                     loop filtered_by_super)
+             | _ ->
+                 debug_var sub_id_val (Fun.flip OCanren.reify) (function
+                   (* If id of subclass is ground *)
+                   | [ Value sub_id ] -> (
+                       match M.find_opt sub_id !m with
+                       | None -> failure
+                       | Some decl ->
+                           let rec loop : _ -> goal = function
+                             | [] -> failure
+                             | ((Class (super_id, _) | Interface (super_id, _))
+                               as t)
+                               :: tl ->
+                                 OCanren.disj
+                                   (super_id_val === !!super_id
+                                   &&& (rez === jtype_inj t))
+                                   (delay (fun () -> loop tl))
+                             | _ :: tl -> delay (fun () -> loop tl)
+                           in
+                           loop (get_supers decl))
+                   | _ -> (
+                       (* General case: if ids of sub and super classes are fresh *)
+                       let disj_args = get_superclass_disjs_args () in
 
-                  (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
-                     (List.length disj_args); *)
-                  let optimized_by_kakadu = true in
-                  if optimized_by_kakadu then
-                    (* Generating list of the size of class table is bad.
-                       Not doing that could easily five 2x speedup *)
-                    let rec loop : _ -> goal = function
-                      | [] -> failure
-                      | (sub, sup, super) :: tl ->
-                          OCanren.disj
-                            (sub_id_val === sub &&& (super_id_val === sup)
-                           &&& (rez === super))
-                            (delay (fun () -> loop tl))
-                    in
-                    loop disj_args
-                  else
-                    (* Peter's implementation *)
-                    let disjs =
-                      Stdlib.List.map
-                        (fun (sub, sup, super) ->
-                          sub_id_val === sub &&& (super_id_val === sup)
-                          &&& (rez === super))
-                        disj_args
-                    in
-                    match disjs with [] -> failure | _ -> conde disjs))
+                       (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
+                          (List.length disj_args); *)
+                       let optimized_by_kakadu = true in
+                       if optimized_by_kakadu then
+                         (* Generating list of the size of class table is bad.
+                            Not doing that could easily five 2x speedup *)
+                         let rec loop : _ -> goal = function
+                           | [] -> failure
+                           | (sub, sup, super) :: tl ->
+                               OCanren.disj
+                                 (sub_id_val === sub &&& (super_id_val === sup)
+                                &&& (rez === super))
+                                 (delay (fun () -> loop tl))
+                         in
+                         loop disj_args
+                       else
+                         (* Peter's implementation *)
+                         let disjs =
+                           Stdlib.List.map
+                             (fun (sub, sup, super) ->
+                               sub_id_val === sub &&& (super_id_val === sup)
+                               &&& (rez === super))
+                             disj_args
+                         in
+                         match disjs with [] -> failure | _ -> conde disjs))))
 
     let get_superclass :
         (int ilogic -> goal) ->

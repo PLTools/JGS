@@ -78,7 +78,7 @@ let () =
   let open JGS in
   let open Closure in
   let { closure = ( <-< ); direct_subtyping = ( -<- ); _ } =
-    Closure.make_closure_subtyping (module CT) V.( -<- )
+    Closure.make_closure (module CT) V.( -<- )
   in
   (* let module MM = struct
        open OCanren
@@ -146,6 +146,6 @@ let () =
       let open OCanren in
       fresh ()
         (typ =/= intersect __) (* (typ =/= !!HO.Null) *)
-        (typ =/= var __ __ __ __)
+        (typ =/= var ~index:__ __ __ __)
         (*  *)
-        (goal ( <-< ) Fun.id typ))
+        (goal ~is_subtype:( <-< ) Fun.id typ))

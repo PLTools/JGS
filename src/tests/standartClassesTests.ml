@@ -7,11 +7,7 @@ open Closure
 module SampleCT = SampleCT ()
 module V = JGS.FO.Verifier (SampleCT)
 
-let { closure = ( <-< ); _ } =
-  make_closure_subtyping (module SampleCT) V.( -<- )
-
-let { closure = ( <=< ); _ } =
-  make_closure_supertyping (module SampleCT) V.( -<- )
+let { closure = ( <-< ); _ } = make_closure (module SampleCT) V.( -<- )
 
 module JGS_builder = struct
   module M = Map.Make (Int)
@@ -268,7 +264,7 @@ let _ =
   in
   let _ =
     run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q ->
-        fresh () (q =/= !!JGS.HO.Null) (jtype_inj role_list <=< q))
+        fresh () (q =/= !!JGS.HO.Null) (jtype_inj role_list <-< q))
   in
   (* Problems with RoleList and AttributeList *)
   let _ =
@@ -291,13 +287,13 @@ let _ =
     run_jtype ~n:(-1) ~msg:"LinkedList<Object> <-< ? & TreeSet<Object> <-< ?"
       (fun q ->
         fresh () (q =/= !!JGS.HO.Null)
-          (jtype_inj (linked_list obj) <=< q)
-          (jtype_inj (tree_set obj) <=< q)
+          (jtype_inj (linked_list obj) <-< q)
+          (jtype_inj (tree_set obj) <-< q)
         (* *))
   in
   let _ =
     run_jtype ~n:5 ~msg:"? <-< Collection<String>" (fun q ->
-        fresh () (q =/= !!JGS.HO.Null) (q <=< jtype_inj (collection string))
+        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (collection string))
         (* *))
   in
   ()

@@ -31,7 +31,7 @@ let _ =
   let module V = FO.Verifier (SampleCT) in
   let open Closure in
   let { is_correct_type; direct_subtyping = ( -<- ); closure = ( <-< ) } =
-    make_closure_subtyping (module SampleCT) V.( -<- )
+    make_closure (module SampleCT) V.( -<- )
   in
   (* let ( <-< ) ta tb = failwith "Oh..." in
      let is_correct_type t =
@@ -182,7 +182,7 @@ let _ =
   let module V = FO.Verifier (SampleCT) in
   let open Closure in
   let { is_correct_type; direct_subtyping = ( -<- ); closure = ( <-< ) } =
-    make_closure_subtyping (module SampleCT) V.( -<- )
+    make_closure (module SampleCT) V.( -<- )
   in
   let class_int = SampleCT.make_class [] SampleCT.object_t [] in
   let int = Class (class_int, []) in

@@ -636,7 +636,6 @@ let pp_var_desc ppf = function
 
 type result_query =
   is_subtype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
-  is_supertype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
   OCanren.goal
@@ -700,7 +699,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           JGS_Helpers.type_ (on_typ t)
     in
     let goal : result_query =
-     fun ~is_subtype ~is_supertype targ_inj answer ->
+     fun ~is_subtype targ_inj answer ->
       if lower_bounds <> [] then
         Printf.eprintf "TODO: implement lower bounds\n%!";
 
@@ -725,7 +724,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
-            is_supertype sub super &&& acc)
+            is_subtype sub super &&& acc)
           lower_bounds OCanren.success
       in
 
@@ -826,7 +825,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       in
       upper_rez ++ lower_rez
     in
-    let goal ~is_subtype ~is_supertype targ_inj answer_typ =
+    let goal ~is_subtype targ_inj answer_typ =
       let make_vars names k =
         let storage = Hashtbl.create 23 in
         let rec helper = function

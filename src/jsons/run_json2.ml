@@ -162,11 +162,9 @@ let () =
   let open JGS in
   let open Closure in
   let { closure = ( <-< ); direct_subtyping = _; _ } =
-    Closure.make_closure_subtyping (module CT) V.( -<- )
+    Closure.make_closure (module CT) V.( -<- )
   in
-  let { closure = ( <=< ); direct_subtyping = _; _ } =
-    Closure.make_closure_supertyping (module CT) V.( -<- )
-  in
+
   (* let module MM = struct
        open OCanren
 
@@ -238,4 +236,4 @@ let () =
         (typ =/= !!HO.Null)
         (typ =/= var ~index:__ __ __ __)
         (*  *)
-        (goal ~is_subtype:( <-< ) ~is_supertype:( <=< ) Fun.id typ))
+        (goal ~is_subtype:( <-< ) Fun.id typ))

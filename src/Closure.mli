@@ -9,16 +9,7 @@ type closure = {
   closure : jtype_injected -> jtype_injected -> goal;
 }
 
-val make_closure_subtyping :
-  (module SCT) ->
-  ((jtype_injected -> jtype_injected -> Std.Bool.groundi -> goal) ->
-  jtype_injected ->
-  jtype_injected ->
-  Std.Bool.groundi ->
-  goal) ->
-  closure
-
-val make_closure_supertyping :
+val make_closure :
   (module SCT) ->
   ((jtype_injected -> jtype_injected -> Std.Bool.groundi -> goal) ->
   jtype_injected ->

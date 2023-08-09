@@ -85,7 +85,6 @@ exception Name_not_found of class_id
 
 type result_query =
   is_subtype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
-  is_supertype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
   OCanren.goal

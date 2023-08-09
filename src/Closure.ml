@@ -97,7 +97,14 @@ let rec ( <=< ) ~direct_subtyping ta tb =
            (( <=< ) ~direct_subtyping ti tb);
        ])
 
-let make_closure_subtyping (module CT : SCT) direct_subtyping =
+let smart_closure ~direct_subtyping ta tb =
+  debug_var ta (Fun.flip JGS.HO.jtype_reify) (fun reified_ta ->
+      debug_var tb (Fun.flip JGS.HO.jtype_reify) (fun reified_tb ->
+          match (reified_ta, reified_tb) with
+          | [ Value _ ], _ -> ( <=< ) ~direct_subtyping ta tb
+          | _ -> ( <-< ) ~direct_subtyping ta tb))
+
+let make_closure (module CT : SCT) direct_subtyping =
   let rec is_correct t =
     is_correct_type (module CT) ~closure_subtyping:closure t
   and direct ta tb =
@@ -105,16 +112,16 @@ let make_closure_subtyping (module CT : SCT) direct_subtyping =
       (module CT)
       ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
       ta tb
-  and closure ta tb = ( <-< ) ~direct_subtyping:direct ta tb in
+  and closure ta tb = smart_closure ~direct_subtyping:direct ta tb in
   { is_correct_type = is_correct; direct_subtyping = direct; closure }
 
-let make_closure_supertyping (module CT : SCT) direct_subtyping =
-  let rec is_correct t =
-    is_correct_type (module CT) ~closure_subtyping:closure t
-  and direct ta tb =
-    ( -<- )
-      (module CT)
-      ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
-      ta tb
-  and closure ta tb st = ( <=< ) ~direct_subtyping:direct ta tb st in
-  { is_correct_type = is_correct; direct_subtyping = direct; closure }
+(* let make_closure_supertyping (module CT : SCT) direct_subtyping =
+   let rec is_correct t =
+     is_correct_type (module CT) ~closure_subtyping:closure t
+   and direct ta tb =
+     ( -<- )
+       (module CT)
+       ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
+       ta tb
+   and closure ta tb st = ( <=< ) ~direct_subtyping:direct ta tb st in
+   { is_correct_type = is_correct; direct_subtyping = direct; closure } *)

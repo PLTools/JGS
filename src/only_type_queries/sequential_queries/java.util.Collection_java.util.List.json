@@ -2,7 +2,7 @@
   "upperBounds": [
     [
       "Interface",
-      "java.util.Collection",
+      "java.util.List",
       [
         [
           "Type",
@@ -16,7 +16,7 @@
     ],
     [
       "Interface",
-      "java.util.List",
+      "java.util.Collection",
       [
         [
           "Type",

@@ -20,6 +20,7 @@ let test_args =
   }
 
 let () =
+  OCanren.Runconf.occurs_check_off ();
   Arg.parse
     [
       ( "-default",
@@ -163,6 +164,9 @@ let () =
   let { closure = ( <-< ); direct_subtyping = _; _ } =
     Closure.make_closure_subtyping (module CT) V.( -<- )
   in
+  let { closure = ( <=< ); direct_subtyping = _; _ } =
+    Closure.make_closure_supertyping (module CT) V.( -<- )
+  in
   (* let module MM = struct
        open OCanren
 
@@ -234,4 +238,4 @@ let () =
         (typ =/= !!HO.Null)
         (typ =/= var ~index:__ __ __ __)
         (*  *)
-        (goal ( <-< ) Fun.id typ))
+        (goal ~is_subtype:( <-< ) ~is_supertype:( <=< ) Fun.id typ))

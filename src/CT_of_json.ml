@@ -538,10 +538,10 @@ let make_classtable table =
     | Class (name, args) -> (
         match Hashtbl.find params_hash name with
         | { vi_id; vi_index } ->
-            let () =
-              if args <> [] then
-                failwith "Type variables with arguments do not happen in Java"
-            in
+            (* let () =
+                 if args <> [] then
+                   failwith "Type variables with arguments do not happen in Java"
+               in *)
             log "on_typ: Got a parameter with index = %d and id = %d" vi_index
               vi_id;
             return @@ CT.make_tvar vi_index CT.object_t
@@ -635,10 +635,8 @@ let pp_var_desc ppf = function
   | Named s -> Format.fprintf ppf "_.%s" s
 
 type result_query =
-  (JGS.HO.jtype_injected ->
-  JGS.HO.jtype_injected ->
-  (* bool OCanren.ilogic -> *)
-  OCanren.goal) ->
+  is_subtype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
+  is_supertype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
   OCanren.goal
@@ -702,20 +700,36 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           JGS_Helpers.type_ (on_typ t)
     in
     let goal : result_query =
-     fun is_subtype targ_inj answer ->
+     fun ~is_subtype ~is_supertype targ_inj answer ->
       if lower_bounds <> [] then
         Printf.eprintf "TODO: implement lower bounds\n%!";
 
-      List.fold_right
-        (fun x acc ->
-          let pos = true in
+      let upper_goal =
+        List.fold_right
+          (fun x acc ->
+            let pos = true in
 
-          show_processing pos Format.pp_print_string "?" pp_jtype x;
+            show_processing pos Format.pp_print_string "?" pp_jtype x;
 
-          let sub, super = (answer, targ_inj (on_typ x)) in
+            let sub, super = (answer, targ_inj (on_typ x)) in
 
-          is_subtype sub super &&& acc)
-        upper_bounds OCanren.success
+            is_subtype sub super &&& acc)
+          upper_bounds OCanren.success
+      in
+      let lower_goal =
+        List.fold_right
+          (fun x acc ->
+            let pos = true in
+
+            show_processing pos pp_jtype x Format.pp_print_string "?";
+
+            let sub, super = (targ_inj (on_typ x), answer) in
+
+            is_supertype sub super &&& acc)
+          lower_bounds OCanren.success
+      in
+
+      upper_goal &&& lower_goal
     in
     goal
   in
@@ -812,7 +826,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       in
       upper_rez ++ lower_rez
     in
-    let goal is_subtype targ_inj answer_typ =
+    let goal ~is_subtype ~is_supertype targ_inj answer_typ =
       let make_vars names k =
         let storage = Hashtbl.create 23 in
         let rec helper = function

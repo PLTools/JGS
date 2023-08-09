@@ -116,23 +116,5 @@ let make_closure_supertyping (module CT : SCT) direct_subtyping =
       (module CT)
       ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
       ta tb
-  and closure ta tb st =
-    let () =
-      let open JGS_stats in
-      let ta_is_g = ref false in
-      let tb_is_g = ref false in
-      OCanren.is_ground ta st (fun b -> ta_is_g := b);
-      OCanren.is_ground tb st (fun b -> tb_is_g := b);
-      set_fish stats
-        ((if !ta_is_g then fun ((a, b), c) -> ((a, b + 1), c)
-         else fun ((a, b), c) -> ((a, b + 1), c))
-           (get_fish stats));
-      set_fish stats
-        ((if !tb_is_g then fun (c, (a, b)) -> (c, (a, b + 1))
-         else fun (c, (a, b)) -> (c, (a, b + 1)))
-           (get_fish stats))
-    in
-    let _ = failwith "WTF" in
-    ( <=< ) ~direct_subtyping:direct ta tb st
-  in
+  and closure ta tb st = ( <=< ) ~direct_subtyping:direct ta tb st in
   { is_correct_type = is_correct; direct_subtyping = direct; closure }

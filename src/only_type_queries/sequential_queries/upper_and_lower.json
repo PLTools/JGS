@@ -1,0 +1,25 @@
+{
+    "upperBounds": [
+        [
+            "Interface",
+            "java.util.List",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ],
+    "lowerBounds": [
+        [
+            "Class",
+            "javax.management.AttributeList",
+            []
+        ]
+    ]
+}

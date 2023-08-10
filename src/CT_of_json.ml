@@ -728,7 +728,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           lower_bounds OCanren.success
       in
 
-      upper_goal &&& lower_goal
+      lower_goal &&& upper_goal
     in
     goal
   in

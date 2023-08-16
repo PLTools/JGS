@@ -1,0 +1,23 @@
+{
+    "upperBounds": [
+        [
+            "Class",
+            "java.util.AbstractCollection",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ],
+        [
+            "Interface",
+            "java.util.RandomAccess",
+            []
+        ]
+    ]
+}

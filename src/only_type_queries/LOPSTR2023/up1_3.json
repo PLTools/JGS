@@ -1,0 +1,18 @@
+{
+    "lowerBounds": [
+        [
+            "Class",
+            "com.google.common.collect.ImmutableSortedSet",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ]
+}

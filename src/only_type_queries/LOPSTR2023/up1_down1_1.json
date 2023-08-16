@@ -1,0 +1,34 @@
+{
+    "upperBounds": [
+        [
+            "Interface",
+            "java.util.List",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ],
+    "lowerBounds": [
+        [
+            "Class",
+            "kotlinx.collections.immutable.implementations.immutableList.PersistentVector",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ]
+}

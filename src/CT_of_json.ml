@@ -655,6 +655,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       =
     query_of_yojson j
   in
+  Format.printf "Table size: %d\n%!" (List.length table);
   let ((module CT) as ct), id_of_name, name_of_id = make_classtable table in
 
   if neg_lower_bounds <> [] || neg_upper_bounds <> [] then

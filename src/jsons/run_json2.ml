@@ -74,7 +74,78 @@ let () =
 let is_timer_enabled =
   match Unix.getenv "NOBENCH" with _ -> false | exception Not_found -> true
 
+let pp_float_time fmt time =
+  if time < 1000. then Format.fprintf fmt "%5.3fms" time
+  else Format.fprintf fmt "%5.3fs" (Float.div time 1000.)
+
+module Jtype_set = Set.Make (struct
+  type t = JGS.HO.jtype_logic
+
+  let compare a b =
+    let rec replace_jtype : JGS.HO.jtype_logic -> JGS.HO.jtype_logic =
+      let update_var f = function
+        | OCanren.Value x -> OCanren.Value (f x)
+        | Var _ -> OCanren.Var (0, [])
+      in
+      let rec replace_list f =
+        let open OCanren.Std.List in
+        update_var @@ function
+        | Cons (hd, tl) -> Cons (f hd, (replace_list f) tl)
+        | Nil -> Nil
+      in
+      let rec replace_peano n =
+        let open OCanren.Std.Nat in
+        update_var (function S x -> S (replace_peano x) | O -> O) n
+      in
+      let replace_option f =
+        update_var @@ function Some x -> Some (f x) | None -> None
+      in
+      let replace_pair f g = update_var (fun (a, b) -> (f a, g b)) in
+      let open JGS.HO in
+      let replace_primitive x = update_var Fun.id x in
+      let replace_jarg x =
+        update_var
+          (function
+            | Type t -> Type (replace_jtype t)
+            | Wildcard x ->
+                Wildcard
+                  (replace_option
+                     (replace_pair replace_primitive replace_jtype)
+                     x))
+          x
+      in
+      fun lt ->
+        update_var
+          (fun t ->
+            match t with
+            | Null -> Null
+            | Array lt -> Array (replace_jtype lt)
+            | Intersect lts -> Intersect (replace_list replace_jtype lts)
+            | Var { id; index; upb; lwb } ->
+                Var
+                  {
+                    id = replace_primitive id;
+                    index = replace_peano index;
+                    upb = replace_jtype upb;
+                    lwb = replace_option replace_jtype lwb;
+                  }
+            | Class (i, args) ->
+                Class (replace_primitive i, replace_list replace_jarg args)
+            | Interface (i, args) ->
+                Interface (replace_primitive i, replace_list replace_jarg args))
+          lt
+    in
+
+    Stdlib.compare (replace_jtype a) (replace_jtype b)
+end)
+
 let run_jtype pp ?(n = test_args.answers_count) query =
+  let total_time = ref 0. in
+  let max1_time = ref 0. in
+  let max2_time = ref 0. in
+  let last_time = ref 0. in
+  let answers_set = ref Jtype_set.empty in
+  let duplicated = ref Jtype_set.empty in
   let time =
     if is_timer_enabled then (fun f ->
       if JGS_stats.config.enable_counters then JGS_stats.clear_statistics ();
@@ -83,28 +154,62 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       let fin = Mtime_clock.elapsed () in
       if JGS_stats.config.enable_counters then JGS_stats.report_counters ();
       let span = Mtime.Span.abs_diff start fin in
+      let span_ms = Mtime.Span.to_ms span in
+
+      (match ans with
+      | Some _ ->
+          total_time := Float.add !total_time span_ms;
+          if span_ms > !max1_time then (
+            max2_time := !max1_time;
+            max1_time := span_ms)
+          else if span_ms > !max2_time then max2_time := span_ms
+      | None -> last_time := span_ms);
+
       let msg =
         if Mtime.Span.to_ms span > 1000. then
-          Printf.sprintf "%5.1fs" (Mtime.Span.to_s span)
-        else Printf.sprintf "%5.1fms" (Mtime.Span.to_ms span)
+          Printf.sprintf "%5.2fs" (Mtime.Span.to_s span)
+        else Printf.sprintf "%5.2fms" span_ms
       in
       (Some msg, ans))
     else fun f -> (None, f ())
   in
   (* TODO: OCanren.Stream needs iteri_k for stuff like this *)
   let rec loop i stream =
-    if i > n then ()
+    if i > n then i - 1
     else
       match time (fun () -> OCanren.Stream.msplit stream) with
-      | _, None -> ()
+      | None, None -> i - 1
+      | Some msg, None ->
+          Format.printf "%s  -  no answer\n%!" msg;
+          i - 1
       | Some msg, Some (h, tl) ->
           Format.printf "%s % 3d)  %a\n%!" msg i pp h;
+          if Jtype_set.mem h !answers_set then
+            duplicated := Jtype_set.add h !duplicated;
+          answers_set := Jtype_set.add h !answers_set;
           loop (1 + i) tl
       | None, Some (h, tl) ->
           Format.printf "% 3d)  %a\n%!" i pp h;
+          answers_set := Jtype_set.add h !answers_set;
           loop (1 + i) tl
   in
-  loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+  let total_amount =
+    loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+  in
+  (* Format.printf "\n";
+     Format.printf "Duplicated answers:\n";
+     Jtype_set.iter (fun a -> Format.printf "  %a\n" pp a) !duplicated; *)
+  Format.printf "\n";
+  Format.printf "Total amount: %d\n" total_amount;
+  Format.printf "Total uniq amount: %d\n" @@ Jtype_set.cardinal !answers_set;
+  Format.printf "Total time: %a\n" pp_float_time
+  @@ Float.add !total_time !last_time;
+  Format.printf "Total time without prove: %a\n" pp_float_time !total_time;
+  Format.printf "Avg time: %a\n" pp_float_time
+  @@ Float.div !total_time @@ Float.of_int total_amount;
+  Format.printf "Max time: %a\n" pp_float_time !max1_time;
+  Format.printf "Next after max time: %a\n" pp_float_time !max2_time;
+  Format.printf "Time to prove: %a\n" pp_float_time !last_time
 
 let class_or_interface typ =
   let open OCanren in

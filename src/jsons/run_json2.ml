@@ -82,13 +82,14 @@ let is_timer_enabled =
   match Unix.getenv "NOBENCH" with _ -> false | exception Not_found -> true
 
 let pp_float_time fmt time =
-  if time < 1000. then Format.fprintf fmt "%5.3fms" time
-  else Format.fprintf fmt "%5.3fs" (Float.div time 1000.)
+  if time < 1000. then Format.fprintf fmt "%5.2fms" time
+  else Format.fprintf fmt "%5.2fs" (Float.div time 1000.)
 
 let run_jtype pp ?(n = test_args.answers_count) query =
+  let is_first = ref true in
   let total_time = ref 0. in
-  let max1_time = ref 0. in
-  let max2_time = ref 0. in
+  let max_time = ref 0. in
+  let first_time = ref 0. in
   let last_time = ref 0. in
   let answers_set = ref Jtype_set.empty in
   let duplicated = ref Jtype_set.empty in
@@ -105,10 +106,9 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       (match ans with
       | Some _ ->
           total_time := Float.add !total_time span_ms;
-          if span_ms > !max1_time then (
-            max2_time := !max1_time;
-            max1_time := span_ms)
-          else if span_ms > !max2_time then max2_time := span_ms
+          if !is_first then first_time := span_ms
+          else if span_ms > !max_time then max_time := span_ms;
+          is_first := false
       | None -> last_time := span_ms);
 
       let msg =
@@ -151,14 +151,14 @@ let run_jtype pp ?(n = test_args.answers_count) query =
   Format.printf "\n";
   Format.printf "Total amount: %d\n" total_amount;
   Format.printf "Total uniq amount: %d\n" @@ Jtype_set.cardinal !answers_set;
-  Format.printf "Total time: %a\n" pp_float_time
-  @@ Float.add !total_time !last_time;
-  Format.printf "Total time without prove: %a\n" pp_float_time !total_time;
+  Format.printf "First time: %a\n" pp_float_time !first_time;
   Format.printf "Avg time: %a\n" pp_float_time
   @@ Float.div !total_time @@ Float.of_int total_amount;
-  Format.printf "Max time: %a\n" pp_float_time !max1_time;
-  Format.printf "Next after max time: %a\n" pp_float_time !max2_time;
-  Format.printf "Time to prove: %a\n" pp_float_time !last_time
+  Format.printf "Max time: %a\n" pp_float_time !max_time;
+  Format.printf "Time to prove: %a\n" pp_float_time !last_time;
+  Format.printf "Total time: %a\n" pp_float_time
+  @@ Float.add !total_time !last_time;
+  Format.printf "Total time without prove: %a\n" pp_float_time !total_time
 
 let class_or_interface typ =
   let open OCanren in

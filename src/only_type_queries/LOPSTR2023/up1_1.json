@@ -1,0 +1,9 @@
+{
+    "lowerBounds": [
+        [
+            "Class",
+            "javax.management.AttributeList",
+            []
+        ]
+    ]
+}

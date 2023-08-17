@@ -340,23 +340,47 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       |> fresh rez
            (some_rez === Std.some rez)
            (debug_var super_id_val (Fun.flip OCanren.reify) (function
-             (* If id of superclass is ground *)
-             | [ Value super_id ] -> (
-                 let subclass_map = get_subclass_map () in
-                 match M.find_opt super_id subclass_map with
-                 | None -> failure
-                 | Some filtered_by_super ->
-                     let rec loop : _ -> goal = function
-                       | [] -> failure
-                       | (sub, super) :: tl ->
-                           OCanren.disj
-                             (sub_id_val === sub &&& (rez === super))
-                             (delay (fun () -> loop tl))
-                     in
-                     loop filtered_by_super)
+             | [ Value super_id ] ->
+                 debug_var sub_id_val (Fun.flip OCanren.reify) (function
+                   (* If ids of subclass and superclass are ground *)
+                   | [ Value sub_id ] -> (
+                       match M.find_opt sub_id !m with
+                       | None -> failure
+                       | Some decl -> (
+                           let supers = get_supers decl in
+                           match
+                             Stdlib.List.find_opt
+                               (function
+                                 | (Class (id, _) | Interface (id, _))
+                                   when id = super_id ->
+                                     true
+                                 | _ -> false)
+                               supers
+                           with
+                           | None -> failure
+                           | Some
+                               ((Class (super_id, _) | Interface (super_id, _))
+                               as t) ->
+                               super_id_val === !!super_id
+                               &&& (rez === jtype_inj t)
+                           | _ -> failure))
+                   (* If id of superclass is ground only *)
+                   | _ -> (
+                       let subclass_map = get_subclass_map () in
+                       match M.find_opt super_id subclass_map with
+                       | None -> failure
+                       | Some filtered_by_super ->
+                           let rec loop : _ -> goal = function
+                             | [] -> failure
+                             | (sub, super) :: tl ->
+                                 OCanren.disj
+                                   (sub_id_val === sub &&& (rez === super))
+                                   (delay (fun () -> loop tl))
+                           in
+                           loop filtered_by_super))
              | _ ->
                  debug_var sub_id_val (Fun.flip OCanren.reify) (function
-                   (* If id of subclass is ground *)
+                   (* If id of subclass is ground only *)
                    | [ Value sub_id ] -> (
                        match M.find_opt sub_id !m with
                        | None -> failure
@@ -374,7 +398,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                            in
                            loop (get_supers decl))
                    | _ -> (
-                       (* General case: if ids of sub and super classes are fresh *)
+                       (* General case: if ids of sub and super classes are free *)
                        let disj_args = get_superclass_disjs_args () in
 
                        (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__

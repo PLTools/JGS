@@ -635,7 +635,11 @@ let pp_var_desc ppf = function
   | Named s -> Format.fprintf ppf "_.%s" s
 
 type result_query =
-  is_subtype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
+  is_subtype:
+    (closure_type:Closure.closure_type ->
+    JGS.HO.jtype_injected ->
+    JGS.HO.jtype_injected ->
+    OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
   OCanren.goal
@@ -712,7 +716,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (answer, targ_inj (on_typ x)) in
 
-            is_subtype sub super &&& acc)
+            is_subtype ~closure_type:Subtyping sub super &&& acc)
           upper_bounds OCanren.success
       in
       let lower_goal =
@@ -724,7 +728,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
-            is_subtype sub super &&& acc)
+            is_subtype ~closure_type:Supertyping sub super &&& acc)
           lower_bounds OCanren.success
       in
 
@@ -891,11 +895,12 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
             if upper then show_processing pos pp_var_desc name pp_jtype b
             else show_processing pos pp_jtype b pp_var_desc name;
 
-            let sub, super =
-              if upper then (ask_var name, targ_inj (on_typ b))
-              else (targ_inj (on_typ b), ask_var name)
+            let sub, super, closure_type =
+              if upper then
+                (ask_var name, targ_inj (on_typ b), Closure.Subtyping)
+              else (targ_inj (on_typ b), ask_var name, Closure.Supertyping)
             in
-            is_subtype sub super
+            is_subtype ~closure_type sub super
             (* TODO: There were bool here to switch positive/negative *)
           in
           (*

@@ -84,7 +84,11 @@ exception Id_not_found of int
 exception Name_not_found of class_id
 
 type result_query =
-  is_subtype:(JGS.HO.jtype_injected -> JGS.HO.jtype_injected -> OCanren.goal) ->
+  is_subtype:
+    (closure_type:Closure.closure_type ->
+    JGS.HO.jtype_injected ->
+    JGS.HO.jtype_injected ->
+    OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
   OCanren.goal

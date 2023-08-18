@@ -61,6 +61,9 @@ let () =
           (fun () ->
             MutableTypeTable.need_table_dynamic_specialisation := false),
         " Switch off table dynamic specialisations" );
+      ( "-no-dynamic-closure",
+        Arg.Unit (fun () -> Closure.need_dynamic_closure := false),
+        " Switch to static closure" );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -166,7 +169,7 @@ let () =
   let open OCanren in
   let open JGS in
   let open Closure in
-  let { closure = ( <-< ); direct_subtyping = _; _ } =
+  let { closure; direct_subtyping = _; _ } =
     Closure.make_closure (module CT) V.( -<- )
   in
 
@@ -220,7 +223,8 @@ let () =
       let () = Printf.printf "1.1 (?) < Object :\n" in
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
-          fresh () (class_or_interface typ) (typ <-< jtype_inj CT.object_t))
+          fresh () (class_or_interface typ)
+            (closure ~closure_type:Subtyping typ (jtype_inj CT.object_t)))
   in
 
   let __ () =
@@ -241,4 +245,4 @@ let () =
         (typ =/= !!HO.Null)
         (typ =/= var ~index:__ __ __ __)
         (*  *)
-        (goal ~is_subtype:( <-< ) Fun.id typ))
+        (goal ~is_subtype:closure Fun.id typ))

@@ -2,12 +2,18 @@ open OCanren
 open OCanren.Std
 open JGS.HO
 
+let need_dynamic_closure = ref true
+
 module type SCT = MutableTypeTable.SAMPLE_CLASSTABLE
 
+type closure_type = Subtyping | Supertyping
+
 type closure = {
-  is_correct_type : jtype_injected -> goal;
-  direct_subtyping : jtype_injected -> jtype_injected -> goal;
-  closure : jtype_injected -> jtype_injected -> goal;
+  is_correct_type : closure_type:closure_type -> jtype_injected -> goal;
+  direct_subtyping :
+    closure_type:closure_type -> jtype_injected -> jtype_injected -> goal;
+  closure :
+    closure_type:closure_type -> jtype_injected -> jtype_injected -> goal;
 }
 
 let rec list_same_length : _ Std.List.injected -> _ Std.List.injected -> goal =
@@ -29,7 +35,7 @@ let is_correct_type (module CT : SCT) ~closure_subtyping t =
       fresh elems (t === !!(Array elems));
       (* Class: should be metioned in class declarations with the same arguments amount *)
       fresh
-        (id actual_params expected_params super supers length)
+        (id actual_params expected_params super supers)
         (t === !!(Class (id, actual_params)))
         (decl_by_id id !!(C !!{ params = expected_params; super; supers }))
         (* TODO (Kakadu): write a relation same_length *)
@@ -97,31 +103,32 @@ let rec ( <=< ) ~direct_subtyping ta tb =
            (( <=< ) ~direct_subtyping ti tb);
        ])
 
-let smart_closure ~direct_subtyping ta tb =
+let ( <~< ) ~direct_subtyping ta tb =
   debug_var ta (Fun.flip JGS.HO.jtype_reify) (fun reified_ta ->
       debug_var tb (Fun.flip JGS.HO.jtype_reify) (fun reified_tb ->
           match (reified_ta, reified_tb) with
           | [ Value _ ], _ -> ( <=< ) ~direct_subtyping ta tb
           | _ -> ( <-< ) ~direct_subtyping ta tb))
 
-let make_closure (module CT : SCT) direct_subtyping =
-  let rec is_correct t =
-    is_correct_type (module CT) ~closure_subtyping:closure t
-  and direct ta tb =
+let make_closure_by_closure_template closure_template (module CT : SCT)
+    direct_subtyping =
+  let rec is_correct ~closure_type t =
+    is_correct_type (module CT) ~closure_subtyping:(closure ~closure_type) t
+  and direct ~closure_type ta tb =
     ( -<- )
       (module CT)
-      ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
-      ta tb
-  and closure ta tb = smart_closure ~direct_subtyping:direct ta tb in
+      ~direct_subtyping ~closure_subtyping:(closure ~closure_type)
+      ~is_correct_type:(is_correct ~closure_type) ta tb
+  and closure ~closure_type ta tb st =
+    closure_template closure_type ~direct_subtyping:(direct ~closure_type) ta tb
+      st
+  in
   { is_correct_type = is_correct; direct_subtyping = direct; closure }
 
-(* let make_closure_supertyping (module CT : SCT) direct_subtyping =
-   let rec is_correct t =
-     is_correct_type (module CT) ~closure_subtyping:closure t
-   and direct ta tb =
-     ( -<- )
-       (module CT)
-       ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
-       ta tb
-   and closure ta tb st = ( <=< ) ~direct_subtyping:direct ta tb st in
-   { is_correct_type = is_correct; direct_subtyping = direct; closure } *)
+let make_closure (module CT : SCT) =
+  if !need_dynamic_closure then
+    make_closure_by_closure_template (Fun.const ( <~< )) (module CT)
+  else
+    make_closure_by_closure_template
+      (function Subtyping -> ( <-< ) | Supertyping -> ( <=< ))
+      (module CT)

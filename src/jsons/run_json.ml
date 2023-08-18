@@ -130,7 +130,8 @@ let () =
       let () = Printf.printf "1.1 (?) < Object :\n" in
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
-          fresh () (class_or_interface typ) (typ -<- jtype_inj CT.object_t))
+          fresh () (class_or_interface typ)
+            (( -<- ) typ (jtype_inj CT.object_t) ~closure_type:Subtyping))
   in
   (*
   let () =

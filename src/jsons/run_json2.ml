@@ -64,6 +64,9 @@ let () =
       ( "-no-dynamic-closure",
         Arg.Unit (fun () -> Closure.need_dynamic_closure := false),
         " Switch to static closure" );
+      ( "-upper-bound-first",
+        Arg.Unit (fun () -> CT_of_json.lower_bounds_first := false),
+        " Solve upper bounds first" );
     ]
     (fun file -> test_args.query_file <- file)
     ""

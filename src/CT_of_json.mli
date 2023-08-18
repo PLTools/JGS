@@ -1,5 +1,6 @@
 val failwiths : ('a, Format.formatter, unit, 'b) format4 -> 'a
 val verbose_errors : bool ref
+val lower_bounds_first : bool ref
 
 type polarity = JGS.polarity = Extends | Super
 

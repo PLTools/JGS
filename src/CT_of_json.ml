@@ -2,6 +2,7 @@ open Stdlib
 
 let failwiths fmt = Format.kasprintf failwith fmt
 let verbose_errors = ref true
+let lower_bounds_first = ref true
 
 let log_error fmt =
   if !verbose_errors then Format.eprintf fmt
@@ -708,31 +709,32 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
         Printf.eprintf "TODO: implement lower bounds\n%!";
 
       let upper_goal =
-        List.fold_right
-          (fun x acc ->
+        List.fold_left
+          (fun acc x ->
             let pos = true in
 
             show_processing pos Format.pp_print_string "?" pp_jtype x;
 
             let sub, super = (answer, targ_inj (on_typ x)) in
 
-            is_subtype ~closure_type:Subtyping sub super &&& acc)
-          upper_bounds OCanren.success
+            acc &&& is_subtype ~closure_type:Subtyping sub super)
+          OCanren.success upper_bounds
       in
       let lower_goal =
-        List.fold_right
-          (fun x acc ->
+        List.fold_left
+          (fun acc x ->
             let pos = true in
 
             show_processing pos pp_jtype x Format.pp_print_string "?";
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
-            is_subtype ~closure_type:Supertyping sub super &&& acc)
-          lower_bounds OCanren.success
+            acc &&& is_subtype ~closure_type:Supertyping sub super)
+          OCanren.success lower_bounds
       in
 
-      lower_goal &&& upper_goal
+      if !lower_bounds_first then lower_goal &&& upper_goal
+      else upper_goal &&& lower_goal
     in
     goal
   in

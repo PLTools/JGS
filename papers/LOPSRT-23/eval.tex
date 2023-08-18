@@ -1,18 +1,18 @@
 \section{Evaluation}
 \label{sec:eval}
 
-\begin{figure}[h]
-  \makebox[\textwidth][c]{\includegraphics[width=1.3\textwidth]{class_graph.eps}}
-  \caption{Evaluation class table: a subset of \textsc{Java} collection classes}
-  \label{fig:class-graph}
-\end{figure}
+%\begin{figure}[h]
+%  \makebox[\textwidth][c]{\includegraphics[width=1.3\textwidth]{class_graph.eps}}
+%  \caption{Evaluation class table: a subset of \textsc{Java} collection classes}
+%  \label{fig:class-graph}
+%\end{figure}
 
 \begin{comment}
     On pic.~\ref{fig:class-graph} class \textbf{AbstractCollection} extends class \textbf{Object}. Also classes \textbf{ArrayList}, \textbf{Vector}, \textbf{LinkedList}, \textbf{HashSet}, \textbf{TreeSet}, \textbf{ConcurrentSkipListSet} and \textbf{LinkedHashSet} implements interfaces \textbf{Cloneable} and \textbf{Serializable}. Classes \textbf{BlockingQueue} and \textbf{LinkedBlockingDeque} implements interface \textbf{Serializable} only.
 \end{comment}
 
 To perform the evaluation of the solver we came up with we prepared a sample class table using a subset of standard \textsc{Java} collection classes and interfaces. The
-inheritance graph for this subset is shown in Fig.~\ref{fig:class-graph}; the nodes with sold border correspond to classes, with dashed border~--- to interfaces.
+inheritance graph for this subset is shown in Fig.~\ref{fig:class-graph}; the nodes with solid border correspond to classes, with dashed border~--- to interfaces.
 
 Our first attempt discovered the fact that the solver was unsound~--- it established the subtyping relation for two arbitrary types. This finding constitutes a drastic
 contradiction with the theory which predicts that the solver has to be correct by construction. The careful analysis, however, discovered that functional

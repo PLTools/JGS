@@ -10,11 +10,11 @@ type variables, null and intersection types:
 
 \[
 \begin{array}{rcll}
-  \mathscr{T} & = & \alpha^\mathscr{T}_\mathscr{T_\bot}&\mbox{--- type variable}\\[2mm]
-              &   & \bigcap\,\mathscr{T}           &\mbox{--- intersection type}\\[2mm]
-              &   & \grc{C}{\mathscr{T}^*}         &\mbox{--- class or interface type}\\[2mm]
-              &   & \mathscr{T}\mbox{\java{[]}}    &\mbox{--- array type}\\[2mm]
-              &   & \primi{null}                   &\mbox{--- null type}\\[2mm]
+  \mathscr{T} & = & \alpha^\mathscr{T}_\mathscr{T_\bot}&\mbox{--- type variable}            \\[2mm]
+              &   & \bigcap\,\mathscr{T}           &\mbox{--- intersection type}      \\[2mm]
+              &   & \grc{C}{\mathscr{T}^*}         &\mbox{--- class or interface type} \\[2mm]
+              &   & \mathscr{T}\mbox{\java{[]}}    &\mbox{--- array type}\\[2mm]     
+              &   & \primi{null}                   &\mbox{--- null type}\\[2mm]         
 \end{array}
 \]
 
@@ -89,19 +89,8 @@ certain form of \emph{existential} types with capture conversion serving as a li
 The detailed theory and the discussion of properties for the wildcard-related fragment of Java Generics type system
 can be found in~\cite{wild}.
 
-Capture conversion is defined as follows. Let
-
-\[
-\grc{C}{T_1\dots T_k}
-\]
-
-be a generic class/interface type where some of $T_i$ are wildcards. Let
-
-\[
-\beta_i^{U_i}
-\]
-
-be the $i$-th type parameter of $C$'s declaration. Then capture conversion of
+Capture conversion is defined as follows. Let $\grc{C}{T_1\dots T_k}$ be a generic class/interface type where some of $T_i$ are wildcards. Let
+$\beta_i^{U_i}$ be the $i$-th type parameter of $C$'s declaration. Then capture conversion of
 $\grc{C}{T_1\dots T_K}$ is the type $\grc{C}{\cc{T_1}\dots \cc{T_k}}$ where the transformation
 ``$\cc{\bullet}$'' is defined as follows:
 

@@ -27,6 +27,9 @@
 \usepackage{listings}
 \usepackage{amsmath,mathrsfs,amssymb}
 \usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \newcommand{\term}[1]{\mbox{\texttt{\textbf{#1}}}}
 \newcommand{\run}[2]{\term{run}^{#1}\,\left[#2\right]}
@@ -74,9 +77,11 @@ literate={->}{{$\to$}}3 {=>}{{$\Rightarrow$}}3,
 morecomment=[s]{(*}{*)}
 }
 
+\setlength{\belowcaptionskip}{-22pt}
+
 \pagestyle{plain}
-\usepackage{lineno}
-\linenumbers
+%\usepackage{lineno}
+%\linenumbers
 
 \begin{document}
 %

@@ -31,18 +31,7 @@ to implement a relational verifier for this problem, which is a routine task in 
 this approach by the following very simple but observable example.
 
 The following relational program in \textsc{miniKanren} implements an addition of two natural numbers in Peano encoding\footnote{It is a
-convention in \textsc{miniKanren} programming to superscript relational definitions with ``$^o$''.}:
-
-\begin{lstlisting}[language=ocanren,basicstyle=\small]
-  let rec add$^o$ x y z = ocanren {
-    x === O /\ z === y \/
-    fresh x', z' in
-      x === S x' /\
-      z === S z' /\
-      add$^o$ x' y z'
-  }
-\end{lstlisting}
-
+convention in \textsc{miniKanren} programming to superscript relational definitions with ``$^o$''.} (see Fig.~\ref{addition}\ref{rel-add}).
 It takes \emph{three} arguments \lstinline|x|, \lstinline|y|, and \lstinline|z|, and performs a
 case analysis on the first one using unification ``\lstinline[language=ocanren]|===|''. When
 \lstinline|x| is zero, then \lstinline|y| is unified with \lstinline|z|. Otherwise, there is some
@@ -59,15 +48,40 @@ program can be used to decompose a number in all possible summands: \lstinline[l
 will do the job, decomposing \lstinline|S (S (S O))| into all summands and binding them to $\alpha$ and $\beta$ respectively.
 Thus, a single relational definition can be run in various ``directions'', solving various search problems.
 
-Finally, in many cases it is easier to obtain relational specification from functional one. For example,
-relational addition can be easily converted from the following, more conventional functional code:
-
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[t]{0.4\textwidth}    
+\begin{lstlisting}[language=ocanren,basicstyle=\small]
+  let rec add$^o$ x y z = ocanren {
+    x === O /\ z === y \/
+    fresh x', z' in
+      x === S x' /\
+      z === S z' /\
+      add$^o$ x' y z'
+  }
+\end{lstlisting}
+\caption{Relational addition}
+\label{rel-add}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.4\textwidth}
 \begin{lstlisting}[language=ocanren,basicstyle=\small]
    let rec add x y =
      match x with
      | O    -> y
-     | S x' -> S (add x' y)
+     | S x' -> S (add x' y)     
 \end{lstlisting}
+\vskip12mm
+\caption{Functional addition}
+\label{fun-add}
+  \end{subfigure}
+  \vskip5mm
+  \caption{Relational vs. functional addition implementation}
+  \label{addition}
+\end{figure}
+
+Finally, in many cases it is easier to obtain relational specification from functional one. For example,
+relational addition can be easily converted from more conventional functional code (see Fig.~\ref{addition}\ref{fun-add}).
 
 For our task we use a tool, called \textsc{noCanren}, to perform a typed relational conversion\cite{lozov2017typed}, for which its static and dynamic
 correctness was proven formally. Thus, our solution is a mixture of a hand-written and converted relational code and, in fact, a few

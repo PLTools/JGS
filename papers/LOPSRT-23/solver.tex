@@ -11,7 +11,7 @@ A simple observation, however, makes its obvious that it is in fact much easier 
 in relational language. Indeed, given relation $R$ its reflexive-transitive $R^*$ closure can be expressed by just
 
 \[
-R^*\,(x,\, y) = R\, (x,\, y)\vee x\equiv y\vee\exists\, z\,.\,R\,(x,\,z)\wedge R\,(z,\,y)
+R^*\,(x,\, y) = R\, (x,\, y)\vee x\equiv y\vee\exists\, z\,.\,R\,(x,\,z)\wedge R^*\,(z,\,y)
 \]
 
 which can be easily directly encoded in \textsc{OCanren}. However, from the implementation standpoint the application of this technique

@@ -8,7 +8,7 @@ open JGS_Helpers
 
 module type SAMPLE_CLASSTABLE = sig
   val decl_by_id : int -> decl
-  val get_superclass : int -> int -> jtype option
+  val get_superclass_by_id : int -> int -> jtype option
   val object_t : jtype
   val array_t : jtype -> jtype
   val primitive_t : string -> jtype
@@ -37,14 +37,14 @@ module type SAMPLE_CLASSTABLE = sig
     val decl_by_id_fo : int ilogic -> HO.decl_injected -> OCanren.goal
     val decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal
 
-    val get_superclass_fo :
+    val get_superclass_by_id_fo :
       ?from:int ->
       int ilogic ->
       int ilogic ->
       HO.jtype_injected Std.Option.injected ->
       goal
 
-    val get_superclass :
+    val get_superclass_by_id :
       (int ilogic -> goal) ->
       (int ilogic -> goal) ->
       HO.jtype_injected Std.Option.injected ->
@@ -91,7 +91,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
   let decl_by_id id = M.find id !m
 
-  let get_superclass sub_id super_id =
+  let get_superclass_by_id sub_id super_id =
     let open Stdlib in
     List.find_map (fun (id, decl) ->
         if id = sub_id then
@@ -213,7 +213,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
   module HO = struct
     type disj_args = {
       decl_by_id : (int ilogic * HO.decl_injected) list lazy_t;
-      get_superclass :
+      get_superclass_by_id :
         (int ilogic * int ilogic * HO.jtype_injected) list lazy_t;
       subclass_map : (int ilogic * HO.jtype_injected) list M.t lazy_t;
     }
@@ -225,14 +225,14 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
     let update_disj_args =
       let decl_by_id_disjs_args = ref (lazy []) in
-      let get_superclass_disjs_args = ref (lazy []) in
+      let get_superclass_by_id_disjs_args = ref (lazy []) in
       let subclass_map = ref (lazy M.empty) in
       fun () ->
         if !table_was_changed then (
           let bindings = M.bindings !m in
           decl_by_id_disjs_args :=
             lazy (Stdlib.List.map (fun (k, v) -> (!!k, decl_inj v)) bindings);
-          get_superclass_disjs_args :=
+          get_superclass_by_id_disjs_args :=
             lazy
               (Stdlib.List.concat_map
                  (fun (sub_id, decl) ->
@@ -270,15 +270,15 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
           table_was_changed := false);
         {
           decl_by_id = !decl_by_id_disjs_args;
-          get_superclass = !get_superclass_disjs_args;
+          get_superclass_by_id = !get_superclass_by_id_disjs_args;
           subclass_map = !subclass_map;
         }
 
     let get_decl_by_id_disjs_args () =
       Lazy.force (update_disj_args ()).decl_by_id
 
-    let get_superclass_disjs_args () =
-      Lazy.force (update_disj_args ()).get_superclass
+    let get_superclass_by_id_disjs_args () =
+      Lazy.force (update_disj_args ()).get_superclass_by_id
 
     let get_subclass_map () = Lazy.force (update_disj_args ()).subclass_map
 
@@ -292,148 +292,138 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
             | d -> rez === decl_inj d
             | exception Not_found ->
                 failwith (Printf.sprintf "Not_found: id = %d" id))
-        | _ -> (
+        | _ ->
             let disj_args = get_decl_by_id_disjs_args () in
             let on_element (k, v) = id === k &&& (rez === v) in
-            let optimized_by_kakadu = true in
-            (* The same trick which happens in the function [get_superclass] below *)
-            if optimized_by_kakadu then
-              (* Generating list of the size of class table is bad.
-                 Not doing that could easily five 2x speedup *)
-              let rec loop : _ -> goal = function
-                | [] -> failure
-                | h :: tl ->
-                    OCanren.disj (on_element h) (delay (fun () -> loop tl))
-              in
-              loop disj_args
-            else
-              let disjs = Stdlib.List.map on_element disj_args in
-              match disjs with [] -> failure | _ -> conde disjs))
+            (* Generating list of the size of class table is bad.
+               Not doing that could easily five 2x speedup *)
+            let rec loop : _ -> goal = function
+              | [] -> failure
+              | h :: tl ->
+                  OCanren.disj (on_element h) (delay (fun () -> loop tl))
+            in
+            loop disj_args)
 
     let decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal =
      fun id d -> fresh id_val (id id_val) (decl_by_id_fo id_val d)
 
-    let get_superclass_fo :
+    let get_superclass_by_id_fo :
         ?from:int ->
         int ilogic ->
         int ilogic ->
         HO.jtype_injected Std.Option.injected ->
         goal =
-     fun ?(from = 0) sub_id_val super_id_val some_rez st ->
-      let () =
-        if JGS_stats.config.trace_get_superclass then
-          Format.printf
-            "get_superclass(%d): sub_id_val = %a, super_id_val = %a, some_rez \
-             = %a\n\
-             %!"
-            from
-            (GT.fmt OCanren.logic (GT.fmt GT.int))
-            (OCanren.reify_in_state st OCanren.reify sub_id_val)
-            (GT.fmt OCanren.logic (GT.fmt GT.int))
-            (OCanren.reify_in_state st OCanren.reify super_id_val)
-            (GT.fmt Std.Option.logic pp_jtyp)
-            (OCanren.reify_in_state st
-               (Std.Option.reify JGS.HO.jtype_reify)
-               some_rez)
+      let get_superclass_by_id_ground_ground sub_id super_id rez =
+        match M.find_opt sub_id !m with
+        | None -> failure
+        | Some decl -> (
+            let supers = get_supers decl in
+            match
+              Stdlib.List.find_opt
+                (function
+                  | (Class (id, _) | Interface (id, _)) when id = super_id ->
+                      true
+                  | _ -> false)
+                supers
+            with
+            | None -> failure
+            | Some ((Class _ | Interface _) as t) -> rez === jtype_inj t
+            | _ -> failure)
       in
-      st
-      |> fresh rez
-           (some_rez === Std.some rez)
-           (debug_var super_id_val (Fun.flip OCanren.reify) (function
-             | [ Value super_id ] ->
-                 debug_var sub_id_val (Fun.flip OCanren.reify) (function
-                   (* If ids of subclass and superclass are ground *)
-                   | [ Value sub_id ] -> (
-                       match M.find_opt sub_id !m with
-                       | None -> failure
-                       | Some decl -> (
-                           let supers = get_supers decl in
-                           match
-                             Stdlib.List.find_opt
-                               (function
-                                 | (Class (id, _) | Interface (id, _))
-                                   when id = super_id ->
-                                     true
-                                 | _ -> false)
-                               supers
-                           with
-                           | None -> failure
-                           | Some
-                               ((Class (super_id, _) | Interface (super_id, _))
-                               as t) ->
-                               super_id_val === !!super_id
-                               &&& (rez === jtype_inj t)
-                           | _ -> failure))
-                   (* If id of superclass is ground only *)
-                   | _ -> (
-                       let subclass_map = get_subclass_map () in
-                       match M.find_opt super_id subclass_map with
-                       | None -> failure
-                       | Some filtered_by_super ->
-                           let rec loop : _ -> goal = function
-                             | [] -> failure
-                             | (sub, super) :: tl ->
-                                 OCanren.disj
-                                   (sub_id_val === sub &&& (rez === super))
-                                   (delay (fun () -> loop tl))
-                           in
-                           loop filtered_by_super))
-             | _ ->
-                 debug_var sub_id_val (Fun.flip OCanren.reify) (function
-                   (* If id of subclass is ground only *)
-                   | [ Value sub_id ] -> (
-                       match M.find_opt sub_id !m with
-                       | None -> failure
-                       | Some decl ->
-                           let rec loop : _ -> goal = function
-                             | [] -> failure
-                             | ((Class (super_id, _) | Interface (super_id, _))
-                               as t)
-                               :: tl ->
-                                 OCanren.disj
-                                   (super_id_val === !!super_id
-                                   &&& (rez === jtype_inj t))
-                                   (delay (fun () -> loop tl))
-                             | _ :: tl -> delay (fun () -> loop tl)
-                           in
-                           loop (get_supers decl))
-                   | _ -> (
-                       (* General case: if ids of sub and super classes are free *)
-                       let disj_args = get_superclass_disjs_args () in
+      let get_superclass_by_id_ground_free sub_id super_id_val rez =
+        match M.find_opt sub_id !m with
+        | None -> failure
+        | Some decl ->
+            let rec loop : _ -> goal = function
+              | [] -> failure
+              | ((Class (super_id, _) | Interface (super_id, _)) as t) :: tl ->
+                  OCanren.disj
+                    (super_id_val === !!super_id &&& (rez === jtype_inj t))
+                    (delay (fun () -> loop tl))
+              | _ :: tl -> delay (fun () -> loop tl)
+            in
+            loop (get_supers decl)
+      in
+      let get_superclass_by_id_free_ground sub_id_val super_id rez =
+        let subclass_map = get_subclass_map () in
+        match M.find_opt super_id subclass_map with
+        | None -> failure
+        | Some filtered_by_super ->
+            let rec loop : _ -> goal = function
+              | [] -> failure
+              | (sub, super) :: tl ->
+                  OCanren.disj
+                    (sub_id_val === sub &&& (rez === super))
+                    (delay (fun () -> loop tl))
+            in
+            loop filtered_by_super
+      in
+      let get_superclass_by_id_free_free sub_id_val super_id_val rez =
+        let disj_args = get_superclass_by_id_disjs_args () in
 
-                       (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
-                          (List.length disj_args); *)
-                       let optimized_by_kakadu = true in
-                       if optimized_by_kakadu then
-                         (* Generating list of the size of class table is bad.
-                            Not doing that could easily five 2x speedup *)
-                         let rec loop : _ -> goal = function
-                           | [] -> failure
-                           | (sub, sup, super) :: tl ->
-                               OCanren.disj
-                                 (sub_id_val === sub &&& (super_id_val === sup)
-                                &&& (rez === super))
-                                 (delay (fun () -> loop tl))
-                         in
-                         loop disj_args
-                       else
-                         (* Peter's implementation *)
-                         let disjs =
-                           Stdlib.List.map
-                             (fun (sub, sup, super) ->
-                               sub_id_val === sub &&& (super_id_val === sup)
-                               &&& (rez === super))
-                             disj_args
-                         in
-                         match disjs with [] -> failure | _ -> conde disjs))))
+        (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
+           (List.length disj_args); *)
 
-    let get_superclass :
+        (* Generating list of the size of class table is bad.
+           Not doing that could easily five 2x speedup *)
+        let rec loop : _ -> goal = function
+          | [] -> failure
+          | (sub, sup, super) :: tl ->
+              OCanren.disj
+                (sub_id_val === sub &&& (super_id_val === sup)
+               &&& (rez === super))
+                (delay (fun () -> loop tl))
+        in
+        loop disj_args
+      in
+      fun ?(from = 0) sub_id_val super_id_val some_rez st ->
+        let () =
+          if JGS_stats.config.trace_get_superclass_by_id then
+            Format.printf
+              "get_superclass_by_id(%d): sub_id_val = %a, super_id_val = %a, \
+               some_rez = %a\n\
+               %!"
+              from
+              (GT.fmt OCanren.logic (GT.fmt GT.int))
+              (OCanren.reify_in_state st OCanren.reify sub_id_val)
+              (GT.fmt OCanren.logic (GT.fmt GT.int))
+              (OCanren.reify_in_state st OCanren.reify super_id_val)
+              (GT.fmt Std.Option.logic pp_jtyp)
+              (OCanren.reify_in_state st
+                 (Std.Option.reify JGS.HO.jtype_reify)
+                 some_rez)
+        in
+        st
+        |> fresh rez
+             (some_rez === Std.some rez)
+             (debug_var sub_id_val (Fun.flip OCanren.reify)
+                (fun sub_id_reified ->
+                  debug_var super_id_val (Fun.flip OCanren.reify)
+                    (fun super_id_reified ->
+                      match (sub_id_reified, super_id_reified) with
+                      (* If ids of subclass and superclass are ground *)
+                      | [ Value sub_id ], [ Value super_id ] ->
+                          get_superclass_by_id_ground_ground sub_id super_id rez
+                      (* If id of subclass is ground only *)
+                      | [ Value sub_id ], _ ->
+                          get_superclass_by_id_ground_free sub_id super_id_val
+                            rez
+                      (* If id of superclass is ground only *)
+                      | _, [ Value super_id ] ->
+                          get_superclass_by_id_free_ground sub_id_val super_id
+                            rez
+                      (* General case: if ids of sub and super classes are free *)
+                      | _, _ ->
+                          get_superclass_by_id_free_free sub_id_val super_id_val
+                            rez)))
+
+    let get_superclass_by_id :
         (int ilogic -> goal) ->
         (int ilogic -> goal) ->
         HO.jtype_injected Std.Option.injected ->
         goal =
      fun hoa hob jtyp ->
-      fresh (a b) (hoa a) (hob b) (get_superclass_fo a b jtyp)
+      fresh (a b) (hoa a) (hob b) (get_superclass_by_id_fo a b jtyp)
 
     let object_t = jtype_inj object_t
     let object_t_ho : HO.jtype_injected -> goal = fun x -> x === object_t

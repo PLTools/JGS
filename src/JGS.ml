@@ -43,7 +43,7 @@ and substitute_arg subst = function
 
 module Verifier (CT : sig
   val decl_by_id : int -> decl
-  val get_superclass : int -> int -> jtype option
+  val get_superclass_by_id : int -> int -> jtype option
   val object_t : jtype
   val cloneable_t : jtype
   val serializable_t : jtype
@@ -124,7 +124,7 @@ struct
       if id_a = id_b then
         List.fold_left2 (fun f ta tb -> f && ta <=< tb) true targs_a targs_b
       else
-        match CT.get_superclass id_a id_b with
+        match CT.get_superclass_by_id id_a id_b with
         | Some (Class (_, targs_b')) | Some (Interface (_, targs_b')) ->
             targs_b = List.map (fun t -> substitute_arg targs_a t) targs_b'
         | None -> false
@@ -264,13 +264,13 @@ module HO = struct
 
       val decl_by_id_fo : int ilogic -> decl_injected -> OCanren.goal
 
-      val get_superclass :
+      val get_superclass_by_id :
         (int ilogic -> OCanren.goal) ->
         (int ilogic -> OCanren.goal) ->
         jtype_injected option_injected ->
         OCanren.goal
 
-      val get_superclass_fo :
+      val get_superclass_by_id_fo :
         ?from:int ->
         int ilogic ->
         int ilogic ->
@@ -596,7 +596,7 @@ module HO = struct
                          ]))
                   (( === ) !!true) targs_a targs_b res);
              fresh q211 (id_a =/= id_b)
-               (CT.HO.get_superclass_fo ~from:__LINE__ id_a id_b q211)
+               (CT.HO.get_superclass_by_id_fo ~from:__LINE__ id_a id_b q211)
                (conde
                   [
                     fresh (targs_b' q217 q218)
@@ -797,13 +797,13 @@ module FO = struct
 
       val decl_by_id_fo : int ilogic -> decl_injected -> OCanren.goal
 
-      val get_superclass :
+      val get_superclass_by_id :
         (int ilogic -> OCanren.goal) ->
         (int ilogic -> OCanren.goal) ->
         jtype_injected option_injected ->
         OCanren.goal
 
-      val get_superclass_fo :
+      val get_superclass_by_id_fo :
         ?from:int ->
         int ilogic ->
         int ilogic ->

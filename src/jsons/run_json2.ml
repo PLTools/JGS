@@ -42,8 +42,8 @@ let () =
       ( "-trace-closure",
         Arg.Unit (fun () -> JGS_stats.set_trace_closure_subtyping true),
         " trace closure subtyping" );
-      ( "-trace-get-superclass",
-        Arg.Unit (fun () -> JGS_stats.set_trace_get_superclass true),
+      ( "-trace-get-superclass-by-id",
+        Arg.Unit (fun () -> JGS_stats.set_trace_get_superclass_by_id true),
         " trace superclass searching" );
       ( "-n",
         Arg.Int (fun n -> test_args.answers_count <- n),

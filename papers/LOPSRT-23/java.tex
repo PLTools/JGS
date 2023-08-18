@@ -40,7 +40,7 @@ bounds, $S_i$~--- its direct supertypes, among which only one type can be a clas
 parameters for direct supertypes, which may contain the occurences of $\alpha_i$; note: neither of $T^j_l$ can be
 an intersection type.
 
-Type variables in scopes of their declarations behave like regilar types; the scope of a type variable is
+Type variables in scopes of their declarations behave like regular types; the scope of a type variable is
 determined by the position of its introduction (either generic class/interface or generic method). It
 is unclear what is the scope of type variables introduced implicitly as a result of capture
 conversion, but this might be irrelevant to the problem we are dealing with.
@@ -53,15 +53,15 @@ Null type is an artificial transparent type with no explicit representation. It 
 every other reference type.
 
 Besides regular types generic classes can be applied to \emph{wildcard types}. A wildcard is an anonymous
-type variable (notation: ``\java{?}'') equipped with optional lower or upper bound which can not be an intersection type.
-If no upper bound is specified then \java{java.lang.Object} is implicitly assumed. It is important that wildcards can not 
-be used to parameterize direct supertypes in generic class/interface declarations. Array types can not be directly
-parameterized by wildcards.
+type variable (notation: ``\java{?}'') equipped, as a regular type variable, with upper bound and optional lower bound
+neither of which can be of intersection type. If no upper bound is specified explicitly then \java{java.lang.Object} is implicitly assumed.
+It is important that wildcards can not be used to parameterize direct supertypes in generic class/interface declarations.
+Array types can not be directly parameterized by wildcards.
 
 To establish the subtyping relation (denotation: ``$\precprec$'') between types parameterized by wildcards two additional
 notions are introduces.
 
-The first one is the ``contains'' relation ``$\supseteq$'' between wildcard types:
+The first one is \emph{contains} relation ``$\supseteq$'' between wildcard types:
 
 \[
 \begin{array}{rclcl}
@@ -76,7 +76,20 @@ The first one is the ``contains'' relation ``$\supseteq$'' between wildcard type
 \end{array}
 \]
 
-The second is capture conversion which is defined as follows. Let
+This relation in essence is a routine check that a collection of types designated by the ``right'' wildcard type is
+contained in a collection of types designated by the ``left'' one.
+
+The second is \emph{capture conversion}. Informally, capture conversion replaces a \emph{nameless} wildcard type
+argument by a freshly introduced \emph{named} type variable, thus ``capturing'' some concrete (but statically unknown)
+type in a certain context. The motivation for introducing capture conversion is as follows: let us have
+some value of a wildcard-parameterized type, say, some collection of type $\grc{Collection}{?}$. Without capture
+conversion we would be incapable of dealing with individual elements of this collection (since a wildcard is not a type,
+but rather a way to to describe a certain parameterizarion). From a type-theoretic standpoint wildcards intoduce a
+certain form of \emph{existential} types with capture conversion serving as a limited form of opening construct~\cite{tapl}.
+The detailed theory and the discussion of properties for the wildcard-related fragment of Java Generics type system
+can be found in~\cite{wild}.
+
+Capture conversion is defined as follows. Let
 
 \[
 \grc{C}{T_1\dots T_k}

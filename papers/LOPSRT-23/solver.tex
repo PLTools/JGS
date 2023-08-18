@@ -3,7 +3,7 @@
 
 The approach of verifier-to-solver conversion relies on the implementation of functional verifier for the problem in question. In our
 case such verifier should test if two given ground types are in the subtyping relation. This, in particular, requires implementation
-of capture conversion, ``contains'' relation, and direct subtyping verifier. Then a refexive-transitive closure of the latter has to
+of capture conversion, ``contains'' relation, and direct subtyping verifier. Then a reflexive-transitive closure of the latter has to
 be implemented. The functional verifier is then converted into relational form which by construction delivers a subtyping solver for
 non-ground types with free variables.
 

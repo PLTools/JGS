@@ -48,7 +48,7 @@ case analysis on the first one using unification ``\lstinline[language=ocanren]|
 \lstinline|x| is zero, then \lstinline|y| is unified with \lstinline|z|. Otherwise, there is some
 \lstinline|x'| which is one less than \lstinline|x|. We recursively calculate the sum of \lstinline|x'| and
 \lstinline|y|, setting its value to \lstinline|z'|, and then unify \lstinline|z| with \lstinline|z'| plus one. Thus,
-\lstinline|add$^o$| implements the relation $\{(x, y, z)\in\mathbb{N}^3\, |\, x+y=z\}$. This relation can
+\lstinline[mathescape=true]|add$^o$| implements the relation $\{(x, y, z)\in\mathbb{N}^3\, |\, x+y=z\}$. This relation can
 be ``inspected'' by using specific primitive ``\lstinline[language=ocanren]|run$_{\bar{\alpha}}$ {$Q$}|'', where
 $Q$~--- some relational expression (\emph{query}), $\bar{\alpha}$~--- a list of fresh \emph{query} variables.
 \lstinline[language=ocanren]|run| initiates a search which finds all substitutions for query variables which

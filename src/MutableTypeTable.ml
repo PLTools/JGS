@@ -6,6 +6,8 @@ open JGS_Helpers
 (*************************** Functional-relational fuctor parameter *******************************)
 (**************************************************************************************************)
 
+let need_table_dynamic_specialisation = ref true
+
 module type SAMPLE_CLASSTABLE = sig
   val decl_by_id : int -> decl
   val get_superclass_by_id : int -> int -> jtype option
@@ -283,26 +285,30 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     let get_subclass_map () = Lazy.force (update_disj_args ()).subclass_map
 
     let decl_by_id_fo : int ilogic -> HO.decl_injected -> goal =
-     fun id rez ->
-      debug_var id (Fun.flip OCanren.reify) (function
-        | [ Value id ] when id = top_id -> failure
-        | [ Value id ] -> (
-            (* TODO: Kakadu: should we memoize already injected values? *)
-            match M.find id !m with
-            | d -> rez === decl_inj d
-            | exception Not_found ->
-                failwith (Printf.sprintf "Not_found: id = %d" id))
-        | _ ->
-            let disj_args = get_decl_by_id_disjs_args () in
-            let on_element (k, v) = id === k &&& (rez === v) in
-            (* Generating list of the size of class table is bad.
-               Not doing that could easily five 2x speedup *)
-            let rec loop : _ -> goal = function
-              | [] -> failure
-              | h :: tl ->
-                  OCanren.disj (on_element h) (delay (fun () -> loop tl))
-            in
-            loop disj_args)
+      let decl_by_id_ground id rez =
+        (* TODO: Kakadu: should we memoize already injected values? *)
+        match M.find id !m with
+        | d -> rez === decl_inj d
+        | exception Not_found ->
+            failwith (Printf.sprintf "Not_found: id = %d" id)
+      in
+      let decl_by_id_free id rez =
+        let disj_args = get_decl_by_id_disjs_args () in
+        let on_element (k, v) = id === k &&& (rez === v) in
+        (* Generating list of the size of class table is bad.
+           Not doing that could easily five 2x speedup *)
+        let rec loop : _ -> goal = function
+          | [] -> failure
+          | h :: tl -> OCanren.disj (on_element h) (delay (fun () -> loop tl))
+        in
+        loop disj_args
+      in
+      if !need_table_dynamic_specialisation then fun id rez ->
+        debug_var id (Fun.flip OCanren.reify) (function
+          | [ Value id ] when id = top_id -> failure
+          | [ Value id ] -> decl_by_id_ground id rez
+          | _ -> decl_by_id_free id rez)
+      else decl_by_id_free
 
     let decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal =
      fun id d -> fresh id_val (id id_val) (decl_by_id_fo id_val d)
@@ -376,23 +382,25 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
         in
         loop disj_args
       in
-      fun ?(from = 0) sub_id_val super_id_val some_rez st ->
-        let () =
-          if JGS_stats.config.trace_get_superclass_by_id then
-            Format.printf
-              "get_superclass_by_id(%d): sub_id_val = %a, super_id_val = %a, \
-               some_rez = %a\n\
-               %!"
-              from
-              (GT.fmt OCanren.logic (GT.fmt GT.int))
-              (OCanren.reify_in_state st OCanren.reify sub_id_val)
-              (GT.fmt OCanren.logic (GT.fmt GT.int))
-              (OCanren.reify_in_state st OCanren.reify super_id_val)
-              (GT.fmt Std.Option.logic pp_jtyp)
-              (OCanren.reify_in_state st
-                 (Std.Option.reify JGS.HO.jtype_reify)
-                 some_rez)
-        in
+      let trace from sub_id_val super_id_val some_rez st =
+        if JGS_stats.config.trace_get_superclass_by_id then
+          Format.printf
+            "get_superclass_by_id(%d): sub_id_val = %a, super_id_val = %a, \
+             some_rez = %a\n\
+             %!"
+            from
+            (GT.fmt OCanren.logic (GT.fmt GT.int))
+            (OCanren.reify_in_state st OCanren.reify sub_id_val)
+            (GT.fmt OCanren.logic (GT.fmt GT.int))
+            (OCanren.reify_in_state st OCanren.reify super_id_val)
+            (GT.fmt Std.Option.logic pp_jtyp)
+            (OCanren.reify_in_state st
+               (Std.Option.reify JGS.HO.jtype_reify)
+               some_rez)
+      in
+      if !need_table_dynamic_specialisation then (
+        fun ?(from = 0) sub_id_val super_id_val some_rez st ->
+        trace from sub_id_val super_id_val some_rez st;
         st
         |> fresh rez
              (some_rez === Std.some rez)
@@ -415,7 +423,13 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                       (* General case: if ids of sub and super classes are free *)
                       | _, _ ->
                           get_superclass_by_id_free_free sub_id_val super_id_val
-                            rez)))
+                            rez))))
+      else fun ?(from = 0) sub_id_val super_id_val some_rez st ->
+        trace from sub_id_val super_id_val some_rez st;
+        st
+        |> fresh rez
+             (some_rez === Std.some rez)
+             (get_superclass_by_id_free_free sub_id_val super_id_val rez)
 
     let get_superclass_by_id :
         (int ilogic -> goal) ->

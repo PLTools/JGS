@@ -56,6 +56,11 @@ let () =
         Arg.String (fun s -> test_args.fifo <- Some s),
         " <file> Specify pipe file to start performace metrics only after JSON \
          parsing" );
+      ( "-no-table-spec",
+        Arg.Unit
+          (fun () ->
+            MutableTypeTable.need_table_dynamic_specialisation := false),
+        " Switch off table dynamic specialisations" );
     ]
     (fun file -> test_args.query_file <- file)
     ""

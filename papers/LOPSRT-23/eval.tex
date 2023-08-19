@@ -1,5 +1,27 @@
 \section{Evaluation}
 \label{sec:eval}
+To perform the evaluation of the solver we used table of real Java classes of size 40960.
+And we evaluate the following 9 queries, each of which corresponds to a group of 4 columns in the Fig.~\ref{fig:eval-diagram}.
+\begin{itemize}
+    \item The first 4 queries are 1, 2 and 3 upper bounds for standard collection classes and interfaces \java{List}, \java{AbstractCollection} and \java{RandomAccess}. Note, the 2nd and the 3rd queries are the same 2 upper bounds but with opposite order.
+    \item The next 3 queries are 1, 2 and 3 lower bound for concrete collection classes \java{AttributeList}, \java{PersistentVector} and \java{ImmutableSortedSet}.
+    \item The last 2 queries consist of one upper bound and one lower bound. These bounds the same for both queries but with opposite order.
+\end{itemize}
+
+\begin{figure}[h]
+  \includegraphics[width=1\textwidth]{eval_diagram.eps}
+  \caption{Evaluation results of 9 queries to the table of real Java classes of size 40960 for 4 versions of the solver.}
+  \label{fig:eval-diagram}
+\end{figure}
+
+Each query was evaluated for 4 solver versions: without optimizations (the first column for each query), with dynamic transitive closure (the second column), with dynamic class table specialization (the third column) and with both optimizations (the fourth column). In all these versions, the capture conversion is disabled.
+For each query we evaluated 2 quantitative measures: answers amount (numerator under column group), unique answers amount (denominator). Also we evaluated 4 time measures: time of the first answer (this time includes the time spent on the pre-calculations required to dynamic table specialization), maximum time for one answer (not include the first answer time), average time of all answers and total evaluation time. We also limited the evaluation time to 300 seconds. And in several cases, we either received only a part of the answers (in this case, only the time for calculating the first answer is indicated), or we did not receive a single answer (in this case, the red column is shown in the figure). These measurements are presented on a logarithmic scale.
+
+As we can see from the results presented in the picture, dynamic transitive closure improves the result by an order of magnitude in some cases (if there is an upper bound among the second and subsequent bounds), dynamic specialization of the table always improves the result by an order of magnitude, but the best performance is achieved when using both optimizations. It is also noteworthy that for queries with the same bounds but different orders (3rd, 4th and 8th, 9th), the time dimensions are different. Therefore, the efficiency of the solver depends on the order of the boundaries. Finally, It can be noted that when calculating the lower bounds, we get a large number of duplicate answers.
+
+We can conclude that the optimized version of the solver with disabled capture conversion shows promising performance results, but the problems of the influence of the order of bounds and the presence of duplicates require further research.
+
+\begin{comment}
 
 %\begin{figure}[h]
 %  \makebox[\textwidth][c]{\includegraphics[width=1.3\textwidth]{class_graph.eps}}
@@ -7,9 +29,7 @@
 %  \label{fig:class-graph}
 %\end{figure}
 
-\begin{comment}
     On pic.~\ref{fig:class-graph} class \textbf{AbstractCollection} extends class \textbf{Object}. Also classes \textbf{ArrayList}, \textbf{Vector}, \textbf{LinkedList}, \textbf{HashSet}, \textbf{TreeSet}, \textbf{ConcurrentSkipListSet} and \textbf{LinkedHashSet} implements interfaces \textbf{Cloneable} and \textbf{Serializable}. Classes \textbf{BlockingQueue} and \textbf{LinkedBlockingDeque} implements interface \textbf{Serializable} only.
-\end{comment}
 
 To perform the evaluation of the solver we came up with we prepared a sample class table using a subset of standard \textsc{Java} collection classes and interfaces. The
 inheritance graph for this subset is shown in Fig.~\ref{fig:class-graph}; the nodes with solid border correspond to classes, with dashed border~--- to interfaces.
@@ -88,135 +108,8 @@ After we added explicit subtyping constraint for the bounds of type variables, w
 
     We can conclude that, first, our approach discovers the incompleteness in specifications and, second, that the simplified version
     with capture conversion switched off shows a promising performance results.
-    
-    
-    \begin{comment}
-    \newpage
 
-    \begin{itemize}
-        \item Query: RoleList $\twoheadleftarrow$ ?
-        \begin{itemize}
-            \item Some answer examples:
-            \begin{itemize}
-                \item AbstractList\textlangle Object\textrangle
-                \item AttributeList
-                \item LinkedList\textlangle Object\textrangle
-            \end{itemize}
-            \item JGS
-            \begin{itemize}
-                \item Requested answers amount: 8
-                \item Unique answers amount: 8
-                \item Time measurement: 1.13, 1.18, 1.16, 1.15, 1.14
-                \item Time average: 1.152
-            \end{itemize}
-            \item Simplified JGS
-            \begin{itemize}
-                \item Requested answers amount: all (was 8 answers)
-                \item Unique answers amount: 8
-                \item Time measurement: 0.23, 0.25, 0.23, 0.24, 0.24
-                \item Time average: 0.238
-            \end{itemize}
-        \end{itemize}
-        \newpage
-        \item Query: RoleList $\twoheadleftarrow$ ?
-        \begin{itemize}
-            \item Some answer examples:
-            \begin{itemize}
-                \item Object
-                \item RandomAccess
-                \item AbstactCollection\textlangle Object\textrangle
-                \item AbstactCollection\textlangle ? Extends Object\textrangle \\ (missing for the simplified JGS)
-                \item AbstactCollection\textlangle ? Super Object\textrangle \\ (missing for the simplified JGS)
-            \end{itemize}
-            \item JGS
-            \begin{itemize}
-                \item Requested answers amount: all (was 38 answers)
-                \item Unique answers amount: 21
-                \item Time measurement: 0.41, 0.50, 0.50, 0.46, 0.49
-                \item Time average: 0.472
-            \end{itemize}
-            \item Simplified JGS
-            \begin{itemize}
-                \item Requested answers amount: all (was 22 answers)
-                \item Unique answers amount: 11
-                \item Time measurement: 0.31, 0.36, 0.34, 0.31, 0.34
-                \item Time average: 0.332
-            \end{itemize}
-        \end{itemize}
-        \newpage
-        \item Query: ? $\twoheadleftarrow$ Iterable\textlangle Object\textrangle
-         \begin{itemize}
-            \item Some answer examples:
-            \begin{itemize}
-                \item List\textlangle Object\textrangle
-                \item AttributeList
-                \item LinkedHashSet\textlangle Object\textrangle
-                \item Vector\textlangle Object\textrangle
-                \item LinkedBlockingDeque\textlangle Object\textrangle
-            \end{itemize}
-            \item JGS
-            \begin{itemize}
-                \item Requested answers amount: 58
-                \item Time measurement: more than 300 seconds
-            \end{itemize}
-            \item Simplified JGS
-            \begin{itemize}
-                \item Requested answers amount: all (was 58 answers)
-                \item Unique answers amount: 26
-                \item Time measurement: 1.88, 1.94, 1.94, 1.89, 1.91
-                \item Time average: 1.912
-            \end{itemize}
-        \end{itemize}
-        \newpage
-        \item Query: ? $\twoheadleftarrow$ RandomAccess $\land$ ? $\twoheadleftarrow$ AbstractCollection\textlangle Object\textrangle
-         \begin{itemize}
-            \item All unique answers:
-            \begin{itemize}
-                \item ArrayList\textlangle Object\textrangle
-                \item Vector\textlangle Object\textrangle
-                \item AttributeList
-                \item RoleList
-                \item Stack\textlangle Object\textrangle
-            \end{itemize}
-            \item JGS
-            \begin{itemize}
-                \item Requested answers amount: 8
-                \item Time measurement: more than 300 seconds
-            \end{itemize}
-            \item Simplified JGS
-            \begin{itemize}
-                \item Requested answers amount: all (was 8 answers)
-                \item Unique answers amount: 5
-                \item Time measurement: 1.32, 1.32, 1.34, 1.33, 1.32
-                \item Time average: 1.326
-            \end{itemize}
-        \end{itemize}
-        \newpage
-        \item Query: ? LinkedList\textlangle Object\textrangle $\,\twoheadleftarrow$ ? \\ $\land$  TreeSet\textlangle Object\textrangle $\,\twoheadleftarrow$ ?AbstractCollection\textlangle Object\textrangle
-         \begin{itemize}
-            \item Some answer examples:
-            \begin{itemize}
-                \item AbstactCollection\textlangle Object\textrangle
-                \item Cloneable
-                \item Serializable
-                \item Iterable\textlangle Object\textrangle
-                \item Collection\textlangle Object\textrangle
-                \item Object
-            \end{itemize}
-            \item JGS
-            \begin{itemize}
-                \item Requested answers amount: all (was 95 answers)
-                \item Unique answers amount: 10
-                \item Time measurement: 24.09, 25.01, 24.47, 24.04, 23.78
-                \item Time average: 24.278
-            \end{itemize}
-            \item Simplified JGS
-            \begin{itemize}
-                \item Requested answers amount: all (was 69 answers)
-                \item Unique answers amount: 6
-                \item Time measurement: 3.61, 3.67, 3.59, 3.64, 3.59
-                \item Time average: 3.620
-            \end{itemize}
-        \end{itemize}
-    \end{itemize}   
 \end{comment}
+
+
+

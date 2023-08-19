@@ -11,11 +11,10 @@ automated test generation our symbolic engine UTBotJava~\cite{UTBot} failed to g
 symbolic execution process, and several generics-related issues are still unresolved\footnote{https://github.com/UnitTestBot/UTBotJava/issues/730, https://github.com/UnitTestBot/UTBotJava/issues/1994, https://github.com/UnitTestBot/UTBotJava/issues/924}.
 
 In this paper we consider the problem of solving a system of subtyping inequations for \textsc{Java} generic types with free variables. Using relational programming techniques and
-verifier-to-solver approach we come up with a simple and declarative albeit not very efficient for now solver. As subtyping relation in \textsc{Java} with the presence of
-generics is known to be undecidable~\cite{JGTC} the solver can not be total; however due to the completeness of relational search~\cite{certified} it ultimately
-finds all existing solutions. We do not claim our current result to be an ultimate achievement; 
-however is demonstrates pretty well the advantages and caveats of relational programming approach we investigate. This work is still in its active stage, and we
-plan to apply a number of problem-specific optimizations and modifications for boosting the performance of the solution we have so far.
+verifier-to-solver approach we come up with a simple and declarative albeit not very efficient solver; then we apply a number of problem-specific optimizations for boosting the performance,
+which gives us a solver with a promising efficiency. As subtyping relation in \textsc{Java} with the presence of generics is known to be undecidable~\cite{JGTC} the solver can not be total;
+however due to the completeness of relational search~\cite{certified} it ultimately finds all existing solutions. We do not claim our current result to be an ultimate achievement; 
+however is demonstrates pretty well the advantages and caveats of relational programming approach we investigate.
 
 
 \begin{comment}

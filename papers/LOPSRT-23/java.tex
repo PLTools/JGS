@@ -5,21 +5,9 @@ information in this section is directly derived from the Java Language Specifica
 We also refrain from reiterating on the non-generic part of \textsc{Java} type system assuming the reader's familiarity
 with the concepts of reference types, arrays, classes, interfaces, and inheritance.
 
-The subsystem we are dealing with contains generic class/interface types, array types,
-type variables, null and intersection types:
-
-\[
-\begin{array}{rcll}
-  \mathscr{T} & = & \alpha^\mathscr{T}_\mathscr{T_\bot}&\mbox{--- type variable}            \\[2mm]
-              &   & \bigcap\,\mathscr{T}           &\mbox{--- intersection type}      \\[2mm]
-              &   & \grc{C}{\mathscr{T}^*}         &\mbox{--- class or interface type} \\[2mm]
-              &   & \mathscr{T}\mbox{\java{[]}}    &\mbox{--- array type}\\[2mm]     
-              &   & \primi{null}                   &\mbox{--- null type}\\[2mm]         
-\end{array}
-\]
-
-Here $\mathscr{T}_\bot$ denotes optional type.
-
+The subsystem we are dealing with contains generic class/interface types $\grc{C}{\mathscr{T}^*}$, array types $\mathscr{T}\mbox{\java{[]}}$,
+type variables $\alpha^\mathscr{T}_\mathscr{T_\bot}$, intersection types $\bigcap\,\mathscr{T}$ and  $\primi{null}$ type.
+Here $\mathscr{T}$ denotes a type, $\mathscr{T}_\bot$~--- an optional type.
 Type variables are bounded in the sense that they always have a certain \emph{upper bound}. This upper
 bound can be either specified explicitly or assumed to be \java{java.lang.Object}. In addition
 to the upper bound a type variable can be equipped with a \emph{lower bound}. The lower bound can only
@@ -61,7 +49,7 @@ Array types can not be directly parameterized by wildcards.
 To establish the subtyping relation (denotation: ``$\precprec$'') between types parameterized by wildcards two additional
 notions are introduces.
 
-The first one is \emph{contains} relation ``$\supseteq$'' between wildcard types:
+The first one is \emph{contains} relation ``$\supseteq$'':
 
 \[
 \begin{array}{rclcl}
@@ -76,7 +64,7 @@ The first one is \emph{contains} relation ``$\supseteq$'' between wildcard types
 \end{array}
 \]
 
-This relation in essence is a routine check that a collection of types designated by the ``right'' wildcard type is
+This relation in essence is a routine check that a collection of types designated by the ``right'' type is
 contained in a collection of types designated by the ``left'' one.
 
 The second is \emph{capture conversion}. Informally, capture conversion replaces a \emph{nameless} wildcard type

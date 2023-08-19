@@ -2,9 +2,15 @@
 \label{sec:eval}
 
 We evaluated our solver for a class table containing more than 40000 classes exported by the symbolic execution engine using
-nine benchmark queries of various shapes. The results are presented in Fig.~\ref{fig:eval-diagram} in the form of
+nine benchmark queries of various shapes. By the specifics of using the solver as a part of symbolic execution engine we
+switched off the capture conversion. The motivation is simple: the symbolic execution engine is interested only in
+such types instances of which can be created at runtime. Thus, capture conversion can only be applied in a \emph{forward}
+direction which eliminated wildcards. With capture conversion enabled in the relational solver it could also be
+applied in reverse direction, introducing superfluous wildcards which could not be utilized properly.
+
+The results are presented in Fig.~\ref{fig:eval-diagram} in the form of
 a bar chart. Here the groups of four bars correspond to different benchmarks, each bar in the group corresponds to a one of
-four versions of the solver (left-to-right): with no optimizations, with dynamic transitive closure ealuation only, with dynamic class table specialization only,
+four versions of the solver (left-to-right): with no optimizations, with dynamic transitive closure evaluation only, with dynamic class table specialization only,
 and with both optimizations enabled.
 
 The benchmark queries are as follows:
@@ -43,8 +49,8 @@ The benchmark queries are as follows:
   \label{fig:eval-diagram}
 \end{figure}
 
- For each query we evaluated two quantitative measures: the overall number of aswers (shown as a numerator
-under corresonding benchmark) and the number of unique answers (shown as a denominator). Also we evaluated four time measures: the time of calculating the first answer (this time includes the time
+ For each query we evaluated two quantitative measures: the overall number of answers (shown as a numerator
+under corresponding benchmark) and the number of unique answers (shown as a denominator). Also we evaluated four time measures: the time of calculating the first answer (this time includes the time
 spent on the pre-calculations required by dynamic table specialization), the maximal time for one answer (not including the first answer time), the average time taken over all answers,
 and the total evaluation time. We also limited the evaluation time to 300 seconds; in a few cases we either received only a part of the answers (in this case, only the time for
 calculating the first answer is indicated), or we did not receive a single answer (in this case, the red column is shown in the bar chart). All measurements are presented in a logarithmic

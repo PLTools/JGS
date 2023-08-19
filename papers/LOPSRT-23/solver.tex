@@ -40,13 +40,13 @@ The next step is applying relational conversion for this functional verifier. Fo
 ``massaging'' of initial \textsc{OCaml} implementation: arrays (more efficient in functional world) have to be replaced
 with lists, and some changes have to be made in order to compensate for the incompleteness of current relational
 conversion implementation.
-After the relational conversion and the parameterization of verifier functor with a classtable a proper recursive knot is tied by a transitive closure of ``$\prec$'', which
+After the relational conversion and the parameterization of verifier functor with a class table a proper recursive knot is tied by a transitive closure of ``$\prec$'', which
 completes the construction of the solver. While functional verifier can only work for ground types and return a boolean value, its relational counterpart
 searches for all substitution for free variables in incomplete types is order to make them subtype each other.
 
-Our first evaluatio discovered the fact that the solver was unsound~--- it established the subtyping relation for two arbitrary types. This finding constitutes a drastic
+Our first evaluation discovered the fact that the solver was unsound~--- it established the subtyping relation for two arbitrary types. This finding constitutes a drastic
 contradiction with the theory which predicts that the solver has to be correct by construction. The careful analysis, however, discovered that functional
-vefifier was unsound as well! The reason was very simple: let us have two arbitrary types $A$ and $B$. To establish, for example, that $A \precprec B$, take a
+verifier was unsound as well! The reason was very simple: let us have two arbitrary types $A$ and $B$. To establish, for example, that $A \precprec B$, take a
 type variable $\alpha^B_A$ with upper bound $B$ and lower bound $A$. Then, by definition
 
 \[
@@ -60,16 +60,16 @@ reflexive (in full accordance with the JLS).
 After fixing the unsoundness we found that the performance of the solver was very low: it took seconds to come up with the first solution even for
 small hard-written class tables. After a careful analysis we come up with the following optimizations.
 
-First, we changed the representation of class/iterface indentifiers. In functional verifier all identifiers were represented by integer numbers which,
+First, we changed the representation of class/interface identifiers. In functional verifier all identifiers were represented by integer numbers which,
 under relational conversion, were tuned into natural numbers in Peano form (essentially, lists). At the same time as no transformation are
-performed on indentifiers (besides equality checks) this repesentation is excessive. We manually reverted the indentifiers representation to
+performed on identifiers (besides equality checks) this representation is excessive. We manually reverted the identifiers representation to
 integers.
 
 Then, we optimized the search in class tables. Functional verifier sometimes needs to find a declaration of a class/interface by identifier, or
 find a superclass/superinterface for a class given this class identifier, etc. Under relational conversion all these procedures
 take form of disjunctions of the length proportional to the size of the class table. However, when some of the involved identifiers
-are ground the search can be optimized: we can query a precomiled optimized map-like structure of the class table to filter out
-only relevent information and synthesize the residual disjunction at the runtime. We call this optimization \emph{dynamic class table specialization}.
+are ground the search can be optimized: we can query a precompiled optimized map-like structure of the class table to filter out
+only relevant information and synthesize the residual disjunction at the runtime. We call this optimization \emph{dynamic class table specialization}.
 
 Finally, we optimize the evaluation of transitive closure based on the groundness analysis of the arguments. For example, if we need to find a certain
 $x$ such that $R^*\,(x,\,y)$ where $y$ is \emph{ground}, then the following (equivalent to $(\star)$) procedure of finding transitive closure is
@@ -80,7 +80,7 @@ R^*\,(x,\, y) = R\, (x,\, y)\vee x\equiv y\vee\exists\, z\,.\,R\,(z,\,y)\wedge R
 \]
 
 So, in our implementation the groundness analysis (performed on the fly) chooses one of a few versions of transitive closure calculations.
-We call this optimization \emph{dynamic transitive closure ealuation}.
+We call this optimization \emph{dynamic transitive closure evaluation}.
 
 With all of these optimizations enabled our solver finally can demonstrate a reasonable performance. We present the results of the evaluation
 in the next section\footnote{Source code is available online: \url{https://github.com/Lozov-Petr/JGS/tree/LOPSTR-2023}}. 

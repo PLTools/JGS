@@ -1,3 +1,11 @@
+include Set.Make (struct
+  type t = JGS.HO.jtype_logic
+
+  let compare a b = Stdlib.compare a b
+end)
+
+let alpha_converted_answer_set = ref empty
+
 module Int_map = Map.Make (Stdlib.Int)
 
 type state = int * int Int_map.t
@@ -96,12 +104,6 @@ let replace_jtype : JGS.HO.jtype_logic -> JGS.HO.jtype_logic =
           (state, Interface (i, args))
   in
   fun t -> snd @@ replace_jtype (0, Int_map.empty) t
-
-include Set.Make (struct
-  type t = JGS.HO.jtype_logic
-
-  let compare a b = Stdlib.compare a b
-end)
 
 let add_alpha_converted t set = add (replace_jtype t) set
 let mem_alpha_converted t set = mem (replace_jtype t) set

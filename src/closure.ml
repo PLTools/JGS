@@ -127,7 +127,7 @@ let make_closure_by_closure_template closure_template (module CT : SCT)
 
 let make_closure (module CT : SCT) =
   if !need_dynamic_closure then
-    make_closure_by_closure_template (Fun.const ( <~< )) (module CT)
+    make_closure_by_closure_template (fun _ -> ( <~< )) (module CT)
   else
     make_closure_by_closure_template
       (function Subtyping -> ( <-< ) | Supertyping -> ( <=< ))

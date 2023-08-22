@@ -3,6 +3,7 @@ open Stdlib
 let failwiths fmt = Format.kasprintf failwith fmt
 let verbose_errors = ref true
 let lower_bounds_first = ref true
+let need_remove_dups = ref true
 
 let log_error fmt =
   if !verbose_errors then Format.eprintf fmt
@@ -733,7 +734,13 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
             acc &&& is_subtype ~closure_type:Supertyping sub super)
           OCanren.success lower_bounds
       in
-
+      (if !need_remove_dups then
+         structural answer JGS.HO.jtype_reify (fun lt ->
+             not
+             @@ Jtype_set.mem_alpha_converted lt
+                  !Jtype_set.alpha_converted_answer_set)
+       else success)
+      &&&
       if !lower_bounds_first then lower_goal &&& upper_goal
       else upper_goal &&& lower_goal
     in

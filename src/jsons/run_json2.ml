@@ -67,6 +67,9 @@ let () =
       ( "-upper-bound-first",
         Arg.Unit (fun () -> CT_of_json.lower_bounds_first := false),
         " Solve upper bounds first" );
+      ( "-no-remove-dups",
+        Arg.Unit (fun () -> CT_of_json.need_remove_dups := false),
+        " Do not remove answers duplacates" );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -126,6 +129,9 @@ let run_jtype pp ?(n = test_args.answers_count) query =
           if Jtype_set.mem_alpha_converted h !answers_set then
             duplicated := Jtype_set.add_alpha_converted h !duplicated;
           answers_set := Jtype_set.add_alpha_converted h !answers_set;
+          Jtype_set.alpha_converted_answer_set :=
+            Jtype_set.add_alpha_converted h
+              !Jtype_set.alpha_converted_answer_set;
           loop (1 + i) tl
       | None, Some (h, tl) ->
           Format.printf "% 3d)  %a\n%!" i pp h;

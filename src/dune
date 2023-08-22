@@ -13,6 +13,7 @@
   mutable_type_table
   test_of_json
   closure
+  jtype_set
   ;
   )
  (wrapped false)

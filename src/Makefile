@@ -39,6 +39,9 @@ define LOPSTR_EXAMPLES
 example_$(1):
 	$(RUN_EXAMPLE) only_type_queries/LOPSTR2023/$(1).json
 
+example_with_dups_$(1):
+	$(RUN_EXAMPLE) -no-remove-dups only_type_queries/LOPSTR2023/$(1).json
+
 example_no_spec_$(1):
 	$(RUN_EXAMPLE) -no-table-spec only_type_queries/LOPSTR2023/$(1).json
 

@@ -1,4 +1,4 @@
-  $ ./relationalForwardTests.exe
+  $ ./relational_forward_tests.exe
    1 Object[] < Object (true) : [true]
    2 Object[] < Cloneable (true) : [true]
    3 Object[] < Serializable (true) : [true]

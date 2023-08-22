@@ -4,7 +4,7 @@ open JGS.HO
 
 let need_dynamic_closure = ref true
 
-module type SCT = MutableTypeTable.SAMPLE_CLASSTABLE
+module type SCT = Mutable_type_table.SAMPLE_CLASSTABLE
 
 type closure_type = Subtyping | Supertyping
 

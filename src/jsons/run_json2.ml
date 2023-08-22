@@ -59,7 +59,7 @@ let () =
       ( "-no-table-spec",
         Arg.Unit
           (fun () ->
-            MutableTypeTable.need_table_dynamic_specialisation := false),
+            Mutable_type_table.need_table_dynamic_specialisation := false),
         " Switch off table dynamic specialisations" );
       ( "-no-dynamic-closure",
         Arg.Unit (fun () -> Closure.need_dynamic_closure := false),
@@ -296,7 +296,7 @@ let () =
   Out_channel.with_open_text "/tmp/combined.json" (fun ch ->
       Yojson.Safe.pretty_to_channel ch j);
 
-  let (module CT : MutableTypeTable.SAMPLE_CLASSTABLE), goal, name_of_id =
+  let (module CT : Mutable_type_table.SAMPLE_CLASSTABLE), goal, name_of_id =
     match CT_of_json.make_query ~hack_goal:test_args.query_hack j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->

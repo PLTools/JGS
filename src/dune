@@ -10,9 +10,11 @@
   JGS
   CT_of_json
   JGS_Helpers
-  MutableTypeTable
+  mutable_type_table
   test_of_json
-  Closure)
+  closure
+  ;
+  )
  (wrapped false)
  (libraries yojson GT OCanren noCanren.Option noCanren.List ocamlgraph str)
  (flags

@@ -1,4 +1,4 @@
-  $ ./relationalClosureTests.exe
+  $ ./relational_closure_tests.exe
   Class A: 4
   Class B extends A: 5
   Class C extends B: 6

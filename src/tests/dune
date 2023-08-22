@@ -1,18 +1,18 @@
 (executable
- (name functionalTests)
- (modules functionalTests)
+ (name functional_tests)
+ (modules functional_tests)
  (libraries JGS_lib)
  (flags (-rectypes)))
 
 (executable
- (name reflectionTests)
- (modules reflectionTests)
+ (name reflection_tests)
+ (modules reflection_tests)
  (libraries JGS_lib)
  (flags (-rectypes)))
 
 (executable
- (name relationalForwardTests)
- (modules relationalForwardTests)
+ (name relational_forward_tests)
+ (modules relational_forward_tests)
  (libraries JGS_lib OCanren)
  (flags (-rectypes))
  (preprocess
@@ -22,8 +22,8 @@
    )))
 
 (executable
- (name relationalBackwardTests)
- (modules relationalBackwardTests)
+ (name relational_backward_tests)
+ (modules relational_backward_tests)
  (libraries JGS_lib OCanren)
  (flags (-rectypes))
  (preprocess
@@ -34,8 +34,8 @@
    )))
 
 (executable
- (name relationalClosureTests)
- (modules relationalClosureTests)
+ (name relational_closure_tests)
+ (modules relational_closure_tests)
  (libraries JGS_lib OCanren)
  (flags (-rectypes))
  (preprocess
@@ -46,8 +46,8 @@
    )))
 
 (executable
- (name standartClassesTests)
- (modules standartClassesTests)
+ (name standard_classes_tests)
+ (modules standard_classes_tests)
  (libraries JGS_lib OCanren)
  (flags (-rectypes))
  (preprocess
@@ -72,12 +72,12 @@
 
 (cram
  (deps
-  ./functionalTests.exe
-  ./reflectionTests.exe
-  ./relationalForwardTests.exe
-  ./relationalBackwardTests.exe
-  ./relationalClosureTests.exe
-  ./standartClassesTests.exe
+  ./functional_tests.exe
+  ./reflection_tests.exe
+  ./relational_forward_tests.exe
+  ./relational_backward_tests.exe
+  ./relational_closure_tests.exe
+  ./standard_classes_tests.exe
   ./standard2.exe
   ;
   ))

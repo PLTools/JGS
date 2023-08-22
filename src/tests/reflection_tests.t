@@ -1,4 +1,4 @@
-  $ ./reflectionTests.exe
+  $ ./reflection_tests.exe
   Class A: 4
   Class A1: 5
   Class B: 6

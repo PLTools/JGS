@@ -192,7 +192,7 @@ let collect_varnames =
   helper SS.empty
 
 let make_sample_ct () =
-  let open MutableTypeTable in
+  let open Mutable_type_table in
   (module SampleCT () : SAMPLE_CLASSTABLE)
 
 type config = { mutable verbose : int }
@@ -378,7 +378,7 @@ type var_info = { vi_id : int; vi_index : int }
 let var_info ~id vi_index = { vi_id = id; vi_index }
 
 let make_classtable table =
-  let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
+  let ((module CT : Mutable_type_table.SAMPLE_CLASSTABLE) as ct) =
     make_sample_ct ()
   in
   let classes : (string, int) Hashtbl.t =

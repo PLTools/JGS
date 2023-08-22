@@ -2,7 +2,7 @@ open OCanren
 open OCanren.Std
 open JGS
 open JGS_Helpers
-open MutableTypeTable
+open Mutable_type_table
 
 let pp_list f l =
   Printf.sprintf "\n[\n  %s\n]%!"

@@ -1,6 +1,6 @@
 open OCanren
 open JGS_Helpers
-open MutableTypeTable
+open Mutable_type_table
 open Closure
 
 (* Verifier modules *)

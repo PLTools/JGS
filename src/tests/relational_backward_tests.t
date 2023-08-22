@@ -1,4 +1,4 @@
-  $ ./relationalBackwardTests.exe
+  $ ./relational_backward_tests.exe
   1.1 (?) < Object : 
   [
     Array (Class (1, []));

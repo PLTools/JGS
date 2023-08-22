@@ -72,12 +72,12 @@ type query = {
 
 val yojson_of_query : query -> Yojson.Safe.t
 val query_of_yojson : Yojson.Safe.t -> query
-val make_sample_ct : unit -> (module MutableTypeTable.SAMPLE_CLASSTABLE)
+val make_sample_ct : unit -> (module Mutable_type_table.SAMPLE_CLASSTABLE)
 val set_verbose : unit -> unit
 
 val make_classtable :
   decl list ->
-  (module MutableTypeTable.SAMPLE_CLASSTABLE)
+  (module Mutable_type_table.SAMPLE_CLASSTABLE)
   * (string -> int)
   * (int -> string)
 
@@ -97,4 +97,4 @@ type result_query =
 val make_query :
   ?hack_goal:bool ->
   Yojson.Safe.t ->
-  (module MutableTypeTable.SAMPLE_CLASSTABLE) * result_query * (int -> string)
+  (module Mutable_type_table.SAMPLE_CLASSTABLE) * result_query * (int -> string)

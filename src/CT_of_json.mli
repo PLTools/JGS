@@ -1,7 +1,10 @@
 val failwiths : ('a, Format.formatter, unit, 'b) format4 -> 'a
 val verbose_errors : bool ref
 val lower_bounds_first : bool ref
-val need_remove_dups : bool ref
+
+type deplicates_tactic = No_remove | Structural | Debug_var
+
+val need_remove_dups : deplicates_tactic ref
 
 type polarity = JGS.polarity = Extends | Super
 
@@ -88,6 +91,7 @@ exception Name_not_found of class_id
 type result_query =
   is_subtype:
     (closure_type:Closure.closure_type ->
+    ?constr:OCanren.goal ->
     JGS.HO.jtype_injected ->
     JGS.HO.jtype_injected ->
     OCanren.goal) ->

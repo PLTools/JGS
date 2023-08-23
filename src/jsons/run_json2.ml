@@ -67,9 +67,13 @@ let () =
       ( "-upper-bound-first",
         Arg.Unit (fun () -> CT_of_json.lower_bounds_first := false),
         " Solve upper bounds first" );
-      ( "-no-remove-dups",
-        Arg.Unit (fun () -> CT_of_json.need_remove_dups := false),
-        " Do not remove answers duplacates" );
+      ( "-remove-dups-structural",
+        Arg.Unit
+          (fun () -> CT_of_json.need_remove_dups := CT_of_json.Structural),
+        " Remove answers duplacates using structural constraint" );
+      ( "-remove-dups-debug-var",
+        Arg.Unit (fun () -> CT_of_json.need_remove_dups := CT_of_json.Debug_var),
+        " Remove answers duplacates using structural debug_var" );
     ]
     (fun file -> test_args.query_file <- file)
     ""

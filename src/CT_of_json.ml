@@ -3,7 +3,10 @@ open Stdlib
 let failwiths fmt = Format.kasprintf failwith fmt
 let verbose_errors = ref true
 let lower_bounds_first = ref true
-let need_remove_dups = ref true
+
+type deplicates_tactic = No_remove | Structural | Debug_var
+
+let need_remove_dups = ref No_remove
 
 let log_error fmt =
   if !verbose_errors then Format.eprintf fmt
@@ -639,6 +642,7 @@ let pp_var_desc ppf = function
 type result_query =
   is_subtype:
     (closure_type:Closure.closure_type ->
+    ?constr:OCanren.goal ->
     JGS.HO.jtype_injected ->
     JGS.HO.jtype_injected ->
     OCanren.goal) ->
@@ -710,6 +714,18 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       if lower_bounds <> [] then
         Printf.eprintf "TODO: implement lower bounds\n%!";
 
+      let constr =
+        match !need_remove_dups with
+        | Debug_var ->
+            debug_var answer (Fun.flip JGS.HO.jtype_reify) (function
+              | [ (Value _ as ans) ]
+                when Jtype_set.mem_alpha_converted ans
+                       !Jtype_set.alpha_converted_answer_set ->
+                  failure
+              | _ -> success)
+        | _ -> success
+      in
+
       let upper_goal =
         List.fold_left
           (fun acc x ->
@@ -719,7 +735,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (answer, targ_inj (on_typ x)) in
 
-            acc &&& is_subtype ~closure_type:Subtyping sub super)
+            acc &&& is_subtype ~closure_type:Subtyping ~constr sub super)
           OCanren.success upper_bounds
       in
       let lower_goal =
@@ -731,10 +747,10 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
-            acc &&& is_subtype ~closure_type:Supertyping sub super)
+            acc &&& is_subtype ~closure_type:Supertyping ~constr sub super)
           OCanren.success lower_bounds
       in
-      (if !need_remove_dups then
+      (if !need_remove_dups = Structural then
          structural answer JGS.HO.jtype_reify (fun lt ->
              not
              @@ Jtype_set.mem_alpha_converted lt
@@ -839,7 +855,8 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       in
       upper_rez ++ lower_rez
     in
-    let goal ~is_subtype targ_inj answer_typ =
+    let goal : result_query =
+     fun ~is_subtype targ_inj answer_typ ->
       let make_vars names k =
         let storage = Hashtbl.create 23 in
         let rec helper = function

@@ -726,29 +726,44 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
         | _ -> success
       in
 
-      let upper_goal =
+      let _, upper_goal =
         List.fold_left
-          (fun acc x ->
+          (fun (is_first, acc) x ->
             let pos = true in
 
             show_processing pos Format.pp_print_string "?" pp_jtype x;
 
             let sub, super = (answer, targ_inj (on_typ x)) in
 
-            acc &&& is_subtype ~closure_type:Subtyping ~constr sub super)
-          OCanren.success upper_bounds
+            let constr =
+              if (!lower_bounds_first && lower_bounds <> []) || not is_first
+              then constr
+              else success
+            in
+
+            (false, acc &&& is_subtype ~closure_type:Subtyping ~constr sub super))
+          (true, OCanren.success) upper_bounds
       in
-      let lower_goal =
+      let _, lower_goal =
         List.fold_left
-          (fun acc x ->
+          (fun (is_first, acc) x ->
             let pos = true in
 
             show_processing pos pp_jtype x Format.pp_print_string "?";
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
-            acc &&& is_subtype ~closure_type:Supertyping ~constr sub super)
-          OCanren.success lower_bounds
+            let constr =
+              if
+                ((not !lower_bounds_first) && upper_bounds <> [])
+                || not is_first
+              then constr
+              else success
+            in
+
+            ( false,
+              acc &&& is_subtype ~closure_type:Supertyping ~constr sub super ))
+          (true, OCanren.success) lower_bounds
       in
       (if !need_remove_dups = Structural then
          structural answer JGS.HO.jtype_reify (fun lt ->
@@ -756,9 +771,9 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
              @@ Jtype_set.mem_alpha_converted lt
                   !Jtype_set.alpha_converted_answer_set)
        else success)
-      &&&
-      if !lower_bounds_first then lower_goal &&& upper_goal
-      else upper_goal &&& lower_goal
+      &&& (if !lower_bounds_first then lower_goal &&& upper_goal
+           else upper_goal &&& lower_goal)
+      &&& constr
     in
     goal
   in

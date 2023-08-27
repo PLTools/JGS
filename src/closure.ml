@@ -37,7 +37,7 @@ let rec list_same_length : _ Std.List.injected -> _ Std.List.injected -> goal =
     ]
 
 let is_correct_type (module CT : SCT) ~closure_subtyping t =
-  let decl_by_id id decl = CT.HO.decl_by_id (( === ) id) decl in
+  let decl_by_id id decl = CT.HO.decl_by_id id decl in
   conde
     [
       (* Array: always allow *)

@@ -259,33 +259,19 @@ module HO = struct
 
   module Verifier (CT : sig
     module HO : sig
-      val decl_by_id :
-        (int ilogic -> OCanren.goal) -> decl_injected -> OCanren.goal
-
-      val decl_by_id_fo : int ilogic -> decl_injected -> OCanren.goal
+      val decl_by_id : int ilogic -> decl_injected -> OCanren.goal
 
       val get_superclass_by_id :
-        (int ilogic -> OCanren.goal) ->
-        (int ilogic -> OCanren.goal) ->
-        jtype_injected option_injected ->
-        OCanren.goal
-
-      val get_superclass_by_id_fo :
         ?from:int ->
         int ilogic ->
         int ilogic ->
         jtype_injected option_injected ->
         OCanren.goal
 
-      val object_t_ho : jtype_injected -> OCanren.goal
       val object_t : jtype_injected
-      val cloneable_t_ho : jtype_injected -> OCanren.goal
       val cloneable_t : jtype_injected
-      val serializable_t_ho : jtype_injected -> OCanren.goal
       val serializable_t : jtype_injected
-
-      val new_var :
-        (unit OCanren.ilogic -> OCanren.goal) -> int ilogic -> OCanren.goal
+      val new_var : unit -> int ilogic
     end
 
     val pp_targ : Format.formatter -> jtype_logic targ_logic -> unit
@@ -350,8 +336,7 @@ module HO = struct
                    q99 === !!(I (ctor_idecl params q102));
                  ])) *)
         let params q98 =
-          fresh (q99 q100 q101 q102)
-            (CT.HO.decl_by_id_fo id q99)
+          fresh (q99 q100 q101 q102) (CT.HO.decl_by_id id q99)
             (conde
                [
                  q99 === !!(C (ctor_cdecl q98 q100 q101));
@@ -364,26 +349,30 @@ module HO = struct
               conde
                 [
                   fresh t (q107 === !!(Type t)) (q133 === !!(CC_type t));
-                  fresh (q114 q117)
+                  fresh q117
                     (q107 === !!(Wildcard !!None))
                     (q133
-                    === !!(CC_var (q114, i, !!(CC_subst q117), !!(Some !!Null)))
-                    )
-                    (CT.HO.new_var (( === ) !!()) q114)
+                    === !!(CC_var
+                             ( CT.HO.new_var (),
+                               i,
+                               !!(CC_subst q117),
+                               !!(Some !!Null) )))
                     (List.HO.nth params (( === ) i) q117);
-                  fresh (t q119 q122)
+                  fresh (t q122)
                     (q107 === !!(Wildcard !!(Some (Std.pair !!Super t))))
                     (q133
-                    === !!(CC_var (q119, i, !!(CC_subst q122), !!(Some t))))
-                    (CT.HO.new_var (( === ) !!()) q119)
+                    === !!(CC_var
+                             (CT.HO.new_var (), i, !!(CC_subst q122), !!(Some t)))
+                    )
                     (List.HO.nth params (( === ) i) q122);
-                  fresh (t q126 q130)
+                  fresh (t q130)
                     (q107 === !!(Wildcard !!(Some (Std.pair !!Extends t))))
                     (q133
                     === !!(CC_var
-                             (q126, i, !!(CC_inter (t, q130)), !!(Some !!Null)))
-                    )
-                    (CT.HO.new_var (( === ) !!()) q126)
+                             ( CT.HO.new_var (),
+                               i,
+                               !!(CC_inter (t, q130)),
+                               !!(Some !!Null) )))
                     (List.HO.nth params (( === ) i) q130);
                 ])
             targs
@@ -596,7 +585,7 @@ module HO = struct
                          ]))
                   (( === ) !!true) targs_a targs_b res);
              fresh q211 (id_a =/= id_b)
-               (CT.HO.get_superclass_by_id_fo ~from:__LINE__ id_a id_b q211)
+               (CT.HO.get_superclass_by_id ~from:__LINE__ id_a id_b q211)
                (conde
                   [
                     fresh (targs_b' q217 q218)
@@ -625,11 +614,11 @@ module HO = struct
      fun ( <-< ) type_a type_b res st ->
       let () =
         (if JGS_stats.config.enable_counters then
-         let open JGS_stats in
-         OCanren.is_ground_bool res st
-           ~on_ground:(fun b ->
-             (if b then st_add_true else st_add_false) get_arr set_arr stats)
-           ~onvar:(fun () -> st_add_var get_arr set_arr stats));
+           let open JGS_stats in
+           OCanren.is_ground_bool res st
+             ~on_ground:(fun b ->
+               (if b then st_add_true else st_add_false) get_arr set_arr stats)
+             ~onvar:(fun () -> st_add_var get_arr set_arr stats));
         if JGS_stats.config.trace_arrow then
           Format.printf " -<-: type_a = %a, type_b = %a, rez = %a\n%!"
             CT.pp_jtyp
@@ -721,20 +710,22 @@ module HO = struct
                               fresh ()
                                 (type_b === CT.HO.object_t)
                                 (q318 === !!true);
-                              fresh q335
+                              fresh ()
                                 (type_b =/= CT.HO.object_t)
-                                (CT.HO.cloneable_t_ho q335)
                                 (conde
                                    [
-                                     fresh () (type_b === q335) (q318 === !!true);
-                                     fresh q340 (type_b =/= q335)
-                                       (CT.HO.serializable_t_ho q340)
+                                     fresh ()
+                                       (type_b === CT.HO.cloneable_t)
+                                       (q318 === !!true);
+                                     fresh ()
+                                       (type_b =/= CT.HO.cloneable_t)
                                        (conde
                                           [
-                                            fresh () (type_b === q340)
+                                            fresh ()
+                                              (type_b === CT.HO.serializable_t)
                                               (q318 === !!true);
                                             fresh () (q318 === !!false)
-                                              (type_b =/= q340);
+                                              (type_b =/= CT.HO.serializable_t);
                                           ]);
                                    ]);
                             ])
@@ -792,33 +783,19 @@ module FO = struct
 
   module Verifier (CT : sig
     module HO : sig
-      val decl_by_id :
-        (int ilogic -> OCanren.goal) -> decl_injected -> OCanren.goal
-
-      val decl_by_id_fo : int ilogic -> decl_injected -> OCanren.goal
+      val decl_by_id : int ilogic -> decl_injected -> OCanren.goal
 
       val get_superclass_by_id :
-        (int ilogic -> OCanren.goal) ->
-        (int ilogic -> OCanren.goal) ->
-        jtype_injected option_injected ->
-        OCanren.goal
-
-      val get_superclass_by_id_fo :
         ?from:int ->
         int ilogic ->
         int ilogic ->
         jtype_injected option_injected ->
         OCanren.goal
 
-      val object_t_ho : jtype_injected -> OCanren.goal
       val object_t : jtype_injected
-      val cloneable_t_ho : jtype_injected -> OCanren.goal
       val cloneable_t : jtype_injected
-      val serializable_t_ho : jtype_injected -> OCanren.goal
       val serializable_t : jtype_injected
-
-      val new_var :
-        (unit OCanren.ilogic -> OCanren.goal) -> int ilogic -> OCanren.goal
+      val new_var : unit -> int ilogic
     end
 
     val pp_targ : Format.formatter -> jtype_logic targ_logic -> unit

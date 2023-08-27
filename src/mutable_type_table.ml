@@ -36,29 +36,19 @@ module type SAMPLE_CLASSTABLE = sig
   val pp_jtyp : Format.formatter -> HO.jtype_logic -> unit
 
   module HO : sig
-    val decl_by_id_fo : int ilogic -> HO.decl_injected -> OCanren.goal
-    val decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal
+    val decl_by_id : int ilogic -> HO.decl_injected -> OCanren.goal
 
-    val get_superclass_by_id_fo :
+    val get_superclass_by_id :
       ?from:int ->
       int ilogic ->
       int ilogic ->
       HO.jtype_injected Std.Option.injected ->
       goal
 
-    val get_superclass_by_id :
-      (int ilogic -> goal) ->
-      (int ilogic -> goal) ->
-      HO.jtype_injected Std.Option.injected ->
-      goal
-
-    val object_t_ho : HO.jtype_injected -> goal
     val object_t : HO.jtype_injected
-    val cloneable_t_ho : HO.jtype_injected -> goal
     val cloneable_t : HO.jtype_injected
-    val serializable_t_ho : HO.jtype_injected -> goal
     val serializable_t : HO.jtype_injected
-    val new_var : (GT.unit ilogic -> goal) -> int ilogic -> goal
+    val new_var : unit -> int ilogic
   end
 end
 
@@ -284,7 +274,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
     let get_subclass_map () = Lazy.force (update_disj_args ()).subclass_map
 
-    let decl_by_id_fo : int ilogic -> HO.decl_injected -> goal =
+    let decl_by_id : int ilogic -> HO.decl_injected -> goal =
       let decl_by_id_ground id rez =
         (* TODO: Kakadu: should we memoize already injected values? *)
         match M.find id !m with
@@ -310,10 +300,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
           | _ -> decl_by_id_free id rez)
       else decl_by_id_free
 
-    let decl_by_id : (int ilogic -> goal) -> HO.decl_injected -> goal =
-     fun id d -> fresh id_val (id id_val) (decl_by_id_fo id_val d)
-
-    let get_superclass_by_id_fo :
+    let get_superclass_by_id :
         ?from:int ->
         int ilogic ->
         int ilogic ->
@@ -431,23 +418,9 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
              (some_rez === Std.some rez)
              (get_superclass_by_id_free_free sub_id_val super_id_val rez)
 
-    let get_superclass_by_id :
-        (int ilogic -> goal) ->
-        (int ilogic -> goal) ->
-        HO.jtype_injected Std.Option.injected ->
-        goal =
-     fun hoa hob jtyp ->
-      fresh (a b) (hoa a) (hob b) (get_superclass_by_id_fo a b jtyp)
-
     let object_t = jtype_inj object_t
-    let object_t_ho : HO.jtype_injected -> goal = fun x -> x === object_t
     let cloneable_t = jtype_inj cloneable_t
-    let cloneable_t_ho : HO.jtype_injected -> goal = fun x -> x === cloneable_t
     let serializable_t = jtype_inj serializable_t
-
-    let serializable_t_ho : HO.jtype_injected -> goal =
-     fun x -> x === serializable_t
-
-    let new_var _ x = x === !!(new_id ())
+    let new_var () = !!(new_id ())
   end
 end

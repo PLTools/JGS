@@ -171,8 +171,6 @@ module HO = struct
   open List.HO
   open Option.HO
 
-  [@@@ocaml.warning "-27"]
-
   [%%distrib
   type polarity = Extends | Super [@@deriving gt ~options:{ show; fmt; gmap }]]
 
@@ -219,42 +217,141 @@ module HO = struct
     | CC_var of int * nat * capture_conversion_subst * jtype option
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
-  [@@@ocaml.warning "+27"]
+  let cc_var id index subst t = !!(CC_var (id, index, subst, t))
 
-  let rec substitute_typ subst q0 q30 =
+  module Util = struct
+    let mapio :
+        (Std.Nat.injected -> 'a ilogic -> 'b ilogic -> goal) ->
+        'a ilogic Std.List.injected ->
+        'b ilogic Std.List.injected ->
+        goal =
+     fun f l res ->
+      let open Std in
+      let rec mapio l i res =
+        conde
+          [
+            fresh () (l === nil ()) (res === nil ());
+            fresh (l_hd l_tl res_hd res_tl)
+              (l === l_hd % l_tl)
+              (res === res_hd % res_tl)
+              (f i l_hd res_hd)
+              (mapio l_tl (Nat.s i) res_tl);
+          ]
+      in
+      mapio l Nat.o res
+
+    let rec memo :
+        'a ilogic -> 'a ilogic Std.List.injected -> bool ilogic -> goal =
+     fun e l res ->
+      let open Std in
+      conde
+        [
+          fresh () (l === nil ()) (res === !!false);
+          fresh (hd tl)
+            (l === hd % tl)
+            (conde
+               [
+                 fresh () (hd === e) (res === !!true);
+                 fresh () (hd =/= e) (memo e tl res);
+               ]);
+        ]
+
+    let rec ntho :
+        'a ilogic Std.List.injected -> Std.Nat.injected -> 'a ilogic -> goal =
+     fun l n rez ->
+      let open Std in
+      fresh (hd tl)
+        (l === hd % tl)
+        (conde
+           [
+             fresh () (n === Nat.o) (hd === rez);
+             fresh n' (n === Nat.s n') (ntho tl n' rez);
+           ])
+
+    let rec for_allo :
+        ('a ilogic -> bool ilogic -> goal) ->
+        'a ilogic Std.List.injected ->
+        bool ilogic ->
+        goal =
+     fun p l res ->
+      let open Std in
+      conde
+        [
+          fresh () (l === nil ()) (res === !!true);
+          fresh (hd tl p_res)
+            (l === hd % tl)
+            (p hd p_res)
+            (conde
+               [
+                 fresh () (p_res === !!true) (for_allo p tl res);
+                 fresh () (p_res === !!false) (res === !!false);
+               ]);
+        ]
+
+    let rec fold_left2o :
+        ('a ilogic -> 'b ilogic -> 'c ilogic -> 'a ilogic -> goal) ->
+        'a ilogic ->
+        'b ilogic Std.List.injected ->
+        'c ilogic Std.List.injected ->
+        'a ilogic ->
+        goal =
+     fun f acc l1 l2 res ->
+      let open Std in
+      conde
+        [
+          fresh () (l1 === nil ()) (l2 === nil ()) (res === acc);
+          fresh (hd1 tl1 hd2 tl2 new_acc)
+            (l1 === hd1 % tl1)
+            (l2 === hd2 % tl2)
+            (f acc hd1 hd2 new_acc)
+            (fold_left2o f new_acc tl1 tl2 res);
+        ]
+  end
+
+  let rec substitute_typ :
+      jtype_injected targ_injected Std.List.injected ->
+      jtype_injected ->
+      jtype_injected ->
+      goal =
+   fun subst typ res ->
     conde
       [
-        fresh (typ q4) (q0 === !!(Array typ)) (q30 === !!(Array q4))
-          (substitute_typ subst typ q4);
-        fresh (id args q8)
-          (q0 === !!(Class (id, args)))
-          (q30 === !!(Class (id, q8)))
-          (Std.List.mapo (substitute_arg subst) args q8);
-        fresh (id args q13)
-          (q0 === !!(Interface (id, args)))
-          (q30 === !!(Interface (id, q13)))
-          (Std.List.mapo (substitute_arg subst) args q13);
-        fresh (typs q17)
-          (q0 === !!(Intersect typs))
-          (q30 === !!(Intersect q17))
-          (Std.List.mapo (substitute_typ subst) typs q17);
-        fresh () (q0 === !!Null) (q30 === !!Null);
+        fresh (param new_param) (typ === !!(Array param))
+          (res === !!(Array new_param))
+          (substitute_typ subst param new_param);
+        fresh (id args new_args)
+          (typ === !!(Class (id, args)))
+          (res === !!(Class (id, new_args)))
+          (Std.List.mapo (substitute_arg subst) args new_args);
+        fresh (id args new_args)
+          (typ === !!(Interface (id, args)))
+          (res === !!(Interface (id, new_args)))
+          (Std.List.mapo (substitute_arg subst) args new_args);
+        fresh (typs new_typs)
+          (typ === !!(Intersect typs))
+          (res === !!(Intersect new_typs))
+          (Std.List.mapo (substitute_typ subst) typs new_typs);
+        fresh () (typ === !!Null) (res === !!Null);
       ]
 
-  and substitute_arg subst q34 q63 =
+  and substitute_arg :
+      jtype_injected targ_injected Std.List.injected ->
+      jtype_injected targ_injected ->
+      jtype_injected targ_injected ->
+      goal =
+   fun subst targ res ->
     conde
       [
         fresh index
-          (q34 === !!(Type (var __ index __ __)))
-          (List.HO.nth subst (( === ) index) q63);
-        fresh (typ q48) (q34 === !!(Type typ)) (q63 === !!(Type q48))
-          (q34 =/= !!(Type (var __ __ __ __)))
-          (substitute_typ subst typ q48);
-        fresh () (q34 === !!(Wildcard !!None)) (q63 === !!(Wildcard !!None));
-        fresh (p typ q59)
-          (q34 === !!(Wildcard !!(Some (Std.pair p typ))))
-          (q63 === !!(Wildcard !!(Some (Std.pair p q59))))
-          (substitute_typ subst typ q59);
+          (targ === !!(Type (var __ index __ __)))
+          (Util.ntho subst index res);
+        fresh (typ new_typ) (targ === !!(Type typ)) (res === !!(Type new_typ))
+          (substitute_typ subst typ new_typ);
+        fresh () (targ === !!(Wildcard !!None)) (res === !!(Wildcard !!None));
+        fresh (p typ new_typ)
+          (targ === !!(Wildcard !!(Some (Std.pair p typ))))
+          (res === !!(Wildcard !!(Some (Std.pair p new_typ))))
+          (substitute_typ subst typ new_typ);
       ]
 
   module Verifier (CT : sig
@@ -285,7 +382,7 @@ module HO = struct
         jtype_injected targ_injected Std.List.injected ->
         jtype_injected targ_injected Std.List.injected option ilogic ->
         goal =
-     fun ?(from = 0) ( <-< ) id targs q205 st ->
+     fun ?(from = 0) ( <-< ) id targs res st ->
       let () =
         if JGS_stats.config.trace_cc then
           Format.printf
@@ -299,7 +396,7 @@ module HO = struct
             (GT.fmt Std.Option.logic @@ GT.fmt OCanren.Std.List.logic CT.pp_targ)
             (OCanren.reify_in_state st
                (Std.Option.reify (Std.List.reify @@ targ_reify jtype_reify))
-               q205);
+               res);
         if JGS_stats.config.enable_counters then (
           let open JGS_stats in
           let change b =
@@ -325,122 +422,112 @@ module HO = struct
 
       st
       |>
-      if !need_simpified then q205 === !!(Some targs)
+      if !need_simpified then res === !!(Some targs)
       else
-        (* fresh params
-           (fresh (q99 q100 q101 q102)
-              (CT.HO.decl_by_id_fo id q99)
-              (conde
-                 [
-                   q99 === !!(C (ctor_cdecl params q100 q101));
-                   q99 === !!(I (ctor_idecl params q102));
-                 ])) *)
-        let params q98 =
-          fresh (q99 q100 q101 q102) (CT.HO.decl_by_id id q99)
+        let params : jtype_injected Std.List.injected -> goal =
+         fun p ->
+          fresh decl (CT.HO.decl_by_id id decl)
             (conde
                [
-                 q99 === !!(C (ctor_cdecl q98 q100 q101));
-                 q99 === !!(I (ctor_idecl q98 q102));
+                 decl === !!(C (ctor_cdecl p __ __));
+                 decl === !!(I (ctor_idecl p __));
                ])
         in
-        let raw =
-          List.FO.mapi
-            (fun i q107 q133 ->
-              conde
-                [
-                  fresh t (q107 === !!(Type t)) (q133 === !!(CC_type t));
-                  fresh q117
-                    (q107 === !!(Wildcard !!None))
-                    (q133
-                    === !!(CC_var
-                             ( CT.HO.new_var (),
-                               i,
-                               !!(CC_subst q117),
-                               !!(Some !!Null) )))
-                    (List.HO.nth params (( === ) i) q117);
-                  fresh (t q122)
-                    (q107 === !!(Wildcard !!(Some (Std.pair !!Super t))))
-                    (q133
-                    === !!(CC_var
-                             (CT.HO.new_var (), i, !!(CC_subst q122), !!(Some t)))
-                    )
-                    (List.HO.nth params (( === ) i) q122);
-                  fresh (t q130)
-                    (q107 === !!(Wildcard !!(Some (Std.pair !!Extends t))))
-                    (q133
-                    === !!(CC_var
-                             ( CT.HO.new_var (),
-                               i,
-                               !!(CC_inter (t, q130)),
-                               !!(Some !!Null) )))
-                    (List.HO.nth params (( === ) i) q130);
-                ])
-            targs
+        let raw_helper :
+            Std.Nat.injected ->
+            jtype_injected targ_injected ->
+            capture_conversion_type_injected ->
+            goal =
+         fun i targ cc_targ ->
+          conde
+            [
+              fresh t (targ === !!(Type t)) (cc_targ === !!(CC_type t));
+              fresh (param params_val)
+                (targ === !!(Wildcard !!None))
+                (cc_targ
+                === cc_var (CT.HO.new_var ()) i !!(CC_subst param)
+                      !!(Some !!Null))
+                (params params_val)
+                (Util.ntho params_val i param);
+              fresh (t subst params_val)
+                (targ === !!(Wildcard !!(Some (Std.pair !!Super t))))
+                (cc_targ
+                === cc_var (CT.HO.new_var ()) i !!(CC_subst subst) !!(Some t))
+                (params params_val)
+                (Util.ntho params_val i subst);
+              fresh (t t2 params_val)
+                (targ === !!(Wildcard !!(Some (Std.pair !!Extends t))))
+                (cc_targ
+                === cc_var (CT.HO.new_var ()) i
+                      !!(CC_inter (t, t2))
+                      !!(Some !!Null))
+                (params params_val)
+                (Util.ntho params_val i t2);
+            ]
         in
-        let subst =
-          List.HO.map
-            (fun q136 q137 ->
-              fresh q138 (q136 q138)
+        let subst_helper :
+            capture_conversion_type_injected ->
+            jtype_injected targ_injected ->
+            goal =
+         fun raw_element targ ->
+          conde
+            [
+              fresh t (raw_element === !!(CC_type t)) (targ === !!(Type t));
+              fresh (id i)
+                (raw_element === cc_var id i __ __)
+                (targ === !!(Type (var id i !!Null !!None)));
+            ]
+        in
+        let targs_helper :
+            jtype_injected targ_injected list_injected ->
+            capture_conversion_type_injected ->
+            jtype_injected targ_injected ->
+            goal =
+         fun subst cc_typ res ->
+          conde
+            [
+              fresh (t new_t) (cc_typ === !!(CC_type t)) (res === !!(Type new_t))
+                (substitute_typ subst t new_t);
+              fresh (id i p new_p lwb)
+                (cc_typ === cc_var id i !!(CC_subst p) lwb)
+                (res === !!(Type (var id i new_p lwb)))
+                (substitute_typ subst p new_p);
+              fresh (id i t p lwb upb new_p)
+                (cc_typ === cc_var id i !!(CC_inter (t, p)) lwb)
+                (res === !!(Type (var id i upb lwb)))
+                (substitute_typ subst p new_p)
                 (conde
                    [
-                     fresh t (q138 === !!(CC_type t)) (q137 === !!(Type t));
-                     fresh (id i q142 q143)
-                       (q138 === !!(CC_var (id, i, q142, q143)))
-                       (q137 === !!(Type (var id i !!Null !!None)));
-                   ]))
-            raw
+                     fresh ts
+                       (new_p === !!(Intersect ts))
+                       (upb === !!(Intersect Std.(t % ts)));
+                     fresh ()
+                       (upb === !!(Intersect (Std.list Fun.id [ t; new_p ])))
+                       (new_p =/= !!(Intersect __));
+                   ]);
+            ]
         in
-        let targs =
-          List.HO.map
-            (fun q151 q152 ->
-              fresh q153 (q151 q153)
-                (conde
-                   [
-                     fresh vvv (q153 === !!(CC_type vvv))
-                       (vvv === var __ __ __ __)
-                       (q152 === !!(Type vvv));
-                     fresh (t q154) (q153 === !!(CC_type t))
-                       (q152 === !!(Type q154))
-                       (substitute_typ subst t q154);
-                     fresh (id i p lwb q159)
-                       (q153 === !!(CC_var (id, i, !!(CC_subst p), lwb)))
-                       (q152 === !!(Type (var id i q159 lwb)))
-                       (substitute_typ subst p q159);
-                     fresh (id i t p lwb q168 q170)
-                       (q153 === !!(CC_var (id, i, !!(CC_inter (t, p)), lwb)))
-                       (q152 === !!(Type (var id i q168 lwb)))
-                       (substitute_typ subst p q170)
-                       (conde
-                          [
-                            fresh ts
-                              (q170 === !!(Intersect ts))
-                              (q168 === !!(Intersect (Std.( % ) t ts)));
-                            fresh ()
-                              (q168
-                              === !!(Intersect (Std.list Fun.id [ t; q170 ])))
-                              (q170 =/= !!(Intersect __));
-                          ]);
-                   ]))
-            raw
+        let targs_pred : jtype_injected targ_injected -> bool ilogic -> goal =
+         fun targ res ->
+          conde
+            [
+              fresh (upb lwb)
+                (targ === !!(Type (var __ __ upb !!(Some lwb))))
+                (( <-< ) lwb upb res);
+              fresh () (res === !!true)
+                (targ =/= !!(Type (var __ __ __ !!(Some __))));
+            ]
         in
-        fresh q186
-          (List.HO.for_all
-             (fun q191 q192 ->
-               fresh q193 (q191 q193)
-                 (conde
-                    [
-                      fresh (q194 q195 upb lwb)
-                        (q193 === !!(Type (var q194 q195 upb !!(Some lwb))))
-                        (( <-< ) lwb upb q192);
-                      fresh () (q192 === !!true)
-                        (q193 =/= !!(Type (var __ __ __ !!(Some __))));
-                    ]))
-             targs q186)
+        fresh
+          (raw subst new_targs are_correct_targs)
+          (Util.mapio raw_helper targs raw)
+          (Std.List.mapo subst_helper raw subst)
+          (Std.List.mapo (targs_helper subst) raw new_targs)
+          (Util.for_allo targs_pred new_targs are_correct_targs)
           (conde
              [
-               fresh q189 (q186 === !!true) (q205 === !!(Some q189))
-                 (targs q189);
-               fresh () (q186 === !!false) (q205 === !!None);
+               fresh () (are_correct_targs === !!true) (res === !!(Some targs));
+               fresh () (are_correct_targs === !!false) (res === !!None);
              ])
 
     let rec ( <=< ) :
@@ -488,7 +575,7 @@ module HO = struct
                (conde
                   [
                     fresh () (o === CT.HO.object_t) (res === !!true);
-                    fresh () (o =/= CT.HO.object_t) (res === !!false);
+                    fresh () (res === !!false) (o =/= CT.HO.object_t);
                   ]);
              fresh (t1 t2) (type_a === !!(Type t1))
                (conde
@@ -545,9 +632,9 @@ module HO = struct
     and class_int_sub :
         (jtype_injected -> jtype_injected -> bool ilogic -> goal) ->
         int ilogic ->
-        (jtype_injected targ_injected Std.List.injected -> goal) ->
+        jtype_injected targ_injected Std.List.injected ->
         int ilogic ->
-        (jtype_injected targ_injected Std.List.injected -> goal) ->
+        jtype_injected targ_injected Std.List.injected ->
         bool ilogic ->
         goal =
      fun ( <-< ) id_a targs_a id_b targs_b res st ->
@@ -574,34 +661,32 @@ module HO = struct
       |> conde
            [
              fresh () (id_a === id_b)
-               (List.HO.fold_left2
-                  (fun f ta tb q228 ->
-                    fresh (q226 ta_val tb_val) (ta ta_val) (tb tb_val) (f q226)
-                      (conde
-                         [
-                           fresh () (q226 === !!false) (q228 === !!false);
-                           fresh () (q226 === !!true)
-                             (( <=< ) ( <-< ) ta_val tb_val q228);
-                         ]))
-                  (( === ) !!true) targs_a targs_b res);
-             fresh q211 (id_a =/= id_b)
-               (CT.HO.get_superclass_by_id ~from:__LINE__ id_a id_b q211)
+               (Util.fold_left2o
+                  (fun acc ta tb res ->
+                    conde
+                      [
+                        fresh () (acc === !!false) (res === !!false);
+                        fresh () (acc === !!true) (( <=< ) ( <-< ) ta tb res);
+                      ])
+                  !!true targs_a targs_b res);
+             fresh super (id_a =/= id_b)
+               (CT.HO.get_superclass_by_id id_a id_b super)
                (conde
                   [
-                    fresh (targs_b' q217 q218)
+                    fresh (targs_b' new_targs_b')
                       (conde
                          [
-                           q211 === !!(Some !!(Class (__, targs_b')));
-                           q211 === !!(Some !!(Interface (__, targs_b')));
+                           super === !!(Some !!(Class (__, targs_b')));
+                           super === !!(Some !!(Interface (__, targs_b')));
                          ])
-                      (targs_b q217)
-                      (Std.List.mapo (substitute_arg targs_a) targs_b' q218)
+                      (Std.List.mapo (substitute_arg targs_a) targs_b'
+                         new_targs_b')
                       (conde
                          [
-                           fresh () (q217 === q218) (res === !!true);
-                           fresh () (res === !!false) (q217 =/= q218);
+                           fresh () (targs_b === new_targs_b') (res === !!true);
+                           fresh () (res === !!false) (targs_b =/= new_targs_b');
                          ]);
-                    fresh () (q211 === !!None) (res === !!false);
+                    fresh () (super === !!None) (res === !!false);
                   ]);
            ]
 
@@ -629,145 +714,119 @@ module HO = struct
             (OCanren.reify_in_state st OCanren.reify res)
       in
 
-      (* let ( -<- ) = ( -<- ) ( <-< ) in *)
       st
-      |> fresh ()
-           (conde
-              [
-                fresh (id_a targs_a q243)
-                  (type_a === !!(Class (id_a, targs_a)))
-                  (capture_conversion ~from:__LINE__ ( <-< ) id_a targs_a q243)
-                  (conde
-                     [
-                       fresh () (q243 === !!None) (res === !!false);
-                       fresh targs_a
-                         (q243 === !!(Some targs_a))
-                         (conde
-                            [
-                              fresh (id_b targs_b)
-                                (conde
-                                   [
-                                     type_b === !!(Interface (id_b, targs_b));
-                                     type_b === !!(Class (id_b, targs_b));
-                                   ])
-                                (class_int_sub ( <-< ) id_a (( === ) targs_a)
-                                   id_b (( === ) targs_b) res);
-                              fresh typ
-                                (fresh ()
-                                   (type_b === var __ __ __ !!(Some typ))
-                                   (conde
-                                      [
-                                        fresh () (typ === type_a)
-                                          (res === !!true);
-                                        fresh () (res === !!false)
-                                          (typ =/= type_a);
-                                      ]));
-                              fresh () (res === !!false)
-                                (type_b =/= var __ __ __ !!(Some __))
-                                (type_b =/= !!(Interface (__, __)))
-                                (type_b =/= !!(Class (__, __)));
-                            ]);
-                     ]);
-                fresh (id_a targs_a q271)
-                  (type_a === !!(Interface (id_a, targs_a)))
-                  (capture_conversion ( <-< ) id_a targs_a q271)
-                  (conde
-                     [
-                       fresh () (q271 === !!None) (res === !!false);
-                       fresh targs_a
-                         (q271 === !!(Some targs_a))
-                         (conde
-                            [
-                              fresh (id_b targs_b)
-                                (conde
-                                   [
-                                     type_b === !!(Class (id_b, targs_b));
-                                     type_b === !!(Interface (id_b, targs_b));
-                                   ])
-                                (class_int_sub ( <-< ) id_a (( === ) targs_a)
-                                   id_b (( === ) targs_b) res);
-                              fresh (q289 q290 q291 typ)
-                                (type_b === var q289 q290 q291 !!(Some typ))
-                                (conde
-                                   [
-                                     fresh () (typ === type_a) (res === !!true);
-                                     fresh () (res === !!false) (typ =/= type_a);
-                                   ]);
-                              fresh () (res === !!false)
-                                (type_b =/= var __ __ __ !!(Some __))
-                                (type_b =/= !!(Class (__, __)))
-                                (type_b =/= !!(Interface (__, __)));
-                            ]);
-                     ]);
-                fresh ta (type_a === !!(Array ta))
-                  (* TODO: Kakadu. This conde branch is full of shit.
-                     But I will postpone optimization of that because I don't have a proper test to benchmark *)
-                  (conde
-                     [
-                       fresh q318 (ta === CT.HO.object_t)
-                         (conde
-                            [
-                              fresh ()
-                                (type_b === CT.HO.object_t)
-                                (q318 === !!true);
-                              fresh ()
-                                (type_b =/= CT.HO.object_t)
-                                (conde
-                                   [
-                                     fresh ()
-                                       (type_b === CT.HO.cloneable_t)
-                                       (q318 === !!true);
-                                     fresh ()
-                                       (type_b =/= CT.HO.cloneable_t)
-                                       (conde
-                                          [
-                                            fresh ()
-                                              (type_b === CT.HO.serializable_t)
-                                              (q318 === !!true);
-                                            fresh () (q318 === !!false)
-                                              (type_b =/= CT.HO.serializable_t);
-                                          ]);
-                                   ]);
-                            ])
-                         (conde
-                            [
-                              fresh () (q318 === !!true) (res === !!true);
-                              fresh () (q318 === !!false)
-                                (conde
-                                   [
-                                     fresh tb (type_b === !!(Array tb))
-                                       (( -<- ) ( <-< ) ta tb res);
-                                     fresh q323 (type_b === q323)
-                                       (res === !!false)
-                                       (type_b =/= !!(Array __));
-                                   ]);
-                            ]);
-                       fresh () (ta =/= CT.HO.object_t)
-                         (conde
-                            [
-                              fresh tb (type_b === !!(Array tb))
-                                (( -<- ) ( <-< ) ta tb res);
-                              fresh q315 (type_b === q315) (res === !!false)
-                                (type_b =/= !!(Array __));
-                            ]);
-                     ]);
-                fresh ts
-                  (type_a === !!(Intersect ts))
-                  (List.FO.mem type_b ts res);
-                fresh typ
-                  (type_a === var __ __ typ __)
-                  (conde
-                     [
-                       fresh () (typ === type_b) (res === !!true);
-                       fresh () (typ =/= type_b) (res === !!false);
-                     ]);
-                fresh () (type_a === !!Null)
-                  (conde
-                     [
-                       fresh () (type_b === !!Null) (res === !!false);
-                       fresh () (type_b =/= !!Null) (res === !!true);
-                     ]);
-              ])
+      |> conde
+           [
+             fresh (id_a targs_a converted)
+               (type_a === !!(Class (id_a, targs_a)))
+               (capture_conversion ( <-< ) id_a targs_a converted)
+               (conde
+                  [
+                    fresh () (converted === !!None) (res === !!false);
+                    fresh targs_a
+                      (converted === !!(Some targs_a))
+                      (conde
+                         [
+                           fresh (id_b targs_b)
+                             (conde
+                                [
+                                  type_b === !!(Interface (id_b, targs_b));
+                                  type_b === !!(Class (id_b, targs_b));
+                                ])
+                             (class_int_sub ( <-< ) id_a targs_a id_b targs_b
+                                res);
+                           fresh typ
+                             (type_b === var __ __ __ !!(Some typ))
+                             (conde
+                                [
+                                  fresh () (typ === type_a) (res === !!true);
+                                  fresh () (res === !!false) (typ =/= type_a);
+                                ]);
+                           fresh () (res === !!false)
+                             (type_b =/= var __ __ __ !!(Some __))
+                             (type_b =/= !!(Interface (__, __)))
+                             (type_b =/= !!(Class (__, __)));
+                         ]);
+                  ]);
+             fresh (id_a targs_a converted)
+               (type_a === !!(Interface (id_a, targs_a)))
+               (capture_conversion ( <-< ) id_a targs_a converted)
+               (conde
+                  [
+                    fresh () (converted === !!None) (res === !!false);
+                    fresh targs_a
+                      (converted === !!(Some targs_a))
+                      (conde
+                         [
+                           fresh (id_b targs_b)
+                             (conde
+                                [
+                                  type_b === !!(Class (id_b, targs_b));
+                                  type_b === !!(Interface (id_b, targs_b));
+                                ])
+                             (class_int_sub ( <-< ) id_a targs_a id_b targs_b
+                                res);
+                           fresh (__FILE__ __ typ)
+                             (type_b === var __ __ __ !!(Some typ))
+                             (conde
+                                [
+                                  fresh () (typ === type_a) (res === !!true);
+                                  fresh () (res === !!false) (typ =/= type_a);
+                                ]);
+                           fresh () (res === !!false)
+                             (type_b =/= var __ __ __ !!(Some __))
+                             (type_b =/= !!(Class (__, __)))
+                             (type_b =/= !!(Interface (__, __)));
+                         ]);
+                  ]);
+             fresh ta (type_a === !!(Array ta))
+               (conde
+                  [
+                    fresh () (ta === CT.HO.object_t)
+                      (conde
+                         [
+                           fresh () (res === !!true)
+                             (conde
+                                [
+                                  type_b === CT.HO.object_t;
+                                  type_b === CT.HO.cloneable_t;
+                                  type_b === CT.HO.serializable_t;
+                                ]);
+                           fresh ()
+                             (type_b =/= CT.HO.object_t)
+                             (type_b =/= CT.HO.serializable_t)
+                             (type_b =/= CT.HO.cloneable_t)
+                             (conde
+                                [
+                                  fresh tb (type_b === !!(Array tb))
+                                    (( -<- ) ( <-< ) ta tb res);
+                                  fresh () (res === !!false)
+                                    (type_b =/= !!(Array __));
+                                ]);
+                         ]);
+                    fresh () (ta =/= CT.HO.object_t)
+                      (conde
+                         [
+                           fresh tb (type_b === !!(Array tb))
+                             (( -<- ) ( <-< ) ta tb res);
+                           fresh () (res === !!false) (type_b =/= !!(Array __));
+                         ]);
+                  ]);
+             fresh ts (type_a === !!(Intersect ts)) (Util.memo type_b ts res);
+             fresh upb_typ
+               (type_a === var __ __ upb_typ __)
+               (conde
+                  [
+                    fresh () (upb_typ === type_b) (res === !!true);
+                    fresh () (res === !!false) (upb_typ =/= type_b);
+                  ]);
+             fresh () (type_a === !!Null)
+               (conde
+                  [
+                    fresh () (type_b === !!Null) (res === !!false);
+                    fresh () (res === !!true) (type_b =/= !!Null);
+                  ]);
+           ]
   end
 end
 
@@ -778,8 +837,8 @@ module FO = struct
   open Option.HO
   open HO
 
-  let substitute_typ q33 q32 q31 = substitute_typ (( === ) q33) q32 q31
-  let substitute_arg q66 q65 q64 = substitute_arg (( === ) q66) q65 q64
+  let substitute_typ q33 q32 q31 = substitute_typ q33 q32 q31
+  let substitute_arg q66 q65 q64 = substitute_arg q66 q65 q64
 
   module Verifier (CT : sig
     module HO : sig

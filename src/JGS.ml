@@ -220,25 +220,30 @@ module HO = struct
   let cc_var id index subst t = !!(CC_var (id, index, subst, t))
 
   module Util = struct
+    let rec mapio_helper :
+        (Std.Nat.injected -> 'a ilogic -> 'b ilogic -> goal) ->
+        Std.Nat.injected ->
+        'a ilogic Std.List.injected ->
+        'b ilogic Std.List.injected ->
+        goal =
+     fun f i l res ->
+      let open Std in
+      conde
+        [
+          fresh () (l === nil ()) (res === nil ());
+          fresh (l_hd l_tl res_hd res_tl)
+            (l === l_hd % l_tl)
+            (res === res_hd % res_tl)
+            (f i l_hd res_hd)
+            (mapio_helper f (Nat.s i) l_tl res_tl);
+        ]
+
     let mapio :
         (Std.Nat.injected -> 'a ilogic -> 'b ilogic -> goal) ->
         'a ilogic Std.List.injected ->
         'b ilogic Std.List.injected ->
         goal =
-     fun f l res ->
-      let open Std in
-      let rec mapio l i res =
-        conde
-          [
-            fresh () (l === nil ()) (res === nil ());
-            fresh (l_hd l_tl res_hd res_tl)
-              (l === l_hd % l_tl)
-              (res === res_hd % res_tl)
-              (f i l_hd res_hd)
-              (mapio l_tl (Nat.s i) res_tl);
-          ]
-      in
-      mapio l Nat.o res
+     fun f l res -> mapio_helper f Std.Nat.o l res
 
     let rec memo :
         'a ilogic -> 'a ilogic Std.List.injected -> bool ilogic -> goal =
@@ -375,6 +380,102 @@ module HO = struct
     val pp_jtyp : Format.formatter -> jtype_logic -> unit
   end) =
   struct
+    let params : int ilogic -> jtype_injected Std.List.injected -> goal =
+     fun id p ->
+      fresh decl (CT.HO.decl_by_id id decl)
+        (conde
+           [
+             decl === !!(C (ctor_cdecl p __ __));
+             decl === !!(I (ctor_idecl p __));
+           ])
+
+    let raw_helper :
+        int ilogic ->
+        Std.Nat.injected ->
+        jtype_injected targ_injected ->
+        capture_conversion_type_injected ->
+        goal =
+     fun id i targ cc_targ ->
+      conde
+        [
+          fresh t (targ === !!(Type t)) (cc_targ === !!(CC_type t));
+          fresh (param params_val)
+            (targ === !!(Wildcard !!None))
+            (cc_targ
+            === cc_var (CT.HO.new_var ()) i !!(CC_subst param) !!(Some !!Null))
+            (params id params_val)
+            (Util.ntho params_val i param);
+          fresh (t subst params_val)
+            (targ === !!(Wildcard !!(Some (Std.pair !!Super t))))
+            (cc_targ
+            === cc_var (CT.HO.new_var ()) i !!(CC_subst subst) !!(Some t))
+            (params id params_val)
+            (Util.ntho params_val i subst);
+          fresh (t t2 params_val)
+            (targ === !!(Wildcard !!(Some (Std.pair !!Extends t))))
+            (cc_targ
+            === cc_var (CT.HO.new_var ()) i !!(CC_inter (t, t2)) !!(Some !!Null)
+            )
+            (params id params_val)
+            (Util.ntho params_val i t2);
+        ]
+
+    let subst_helper :
+        capture_conversion_type_injected -> jtype_injected targ_injected -> goal
+        =
+     fun raw_element targ ->
+      conde
+        [
+          fresh t (raw_element === !!(CC_type t)) (targ === !!(Type t));
+          fresh (id i)
+            (raw_element === cc_var id i __ __)
+            (targ === !!(Type (var id i !!Null !!None)));
+        ]
+
+    let targs_helper :
+        jtype_injected targ_injected list_injected ->
+        capture_conversion_type_injected ->
+        jtype_injected targ_injected ->
+        goal =
+     fun subst cc_typ res ->
+      conde
+        [
+          fresh (t new_t) (cc_typ === !!(CC_type t)) (res === !!(Type new_t))
+            (substitute_typ subst t new_t);
+          fresh (id i p new_p lwb)
+            (cc_typ === cc_var id i !!(CC_subst p) lwb)
+            (res === !!(Type (var id i new_p lwb)))
+            (substitute_typ subst p new_p);
+          fresh (id i t p lwb upb new_p)
+            (cc_typ === cc_var id i !!(CC_inter (t, p)) lwb)
+            (res === !!(Type (var id i upb lwb)))
+            (substitute_typ subst p new_p)
+            (conde
+               [
+                 fresh ts
+                   (new_p === !!(Intersect ts))
+                   (upb === !!(Intersect Std.(t % ts)));
+                 fresh ()
+                   (upb === !!(Intersect (Std.list Fun.id [ t; new_p ])))
+                   (new_p =/= !!(Intersect __));
+               ]);
+        ]
+
+    let targs_pred :
+        (jtype_injected -> jtype_injected -> bool ilogic -> goal) ->
+        jtype_injected targ_injected ->
+        bool ilogic ->
+        goal =
+     fun ( <-< ) targ res ->
+      conde
+        [
+          fresh (upb lwb)
+            (targ === !!(Type (var __ __ upb !!(Some lwb))))
+            (( <-< ) lwb upb res);
+          fresh () (res === !!true)
+            (targ =/= !!(Type (var __ __ __ !!(Some __))));
+        ]
+
     let capture_conversion :
         ?from:int ->
         (jtype_injected -> jtype_injected -> bool ilogic -> goal) ->
@@ -424,106 +525,12 @@ module HO = struct
       |>
       if !need_simpified then res === !!(Some targs)
       else
-        let params : jtype_injected Std.List.injected -> goal =
-         fun p ->
-          fresh decl (CT.HO.decl_by_id id decl)
-            (conde
-               [
-                 decl === !!(C (ctor_cdecl p __ __));
-                 decl === !!(I (ctor_idecl p __));
-               ])
-        in
-        let raw_helper :
-            Std.Nat.injected ->
-            jtype_injected targ_injected ->
-            capture_conversion_type_injected ->
-            goal =
-         fun i targ cc_targ ->
-          conde
-            [
-              fresh t (targ === !!(Type t)) (cc_targ === !!(CC_type t));
-              fresh (param params_val)
-                (targ === !!(Wildcard !!None))
-                (cc_targ
-                === cc_var (CT.HO.new_var ()) i !!(CC_subst param)
-                      !!(Some !!Null))
-                (params params_val)
-                (Util.ntho params_val i param);
-              fresh (t subst params_val)
-                (targ === !!(Wildcard !!(Some (Std.pair !!Super t))))
-                (cc_targ
-                === cc_var (CT.HO.new_var ()) i !!(CC_subst subst) !!(Some t))
-                (params params_val)
-                (Util.ntho params_val i subst);
-              fresh (t t2 params_val)
-                (targ === !!(Wildcard !!(Some (Std.pair !!Extends t))))
-                (cc_targ
-                === cc_var (CT.HO.new_var ()) i
-                      !!(CC_inter (t, t2))
-                      !!(Some !!Null))
-                (params params_val)
-                (Util.ntho params_val i t2);
-            ]
-        in
-        let subst_helper :
-            capture_conversion_type_injected ->
-            jtype_injected targ_injected ->
-            goal =
-         fun raw_element targ ->
-          conde
-            [
-              fresh t (raw_element === !!(CC_type t)) (targ === !!(Type t));
-              fresh (id i)
-                (raw_element === cc_var id i __ __)
-                (targ === !!(Type (var id i !!Null !!None)));
-            ]
-        in
-        let targs_helper :
-            jtype_injected targ_injected list_injected ->
-            capture_conversion_type_injected ->
-            jtype_injected targ_injected ->
-            goal =
-         fun subst cc_typ res ->
-          conde
-            [
-              fresh (t new_t) (cc_typ === !!(CC_type t)) (res === !!(Type new_t))
-                (substitute_typ subst t new_t);
-              fresh (id i p new_p lwb)
-                (cc_typ === cc_var id i !!(CC_subst p) lwb)
-                (res === !!(Type (var id i new_p lwb)))
-                (substitute_typ subst p new_p);
-              fresh (id i t p lwb upb new_p)
-                (cc_typ === cc_var id i !!(CC_inter (t, p)) lwb)
-                (res === !!(Type (var id i upb lwb)))
-                (substitute_typ subst p new_p)
-                (conde
-                   [
-                     fresh ts
-                       (new_p === !!(Intersect ts))
-                       (upb === !!(Intersect Std.(t % ts)));
-                     fresh ()
-                       (upb === !!(Intersect (Std.list Fun.id [ t; new_p ])))
-                       (new_p =/= !!(Intersect __));
-                   ]);
-            ]
-        in
-        let targs_pred : jtype_injected targ_injected -> bool ilogic -> goal =
-         fun targ res ->
-          conde
-            [
-              fresh (upb lwb)
-                (targ === !!(Type (var __ __ upb !!(Some lwb))))
-                (( <-< ) lwb upb res);
-              fresh () (res === !!true)
-                (targ =/= !!(Type (var __ __ __ !!(Some __))));
-            ]
-        in
         fresh
           (raw subst new_targs are_correct_targs)
-          (Util.mapio raw_helper targs raw)
+          (Util.mapio (raw_helper id) targs raw)
           (Std.List.mapo subst_helper raw subst)
           (Std.List.mapo (targs_helper subst) raw new_targs)
-          (Util.for_allo targs_pred new_targs are_correct_targs)
+          (Util.for_allo (targs_pred ( <-< )) new_targs are_correct_targs)
           (conde
              [
                fresh () (are_correct_targs === !!true) (res === !!(Some targs));

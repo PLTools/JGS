@@ -327,15 +327,21 @@ module HO = struct
         fresh (id args new_args)
           (typ === !!(Class (id, args)))
           (res === !!(Class (id, new_args)))
-          (Std.List.mapo (substitute_arg subst) args new_args);
+          (Std.List.mapo
+             (fun targ res -> substitute_arg subst targ res)
+             args new_args);
         fresh (id args new_args)
           (typ === !!(Interface (id, args)))
           (res === !!(Interface (id, new_args)))
-          (Std.List.mapo (substitute_arg subst) args new_args);
+          (Std.List.mapo
+             (fun targ res -> substitute_arg subst targ res)
+             args new_args);
         fresh (typs new_typs)
           (typ === !!(Intersect typs))
           (res === !!(Intersect new_typs))
-          (Std.List.mapo (substitute_typ subst) typs new_typs);
+          (Std.List.mapo
+             (fun typ res -> substitute_typ subst typ res)
+             typs new_typs);
         fresh () (typ === !!Null) (res === !!Null);
       ]
 
@@ -527,10 +533,16 @@ module HO = struct
       else
         fresh
           (raw subst new_targs are_correct_targs)
-          (Util.mapio (raw_helper id) targs raw)
+          (Util.mapio
+             (fun targ cc_targ -> raw_helper id targ cc_targ)
+             targs raw)
           (Std.List.mapo subst_helper raw subst)
-          (Std.List.mapo (targs_helper subst) raw new_targs)
-          (Util.for_allo (targs_pred ( <-< )) new_targs are_correct_targs)
+          (Std.List.mapo
+             (fun cc_typ res -> targs_helper subst cc_typ res)
+             raw new_targs)
+          (Util.for_allo
+             (fun targ res -> targs_pred ( <-< ) targ res)
+             new_targs are_correct_targs)
           (conde
              [
                fresh () (are_correct_targs === !!true) (res === !!(Some targs));
@@ -686,8 +698,9 @@ module HO = struct
                            super === !!(Some !!(Class (__, targs_b')));
                            super === !!(Some !!(Interface (__, targs_b')));
                          ])
-                      (Std.List.mapo (substitute_arg targs_a) targs_b'
-                         new_targs_b')
+                      (Std.List.mapo
+                         (fun arg res -> substitute_arg targs_a arg res)
+                         targs_b' new_targs_b')
                       (conde
                          [
                            fresh () (targs_b === new_targs_b') (res === !!true);

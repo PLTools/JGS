@@ -9,8 +9,7 @@ open Closure
 module SampleCT = SampleCT ()
 module V = JGS.Verifier (SampleCT)
 
-let { closure; _ } = make_closure (module SampleCT) V.( -<- )
-let ( <-< ) = closure ~closure_type:Subtyping
+let { closure = ( <-< ); _ } = make_closure (module SampleCT) V.( -<- )
 
 module JGS_builder = struct
   module M = Map.Make (Int)

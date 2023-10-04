@@ -7,9 +7,7 @@ open Closure
 module SampleCT = SampleCT ()
 module V = JGS.Verifier (SampleCT)
 
-let { closure; _ } = make_closure (module SampleCT) V.( -<- )
-let ( <-< ) = closure ~closure_type:Subtyping
-let ( <=< ) = closure ~closure_type:Supertyping
+let { closure = ( <-< ); _ } = make_closure (module SampleCT) V.( -<- )
 
 module JGS_builder = struct
   module M = Map.Make (Int)
@@ -268,7 +266,7 @@ let _ =
   in
   let _ =
     run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q ->
-        fresh () (q =/= JGS.Jtype.null ()) (jtype_inj role_list <=< q))
+        fresh () (q =/= JGS.Jtype.null ()) (jtype_inj role_list <-< q))
   in
   (* Problems with RoleList and AttributeList *)
   let _ =
@@ -293,8 +291,8 @@ let _ =
       (fun q ->
         fresh ()
           (q =/= JGS.Jtype.null ())
-          (jtype_inj (linked_list obj) <=< q)
-          (jtype_inj (tree_set obj) <=< q)
+          (jtype_inj (linked_list obj) <-< q)
+          (jtype_inj (tree_set obj) <-< q)
         (* *))
   in
   let _ =

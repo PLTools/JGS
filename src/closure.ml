@@ -2,26 +2,16 @@ open OCanren
 open OCanren.Std
 open JGS
 
-let need_dynamic_closure = ref true
-
 module type SCT = Mutable_type_table.SAMPLE_CLASSTABLE
 
-type closure_type = Subtyping | Supertyping
-
 type closure = {
-  is_correct_type :
-    closure_type:closure_type ->
-    ?constr:goal ->
-    int ilogic Jtype.injected ->
-    goal;
+  is_correct_type : ?constr:goal -> int ilogic Jtype.injected -> goal;
   direct_subtyping :
-    closure_type:closure_type ->
     ?constr:goal ->
     int ilogic Jtype.injected ->
     int ilogic Jtype.injected ->
     goal;
   closure :
-    closure_type:closure_type ->
     ?constr:goal ->
     int ilogic Jtype.injected ->
     int ilogic Jtype.injected ->
@@ -30,15 +20,16 @@ type closure = {
 
 let rec list_same_length : 'a Std.List.injected -> 'b Std.List.injected -> goal
     =
- fun xs ys ->
-  conde
-    [
-      fresh (h1 h2 tl1 tl2)
-        (xs === Std.List.cons h1 tl1)
-        (ys === Std.List.cons h2 tl2)
-        (list_same_length tl1 tl2);
-      xs === Std.nil () &&& (ys === Std.nil ());
-    ]
+  let open OCanren.Std in
+  fun xs ys ->
+    conde
+      [
+        fresh (h1 h2 tl1 tl2)
+          (xs === h1 % tl1)
+          (ys === h2 % tl2)
+          (list_same_length tl1 tl2);
+        xs === nil () &&& (ys === nil ());
+      ]
 
 let is_correct_type (module CT : SCT) ~closure_subtyping t =
   let decl_by_id id decl = CT.decl_by_id id decl in
@@ -122,23 +113,17 @@ let ( <~< ) ~direct_subtyping ~constr ta tb =
 
 let make_closure_by_closure_template closure_template (module CT : SCT)
     direct_subtyping =
-  let rec is_correct ~closure_type ?(constr = success) t =
-    is_correct_type
-      (module CT)
-      ~closure_subtyping:(closure ~closure_type ~constr)
-      t
-  and direct ~closure_type ?(constr = success) ta tb =
+  let rec is_correct ?(constr = success) t =
+    is_correct_type (module CT) ~closure_subtyping:(closure ~constr) t
+  and direct ?(constr = success) ta tb =
     ( -<- )
       (module CT)
-      ~direct_subtyping
-      ~closure_subtyping:(closure ~closure_type ~constr)
-      ~is_correct_type:(is_correct ~closure_type) ta tb
-  and closure ~closure_type ?(constr = success) ta tb st =
-    closure_template closure_type
-      ~direct_subtyping:(direct ~closure_type ~constr)
-      ~constr ta tb st
+      ~direct_subtyping ~closure_subtyping:(closure ~constr)
+      ~is_correct_type:is_correct ta tb
+  and closure ?(constr = success) ta tb st =
+    closure_template ~direct_subtyping:(direct ~constr) ~constr ta tb st
   in
   { is_correct_type = is_correct; direct_subtyping = direct; closure }
 
 let make_closure (module CT : SCT) =
-  make_closure_by_closure_template (fun _ -> ( <~< )) (module CT)
+  make_closure_by_closure_template ( <~< ) (module CT)

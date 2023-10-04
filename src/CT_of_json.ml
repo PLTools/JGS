@@ -4,10 +4,6 @@ let failwiths fmt = Format.kasprintf failwith fmt
 let verbose_errors = ref true
 let lower_bounds_first = ref true
 
-type deplicates_tactic = No_remove | Structural | Debug_var
-
-let need_remove_dups = ref No_remove
-
 let log_error fmt =
   if !verbose_errors then Format.eprintf fmt
   else Format.ifprintf Format.std_formatter fmt
@@ -644,8 +640,7 @@ let pp_var_desc ppf = function
 
 type result_query =
   is_subtype:
-    (closure_type:Closure.closure_type ->
-    ?constr:OCanren.goal ->
+    (?constr:OCanren.goal ->
     int OCanren.ilogic JGS.Jtype.injected ->
     int OCanren.ilogic JGS.Jtype.injected ->
     OCanren.goal) ->
@@ -720,17 +715,14 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
         Printf.eprintf "TODO: implement lower bounds\n%!";
 
       let constr =
-        match !need_remove_dups with
-        | Debug_var ->
-            debug_var answer
-              (Fun.flip (JGS.Jtype.reify OCanren.reify))
-              (function
-                | [ (Value _ as ans) ]
-                  when Jtype_set.mem_alpha_converted ans
-                         !Jtype_set.alpha_converted_answer_set ->
-                    failure
-                | _ -> success)
-        | _ -> success
+        debug_var answer
+          (Fun.flip (JGS.Jtype.reify OCanren.reify))
+          (function
+            | [ (Value _ as ans) ]
+              when Jtype_set.mem_alpha_converted ans
+                     !Jtype_set.alpha_converted_answer_set ->
+                failure
+            | _ -> success)
       in
 
       let _, upper_goal =
@@ -748,7 +740,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
               else success
             in
 
-            (false, acc &&& is_subtype ~closure_type:Subtyping ~constr sub super))
+            (false, acc &&& is_subtype ~constr sub super))
           (true, OCanren.success) upper_bounds
       in
       let _, lower_goal =
@@ -768,18 +760,11 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
               else success
             in
 
-            ( false,
-              acc &&& is_subtype ~closure_type:Supertyping ~constr sub super ))
+            (false, acc &&& is_subtype ~constr sub super))
           (true, OCanren.success) lower_bounds
       in
-      (if !need_remove_dups = Structural then
-         structural answer (JGS.Jtype.reify OCanren.reify) (fun lt ->
-             not
-             @@ Jtype_set.mem_alpha_converted lt
-                  !Jtype_set.alpha_converted_answer_set)
-       else success)
-      &&& (if !lower_bounds_first then lower_goal &&& upper_goal
-           else upper_goal &&& lower_goal)
+      (if !lower_bounds_first then lower_goal &&& upper_goal
+       else upper_goal &&& lower_goal)
       &&& constr
     in
     goal
@@ -944,12 +929,11 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
             if upper then show_processing pos pp_var_desc name pp_jtype b
             else show_processing pos pp_jtype b pp_var_desc name;
 
-            let sub, super, closure_type =
-              if upper then
-                (ask_var name, targ_inj (on_typ b), Closure.Subtyping)
-              else (targ_inj (on_typ b), ask_var name, Closure.Supertyping)
+            let sub, super =
+              if upper then (ask_var name, targ_inj (on_typ b))
+              else (targ_inj (on_typ b), ask_var name)
             in
-            is_subtype ~closure_type sub super
+            is_subtype sub super
             (* TODO: There were bool here to switch positive/negative *)
           in
           (*

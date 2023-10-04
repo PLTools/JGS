@@ -4,8 +4,8 @@
   ****************************************************************************************************
   
   ? <-< Collection<String>, 3 answers:
-     java.util.List<[java.lang.String]>
      ICollection<[java.lang.String]>
+     java.util.List<[java.lang.String]>
      kotlin.reflect.jvm.internal.impl.protobuf.ProtocolStringList
   
   

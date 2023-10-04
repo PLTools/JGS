@@ -1,129 +1,281 @@
 open OCanren
-open OCanren.Std
 open JGS
 
-module type SCT = Mutable_type_table.SAMPLE_CLASSTABLE
-
-type closure = {
-  is_correct_type : ?constr:goal -> int ilogic Jtype.injected -> goal;
-  direct_subtyping :
-    ?constr:goal ->
-    int ilogic Jtype.injected ->
-    int ilogic Jtype.injected ->
-    goal;
-  closure :
-    ?constr:goal ->
-    int ilogic Jtype.injected ->
-    int ilogic Jtype.injected ->
-    goal;
-}
-
-let rec list_same_length : 'a Std.List.injected -> 'b Std.List.injected -> goal
-    =
-  let open OCanren.Std in
-  fun xs ys ->
-    conde
-      [
-        fresh (h1 h2 tl1 tl2)
-          (xs === h1 % tl1)
-          (ys === h2 % tl2)
-          (list_same_length tl1 tl2);
-        xs === nil () &&& (ys === nil ());
-      ]
-
-let is_correct_type (module CT : SCT) ~closure_subtyping t =
-  let decl_by_id id decl = CT.decl_by_id id decl in
+let rec list_same_length :
+    'a ilogic Std.List.injected -> 'b ilogic Std.List.injected -> goal =
+ fun xs ys ->
+  let open Std in
   conde
     [
-      (* Array: always allow *)
-      fresh elems (t === Jtype.array elems);
-      (* Class: should be metioned in class declarations with the same arguments amount *)
-      fresh
-        (id actual_params expected_params super supers)
-        (t === Jtype.class_ id actual_params)
-        (decl_by_id id (Decl.c expected_params super supers))
-        (* TODO (Kakadu): write a relation same_length *)
-        (* (List.lengtho expected_params length)
-           (List.lengtho actual_params length) *)
-        (list_same_length expected_params actual_params);
-      (* Interface: should be metioned in interface declarations with the same arguments amount *)
-      fresh
-        (id actual_params expected_params supers length)
-        (t === Jtype.interface id actual_params)
-        (decl_by_id id (Decl.i expected_params supers))
-        (List.lengtho expected_params length)
-        (List.lengtho actual_params length);
-      (* Variable: lower bound should be subtype of upper bound *)
-      fresh (id index upb lwb)
-        (t === Jtype.var id index upb (some lwb))
-        (upb =/= lwb)
-        (closure_subtyping lwb upb);
-      (* Varaible without lover bound: always allow *)
-      fresh (id index upb) (t === Jtype.var id index upb (none ()));
-      (* Null: always allow *)
-      t === Jtype.null ();
-      (* Intersect: always allow *)
-      fresh args (t === Jtype.intersect args);
+      fresh (h1 h2 tl1 tl2)
+        (xs === h1 % tl1)
+        (ys === h2 % tl2)
+        (list_same_length tl1 tl2);
+      fresh () (xs === nil ()) (ys === nil ());
     ]
 
-let ( -<- ) (module CT : SCT) ~direct_subtyping ~closure_subtyping
-    ~is_correct_type ta tb =
-  fresh ()
-    (direct_subtyping
-       (fun a b rez -> fresh () (rez === !!true) (closure_subtyping a b))
-       ta tb !!true)
-    (is_correct_type ta) (is_correct_type tb)
+module type CLOSURE = sig
+  val direct_subtyping :
+    (int ilogic Jtype.injected -> goal -> goal -> goal) ->
+    ((int ilogic Jtype.injected ->
+     int ilogic Jtype.injected ->
+     bool ilogic ->
+     goal) ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    bool ilogic ->
+    goal) ->
+    goal ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    goal
 
-let rec ( <-< ) ~direct_subtyping ~constr ta tb =
-  fresh () constr
-    (JGS_Helpers.only_classes_interfaces_and_arrays ta)
-    (JGS_Helpers.only_classes_interfaces_and_arrays tb)
-    (conde
-       [
-         direct_subtyping ta tb;
-         fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
-           (JGS_Helpers.only_classes_interfaces_and_arrays ti)
-           (direct_subtyping ti tb)
-           (( <-< ) ~direct_subtyping ~constr ta ti);
-       ])
+  val closure :
+    (int ilogic Jtype.injected -> goal -> goal -> goal) ->
+    ((int ilogic Jtype.injected ->
+     int ilogic Jtype.injected ->
+     bool ilogic ->
+     goal) ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    bool ilogic ->
+    goal) ->
+    goal ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    goal
+end
 
-let rec ( <=< ) ~direct_subtyping ~constr ta tb =
-  fresh () constr
-    (JGS_Helpers.only_classes_interfaces_and_arrays ta)
-    (JGS_Helpers.only_classes_interfaces_and_arrays tb)
-    (conde
-       [
-         direct_subtyping ta tb;
-         fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
-           (JGS_Helpers.only_classes_interfaces_and_arrays ti)
-           (direct_subtyping ta ti)
-           (( <=< ) ~direct_subtyping ~constr ti tb);
-       ])
+module Closure (CT : CLASSTABLE) : CLOSURE = struct
+  let is_correct_type :
+      (int ilogic Jtype.injected -> int ilogic Jtype.injected -> goal) ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun closure_subtyping t ->
+    conde
+      [
+        (* Array: always allow *)
+        fresh elems (t === Jtype.array elems);
+        (* Class: should be metioned in class declarations with the same arguments amount *)
+        fresh
+          (id actual_params expected_params super supers)
+          (t === Jtype.class_ id actual_params)
+          (CT.decl_by_id id (Decl.c expected_params super supers))
+          (* TODO (Kakadu): write a relation same_length *)
+          (* (List.lengtho expected_params length)
+             (List.lengtho actual_params length) *)
+          (list_same_length expected_params actual_params);
+        (* Interface: should be metioned in interface declarations with the same arguments amount *)
+        fresh
+          (id actual_params expected_params supers)
+          (t === Jtype.interface id actual_params)
+          (CT.decl_by_id id (Decl.i expected_params supers))
+          (list_same_length expected_params actual_params);
+        (* Variable: lower bound should be subtype of upper bound *)
+        fresh (id index upb lwb)
+          (t === Jtype.var id index upb (Std.Option.some lwb))
+          (upb =/= lwb)
+          (closure_subtyping lwb upb);
+        (* Varaible without lover bound: always allow *)
+        fresh (id index upb) (t === Jtype.var id index upb (Std.Option.none ()));
+        (* Null: always allow *)
+        t === Jtype.null ();
+        (* Intersect: always allow *)
+        fresh args (t === Jtype.intersect args);
+      ]
 
-let ( <~< ) ~direct_subtyping ~constr ta tb =
-  debug_var ta
-    (Fun.flip (Jtype.reify OCanren.reify))
-    (fun reified_ta ->
-      debug_var tb
-        (Fun.flip (Jtype.reify OCanren.reify))
-        (fun reified_tb ->
-          match (reified_ta, reified_tb) with
-          | [ Value _ ], _ -> ( <=< ) ~direct_subtyping ~constr ta tb
-          | _ -> ( <-< ) ~direct_subtyping ~constr ta tb))
+  let ( -<- ) :
+      ((int ilogic Jtype.injected ->
+       int ilogic Jtype.injected ->
+       bool ilogic ->
+       goal) ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      bool ilogic ->
+      goal) ->
+      (int ilogic Jtype.injected -> int ilogic Jtype.injected -> goal) ->
+      (int ilogic Jtype.injected -> goal) ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun open_direct_subtyping closure_subtyping is_correct_type ta tb ->
+    fresh ()
+      (open_direct_subtyping
+         (fun a b rez -> fresh () (rez === !!true) (closure_subtyping a b))
+         ta tb !!true)
+      (is_correct_type ta) (is_correct_type tb)
 
-let make_closure_by_closure_template closure_template (module CT : SCT)
-    direct_subtyping =
-  let rec is_correct ?(constr = success) t =
-    is_correct_type (module CT) ~closure_subtyping:(closure ~constr) t
-  and direct ?(constr = success) ta tb =
-    ( -<- )
-      (module CT)
-      ~direct_subtyping ~closure_subtyping:(closure ~constr)
-      ~is_correct_type:is_correct ta tb
-  and closure ?(constr = success) ta tb st =
-    closure_template ~direct_subtyping:(direct ~constr) ~constr ta tb st
-  in
-  { is_correct_type = is_correct; direct_subtyping = direct; closure }
+  let rec ( <-< ) :
+      (int ilogic Jtype.injected -> int ilogic Jtype.injected -> goal) ->
+      goal ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun direct_subtyping query_constr ta tb ->
+    fresh () query_constr
+      (JGS_Helpers.only_classes_interfaces_and_arrays ta)
+      (JGS_Helpers.only_classes_interfaces_and_arrays tb)
+      (conde
+         [
+           direct_subtyping ta tb;
+           fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
+             (JGS_Helpers.only_classes_interfaces_and_arrays ti)
+             (direct_subtyping ti tb)
+             (( <-< ) direct_subtyping query_constr ta ti);
+         ])
 
-let make_closure (module CT : SCT) =
-  make_closure_by_closure_template ( <~< ) (module CT)
+  let rec ( >-> ) :
+      (int ilogic Jtype.injected -> int ilogic Jtype.injected -> goal) ->
+      goal ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun direct_subtyping query_constr ta tb ->
+    fresh () query_constr
+      (JGS_Helpers.only_classes_interfaces_and_arrays ta)
+      (JGS_Helpers.only_classes_interfaces_and_arrays tb)
+      (conde
+         [
+           direct_subtyping ta tb;
+           fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
+             (JGS_Helpers.only_classes_interfaces_and_arrays ti)
+             (direct_subtyping ta ti)
+             (( >-> ) direct_subtyping query_constr ti tb);
+         ])
+
+  let ( <-> ) :
+      (int ilogic Jtype.injected -> goal -> goal -> goal) ->
+      (int ilogic Jtype.injected -> int ilogic Jtype.injected -> goal) ->
+      goal ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun debug_var_handler direct_subtyping query_constr ta tb ->
+    (* debug_var
+       ta
+       (Fun.flip (Jtype.reify OCanren.reify))
+       (fun reified_ta ->
+         match reified_ta with
+         | [ Value _ ] -> ( <=< ) direct_subtyping constr ta tb
+         | _ -> ( <-< ) direct_subtyping constr ta tb) *)
+    debug_var_handler ta
+      (( <-< ) direct_subtyping query_constr ta tb)
+      (( >-> ) direct_subtyping query_constr ta tb)
+
+  let rec direct_subtyping :
+      (int ilogic Jtype.injected -> goal -> goal -> goal) ->
+      ((int ilogic Jtype.injected ->
+       int ilogic Jtype.injected ->
+       bool ilogic ->
+       goal) ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      bool ilogic ->
+      goal) ->
+      goal ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun debug_var_handler open_direct_subtyping query_constr ta tb ->
+    ( -<- ) open_direct_subtyping
+      (fun ta tb ->
+        closure debug_var_handler open_direct_subtyping query_constr ta tb)
+      (is_correct_type (fun ta tb ->
+           closure debug_var_handler open_direct_subtyping query_constr ta tb))
+      ta tb
+
+  and closure :
+      (int ilogic Jtype.injected -> goal -> goal -> goal) ->
+      ((int ilogic Jtype.injected ->
+       int ilogic Jtype.injected ->
+       bool ilogic ->
+       goal) ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      bool ilogic ->
+      goal) ->
+      goal ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun debug_var_handler open_direct_subtyping query_constr ta tb ->
+    ( <-> ) debug_var_handler
+      (fun ta tb ->
+        direct_subtyping debug_var_handler open_direct_subtyping query_constr ta
+          tb)
+      query_constr ta tb
+end
+
+module type MAKE = sig
+  val direct_subtyping :
+    ((int ilogic Jtype.injected ->
+     int ilogic Jtype.injected ->
+     bool ilogic ->
+     goal) ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    bool ilogic ->
+    goal) ->
+    ?query_constr:goal ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    goal
+
+  val closure :
+    ((int ilogic Jtype.injected ->
+     int ilogic Jtype.injected ->
+     bool ilogic ->
+     goal) ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    bool ilogic ->
+    goal) ->
+    ?query_constr:goal ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    goal
+end
+
+module Make (CT : CLASSTABLE) : MAKE = struct
+  module Closure = Closure (CT)
+
+  let debug_var_handler : int ilogic Jtype.injected -> goal -> goal -> goal =
+   fun ta closure_down closure_up ->
+    debug_var ta
+      (Fun.flip (Jtype.reify OCanren.reify))
+      (fun reified_ta ->
+        match reified_ta with [ Value _ ] -> closure_up | _ -> closure_down)
+
+  let direct_subtyping :
+      ((int ilogic Jtype.injected ->
+       int ilogic Jtype.injected ->
+       bool ilogic ->
+       goal) ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      bool ilogic ->
+      goal) ->
+      ?query_constr:goal ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun direct_subtyping ?(query_constr = success) ta tb ->
+    Closure.direct_subtyping debug_var_handler direct_subtyping query_constr ta
+      tb
+
+  let closure :
+      ((int ilogic Jtype.injected ->
+       int ilogic Jtype.injected ->
+       bool ilogic ->
+       goal) ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      bool ilogic ->
+      goal) ->
+      ?query_constr:goal ->
+      int ilogic Jtype.injected ->
+      int ilogic Jtype.injected ->
+      goal =
+   fun direct_subtyping ?(query_constr = success) ta tb ->
+    Closure.closure debug_var_handler direct_subtyping query_constr ta tb
+end

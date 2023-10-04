@@ -202,12 +202,10 @@ let () =
         | Var (idx, _) -> Printf.sprintf "_.%d" idx
         | Value idx -> name_of_id idx)
   end in
-  let module V = JGS.Verifier (CT) in
   let open OCanren in
-  let open Closure in
-  let { closure; direct_subtyping = _; _ } =
-    Closure.make_closure (module CT) V.( -<- )
-  in
+  let module V = JGS.Verifier (CT) in
+  let module C = Closure.Make (CT) in
+  let closure = C.closure V.( -<- ) in
 
   (* let module MM = struct
        open OCanren

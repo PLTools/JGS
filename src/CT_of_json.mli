@@ -86,7 +86,7 @@ exception Name_not_found of class_id
 
 type result_query =
   is_subtype:
-    (?constr:OCanren.goal ->
+    (?query_constr:OCanren.goal ->
     int OCanren.ilogic JGS.Jtype.injected ->
     int OCanren.ilogic JGS.Jtype.injected ->
     OCanren.goal) ->

@@ -1,30 +1,34 @@
 open OCanren
 open JGS
 
-module type SCT = Mutable_type_table.SAMPLE_CLASSTABLE
+module type MAKE = sig
+  val direct_subtyping :
+    ((int ilogic Jtype.injected ->
+     int ilogic Jtype.injected ->
+     bool ilogic ->
+     goal) ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    bool ilogic ->
+    goal) ->
+    ?query_constr:goal ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
+    goal
 
-type closure = {
-  is_correct_type : ?constr:goal -> int ilogic Jtype.injected -> goal;
-  direct_subtyping :
-    ?constr:goal ->
+  val closure :
+    ((int ilogic Jtype.injected ->
+     int ilogic Jtype.injected ->
+     bool ilogic ->
+     goal) ->
     int ilogic Jtype.injected ->
     int ilogic Jtype.injected ->
-    goal;
-  closure :
-    ?constr:goal ->
+    bool ilogic ->
+    goal) ->
+    ?query_constr:goal ->
     int ilogic Jtype.injected ->
     int ilogic Jtype.injected ->
-    goal;
-}
+    goal
+end
 
-val make_closure :
-  (module SCT) ->
-  ((int ilogic Jtype.injected ->
-   int ilogic Jtype.injected ->
-   Std.Bool.groundi ->
-   goal) ->
-  int ilogic Jtype.injected ->
-  int ilogic Jtype.injected ->
-  Std.Bool.groundi ->
-  goal) ->
-  closure
+module Make (_ : CLASSTABLE) : MAKE

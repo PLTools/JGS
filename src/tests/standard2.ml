@@ -8,8 +8,9 @@ open Closure
 (* Verifier modules *)
 module SampleCT = SampleCT ()
 module V = JGS.Verifier (SampleCT)
+module C = Closure.Make (SampleCT)
 
-let { closure = ( <-< ); _ } = make_closure (module SampleCT) V.( -<- )
+let ( <-< ) = C.closure V.( -<- )
 
 module JGS_builder = struct
   module M = Map.Make (Int)

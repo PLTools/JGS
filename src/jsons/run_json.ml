@@ -74,13 +74,12 @@ let () =
         Format.eprintf "%a\n%!" (Yojson.Safe.pretty_print ~std:true) j;
         exit 1
   in
-  let module V = JGS.Verifier (CT) in
+
   let open OCanren in
-  let open JGS in
-  let open Closure in
-  let { closure = ( <-< ); direct_subtyping = ( -<- ); _ } =
-    Closure.make_closure (module CT) V.( -<- )
-  in
+  let module V = JGS.Verifier (CT) in
+  let module C = Closure.Make (CT) in
+  let ( -<- ) = C.direct_subtyping V.( -<- ) in
+  let ( <-< ) = C.closure V.( -<- ) in
   (* let module MM = struct
        open OCanren
 

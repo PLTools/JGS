@@ -640,7 +640,7 @@ let pp_var_desc ppf = function
 
 type result_query =
   is_subtype:
-    (?constr:OCanren.goal ->
+    (?query_constr:OCanren.goal ->
     int OCanren.ilogic JGS.Jtype.injected ->
     int OCanren.ilogic JGS.Jtype.injected ->
     OCanren.goal) ->
@@ -734,13 +734,13 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (answer, targ_inj (on_typ x)) in
 
-            let constr =
+            let query_constr =
               if (!lower_bounds_first && lower_bounds <> []) || not is_first
               then constr
               else success
             in
 
-            (false, acc &&& is_subtype ~constr sub super))
+            (false, acc &&& is_subtype ~query_constr sub super))
           (true, OCanren.success) upper_bounds
       in
       let _, lower_goal =
@@ -752,7 +752,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
-            let constr =
+            let query_constr =
               if
                 ((not !lower_bounds_first) && upper_bounds <> [])
                 || not is_first
@@ -760,7 +760,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
               else success
             in
 
-            (false, acc &&& is_subtype ~constr sub super))
+            (false, acc &&& is_subtype ~query_constr sub super))
           (true, OCanren.success) lower_bounds
       in
       (if !lower_bounds_first then lower_goal &&& upper_goal

@@ -29,10 +29,9 @@ let rec are_not_equal = function
 let _ =
   let module SampleCT = SampleCT () in
   let module V = Verifier (SampleCT) in
-  let open Closure in
-  let { is_correct_type; direct_subtyping = ( -<- ); closure = ( <-< ) } =
-    make_closure (module SampleCT) V.( -<- )
-  in
+  let module C = Closure.Make (SampleCT) in
+  let ( -<- ) = C.direct_subtyping V.( -<- ) in
+  let ( <-< ) = C.closure V.( -<- ) in
   (* let ( <-< ) ta tb = failwith "Oh..." in
      let is_correct_type t =
        Closure.is_correct_type (module SampleCT) ~closure_subtyping:( <-< ) t
@@ -180,11 +179,8 @@ let _ =
 let _ =
   let module SampleCT = SampleCT () in
   let module V = Verifier (SampleCT) in
-  let open Closure in
-  let { is_correct_type; direct_subtyping; closure } =
-    make_closure (module SampleCT) V.( -<- )
-  in
-  let ( <-< ) = closure in
+  let module C = Closure.Make (SampleCT) in
+  let ( <-< ) = C.closure V.( -<- ) in
   let class_int = SampleCT.make_class [] SampleCT.Ground.object_t [] in
   let int = Jtype.Class (class_int, []) in
   Printf.printf "Class Int: %d\n" class_int;

@@ -20,16 +20,16 @@
   
   C <-3-< A: 
   [
-    [Class (4, []); Class (5, []); Var {id=_.11554, index=_.11555, upb=Class (5, []), lwb=Some (Class (6, []))}; Class (6, [])]
+    [Class (4, []); Class (5, []); Var {id=_.2891, index=_.2892, upb=Class (5, []), lwb=Some (Class (6, []))}; Class (6, [])]
   ]
   
   Class Int: 4
   Interface ICollection: 5
   Class List: 7
   
-  class  extends class 1
-  interface <Var { id=6; index=0; upb=class 1 }>
-  class <Var { id=8; index=0; upb=class 1 }> extends class 1 implements (interface 5<Var { id=8; index=0; upb=class 1 }>)
+  class extends class 1
+  interface <Var { id=6; index=O; upb=class 1 }>
+  class <Var { id=8; index=O; upb=class 1 }>extends class 1implements (interface 5<Var { id=8; index=O; upb=class 1 }>)
   ? <-< ICollection<int>: 
   [
     Class (7, [Type (Class (4, []))])

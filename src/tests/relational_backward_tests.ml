@@ -5,7 +5,7 @@ open JGS_Helpers
 
 let _ =
   let module SampleCT = SampleCT () in
-  let module V = FO.Verifier (SampleCT) in
+  let module V = Verifier (SampleCT) in
   let rec ( <-< ) ta tb = ta -<- tb (* not complete! *)
   and ( -<- ) ta tb = V.( -<- ) ( <-< ) ta tb in
 
@@ -15,70 +15,66 @@ let _ =
       @@ String.concat ";\n  " @@ Stdlib.List.map f l
     in
     pp_list pp_ljtype @@ Stream.take ~n
-    @@ run q query (fun q -> q#reify HO.jtype_reify)
+    @@ run q query (fun q -> q#reify (Jtype.reify OCanren.reify))
   in
 
   Printf.printf "1.1 (?) < Object : %s\n"
   @@ run_jtype ~n:3 (fun q ->
          fresh ()
            (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ SampleCT.object_t) !!true));
+           (( -<- ) q SampleCT.object_t !!true));
 
   sep ();
 
   Printf.printf "1.2 Object[] < (?) : %s\n"
   @@ run_jtype ~n:(-1) (fun q ->
-         ( -<- ) (jtype_inj @@ Array SampleCT.object_t) q !!true);
+         ( -<- ) (Jtype.array SampleCT.object_t) q !!true);
   sep ();
 
   Printf.printf "2 (?) < Cloneable : %s\n"
   @@ run_jtype ~n:3 (fun q ->
          fresh ()
            (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ SampleCT.cloneable_t) !!true));
+           (( -<- ) q SampleCT.cloneable_t !!true));
   sep ();
 
   Printf.printf "3 (?) < Serializable : %s\n"
-  @@ run_jtype ~n:10 (fun q ->
-         ( -<- ) q (jtype_inj @@ SampleCT.serializable_t) !!true);
+  @@ run_jtype ~n:10 (fun q -> ( -<- ) q SampleCT.serializable_t !!true);
   sep ();
 
   Printf.printf "4.1 (?) < Object[] : %s\n"
   @@ run_jtype ~n:10 (fun q ->
          fresh ()
            (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ Array SampleCT.object_t) !!true));
+           (( -<- ) q (Jtype.array SampleCT.object_t) !!true));
   sep ();
 
   Printf.printf "4.2 Object < (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         ( -<- ) (jtype_inj @@ SampleCT.object_t) q !!true);
+  @@ run_jtype ~n:(-1) (fun q -> ( -<- ) SampleCT.object_t q !!true);
   sep ();
 
   Printf.printf "5 Cloneable < (?): %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         ( -<- ) (jtype_inj @@ SampleCT.cloneable_t) q !!true);
+  @@ run_jtype ~n:(-1) (fun q -> ( -<- ) SampleCT.cloneable_t q !!true);
   sep ();
 
   Printf.printf "6 Serializable < (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         ( -<- ) (jtype_inj @@ SampleCT.serializable_t) q !!true);
+  @@ run_jtype ~n:(-1) (fun q -> ( -<- ) SampleCT.serializable_t q !!true);
   sep ();
 
   Printf.printf "7.1 (?) < Serializable[] : %s\n"
   @@ run_jtype ~n:10 (fun q ->
          fresh ()
            (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ Array SampleCT.serializable_t) !!true));
+           (( -<- ) q (Jtype.array SampleCT.serializable_t) !!true));
   sep ();
 
   Printf.printf "7.2 Object[][] < (?) : %s\n"
   @@ run_jtype ~n:(-1) (fun q ->
-         ( -<- ) (jtype_inj @@ Array (Array SampleCT.object_t)) q !!true);
+         ( -<- ) (Jtype.array (Jtype.array SampleCT.object_t)) q !!true);
   sep ();
 
   (* class A {...} *)
-  let class_a = SampleCT.make_class [] SampleCT.object_t [] in
+  let class_a = SampleCT.make_class [] SampleCT.Ground.object_t [] in
 
   (* class B extends A {...} *)
   let class_b = SampleCT.make_class [] (Class (class_a, [])) [] in
@@ -152,27 +148,28 @@ let _ =
 
   (* class D<X> {...} *)
   let class_d =
-    SampleCT.make_class [ SampleCT.object_t ] SampleCT.object_t []
+    SampleCT.make_class [ SampleCT.Ground.object_t ] SampleCT.Ground.object_t []
   in
 
   (* class E<X, Y> {...} *)
   let class_e =
     SampleCT.make_class
-      [ SampleCT.object_t; SampleCT.object_t ]
-      SampleCT.object_t []
+      [ SampleCT.Ground.object_t; SampleCT.Ground.object_t ]
+      SampleCT.Ground.object_t []
   in
 
   (* class F<X, Y> extends E<D<Y>, X> {...} *)
   let class_f =
     SampleCT.make_class
-      [ SampleCT.object_t; SampleCT.object_t ]
+      [ SampleCT.Ground.object_t; SampleCT.Ground.object_t ]
       (Class
          ( class_e,
            [
              Type
                (Class
-                  (class_d, [ Type (SampleCT.make_tvar 1 SampleCT.object_t) ]));
-             Type (SampleCT.make_tvar 0 SampleCT.object_t);
+                  ( class_d,
+                    [ Type (SampleCT.make_tvar 1 SampleCT.Ground.object_t) ] ));
+             Type (SampleCT.make_tvar 0 SampleCT.Ground.object_t);
            ] ))
       []
   in
@@ -181,14 +178,17 @@ let _ =
   Printf.printf "Class F<X, Y>: %d\n\n" class_f;
 
   let f_ab =
-    Class (class_f, [ Type (Class (class_a, [])); Type (Class (class_b, [])) ])
+    Jtype.Class
+      ( class_f,
+        [ Targ.Type (Jtype.Class (class_a, [])); Type (Class (class_b, [])) ] )
   in
 
   let e_d_b_a =
-    Class
+    Jtype.Class
       ( class_e,
         [
-          Type (Class (class_d, [ Type (Class (class_b, [])) ]));
+          Targ.Type
+            (Jtype.Class (class_d, [ Targ.Type (Jtype.Class (class_b, [])) ]));
           Type (Class (class_a, []));
         ] )
   in
@@ -203,7 +203,7 @@ let _ =
   Printf.printf "12.2 (? - is class) < E<D<B>, A> : %s\n"
   @@ run_jtype ~n:10 (fun q ->
          fresh (a b)
-           (q === !!(HO.Class (a, b)))
+           (q === Jtype.class_ a b)
            (( -<- ) q (jtype_inj @@ e_d_b_a) !!true));
   sep ();
 

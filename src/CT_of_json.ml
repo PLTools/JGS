@@ -12,7 +12,7 @@ let log_error fmt =
   if !verbose_errors then Format.eprintf fmt
   else Format.ifprintf Format.std_formatter fmt
 
-type polarity = JGS.polarity = Extends | Super
+type polarity = JGS.Polarity.t = Extends | Super
 [@@deriving yojson_of, of_yojson]
 
 type class_id = string [@@deriving yojson_of, of_yojson]
@@ -400,7 +400,7 @@ let make_classtable table =
 
   let () =
     let full_name = "java.lang.Object" in
-    match CT.object_t with
+    match CT.Ground.object_t with
     | Class (id, _) ->
         Hashtbl.add classes full_name id;
         Hashtbl.add name_of_id_hash id full_name
@@ -408,7 +408,7 @@ let make_classtable table =
   in
   let () =
     let full_name = "java.lang.Clonable" in
-    match CT.cloneable_t with
+    match CT.Ground.cloneable_t with
     | Interface (id, _) ->
         Hashtbl.add ifaces full_name id;
         Hashtbl.add name_of_id_hash id full_name
@@ -416,7 +416,7 @@ let make_classtable table =
   in
   let () =
     let full_name = "java.io.Serializable" in
-    match CT.serializable_t with
+    match CT.Ground.serializable_t with
     | Interface (id, _) ->
         Hashtbl.add ifaces full_name id;
         Hashtbl.add name_of_id_hash id full_name
@@ -431,7 +431,7 @@ let make_classtable table =
     | C { cname = "java.lang.Object"; _ } -> ()
     | I { iname = "java.lang.Cloneable" as iname; _ } ->
         let id =
-          match CT.cloneable_t with
+          match CT.Ground.cloneable_t with
           | Interface (id, _) -> id
           | _ -> assert false
         in
@@ -439,7 +439,7 @@ let make_classtable table =
         Hashtbl.add ifaces iname id
     | I { iname = "java.io.Serializable" as iname; _ } ->
         let id =
-          match CT.serializable_t with
+          match CT.Ground.serializable_t with
           | Interface (id, _) -> id
           | _ -> assert false
         in
@@ -465,9 +465,10 @@ let make_classtable table =
               (* log "  make_class_fix %S. superclass" cname; *)
               cur_name := (cname, cur_id);
               match super with
-              | None -> CT.object_t
+              | None -> CT.Ground.object_t
               | Some super ->
-                  unwrap (on_typ super) Fun.id ~on_error:(fun () -> CT.object_t))
+                  unwrap (on_typ super) Fun.id ~on_error:(fun () ->
+                      CT.Ground.object_t))
             (fun cur_id ->
               (* log "  make_class_fix %S. superinterfaces" cname; *)
               cur_name := (cname, cur_id);
@@ -502,7 +503,7 @@ let make_classtable table =
         else
           Format.eprintf
             "The interface '%s' seems to be not declared. Skipping.\n%!" iname
-  and on_param idx { pname; p_upper } : JGS.jtype =
+  and on_param idx { pname; p_upper } : int JGS.Jtype.ground =
     let upper_bounds =
       p_upper |> List.map on_typ
       |> List.map (function
@@ -513,33 +514,35 @@ let make_classtable table =
     (* let new_id = CT.new_var () in *)
     let upb =
       match upper_bounds with
-      | [] -> CT.object_t
+      | [] -> CT.Ground.object_t
       | [ x ] -> x
-      | xs -> JGS.Intersect xs
+      | xs -> JGS.Jtype.Intersect xs
     in
     let ans = CT.make_tvar ~name:pname idx upb in
-    let id = match ans with JGS.Var { id; _ } -> id | _ -> assert false in
+    let id =
+      match ans with JGS.Jtype.Var { id; _ } -> id | _ -> assert false
+    in
     Hashtbl.add params_hash pname (var_info ~id idx);
     ans
   (* CT.make_tvar idx (List.hd upper_bounds) *)
   (* upper_bounds *)
   (* CT.object_t *)
   (* This works only if we have in the upper bound an Object *)
-  and on_arg : _ -> JGS.jtype JGS.targ = function
-    | Wildcard None -> JGS.Wildcard None
+  and on_arg : _ -> int JGS.Jtype.ground JGS.Targ.ground = function
+    | Wildcard None -> JGS.Targ.Wildcard None
     | Wildcard (Some (kind, typ)) ->
-        unwrap (on_typ typ) (fun x -> JGS.Wildcard (Some (kind, x)))
+        unwrap (on_typ typ) (fun x -> JGS.Targ.Wildcard (Some (kind, x)))
     | t -> (
         match on_typ t with
-        | Some t -> JGS.Type t
+        | Some t -> JGS.Targ.Type t
         | None ->
             failwiths "Can't recover from error in on_typ: \n%a\n"
               Yojson.Safe.pp (yojson_of_jtype t))
-  and on_typ : _ -> JGS.jtype option = function
+  and on_typ : _ -> int JGS.Jtype.ground option = function
     | Class (name, args) when is_current name ->
-        return @@ JGS.Class (snd !cur_name, List.map on_arg args)
+        return @@ JGS.Jtype.Class (snd !cur_name, List.map on_arg args)
     | Interface (name, args) when is_current name ->
-        return @@ JGS.Class (snd !cur_name, List.map on_arg args)
+        return @@ JGS.Jtype.Class (snd !cur_name, List.map on_arg args)
     | Class (name, args) -> (
         match Hashtbl.find params_hash name with
         | { vi_id; vi_index } ->
@@ -549,19 +552,19 @@ let make_classtable table =
                in *)
             log "on_typ: Got a parameter with index = %d and id = %d" vi_index
               vi_id;
-            return @@ CT.make_tvar vi_index CT.object_t
+            return @@ CT.make_tvar vi_index CT.Ground.object_t
         | exception Not_found -> (
             match Hashtbl.find classes name with
             | id ->
                 (* log "Building a class id=%d, name = %s" id name; *)
-                return @@ JGS.Class (id, List.map on_arg args)
+                return @@ JGS.Jtype.Class (id, List.map on_arg args)
             | exception Not_found ->
                 log_error
                   "   The name %S is not class or parameter. Substituting \
                    object. (cur_name = %s)\n\
                    %!"
                   name (fst !cur_name);
-                Some CT.object_t))
+                Some CT.Ground.object_t))
     | Interface (name, args) -> (
         match Hashtbl.find params_hash name with
         | { vi_id; vi_index } ->
@@ -571,27 +574,27 @@ let make_classtable table =
             in
             log "on_typ: Got a parameter with index = %d and id = %d" vi_index
               vi_id;
-            return @@ CT.make_tvar vi_index CT.object_t
+            return @@ CT.make_tvar vi_index CT.Ground.object_t
         | exception Not_found -> (
             match Hashtbl.find ifaces name with
             | id ->
                 (* log "Building an interface %d" id; *)
-                return @@ JGS.Interface (id, List.map on_arg args)
+                return @@ JGS.Jtype.Interface (id, List.map on_arg args)
             | exception Not_found ->
                 log_error
                   "  The name %S is not interface or parameter. Substituting \
                    object  (cur_name = %s)\n\
                    %!"
                   name (fst !cur_name);
-                Some CT.object_t))
-    | Array typ -> Option.map CT.array_t (on_typ typ)
+                Some CT.Ground.object_t))
+    | Array typ -> Option.map CT.Ground.array_t (on_typ typ)
     | Var { id; upb; lwb; index } -> (
         (* log "Looking for param %s " id; *)
         match Hashtbl.find params_hash id with
         | exception Not_found ->
             log_error "Possibly undeclared param '%s' in the class '%s'\n%!" id
               (fst !cur_name);
-            return CT.object_t
+            return CT.Ground.object_t
         | { vi_id; vi_index } ->
             if index <> vi_index then
               log_error
@@ -600,19 +603,19 @@ let make_classtable table =
                  %!"
                 index vi_index;
             return
-            @@ JGS.(
+            @@ JGS.Jtype.(
                  Var
                    {
                      id = vi_id;
-                     index = vi_index;
+                     index = OCanren.Std.Nat.of_int vi_index;
                      upb = unwrap (on_typ upb) Fun.id (* Fix HERE *);
                      lwb =
                        Option.bind lwb (fun x -> unwrap (on_typ x) Option.some);
                    }))
     | Intersect _ ->
         log_error "Intersections are not supported. Substituting Object\n%!";
-        return CT.object_t
-    | Primitive s -> return (CT.primitive_t s)
+        return CT.Ground.object_t
+    | Primitive s -> return (CT.Ground.primitive_t s)
     | t ->
         log_error "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
         failwith "unsupported case"
@@ -643,11 +646,12 @@ type result_query =
   is_subtype:
     (closure_type:Closure.closure_type ->
     ?constr:OCanren.goal ->
-    JGS.HO.jtype_injected ->
-    JGS.HO.jtype_injected ->
+    int OCanren.ilogic JGS.Jtype.injected ->
+    int OCanren.ilogic JGS.Jtype.injected ->
     OCanren.goal) ->
-  (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
-  JGS.HO.jtype_injected ->
+  (int OCanren.ilogic JGS.Jtype.injected ->
+  int OCanren.ilogic JGS.Jtype.injected) ->
+  int OCanren.ilogic JGS.Jtype.injected ->
   OCanren.goal
 
 let show_processing pos pp_a a pp_b b =
@@ -668,7 +672,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
   let prepare_goal_attempt () : result_query =
     let open OCanren in
-    let rec on_typ : jtype -> JGS.HO.jtype_injected = function
+    let rec on_typ : jtype -> int ilogic JGS.Jtype.injected = function
       | Class (name, args) -> (
           match id_of_name name with
           | cid -> JGS_Helpers.class_ !!cid (Std.list on_arg args)
@@ -677,28 +681,29 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           match id_of_name name with
           | cid -> JGS_Helpers.interface !!cid (Std.list on_arg args)
           | exception Not_found -> failwiths "Can't find class name '%s'" name)
-      | Var { id; index; upb; lwb } ->
+      | Var { id = _; index; upb; lwb } ->
           (* let id = Std.Nat.inj (Std.Nat.of_int (CT.new_var ())) in *)
-          let make_var : index:_ -> _ -> _ -> _ -> JGS.HO.jtype_injected =
+          let make_var : index:_ -> _ -> _ -> _ -> int ilogic JGS.Jtype.injected
+              =
             JGS_Helpers.var
           in
           (make_var
              ~index:(Std.Nat.nat (Std.Nat.of_int index))
-             !!(CT.new_var ())
+             (CT.new_var ())
              (Std.Option.option (Stdlib.Option.map on_typ lwb))
              (on_typ upb)
-            : JGS.HO.jtype_injected)
+            : int ilogic JGS.Jtype.injected)
       | t ->
           Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
           failwith "unsupported case"
-    and on_arg : _ -> _ JGS.HO.targ_injected = function
+    and on_arg : _ -> _ JGS.Targ.injected = function
       (* TODO: wildcards are not used, fix that later *)
       | Wildcard None -> JGS_Helpers.wildcard (Std.none ())
       | Wildcard (Some (kind, typ)) ->
-          let pol : JGS.HO.polarity_injected =
+          let pol : JGS.Polarity.injected =
             match kind with
-            | Super -> !!JGS.HO.Super
-            | Extends -> !!JGS.HO.Extends
+            | Super -> !!JGS.Polarity.Super
+            | Extends -> !!JGS.Polarity.Extends
           in
           JGS_Helpers.wildcard (Std.some !!(pol, on_typ typ))
       | t ->
@@ -717,12 +722,14 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       let constr =
         match !need_remove_dups with
         | Debug_var ->
-            debug_var answer (Fun.flip JGS.HO.jtype_reify) (function
-              | [ (Value _ as ans) ]
-                when Jtype_set.mem_alpha_converted ans
-                       !Jtype_set.alpha_converted_answer_set ->
-                  failure
-              | _ -> success)
+            debug_var answer
+              (Fun.flip (JGS.Jtype.reify OCanren.reify))
+              (function
+                | [ (Value _ as ans) ]
+                  when Jtype_set.mem_alpha_converted ans
+                         !Jtype_set.alpha_converted_answer_set ->
+                    failure
+                | _ -> success)
         | _ -> success
       in
 
@@ -766,7 +773,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           (true, OCanren.success) lower_bounds
       in
       (if !need_remove_dups = Structural then
-         structural answer JGS.HO.jtype_reify (fun lt ->
+         structural answer (JGS.Jtype.reify OCanren.reify) (fun lt ->
              not
              @@ Jtype_set.mem_alpha_converted lt
                   !Jtype_set.alpha_converted_answer_set)
@@ -894,7 +901,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
         (SS.to_seq varnames |> List.of_seq)
         (fun lookup ->
           let open OCanren in
-          let rec on_typ : jtype -> JGS.HO.jtype_injected = function
+          let rec on_typ : jtype -> _ JGS.Jtype.injected = function
             | Class (name, args) -> (
                 match id_of_name name with
                 | cid -> JGS_Helpers.class_ !!cid (Std.list on_arg args)
@@ -909,14 +916,14 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
             | t ->
                 Format.eprintf "%a\n%!" Yojson.Safe.pp (yojson_of_jtype t);
                 failwith "unsupported case"
-          and on_arg : _ -> _ JGS.HO.targ_injected = function
+          and on_arg : _ -> _ JGS.Targ.injected = function
             (* TODO: wildcards are not used, fix that later *)
             | Wildcard None -> JGS_Helpers.wildcard (Std.none ())
             | Wildcard (Some (kind, typ)) ->
-                let pol : JGS.HO.polarity_injected =
+                let pol : JGS.Polarity.injected =
                   match kind with
-                  | Super -> !!JGS.HO.Super
-                  | Extends -> !!JGS.HO.Extends
+                  | Super -> !!JGS.Polarity.Super
+                  | Extends -> !!JGS.Polarity.Extends
                 in
                 JGS_Helpers.wildcard (Std.some !!(pol, on_typ typ))
             | t ->

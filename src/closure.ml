@@ -1,6 +1,6 @@
 open OCanren
 open OCanren.Std
-open JGS.HO
+open JGS
 
 let need_dynamic_closure = ref true
 
@@ -10,22 +10,26 @@ type closure_type = Subtyping | Supertyping
 
 type closure = {
   is_correct_type :
-    closure_type:closure_type -> ?constr:goal -> jtype_injected -> goal;
+    closure_type:closure_type ->
+    ?constr:goal ->
+    int ilogic Jtype.injected ->
+    goal;
   direct_subtyping :
     closure_type:closure_type ->
     ?constr:goal ->
-    jtype_injected ->
-    jtype_injected ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
     goal;
   closure :
     closure_type:closure_type ->
     ?constr:goal ->
-    jtype_injected ->
-    jtype_injected ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
     goal;
 }
 
-let rec list_same_length : _ Std.List.injected -> _ Std.List.injected -> goal =
+let rec list_same_length : 'a Std.List.injected -> 'b Std.List.injected -> goal
+    =
  fun xs ys ->
   conde
     [
@@ -37,16 +41,16 @@ let rec list_same_length : _ Std.List.injected -> _ Std.List.injected -> goal =
     ]
 
 let is_correct_type (module CT : SCT) ~closure_subtyping t =
-  let decl_by_id id decl = CT.HO.decl_by_id id decl in
+  let decl_by_id id decl = CT.decl_by_id id decl in
   conde
     [
       (* Array: always allow *)
-      fresh elems (t === !!(Array elems));
+      fresh elems (t === Jtype.array elems);
       (* Class: should be metioned in class declarations with the same arguments amount *)
       fresh
         (id actual_params expected_params super supers)
-        (t === !!(Class (id, actual_params)))
-        (decl_by_id id !!(C !!{ params = expected_params; super; supers }))
+        (t === Jtype.class_ id actual_params)
+        (decl_by_id id (Decl.c expected_params super supers))
         (* TODO (Kakadu): write a relation same_length *)
         (* (List.lengtho expected_params length)
            (List.lengtho actual_params length) *)
@@ -54,21 +58,21 @@ let is_correct_type (module CT : SCT) ~closure_subtyping t =
       (* Interface: should be metioned in interface declarations with the same arguments amount *)
       fresh
         (id actual_params expected_params supers length)
-        (t === !!(Interface (id, actual_params)))
-        (decl_by_id id !!(I !!{ params = expected_params; supers }))
+        (t === Jtype.interface id actual_params)
+        (decl_by_id id (Decl.i expected_params supers))
         (List.lengtho expected_params length)
         (List.lengtho actual_params length);
       (* Variable: lower bound should be subtype of upper bound *)
       fresh (id index upb lwb)
-        (t === !!(Var { id; index; upb; lwb = some lwb }))
+        (t === Jtype.var id index upb (some lwb))
         (upb =/= lwb)
         (closure_subtyping lwb upb);
       (* Varaible without lover bound: always allow *)
-      fresh (id index upb) (t === !!(Var { id; index; upb; lwb = none () }));
+      fresh (id index upb) (t === Jtype.var id index upb (none ()));
       (* Null: always allow *)
-      t === !!Null;
+      t === Jtype.null ();
       (* Intersect: always allow *)
-      fresh args (t === !!(Intersect args));
+      fresh args (t === Jtype.intersect args);
     ]
 
 let ( -<- ) (module CT : SCT) ~direct_subtyping ~closure_subtyping
@@ -79,25 +83,18 @@ let ( -<- ) (module CT : SCT) ~direct_subtyping ~closure_subtyping
        ta tb !!true)
     (is_correct_type ta) (is_correct_type tb)
 
-let rec ( <-< ) ~direct_subtyping ~constr ta tb st =
-  if JGS_stats.config.trace_closure_subtyping then
-    Format.printf "Closure.(<-<): ta = %a, tb = %a\n%!"
-      (JGS_Helpers.pp_jtyp_logic ([%show: GT.int OCanren.logic] ()))
-      (OCanren.reify_in_state st jtype_reify ta)
-      (JGS_Helpers.pp_jtyp_logic ([%show: GT.int OCanren.logic] ()))
-      (OCanren.reify_in_state st jtype_reify tb);
-  st
-  |> fresh () constr
-       (JGS_Helpers.only_classes_interfaces_and_arrays ta)
-       (JGS_Helpers.only_classes_interfaces_and_arrays tb)
-       (conde
-          [
-            direct_subtyping ta tb;
-            fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
-              (JGS_Helpers.only_classes_interfaces_and_arrays ti)
-              (direct_subtyping ti tb)
-              (( <-< ) ~direct_subtyping ~constr ta ti);
-          ])
+let rec ( <-< ) ~direct_subtyping ~constr ta tb =
+  fresh () constr
+    (JGS_Helpers.only_classes_interfaces_and_arrays ta)
+    (JGS_Helpers.only_classes_interfaces_and_arrays tb)
+    (conde
+       [
+         direct_subtyping ta tb;
+         fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
+           (JGS_Helpers.only_classes_interfaces_and_arrays ti)
+           (direct_subtyping ti tb)
+           (( <-< ) ~direct_subtyping ~constr ta ti);
+       ])
 
 let rec ( <=< ) ~direct_subtyping ~constr ta tb =
   fresh () constr
@@ -113,8 +110,12 @@ let rec ( <=< ) ~direct_subtyping ~constr ta tb =
        ])
 
 let ( <~< ) ~direct_subtyping ~constr ta tb =
-  debug_var ta (Fun.flip JGS.HO.jtype_reify) (fun reified_ta ->
-      debug_var tb (Fun.flip JGS.HO.jtype_reify) (fun reified_tb ->
+  debug_var ta
+    (Fun.flip (Jtype.reify OCanren.reify))
+    (fun reified_ta ->
+      debug_var tb
+        (Fun.flip (Jtype.reify OCanren.reify))
+        (fun reified_tb ->
           match (reified_ta, reified_tb) with
           | [ Value _ ], _ -> ( <=< ) ~direct_subtyping ~constr ta tb
           | _ -> ( <-< ) ~direct_subtyping ~constr ta tb))
@@ -140,9 +141,4 @@ let make_closure_by_closure_template closure_template (module CT : SCT)
   { is_correct_type = is_correct; direct_subtyping = direct; closure }
 
 let make_closure (module CT : SCT) =
-  if !need_dynamic_closure then
-    make_closure_by_closure_template (fun _ -> ( <~< )) (module CT)
-  else
-    make_closure_by_closure_template
-      (function Subtyping -> ( <-< ) | Supertyping -> ( <=< ))
-      (module CT)
+  make_closure_by_closure_template (fun _ -> ( <~< )) (module CT)

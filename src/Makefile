@@ -36,48 +36,16 @@ EXAMPLES = down1_1 down1_2 down1_3 down1_4 \
 
 define LOPSTR_EXAMPLES
 
-example_structural_$(1):
-	$(RUN_EXAMPLE) -remove-dups-structural only_type_queries/LOPSTR2023/$(1).json
-
-example_debug_var_$(1):
-	$(RUN_EXAMPLE) -remove-dups-debug-var only_type_queries/LOPSTR2023/$(1).json
-
-example_with_dups_$(1):
+example_$(1):
 	$(RUN_EXAMPLE) only_type_queries/LOPSTR2023/$(1).json
-
-example_no_spec_$(1):
-	$(RUN_EXAMPLE) -no-table-spec only_type_queries/LOPSTR2023/$(1).json
-
-example_no_dyn_closure_$(1):
-	$(RUN_EXAMPLE) -no-dynamic-closure only_type_queries/LOPSTR2023/$(1).json
-
-example_no_opts_$(1):
-	$(RUN_EXAMPLE) -no-table-spec -no-dynamic-closure only_type_queries/LOPSTR2023/$(1).json
-
 endef
 
 $(foreach i,$(EXAMPLES),$(eval $(call LOPSTR_EXAMPLES,$(i))))
 
 define LOPSTR_UP_DOWN_EXAMPLES
 
-
-example_upper_first_structural_$(1):
-	$(RUN_EXAMPLE) -upper-bound-first -remove-dups-structural only_type_queries/LOPSTR2023/$(1).json
-
-example_upper_first_debug_var_$(1):
-	$(RUN_EXAMPLE) -upper-bound-first -remove-dups-debug-var only_type_queries/LOPSTR2023/$(1).json
-
-example_upper_first_with_dups_$(1):
+example_upper_first_$(1):
 	$(RUN_EXAMPLE) -upper-bound-first only_type_queries/LOPSTR2023/$(1).json
-
-example_upper_first_no_spec_$(1):
-	$(RUN_EXAMPLE) -upper-bound-first -no-table-spec only_type_queries/LOPSTR2023/$(1).json
-
-example_upper_first_no_dyn_closure_$(1):
-	$(RUN_EXAMPLE) -upper-bound-first -no-dynamic-closure only_type_queries/LOPSTR2023/$(1).json
-
-example_upper_first_no_opts_$(1):
-	$(RUN_EXAMPLE) -upper-bound-first -no-table-spec -no-dynamic-closure only_type_queries/LOPSTR2023/$(1).json
 
 endef
 

@@ -53,7 +53,8 @@ let run_jtype pp ?(n = test_args.answers_count) query =
           Format.printf "% 3d)  %a\n%!" i pp h;
           loop (1 + i) tl
   in
-  loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+  loop 1
+  @@ OCanren.(run q) query (fun q -> q#reify (JGS.Jtype.reify OCanren.reify))
 
 let class_or_interface typ =
   let open OCanren in
@@ -73,7 +74,7 @@ let () =
         Format.eprintf "%a\n%!" (Yojson.Safe.pretty_print ~std:true) j;
         exit 1
   in
-  let module V = JGS.FO.Verifier (CT) in
+  let module V = JGS.Verifier (CT) in
   let open OCanren in
   let open JGS in
   let open Closure in
@@ -131,7 +132,7 @@ let () =
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
           fresh () (class_or_interface typ)
-            (( -<- ) typ (jtype_inj CT.object_t) ~closure_type:Subtyping))
+            (( -<- ) typ (jtype_inj CT.Ground.object_t) ~closure_type:Subtyping))
   in
   (*
   let () =

@@ -7,7 +7,7 @@ open Closure
 
 (* Verifier modules *)
 module SampleCT = SampleCT ()
-module V = JGS.FO.Verifier (SampleCT)
+module V = JGS.Verifier (SampleCT)
 
 let { closure; _ } = make_closure (module SampleCT) V.( -<- )
 let ( <-< ) = closure ~closure_type:Subtyping
@@ -15,7 +15,9 @@ let ( <-< ) = closure ~closure_type:Subtyping
 module JGS_builder = struct
   module M = Map.Make (Int)
 
-  type tested_type = Simple of JGS.jtype | Generic of (JGS.jtype -> JGS.jtype)
+  type tested_type =
+    | Simple of int JGS.Jtype.ground
+    | Generic of (int JGS.Jtype.ground -> int JGS.Jtype.ground)
 
   let names_by_id =
     ref @@ M.add 1 "Object" @@ M.add 2 "Cloneable"
@@ -42,9 +44,9 @@ module JGS_builder = struct
     in
     let id = SampleCT.make_interface ~name [] supers in
     names_by_id := M.add id name !names_by_id;
-    Simple (JGS.Interface (id, []))
+    Simple (JGS.Jtype.Interface (id, []))
 
-  let mk_simple_class ?(super = Simple SampleCT.object_t) ~supers name =
+  let mk_simple_class ?(super = Simple SampleCT.Ground.object_t) ~supers name =
     let supers =
       List.map
         (function
@@ -58,30 +60,30 @@ module JGS_builder = struct
     in
     let id = SampleCT.make_class ~name [] super supers in
     names_by_id := M.add id name !names_by_id;
-    Simple (JGS.Class (id, []))
+    Simple (JGS.Jtype.Class (id, []))
 
   let mk_generic_interface ~supers name =
-    let var = SampleCT.make_tvar 0 SampleCT.object_t in
+    let var = SampleCT.make_tvar 0 SampleCT.Ground.object_t in
     let supers =
       List.map (function Simple s -> s | Generic f -> f var) supers
     in
     let id = SampleCT.make_interface ~name [ var ] supers in
     names_by_id := M.add id name !names_by_id;
-    Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
+    Generic (fun var -> JGS.Jtype.Interface (id, [ JGS.Targ.Type var ]))
 
-  let mk_generic_class ?(super = Simple SampleCT.object_t) ~supers name =
-    let var = SampleCT.make_tvar 0 SampleCT.object_t in
+  let mk_generic_class ?(super = Simple SampleCT.Ground.object_t) ~supers name =
+    let var = SampleCT.make_tvar 0 SampleCT.Ground.object_t in
     let supers =
       List.map (function Simple s -> s | Generic f -> f var) supers
     in
     let super = match super with Simple s -> s | Generic f -> f var in
     let id = SampleCT.make_class ~name [ var ] super supers in
     names_by_id := M.add id name !names_by_id;
-    Generic (fun var -> JGS.Class (id, [ JGS.Type var ]))
+    Generic (fun var -> JGS.Jtype.Class (id, [ JGS.Targ.Type var ]))
 
-  let obj = Simple SampleCT.object_t
-  let cloneable = Simple SampleCT.cloneable_t
-  let serializable = Simple SampleCT.serializable_t
+  let obj = Simple SampleCT.Ground.object_t
+  let cloneable = Simple SampleCT.Ground.cloneable_t
+  let serializable = Simple SampleCT.Ground.serializable_t
 end
 
 module CollectionClasses = struct
@@ -102,37 +104,37 @@ module CollectionClasses = struct
 
     let id =
       SampleCT.make_interface_fix ~name
-        (fun _ -> [ SampleCT.make_tvar 0 SampleCT.object_t ])
+        (fun _ -> [ SampleCT.make_tvar 0 SampleCT.Ground.object_t ])
         (fun _self_id -> [])
     in
     names_by_id := M.add id name !names_by_id;
-    Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
+    Generic (fun var -> JGS.Jtype.Interface (id, [ JGS.Targ.Type var ]))
 
   let collection =
     let name = "ICollection" in
 
     let id =
       SampleCT.make_interface_fix ~name
-        (fun _ -> [ SampleCT.make_tvar 0 SampleCT.object_t ])
+        (fun _ -> [ SampleCT.make_tvar 0 SampleCT.Ground.object_t ])
         (fun _self_id -> [])
     in
     names_by_id := M.add id name !names_by_id;
-    Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
+    Generic (fun var -> JGS.Jtype.Interface (id, [ JGS.Targ.Type var ]))
 
   let string =
     let name = "java.lang.String" in
     let id =
       SampleCT.make_class_fix ~name
         ~params:(fun _ -> [])
-        (fun _ -> SampleCT.object_t)
+        (fun _ -> SampleCT.Ground.object_t)
         (fun self_id ->
           [
             get_simple_type serializable;
-            get_generic_type comparable (JGS.Class (self_id, []));
+            get_generic_type comparable (JGS.Jtype.Class (self_id, []));
           ])
     in
     names_by_id := M.add id name !names_by_id;
-    Simple (JGS.Class (id, []))
+    Simple (JGS.Jtype.Class (id, []))
 
   let list =
     let name = "java.util.List" in
@@ -149,14 +151,14 @@ module CollectionClasses = struct
     let id =
       SampleCT.make_interface_fix ~name
         (fun _ ->
-          var1 := SampleCT.make_tvar ~name:"A" 0 SampleCT.object_t;
+          var1 := SampleCT.make_tvar ~name:"A" 0 SampleCT.Ground.object_t;
           [ !var1 ])
         (fun _self_id ->
           (* let v = SampleCT.make_tvar ~name:"B" 0 SampleCT.object_t in *)
           [ get_generic_type collection !var1 ])
     in
     names_by_id := M.add id name !names_by_id;
-    Generic (fun var -> JGS.Interface (id, [ JGS.Type var ]))
+    Generic (fun var -> JGS.Jtype.Interface (id, [ JGS.Targ.Type var ]))
   (* mk_generic_interface "java.util.List" ~supers:[ collection ] *)
 
   let protocol_string_list =
@@ -168,9 +170,9 @@ module CollectionClasses = struct
   module Types = struct
     (* let int = get_simple_type int *)
     let string = get_simple_type string
-    let obj = SampleCT.object_t
-    let cloneable = SampleCT.cloneable_t
-    let serializable = SampleCT.serializable_t
+    let obj = SampleCT.Ground.object_t
+    let cloneable = SampleCT.Ground.cloneable_t
+    let serializable = SampleCT.Ground.serializable_t
     let collection = get_generic_type collection
     let list = get_generic_type list
   end
@@ -205,7 +207,7 @@ let _ =
 
     let counts =
       let module M = Map.Make (struct
-        type t = JGS.HO.jtype_logic
+        type t = int logic JGS.Jtype.logic
 
         let compare = compare
       end) in
@@ -231,7 +233,7 @@ let _ =
       (if n < 0 then "all" else Int.to_string n);
     pp_list JGS_builder.pp_jtype
     @@ Stream.take ~n
-    @@ run q query (fun q -> q#reify JGS.HO.jtype_reify)
+    @@ run q query (fun q -> q#reify (JGS.Jtype.reify OCanren.reify))
   in
 
   let _ =
@@ -242,6 +244,6 @@ let _ =
     *)
     (* On three answers it hangs *)
     run_jtype ~n:3 ~msg:"? <-< Collection<String>" (fun q ->
-        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj upper_bound1) (* *))
+        fresh () (q =/= JGS.Jtype.null ()) (q <-< jtype_inj upper_bound1) (* *))
   in
   ()

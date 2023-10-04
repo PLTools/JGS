@@ -1,5 +1,5 @@
 open OCanren
-open JGS.HO
+open JGS
 
 val need_dynamic_closure : bool ref
 
@@ -9,26 +9,32 @@ type closure_type = Subtyping | Supertyping
 
 type closure = {
   is_correct_type :
-    closure_type:closure_type -> ?constr:goal -> jtype_injected -> goal;
+    closure_type:closure_type ->
+    ?constr:goal ->
+    int ilogic Jtype.injected ->
+    goal;
   direct_subtyping :
     closure_type:closure_type ->
     ?constr:goal ->
-    jtype_injected ->
-    jtype_injected ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
     goal;
   closure :
     closure_type:closure_type ->
     ?constr:goal ->
-    jtype_injected ->
-    jtype_injected ->
+    int ilogic Jtype.injected ->
+    int ilogic Jtype.injected ->
     goal;
 }
 
 val make_closure :
   (module SCT) ->
-  ((jtype_injected -> jtype_injected -> Std.Bool.groundi -> goal) ->
-  jtype_injected ->
-  jtype_injected ->
+  ((int ilogic Jtype.injected ->
+   int ilogic Jtype.injected ->
+   Std.Bool.groundi ->
+   goal) ->
+  int ilogic Jtype.injected ->
+  int ilogic Jtype.injected ->
   Std.Bool.groundi ->
   goal) ->
   closure

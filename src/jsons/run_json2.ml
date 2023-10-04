@@ -42,28 +42,14 @@ let () =
       ( "-trace-closure",
         Arg.Unit (fun () -> JGS_stats.set_trace_closure_subtyping true),
         " trace closure subtyping" );
-      ( "-trace-get-superclass-by-id",
-        Arg.Unit (fun () -> JGS_stats.set_trace_get_superclass_by_id true),
-        " trace superclass searching" );
       ( "-n",
         Arg.Int (fun n -> test_args.answers_count <- n),
         " Number of answers requested (default 1)" );
       ("-ct", Arg.String (fun s -> test_args.ct_file <- s), " class table file");
-      ( "-need-simplified",
-        Arg.Unit (fun () -> JGS.need_simpified := true),
-        " Without capture conversion" );
       ( "-perffifo",
         Arg.String (fun s -> test_args.fifo <- Some s),
         " <file> Specify pipe file to start performace metrics only after JSON \
          parsing" );
-      ( "-no-table-spec",
-        Arg.Unit
-          (fun () ->
-            Mutable_type_table.need_table_dynamic_specialisation := false),
-        " Switch off table dynamic specialisations" );
-      ( "-no-dynamic-closure",
-        Arg.Unit (fun () -> Closure.need_dynamic_closure := false),
-        " Switch to static closure" );
       ( "-upper-bound-first",
         Arg.Unit (fun () -> CT_of_json.lower_bounds_first := false),
         " Solve upper bounds first" );
@@ -143,7 +129,8 @@ let run_jtype pp ?(n = test_args.answers_count) query =
           loop (1 + i) tl
   in
   let total_amount =
-    loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+    loop 1
+    @@ OCanren.(run q) query (fun q -> q#reify (JGS.Jtype.reify OCanren.reify))
   in
   (* Format.printf "\n";
      Format.printf "Duplicated answers:\n";
@@ -222,7 +209,7 @@ let () =
         | Var (idx, _) -> Printf.sprintf "_.%d" idx
         | Value idx -> name_of_id idx)
   end in
-  let module V = JGS.FO.Verifier (CT) in
+  let module V = JGS.Verifier (CT) in
   let open OCanren in
   let open JGS in
   let open Closure in
@@ -281,13 +268,13 @@ let () =
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
           fresh () (class_or_interface typ)
-            (closure ~closure_type:Subtyping typ (jtype_inj CT.object_t)))
+            (closure ~closure_type:Subtyping typ (jtype_inj CT.Ground.object_t)))
   in
 
   let __ () =
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 4);
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 5);
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.decl_by_id 7);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.Ground.decl_by_id 4);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.Ground.decl_by_id 5);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (CT.Ground.decl_by_id 7);
     ()
   in
   let () =
@@ -299,7 +286,7 @@ let () =
       let open OCanren in
       fresh ()
         (typ =/= intersect __)
-        (typ =/= !!HO.Null)
+        (typ =/= JGS.Jtype.null ())
         (typ =/= var ~index:__ __ __ __)
         (*  *)
         (goal ~is_subtype:closure Fun.id typ))

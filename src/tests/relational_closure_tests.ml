@@ -11,13 +11,13 @@ let pp_list f l =
 let run_jtype ?(n = -1) ~msg query =
   Printf.printf "%s: %s\n\n" msg
   @@ pp_list pp_ljtype @@ Stream.take ~n
-  @@ run q query (fun q -> q#reify HO.jtype_reify)
+  @@ run q query (fun q -> q#reify (Jtype.reify OCanren.reify))
 
 let run_jtypes ?(n = -1) ~msg query =
   Printf.printf "%s: %s\n\n" msg
   @@ pp_list (GT.show Std.List.logic pp_ljtype)
   @@ Stream.take ~n
-  @@ run q query (fun q -> q#reify (Std.List.reify HO.jtype_reify))
+  @@ run q query (fun q -> q#reify (Std.List.reify (Jtype.reify OCanren.reify)))
 
 let rec are_not_equal = function
   | [] -> success
@@ -28,7 +28,7 @@ let rec are_not_equal = function
 
 let _ =
   let module SampleCT = SampleCT () in
-  let module V = FO.Verifier (SampleCT) in
+  let module V = Verifier (SampleCT) in
   let open Closure in
   let { is_correct_type; direct_subtyping; closure } =
     make_closure (module SampleCT) V.( -<- )
@@ -45,19 +45,19 @@ let _ =
          ~direct_subtyping:V.( -<- ) ~closure_subtyping:( <-< ) ~is_correct_type ta
          tb
      in *)
-  let class_a = SampleCT.make_class [] SampleCT.object_t [] in
-  let a = Class (class_a, []) in
+  let class_a = SampleCT.make_class [] SampleCT.Ground.object_t [] in
+  let a = Jtype.Class (class_a, []) in
   Printf.printf "Class A: %d\n" class_a;
   let class_b = SampleCT.make_class [] a [] in
-  let b = Class (class_b, []) in
+  let b = Jtype.Class (class_b, []) in
   Printf.printf "Class B extends A: %d\n" class_b;
 
   let class_c = SampleCT.make_class [] b [] in
-  let c = Class (class_c, []) in
+  let c = Jtype.Class (class_c, []) in
   Printf.printf "Class C extends B: %d\n" class_c;
 
-  let class_a1 = SampleCT.make_class [] SampleCT.object_t [] in
-  let a1 = Class (class_a1, []) in
+  let class_a1 = SampleCT.make_class [] SampleCT.Ground.object_t [] in
+  let a1 = Jtype.Class (class_a1, []) in
   Printf.printf "Class A1: %d\n" class_a1;
 
   (****************************************************************************)
@@ -72,7 +72,7 @@ let _ =
     run_jtype ~msg:"? <-< A (without intersects vars and null)" ~n:10 (fun q ->
         fresh ()
           (only_classes_interfaces_and_arrays q)
-          (q =/= !!HO.Null)
+          (q =/= Jtype.null ())
           (q <-< jtype_inj a))
   in
 
@@ -181,26 +181,26 @@ let _ =
 
 let _ =
   let module SampleCT = SampleCT () in
-  let module V = FO.Verifier (SampleCT) in
+  let module V = Verifier (SampleCT) in
   let open Closure in
   let { is_correct_type; direct_subtyping; closure } =
     make_closure (module SampleCT) V.( -<- )
   in
   let ( <-< ) = closure ~closure_type:Subtyping in
-  let class_int = SampleCT.make_class [] SampleCT.object_t [] in
-  let int = Class (class_int, []) in
+  let class_int = SampleCT.make_class [] SampleCT.Ground.object_t [] in
+  let int = Jtype.Class (class_int, []) in
   Printf.printf "Class Int: %d\n" class_int;
 
   let interface_icollection =
     SampleCT.make_interface_fix
       (fun _ ->
         let type_var =
-          Var
+          Jtype.Var
             {
-              id = SampleCT.new_var ();
-              index = 0;
+              id = SampleCT.Ground.new_var ();
+              index = Std.Nat.of_int 0;
               lwb = None;
-              upb = SampleCT.object_t;
+              upb = SampleCT.Ground.object_t;
             }
         in
         [ type_var ])
@@ -213,28 +213,44 @@ let _ =
   let class_list =
     SampleCT.make_class_fix
       ~params:(fun _ ->
-        fuck := SampleCT.new_var ();
+        fuck := SampleCT.Ground.new_var ();
         let type_var_B =
-          Var { id = !fuck; index = 0; lwb = None; upb = SampleCT.object_t }
+          Jtype.Var
+            {
+              id = !fuck;
+              index = Std.Nat.of_int 0;
+              lwb = None;
+              upb = SampleCT.Ground.object_t;
+            }
         in
         [ type_var_B ])
-      (fun _ -> SampleCT.object_t)
+      (fun _ -> SampleCT.Ground.object_t)
       (fun _ ->
         let type_var_B =
-          Var { id = !fuck; index = 0; lwb = None; upb = SampleCT.object_t }
+          Jtype.Var
+            {
+              id = !fuck;
+              index = Std.Nat.of_int 0;
+              lwb = None;
+              upb = SampleCT.Ground.object_t;
+            }
         in
         [ Interface (interface_icollection, [ Type type_var_B ]) ])
   in
 
   Printf.printf "Class List: %d\n" class_list;
 
-  let int_collection = Interface (interface_icollection, [ Type int ]) in
+  let int_collection =
+    Jtype.Interface (interface_icollection, [ Targ.Type int ])
+  in
 
   let () =
     Format.printf "\n%a\n%!" JGS_Helpers.JGS_PP.decl
-      (SampleCT.decl_by_id class_int);
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 5);
-    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl (SampleCT.decl_by_id 7)
+      (SampleCT.Ground.decl_by_id class_int);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl
+      (SampleCT.Ground.decl_by_id 5);
+    Format.printf "%a\n%!" JGS_Helpers.JGS_PP.decl
+      (SampleCT.Ground.decl_by_id 7)
   in
   run_jtype ~n:1 ~msg:"? <-< ICollection<int>" (fun q ->
       fresh super

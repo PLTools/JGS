@@ -19,7 +19,6 @@ let set_trace_cc x = config.trace_cc <- x
 let set_trace_arrow x = config.trace_arrow <- x
 let set_trace_closure_subtyping x = config.trace_closure_subtyping <- x
 let set_enable_counters x = config.enable_counters <- x
-let set_trace_get_superclass_by_id x = config.trace_get_superclass_by_id <- x
 
 include struct
   open Stdlib

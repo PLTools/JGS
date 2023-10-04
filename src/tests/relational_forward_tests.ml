@@ -5,7 +5,7 @@ open JGS_Helpers
 
 let _ =
   let module SampleCT = SampleCT () in
-  let module V = FO.Verifier (SampleCT) in
+  let module V = Verifier (SampleCT) in
   let rec ( <-< ) ta tb = ta -<- tb (* not complete! *)
   and ( -<- ) ta tb = V.( -<- ) ( <-< ) ta tb in
 
@@ -18,54 +18,54 @@ let _ =
   Printf.printf " 1 Object[] < Object (true) : %s\n"
   @@ run_bool (fun q ->
          ( -<- )
-           (jtype_inj @@ Array SampleCT.object_t)
-           (jtype_inj @@ SampleCT.object_t)
+           (jtype_inj @@ Array SampleCT.Ground.object_t)
+           (jtype_inj @@ SampleCT.Ground.object_t)
            q);
 
   Printf.printf " 2 Object[] < Cloneable (true) : %s\n"
   @@ run_bool (fun q ->
          ( -<- )
-           (jtype_inj @@ Array SampleCT.object_t)
-           (jtype_inj @@ SampleCT.cloneable_t)
+           (jtype_inj @@ Array SampleCT.Ground.object_t)
+           (jtype_inj @@ SampleCT.Ground.cloneable_t)
            q);
 
   Printf.printf " 3 Object[] < Serializable (true) : %s\n"
   @@ run_bool (fun q ->
          ( -<- )
-           (jtype_inj @@ Array SampleCT.object_t)
-           (jtype_inj @@ SampleCT.serializable_t)
+           (jtype_inj @@ Array SampleCT.Ground.object_t)
+           (jtype_inj @@ SampleCT.Ground.serializable_t)
            q);
 
   Printf.printf " 4 Object < Object[] (false): %s\n"
   @@ run_bool (fun q ->
          ( -<- )
-           (jtype_inj @@ SampleCT.object_t)
-           (jtype_inj @@ Array SampleCT.object_t)
+           (jtype_inj @@ SampleCT.Ground.object_t)
+           (jtype_inj @@ Array SampleCT.Ground.object_t)
            q);
 
   Printf.printf " 5 Cloneable < Object[] (false):%s\n"
   @@ run_bool (fun q ->
          ( -<- )
-           (jtype_inj @@ SampleCT.cloneable_t)
-           (jtype_inj @@ Array SampleCT.object_t)
+           (jtype_inj @@ SampleCT.Ground.cloneable_t)
+           (jtype_inj @@ Array SampleCT.Ground.object_t)
            q);
 
   Printf.printf " 6 Serializable < Object[] (false): %s\n"
   @@ run_bool (fun q ->
          ( -<- )
-           (jtype_inj @@ SampleCT.serializable_t)
-           (jtype_inj @@ Array SampleCT.object_t)
+           (jtype_inj @@ SampleCT.Ground.serializable_t)
+           (jtype_inj @@ Array SampleCT.Ground.object_t)
            q);
 
   Printf.printf " 7 Object[][] < Serializable[] (true) : %s\n"
   @@ run_bool (fun q ->
          ( -<- )
-           (jtype_inj @@ Array (Array SampleCT.object_t))
-           (jtype_inj @@ Array SampleCT.serializable_t)
+           (jtype_inj @@ Array (Array SampleCT.Ground.object_t))
+           (jtype_inj @@ Array SampleCT.Ground.serializable_t)
            q);
 
   (* class A {...} *)
-  let class_a = SampleCT.make_class [] SampleCT.object_t [] in
+  let class_a = SampleCT.make_class [] SampleCT.Ground.object_t [] in
 
   (* class B extends A {...} *)
   let class_b = SampleCT.make_class [] (Class (class_a, [])) [] in
@@ -108,27 +108,28 @@ let _ =
 
   (* class D<X> {...} *)
   let class_d =
-    SampleCT.make_class [ SampleCT.object_t ] SampleCT.object_t []
+    SampleCT.make_class [ SampleCT.Ground.object_t ] SampleCT.Ground.object_t []
   in
 
   (* class E<X, Y> {...} *)
   let class_e =
     SampleCT.make_class
-      [ SampleCT.object_t; SampleCT.object_t ]
-      SampleCT.object_t []
+      [ SampleCT.Ground.object_t; SampleCT.Ground.object_t ]
+      SampleCT.Ground.object_t []
   in
 
   (* class F<X, Y> extends E<D<Y>, X> {...} *)
   let class_f =
     SampleCT.make_class
-      [ SampleCT.object_t; SampleCT.object_t ]
+      [ SampleCT.Ground.object_t; SampleCT.Ground.object_t ]
       (Class
          ( class_e,
            [
              Type
                (Class
-                  (class_d, [ Type (SampleCT.make_tvar 1 SampleCT.object_t) ]));
-             Type (SampleCT.make_tvar 0 SampleCT.object_t);
+                  ( class_d,
+                    [ Type (SampleCT.make_tvar 1 SampleCT.Ground.object_t) ] ));
+             Type (SampleCT.make_tvar 0 SampleCT.Ground.object_t);
            ] ))
       []
   in

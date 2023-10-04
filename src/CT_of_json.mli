@@ -6,7 +6,7 @@ type deplicates_tactic = No_remove | Structural | Debug_var
 
 val need_remove_dups : deplicates_tactic ref
 
-type polarity = JGS.polarity = Extends | Super
+type polarity = JGS.Polarity.t = Extends | Super
 
 val yojson_of_polarity : polarity -> Yojson.Safe.t
 val polarity_of_yojson : Yojson.Safe.t -> polarity
@@ -92,11 +92,12 @@ type result_query =
   is_subtype:
     (closure_type:Closure.closure_type ->
     ?constr:OCanren.goal ->
-    JGS.HO.jtype_injected ->
-    JGS.HO.jtype_injected ->
+    int OCanren.ilogic JGS.Jtype.injected ->
+    int OCanren.ilogic JGS.Jtype.injected ->
     OCanren.goal) ->
-  (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
-  JGS.HO.jtype_injected ->
+  (int OCanren.ilogic JGS.Jtype.injected ->
+  int OCanren.ilogic JGS.Jtype.injected) ->
+  int OCanren.ilogic JGS.Jtype.injected ->
   OCanren.goal
 
 val make_query :

@@ -26,7 +26,6 @@
    OCanren-ppx.ppx_repr
    OCanren-ppx.ppx_fresh
    OCanren-ppx.ppx_distrib
-   -new-typenames
    ppx_yojson_conv
    ppx_expect
    GT.ppx_all))

@@ -22,7 +22,7 @@ deps:
 
 
 RUN_EXAMPLE = dune exec jsons/run_json2.exe --profile=release -- \
-              -n 1000 -silent -need-simplified -ct jsons_real/0.json
+              -n 1000 -silent -ct jsons_real/0.json
 
 UP_DOWN_EXAMPLES = up1_down1_1 up1_down1_2
 

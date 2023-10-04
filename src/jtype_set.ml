@@ -1,5 +1,7 @@
+type jtype_logic = int OCanren.logic JGS.Jtype.logic
+
 include Set.Make (struct
-  type t = JGS.HO.jtype_logic
+  type t = jtype_logic
 
   let compare a b = Stdlib.compare a b
 end)
@@ -11,9 +13,8 @@ module Int_map = Map.Make (Stdlib.Int)
 type state = int * int Int_map.t
 
 (* TODO: Rewrite with state-monad *)
-let replace_jtype : JGS.HO.jtype_logic -> JGS.HO.jtype_logic =
-  let rec replace_jtype :
-      state -> JGS.HO.jtype_logic -> state * JGS.HO.jtype_logic =
+let replace_jtype : jtype_logic -> jtype_logic =
+  let rec replace_jtype : state -> jtype_logic -> state * jtype_logic =
     let get_index : int -> state -> state * int =
      fun var ((cur_index, map) as state) ->
       match Int_map.find_opt var map with
@@ -66,7 +67,8 @@ let replace_jtype : JGS.HO.jtype_logic -> JGS.HO.jtype_logic =
     let replace_primitive state =
       update_var state @@ fun state x -> (state, x)
     in
-    let open JGS.HO in
+    let open JGS.Targ in
+    let open JGS.Jtype in
     let replace_jarg state =
       update_var state @@ fun state -> function
       | Type t ->

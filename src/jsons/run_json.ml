@@ -132,7 +132,7 @@ let () =
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
           fresh () (class_or_interface typ)
-            (( -<- ) typ (jtype_inj CT.Ground.object_t) ~closure_type:Subtyping))
+            (typ -<- jtype_inj CT.Ground.object_t))
   in
   (*
   let () =

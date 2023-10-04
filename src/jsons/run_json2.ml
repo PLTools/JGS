@@ -53,13 +53,6 @@ let () =
       ( "-upper-bound-first",
         Arg.Unit (fun () -> CT_of_json.lower_bounds_first := false),
         " Solve upper bounds first" );
-      ( "-remove-dups-structural",
-        Arg.Unit
-          (fun () -> CT_of_json.need_remove_dups := CT_of_json.Structural),
-        " Remove answers duplacates using structural constraint" );
-      ( "-remove-dups-debug-var",
-        Arg.Unit (fun () -> CT_of_json.need_remove_dups := CT_of_json.Debug_var),
-        " Remove answers duplacates using structural debug_var" );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -211,7 +204,6 @@ let () =
   end in
   let module V = JGS.Verifier (CT) in
   let open OCanren in
-  let open JGS in
   let open Closure in
   let { closure; direct_subtyping = _; _ } =
     Closure.make_closure (module CT) V.( -<- )
@@ -268,7 +260,7 @@ let () =
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
           fresh () (class_or_interface typ)
-            (closure ~closure_type:Subtyping typ (jtype_inj CT.Ground.object_t)))
+            (closure typ (jtype_inj CT.Ground.object_t)))
   in
 
   let __ () =

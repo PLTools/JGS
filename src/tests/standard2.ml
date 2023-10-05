@@ -1,6 +1,6 @@
 open OCanren
 open JGS_Helpers
-open MutableTypeTable
+open Mutable_type_table
 open Closure
 
 [@@@ocaml.warning "-unused-value-declaration"]
@@ -9,11 +9,8 @@ open Closure
 module SampleCT = SampleCT ()
 module V = JGS.FO.Verifier (SampleCT)
 
-let { closure = ( <-< ); _ } =
-  make_closure_subtyping (module SampleCT) V.( -<- )
-
-let { closure = ( <=< ); _ } =
-  make_closure_supertyping (module SampleCT) V.( -<- )
+let { closure; _ } = make_closure (module SampleCT) V.( -<- )
+let ( <-< ) = closure ~closure_type:Subtyping
 
 module JGS_builder = struct
   module M = Map.Make (Int)

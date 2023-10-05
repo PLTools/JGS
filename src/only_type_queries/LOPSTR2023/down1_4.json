@@ -1,0 +1,28 @@
+{
+    "upperBound": [
+        "Interface",
+        "java.util.NavigableSet",
+        [
+            [
+                "Wildcard",
+                {
+                    "first": "Extends",
+                    "second": [
+                        "Interface",
+                        "java.lang.Comparable",
+                        [
+                            [
+                                "Type",
+                                [
+                                    "Class",
+                                    "java.lang.Object",
+                                    []
+                                ]
+                            ]
+                        ]
+                    ]
+                }
+            ]
+        ]
+    ]
+}

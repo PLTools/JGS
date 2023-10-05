@@ -102,7 +102,7 @@ and substitute_arg subst = function
 module Verifier (CT : sig
   (* Gets a class/interface declaration by is *)
   val decl_by_id : (* NEED TO RETURN: id *) int -> decl
-  val get_superclass : int -> int -> jtype option
+  val get_superclass_by_id : int -> int -> jtype option
 
   (* Synonyms for some specific classes *)
   val object_t : jtype
@@ -198,7 +198,7 @@ struct
       if id_a = id_b then
         List.fold_left2 (fun f ta tb -> f && ta <=< tb) true targs_a targs_b
       else
-        match CT.get_superclass id_a id_b with
+        match CT.get_superclass_by_id id_a id_b with
         | Some (Class (_, targs_b')) | Some (Interface (_, targs_b')) ->
             targs_b = List.map (fun t -> substitute_arg targs_a t) targs_b'
         | None -> false

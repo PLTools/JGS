@@ -65,7 +65,7 @@ let () =
   let open JGS_Helpers in
   let j = Yojson.Safe.from_file test_args.json_name in
 
-  let (module CT : MutableTypeTable.SAMPLE_CLASSTABLE), goal, name_of_id =
+  let (module CT : Mutable_type_table.SAMPLE_CLASSTABLE), goal, name_of_id =
     match CT_of_json.make_query j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->
@@ -78,7 +78,7 @@ let () =
   let open JGS in
   let open Closure in
   let { closure = ( <-< ); direct_subtyping = ( -<- ); _ } =
-    Closure.make_closure_subtyping (module CT) V.( -<- )
+    Closure.make_closure (module CT) V.( -<- )
   in
   (* let module MM = struct
        open OCanren
@@ -130,7 +130,8 @@ let () =
       let () = Printf.printf "1.1 (?) < Object :\n" in
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
-          fresh () (class_or_interface typ) (typ -<- jtype_inj CT.object_t))
+          fresh () (class_or_interface typ)
+            (( -<- ) typ (jtype_inj CT.object_t) ~closure_type:Subtyping))
   in
   (*
   let () =
@@ -146,6 +147,6 @@ let () =
       let open OCanren in
       fresh ()
         (typ =/= intersect __) (* (typ =/= !!HO.Null) *)
-        (typ =/= var __ __ __ __)
+        (typ =/= var ~index:__ __ __ __)
         (*  *)
-        (goal ( <-< ) Fun.id typ))
+        (goal ~is_subtype:( <-< ) Fun.id typ))

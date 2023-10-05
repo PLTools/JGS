@@ -1,6 +1,6 @@
 open OCanren
 open JGS
-open MutableTypeTable
+open Mutable_type_table
 open JGS_Helpers
 
 let _ =

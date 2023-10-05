@@ -1,0 +1,63 @@
+{
+  "lowerBound": [
+    "Class",
+    "java.util.TreeSet",
+    [
+      [
+        "Type",
+        [
+          "Var",
+          {
+            "id": "T",
+            "index": 1000,
+            "lwb": null,
+            "upb": [
+              "Interface",
+              "java.lang.Comparable",
+              [
+                [
+                  "Var",
+                  {
+                    "id": "S",
+                    "index": 1001,
+                    "lwb": null,
+                    "upb": [
+                      "Class",
+                      "java.lang.Object",
+                      []
+                    ]
+                  }
+                ]
+              ]
+            ]
+          }
+        ]
+      ]
+    ]
+  ],
+  "expectedAnswersNumber": 1,
+  "rawExpectedAnswers": [
+    [
+      "Interface",
+      "java.util.NavigableSet",
+      [
+        [
+          "Type",
+          [
+            "Var",
+            {
+              "id": "E",
+              "index": 0,
+              "upb": [
+                "Class",
+                "java.lang.Object",
+                []
+              ],
+              "lwb": null
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+}

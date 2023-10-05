@@ -1,0 +1,9 @@
+{
+    "upperBounds": [
+        [
+            "Interface",
+            "java.util.RandomAccess",
+            []
+        ]
+    ]
+}

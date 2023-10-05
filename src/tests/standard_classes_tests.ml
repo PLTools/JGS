@@ -1,17 +1,15 @@
 open OCanren
 open JGS_Helpers
-open MutableTypeTable
+open Mutable_type_table
 open Closure
 
 (* Verifier modules *)
 module SampleCT = SampleCT ()
 module V = JGS.FO.Verifier (SampleCT)
 
-let { closure = ( <-< ); _ } =
-  make_closure_subtyping (module SampleCT) V.( -<- )
-
-let { closure = ( <=< ); _ } =
-  make_closure_supertyping (module SampleCT) V.( -<- )
+let { closure; _ } = make_closure (module SampleCT) V.( -<- )
+let ( <-< ) = closure ~closure_type:Subtyping
+let ( <=< ) = closure ~closure_type:Supertyping
 
 module JGS_builder = struct
   module M = Map.Make (Int)
@@ -297,7 +295,7 @@ let _ =
   in
   let _ =
     run_jtype ~n:5 ~msg:"? <-< Collection<String>" (fun q ->
-        fresh () (q =/= !!JGS.HO.Null) (q <=< jtype_inj (collection string))
+        fresh () (q =/= !!JGS.HO.Null) (q <-< jtype_inj (collection string))
         (* *))
   in
   ()

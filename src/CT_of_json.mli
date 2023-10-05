@@ -1,5 +1,10 @@
 val failwiths : ('a, Format.formatter, unit, 'b) format4 -> 'a
 val verbose_errors : bool ref
+val lower_bounds_first : bool ref
+
+type deplicates_tactic = No_remove | Structural | Debug_var
+
+val need_remove_dups : deplicates_tactic ref
 
 type polarity = JGS.polarity = Extends | Super
 
@@ -71,12 +76,12 @@ type query = {
 
 val yojson_of_query : query -> Yojson.Safe.t
 val query_of_yojson : Yojson.Safe.t -> query
-val make_sample_ct : unit -> (module MutableTypeTable.SAMPLE_CLASSTABLE)
+val make_sample_ct : unit -> (module Mutable_type_table.SAMPLE_CLASSTABLE)
 val set_verbose : unit -> unit
 
 val make_classtable :
   decl list ->
-  (module MutableTypeTable.SAMPLE_CLASSTABLE)
+  (module Mutable_type_table.SAMPLE_CLASSTABLE)
   * (string -> int)
   * (int -> string)
 
@@ -84,10 +89,12 @@ exception Id_not_found of int
 exception Name_not_found of class_id
 
 type result_query =
-  (JGS.HO.jtype_injected ->
-  JGS.HO.jtype_injected ->
-  (*   bool OCanren.ilogic -> *)
-  OCanren.goal) ->
+  is_subtype:
+    (closure_type:Closure.closure_type ->
+    ?constr:OCanren.goal ->
+    JGS.HO.jtype_injected ->
+    JGS.HO.jtype_injected ->
+    OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
   OCanren.goal
@@ -95,4 +102,4 @@ type result_query =
 val make_query :
   ?hack_goal:bool ->
   Yojson.Safe.t ->
-  (module MutableTypeTable.SAMPLE_CLASSTABLE) * result_query * (int -> string)
+  (module Mutable_type_table.SAMPLE_CLASSTABLE) * result_query * (int -> string)

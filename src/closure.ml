@@ -2,12 +2,27 @@ open OCanren
 open OCanren.Std
 open JGS.HO
 
-module type SCT = MutableTypeTable.SAMPLE_CLASSTABLE
+let need_dynamic_closure = ref true
+
+module type SCT = Mutable_type_table.SAMPLE_CLASSTABLE
+
+type closure_type = Subtyping | Supertyping
 
 type closure = {
-  is_correct_type : jtype_injected -> goal;
-  direct_subtyping : jtype_injected -> jtype_injected -> goal;
-  closure : jtype_injected -> jtype_injected -> goal;
+  is_correct_type :
+    closure_type:closure_type -> ?constr:goal -> jtype_injected -> goal;
+  direct_subtyping :
+    closure_type:closure_type ->
+    ?constr:goal ->
+    jtype_injected ->
+    jtype_injected ->
+    goal;
+  closure :
+    closure_type:closure_type ->
+    ?constr:goal ->
+    jtype_injected ->
+    jtype_injected ->
+    goal;
 }
 
 let rec list_same_length : _ Std.List.injected -> _ Std.List.injected -> goal =
@@ -22,14 +37,14 @@ let rec list_same_length : _ Std.List.injected -> _ Std.List.injected -> goal =
     ]
 
 let is_correct_type (module CT : SCT) ~closure_subtyping t =
-  let decl_by_id id decl = CT.HO.decl_by_id (( === ) id) decl in
+  let decl_by_id id decl = CT.HO.decl_by_id id decl in
   conde
     [
       (* Array: always allow *)
       fresh elems (t === !!(Array elems));
       (* Class: should be metioned in class declarations with the same arguments amount *)
       fresh
-        (id actual_params expected_params super supers length)
+        (id actual_params expected_params super supers)
         (t === !!(Class (id, actual_params)))
         (decl_by_id id !!(C !!{ params = expected_params; super; supers }))
         (* TODO (Kakadu): write a relation same_length *)
@@ -64,7 +79,7 @@ let ( -<- ) (module CT : SCT) ~direct_subtyping ~closure_subtyping
        ta tb !!true)
     (is_correct_type ta) (is_correct_type tb)
 
-let rec ( <-< ) ~direct_subtyping ta tb st =
+let rec ( <-< ) ~direct_subtyping ~constr ta tb st =
   if JGS_stats.config.trace_closure_subtyping then
     Format.printf "Closure.(<-<): ta = %a, tb = %a\n%!"
       (JGS_Helpers.pp_jtyp_logic ([%show: GT.int OCanren.logic] ()))
@@ -72,7 +87,7 @@ let rec ( <-< ) ~direct_subtyping ta tb st =
       (JGS_Helpers.pp_jtyp_logic ([%show: GT.int OCanren.logic] ()))
       (OCanren.reify_in_state st jtype_reify tb);
   st
-  |> fresh ()
+  |> fresh () constr
        (JGS_Helpers.only_classes_interfaces_and_arrays ta)
        (JGS_Helpers.only_classes_interfaces_and_arrays tb)
        (conde
@@ -81,11 +96,11 @@ let rec ( <-< ) ~direct_subtyping ta tb st =
             fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
               (JGS_Helpers.only_classes_interfaces_and_arrays ti)
               (direct_subtyping ti tb)
-              (( <-< ) ~direct_subtyping ta ti);
+              (( <-< ) ~direct_subtyping ~constr ta ti);
           ])
 
-let rec ( <=< ) ~direct_subtyping ta tb =
-  fresh ()
+let rec ( <=< ) ~direct_subtyping ~constr ta tb =
+  fresh () constr
     (JGS_Helpers.only_classes_interfaces_and_arrays ta)
     (JGS_Helpers.only_classes_interfaces_and_arrays tb)
     (conde
@@ -94,45 +109,40 @@ let rec ( <=< ) ~direct_subtyping ta tb =
          fresh ti (tb =/= ti) (ta =/= ti) (ta =/= tb)
            (JGS_Helpers.only_classes_interfaces_and_arrays ti)
            (direct_subtyping ta ti)
-           (( <=< ) ~direct_subtyping ti tb);
+           (( <=< ) ~direct_subtyping ~constr ti tb);
        ])
 
-let make_closure_subtyping (module CT : SCT) direct_subtyping =
-  let rec is_correct t =
-    is_correct_type (module CT) ~closure_subtyping:closure t
-  and direct ta tb =
-    ( -<- )
-      (module CT)
-      ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
-      ta tb
-  and closure ta tb = ( <-< ) ~direct_subtyping:direct ta tb in
-  { is_correct_type = is_correct; direct_subtyping = direct; closure }
+let ( <~< ) ~direct_subtyping ~constr ta tb =
+  debug_var ta (Fun.flip JGS.HO.jtype_reify) (fun reified_ta ->
+      debug_var tb (Fun.flip JGS.HO.jtype_reify) (fun reified_tb ->
+          match (reified_ta, reified_tb) with
+          | [ Value _ ], _ -> ( <=< ) ~direct_subtyping ~constr ta tb
+          | _ -> ( <-< ) ~direct_subtyping ~constr ta tb))
 
-let make_closure_supertyping (module CT : SCT) direct_subtyping =
-  let rec is_correct t =
-    is_correct_type (module CT) ~closure_subtyping:closure t
-  and direct ta tb =
+let make_closure_by_closure_template closure_template (module CT : SCT)
+    direct_subtyping =
+  let rec is_correct ~closure_type ?(constr = success) t =
+    is_correct_type
+      (module CT)
+      ~closure_subtyping:(closure ~closure_type ~constr)
+      t
+  and direct ~closure_type ?(constr = success) ta tb =
     ( -<- )
       (module CT)
-      ~direct_subtyping ~closure_subtyping:closure ~is_correct_type:is_correct
-      ta tb
-  and closure ta tb st =
-    let () =
-      let open JGS_stats in
-      let ta_is_g = ref false in
-      let tb_is_g = ref false in
-      OCanren.is_ground ta st (fun b -> ta_is_g := b);
-      OCanren.is_ground tb st (fun b -> tb_is_g := b);
-      set_fish stats
-        ((if !ta_is_g then fun ((a, b), c) -> ((a, b + 1), c)
-         else fun ((a, b), c) -> ((a, b + 1), c))
-           (get_fish stats));
-      set_fish stats
-        ((if !tb_is_g then fun (c, (a, b)) -> (c, (a, b + 1))
-         else fun (c, (a, b)) -> (c, (a, b + 1)))
-           (get_fish stats))
-    in
-    let _ = failwith "WTF" in
-    ( <=< ) ~direct_subtyping:direct ta tb st
+      ~direct_subtyping
+      ~closure_subtyping:(closure ~closure_type ~constr)
+      ~is_correct_type:(is_correct ~closure_type) ta tb
+  and closure ~closure_type ?(constr = success) ta tb st =
+    closure_template closure_type
+      ~direct_subtyping:(direct ~closure_type ~constr)
+      ~constr ta tb st
   in
   { is_correct_type = is_correct; direct_subtyping = direct; closure }
+
+let make_closure (module CT : SCT) =
+  if !need_dynamic_closure then
+    make_closure_by_closure_template (fun _ -> ( <~< )) (module CT)
+  else
+    make_closure_by_closure_template
+      (function Subtyping -> ( <-< ) | Supertyping -> ( <=< ))
+      (module CT)

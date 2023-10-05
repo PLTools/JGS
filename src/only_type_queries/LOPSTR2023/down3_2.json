@@ -1,0 +1,46 @@
+{
+    "upperBounds": [
+        [
+            "Interface",
+            "java.util.NavigableSet",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ],
+        [
+            "Interface",
+            "java.lang.Iterable",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ],
+        [
+            "Interface",
+            "java.util.Collection",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ]
+}

@@ -20,6 +20,7 @@ let test_args =
   }
 
 let () =
+  OCanren.Runconf.occurs_check_off ();
   Arg.parse
     [
       ( "-default",
@@ -41,15 +42,38 @@ let () =
       ( "-trace-closure",
         Arg.Unit (fun () -> JGS_stats.set_trace_closure_subtyping true),
         " trace closure subtyping" );
+      ( "-trace-get-superclass-by-id",
+        Arg.Unit (fun () -> JGS_stats.set_trace_get_superclass_by_id true),
+        " trace superclass searching" );
       ( "-n",
         Arg.Int (fun n -> test_args.answers_count <- n),
-        " Numer of answers requested (default 1)" );
+        " Number of answers requested (default 1)" );
       ("-ct", Arg.String (fun s -> test_args.ct_file <- s), " class table file");
-      ("-need-simplified", Arg.Unit (fun () -> JGS.need_simpified := true), "");
+      ( "-need-simplified",
+        Arg.Unit (fun () -> JGS.need_simpified := true),
+        " Without capture conversion" );
       ( "-perffifo",
         Arg.String (fun s -> test_args.fifo <- Some s),
         " <file> Specify pipe file to start performace metrics only after JSON \
          parsing" );
+      ( "-no-table-spec",
+        Arg.Unit
+          (fun () ->
+            Mutable_type_table.need_table_dynamic_specialisation := false),
+        " Switch off table dynamic specialisations" );
+      ( "-no-dynamic-closure",
+        Arg.Unit (fun () -> Closure.need_dynamic_closure := false),
+        " Switch to static closure" );
+      ( "-upper-bound-first",
+        Arg.Unit (fun () -> CT_of_json.lower_bounds_first := false),
+        " Solve upper bounds first" );
+      ( "-remove-dups-structural",
+        Arg.Unit
+          (fun () -> CT_of_json.need_remove_dups := CT_of_json.Structural),
+        " Remove answers duplacates using structural constraint" );
+      ( "-remove-dups-debug-var",
+        Arg.Unit (fun () -> CT_of_json.need_remove_dups := CT_of_json.Debug_var),
+        " Remove answers duplacates using structural debug_var" );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -57,7 +81,18 @@ let () =
 let is_timer_enabled =
   match Unix.getenv "NOBENCH" with _ -> false | exception Not_found -> true
 
+let pp_float_time fmt time =
+  if time < 1000. then Format.fprintf fmt "%5.2fms" time
+  else Format.fprintf fmt "%5.2fs" (Float.div time 1000.)
+
 let run_jtype pp ?(n = test_args.answers_count) query =
+  let is_first = ref true in
+  let total_time = ref 0. in
+  let max_time = ref 0. in
+  let first_time = ref 0. in
+  let last_time = ref 0. in
+  let answers_set = ref Jtype_set.empty in
+  let duplicated = ref Jtype_set.empty in
   let time =
     if is_timer_enabled then (fun f ->
       if JGS_stats.config.enable_counters then JGS_stats.clear_statistics ();
@@ -66,28 +101,64 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       let fin = Mtime_clock.elapsed () in
       if JGS_stats.config.enable_counters then JGS_stats.report_counters ();
       let span = Mtime.Span.abs_diff start fin in
+      let span_ms = Mtime.Span.to_ms span in
+
+      (match ans with
+      | Some _ ->
+          total_time := Float.add !total_time span_ms;
+          if !is_first then first_time := span_ms
+          else if span_ms > !max_time then max_time := span_ms;
+          is_first := false
+      | None -> last_time := span_ms);
+
       let msg =
         if Mtime.Span.to_ms span > 1000. then
-          Printf.sprintf "%5.1fs" (Mtime.Span.to_s span)
-        else Printf.sprintf "%5.1fms" (Mtime.Span.to_ms span)
+          Printf.sprintf "%5.2fs" (Mtime.Span.to_s span)
+        else Printf.sprintf "%5.2fms" span_ms
       in
       (Some msg, ans))
     else fun f -> (None, f ())
   in
   (* TODO: OCanren.Stream needs iteri_k for stuff like this *)
   let rec loop i stream =
-    if i > n then ()
+    if i > n then i - 1
     else
       match time (fun () -> OCanren.Stream.msplit stream) with
-      | _, None -> ()
+      | None, None -> i - 1
+      | Some msg, None ->
+          Format.printf "%s  -  no answer\n%!" msg;
+          i - 1
       | Some msg, Some (h, tl) ->
           Format.printf "%s % 3d)  %a\n%!" msg i pp h;
+          if Jtype_set.mem_alpha_converted h !answers_set then
+            duplicated := Jtype_set.add_alpha_converted h !duplicated;
+          answers_set := Jtype_set.add_alpha_converted h !answers_set;
+          Jtype_set.alpha_converted_answer_set :=
+            Jtype_set.add_alpha_converted h
+              !Jtype_set.alpha_converted_answer_set;
           loop (1 + i) tl
       | None, Some (h, tl) ->
           Format.printf "% 3d)  %a\n%!" i pp h;
+          answers_set := Jtype_set.add_alpha_converted h !answers_set;
           loop (1 + i) tl
   in
-  loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+  let total_amount =
+    loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+  in
+  (* Format.printf "\n";
+     Format.printf "Duplicated answers:\n";
+     Jtype_set.iter (fun a -> Format.printf "  %a\n" pp a) !duplicated; *)
+  Format.printf "\n";
+  Format.printf "Total amount: %d\n" total_amount;
+  Format.printf "Total uniq amount: %d\n" @@ Jtype_set.cardinal !answers_set;
+  Format.printf "First time: %a\n" pp_float_time !first_time;
+  Format.printf "Avg time: %a\n" pp_float_time
+  @@ Float.div !total_time @@ Float.of_int total_amount;
+  Format.printf "Max time: %a\n" pp_float_time !max_time;
+  Format.printf "Time to prove: %a\n" pp_float_time !last_time;
+  Format.printf "Total time: %a\n" pp_float_time
+  @@ Float.add !total_time !last_time;
+  Format.printf "Total time without prove: %a\n" pp_float_time !total_time
 
 let class_or_interface typ =
   let open OCanren in
@@ -130,7 +201,7 @@ let () =
   Out_channel.with_open_text "/tmp/combined.json" (fun ch ->
       Yojson.Safe.pretty_to_channel ch j);
 
-  let (module CT : MutableTypeTable.SAMPLE_CLASSTABLE), goal, name_of_id =
+  let (module CT : Mutable_type_table.SAMPLE_CLASSTABLE), goal, name_of_id =
     match CT_of_json.make_query ~hack_goal:test_args.query_hack j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->
@@ -155,9 +226,10 @@ let () =
   let open OCanren in
   let open JGS in
   let open Closure in
-  let { closure = ( <-< ); direct_subtyping = _; _ } =
-    Closure.make_closure_subtyping (module CT) V.( -<- )
+  let { closure; direct_subtyping = _; _ } =
+    Closure.make_closure (module CT) V.( -<- )
   in
+
   (* let module MM = struct
        open OCanren
 
@@ -208,7 +280,8 @@ let () =
       let () = Printf.printf "1.1 (?) < Object :\n" in
       run_jtype pp ~n:test_args.answers_count (fun typ ->
           let open OCanren in
-          fresh () (class_or_interface typ) (typ <-< jtype_inj CT.object_t))
+          fresh () (class_or_interface typ)
+            (closure ~closure_type:Subtyping typ (jtype_inj CT.object_t)))
   in
 
   let __ () =
@@ -229,4 +302,4 @@ let () =
         (typ =/= !!HO.Null)
         (typ =/= var ~index:__ __ __ __)
         (*  *)
-        (goal ( <-< ) Fun.id typ))
+        (goal ~is_subtype:closure Fun.id typ))

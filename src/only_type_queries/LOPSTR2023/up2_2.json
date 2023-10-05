@@ -1,0 +1,23 @@
+{
+    "lowerBounds": [
+        [
+            "Class",
+            "kotlinx.collections.immutable.implementations.immutableList.PersistentVector",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ],
+        [
+            "Class",
+            "javax.management.AttributeList",
+            []
+        ]
+    ]
+}

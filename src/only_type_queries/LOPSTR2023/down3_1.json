@@ -1,0 +1,37 @@
+{
+    "upperBounds": [
+        [
+            "Interface",
+            "java.util.RandomAccess",
+            []
+        ],
+        [
+            "Class",
+            "java.util.AbstractCollection",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ],
+        [
+            "Interface",
+            "java.util.List",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ]
+}

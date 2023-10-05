@@ -2,6 +2,11 @@ open Stdlib
 
 let failwiths fmt = Format.kasprintf failwith fmt
 let verbose_errors = ref true
+let lower_bounds_first = ref true
+
+type deplicates_tactic = No_remove | Structural | Debug_var
+
+let need_remove_dups = ref No_remove
 
 let log_error fmt =
   if !verbose_errors then Format.eprintf fmt
@@ -191,7 +196,7 @@ let collect_varnames =
   helper SS.empty
 
 let make_sample_ct () =
-  let open MutableTypeTable in
+  let open Mutable_type_table in
   (module SampleCT () : SAMPLE_CLASSTABLE)
 
 type config = { mutable verbose : int }
@@ -377,7 +382,7 @@ type var_info = { vi_id : int; vi_index : int }
 let var_info ~id vi_index = { vi_id = id; vi_index }
 
 let make_classtable table =
-  let ((module CT : MutableTypeTable.SAMPLE_CLASSTABLE) as ct) =
+  let ((module CT : Mutable_type_table.SAMPLE_CLASSTABLE) as ct) =
     make_sample_ct ()
   in
   let classes : (string, int) Hashtbl.t =
@@ -538,10 +543,10 @@ let make_classtable table =
     | Class (name, args) -> (
         match Hashtbl.find params_hash name with
         | { vi_id; vi_index } ->
-            let () =
-              if args <> [] then
-                failwith "Type variables with arguments do not happen in Java"
-            in
+            (* let () =
+                 if args <> [] then
+                   failwith "Type variables with arguments do not happen in Java"
+               in *)
             log "on_typ: Got a parameter with index = %d and id = %d" vi_index
               vi_id;
             return @@ CT.make_tvar vi_index CT.object_t
@@ -635,10 +640,12 @@ let pp_var_desc ppf = function
   | Named s -> Format.fprintf ppf "_.%s" s
 
 type result_query =
-  (JGS.HO.jtype_injected ->
-  JGS.HO.jtype_injected ->
-  (* bool OCanren.ilogic -> *)
-  OCanren.goal) ->
+  is_subtype:
+    (closure_type:Closure.closure_type ->
+    ?constr:OCanren.goal ->
+    JGS.HO.jtype_injected ->
+    JGS.HO.jtype_injected ->
+    OCanren.goal) ->
   (JGS.HO.jtype_injected -> JGS.HO.jtype_injected) ->
   JGS.HO.jtype_injected ->
   OCanren.goal
@@ -653,6 +660,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       =
     query_of_yojson j
   in
+  Format.printf "Table size: %d\n%!" (List.length table);
   let ((module CT) as ct), id_of_name, name_of_id = make_classtable table in
 
   if neg_lower_bounds <> [] || neg_upper_bounds <> [] then
@@ -702,20 +710,70 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           JGS_Helpers.type_ (on_typ t)
     in
     let goal : result_query =
-     fun is_subtype targ_inj answer ->
+     fun ~is_subtype targ_inj answer ->
       if lower_bounds <> [] then
         Printf.eprintf "TODO: implement lower bounds\n%!";
 
-      List.fold_right
-        (fun x acc ->
-          let pos = true in
+      let constr =
+        match !need_remove_dups with
+        | Debug_var ->
+            debug_var answer (Fun.flip JGS.HO.jtype_reify) (function
+              | [ (Value _ as ans) ]
+                when Jtype_set.mem_alpha_converted ans
+                       !Jtype_set.alpha_converted_answer_set ->
+                  failure
+              | _ -> success)
+        | _ -> success
+      in
 
-          show_processing pos Format.pp_print_string "?" pp_jtype x;
+      let _, upper_goal =
+        List.fold_left
+          (fun (is_first, acc) x ->
+            let pos = true in
 
-          let sub, super = (answer, targ_inj (on_typ x)) in
+            show_processing pos Format.pp_print_string "?" pp_jtype x;
 
-          is_subtype sub super &&& acc)
-        upper_bounds OCanren.success
+            let sub, super = (answer, targ_inj (on_typ x)) in
+
+            let constr =
+              if (!lower_bounds_first && lower_bounds <> []) || not is_first
+              then constr
+              else success
+            in
+
+            (false, acc &&& is_subtype ~closure_type:Subtyping ~constr sub super))
+          (true, OCanren.success) upper_bounds
+      in
+      let _, lower_goal =
+        List.fold_left
+          (fun (is_first, acc) x ->
+            let pos = true in
+
+            show_processing pos pp_jtype x Format.pp_print_string "?";
+
+            let sub, super = (targ_inj (on_typ x), answer) in
+
+            let constr =
+              if
+                ((not !lower_bounds_first) && upper_bounds <> [])
+                || not is_first
+              then constr
+              else success
+            in
+
+            ( false,
+              acc &&& is_subtype ~closure_type:Supertyping ~constr sub super ))
+          (true, OCanren.success) lower_bounds
+      in
+      (if !need_remove_dups = Structural then
+         structural answer JGS.HO.jtype_reify (fun lt ->
+             not
+             @@ Jtype_set.mem_alpha_converted lt
+                  !Jtype_set.alpha_converted_answer_set)
+       else success)
+      &&& (if !lower_bounds_first then lower_goal &&& upper_goal
+           else upper_goal &&& lower_goal)
+      &&& constr
     in
     goal
   in
@@ -812,7 +870,8 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       in
       upper_rez ++ lower_rez
     in
-    let goal is_subtype targ_inj answer_typ =
+    let goal : result_query =
+     fun ~is_subtype targ_inj answer_typ ->
       let make_vars names k =
         let storage = Hashtbl.create 23 in
         let rec helper = function
@@ -878,11 +937,12 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
             if upper then show_processing pos pp_var_desc name pp_jtype b
             else show_processing pos pp_jtype b pp_var_desc name;
 
-            let sub, super =
-              if upper then (ask_var name, targ_inj (on_typ b))
-              else (targ_inj (on_typ b), ask_var name)
+            let sub, super, closure_type =
+              if upper then
+                (ask_var name, targ_inj (on_typ b), Closure.Subtyping)
+              else (targ_inj (on_typ b), ask_var name, Closure.Supertyping)
             in
-            is_subtype sub super
+            is_subtype ~closure_type sub super
             (* TODO: There were bool here to switch positive/negative *)
           in
           (*

@@ -1,0 +1,34 @@
+{
+    "upperBounds": [
+        [
+            "Interface",
+            "java.util.Collection",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ],
+    "lowerBounds": [
+        [
+            "Class",
+            "com.google.common.collect.ImmutableSortedSet",
+            [
+                [
+                    "Type",
+                    [
+                        "Class",
+                        "java.lang.Object",
+                        []
+                    ]
+                ]
+            ]
+        ]
+    ]
+}

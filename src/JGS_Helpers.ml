@@ -155,16 +155,12 @@ let var ~index id lwb upb = !!(Jtype.Var { index; id; lwb; upb })
 (*********************************** Relational helpers *******************************************)
 (**************************************************************************************************)
 
-let only_classes_interfaces_and_arrays q =
-  let open Jtype in
-  wc @@ fun inter ->
-  wc @@ fun id ->
-  wc @@ fun lwb ->
-  wc @@ fun upb ->
-  wc @@ fun index ->
-  fresh () (q =/= !!Null)
-    (q =/= !!(Intersect inter))
-    (q =/= !!(Var { id; lwb; upb; index }))
+let only_classes_interfaces_and_arrays : int ilogic Jtype.injected -> goal =
+ fun q ->
+  fresh ()
+    (q =/= Jtype.null ())
+    (q =/= Jtype.intersect __)
+    (q =/= Jtype.var __ __ __ __)
 
 module JGS_PP = struct
   [@@@ocaml.warnerror "-8-39"]

@@ -30,7 +30,7 @@ context(RelationalContext)
 fun  pause(f: () -> Goal): Goal = { st -> ThunkStream { f()(st) } }
 
 context(RelationalContext)
-fun <A: Term<A>> wc(f : (Term<A>) -> Goal ) : Goal = success
+fun <A: Term<A>> wc(f : (Term<A>) -> Goal ) : Goal = f(wildcard())
 |}]
 
 [@@@klogic.epilogue {|// Put epilogue here |}]
@@ -65,28 +65,27 @@ fun <A: Term<A>> wc(f : (Term<A>) -> Goal ) : Goal = success
 
 [@@@klogic.type.mangle
 [
-  ("int OCanren.ilogic OCanren.Std.List.injected", "Term<LogicList<LogicInt>>");
-  ( "string OCanren.ilogic OCanren.Std.List.injected",
-    "Term<LogicList<LogicString>>" );
-  ("int OCanren__.Logic.ilogic", "Term<LogicInt>");
-  ("int OCanren.ilogic", "LogicInt");
-  ("bool OCanren.ilogic", "LogicBool");
-  ("string OCanren__.Logic.ilogic", "LogicString")
+  (* "int OCanren.ilogic OCanren.Std.List.injected", "Term<LogicList<LogicInt>>" *)
+  (* ; "string OCanren.ilogic OCanren.Std.List.injected", "Term<LogicList<LogicString>>" *)
+  (* ; "int OCanren__.Logic.ilogic", "Term<LogicInt>" *)
+  (* ; "int OCanren.ilogic", "LogicInt" *)
+  (* ; "bool OCanren.ilogic", "LogicBool" *)
+  (* ; "string OCanren__.Logic.ilogic", "LogicString" *)
   (* ; ( "(int OCanren__.Logic.ilogic, int OCanren__.Logic.ilogic \
-       OCanren.Std.List.injected)OCanren.Std.List.t OCanren__.Logic.ilogic"
-       , "Term<LogicList<LogicInt>>" )
-       ; ( "(int OCanren.ilogic, int OCanren.ilogic \
-       OCanren.Std.List.injected)OCanren.Std.List.t OCanren__.Logic.ilogic"
-       , "Term<LogicList<LogicInt>>" ) *);
-  ("jtype_injected", "JType");
-  ("decl_injected", "Decl");
-  ("Polarity.t ilogic", "Polarity");
-  ("jtype_injected OCanren.Std.Option.injected", "Term<LogicOption<JType>>");
-  ("OCanren.goal", "Goal");
+        OCanren.Std.List.injected)OCanren.Std.List.t OCanren__.Logic.ilogic"
+     , "Term<LogicList<LogicInt>>" ) *)
+  (* ; ( "(int OCanren.ilogic, int OCanren.ilogic \
+        OCanren.Std.List.injected)OCanren.Std.List.t OCanren__.Logic.ilogic"
+     , "Term<LogicList<LogicInt>>" ) *)
+  (* ; "jtype_injected", "JType" *)
+  (* ; "decl_injected", "Decl" *)
+  (* ; "Polarity.t ilogic", "Polarity" *)
+  (* ; "jtype_injected OCanren.Std.Option.injected", "Term<LogicOption<JType>>" *)
+  (* ; "OCanren.goal", "Goal" *)
+  (* ; "Polarity.t", "Polarity" *)
   ("Targ.injected", "Jarg");
   ("Jtype.injected", "Jtype");
   ("Polarity.injected", "Polarity");
-  ("Polarity.t", "Polarity");
   ("Decl.injected", "Decl");
   ("CC_type.injected", "ClosureConversionType");
   ("CC_subst.injected", "CC_subst");

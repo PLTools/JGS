@@ -258,31 +258,28 @@ let _ =
     @@ run q query (fun q -> q#reify (JGS.Jtype.reify OCanren.reify))
   in
   let _ =
-    run_jtype ~n:10 ~msg:"? <-< Iterable<Object>" (fun q ->
+    run_jtype ~n:(-1) ~msg:"? <-< Iterable<Object>" (fun q ->
         q <-< jtype_inj (iterable obj))
   in
   let _ =
-    run_jtype ~n:8 ~msg:"? <-< AbstractList<Object>" (fun q ->
+    run_jtype ~n:(-1) ~msg:"? <-< AbstractList<Object>" (fun q ->
         q <-< jtype_inj (abstract_list obj))
   in
   let _ =
-    run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q ->
-        fresh () (q =/= JGS.Jtype.null ()) (jtype_inj role_list <-< q))
+    run_jtype ~n:(-1) ~msg:"RoleList <-< ?" (fun q -> jtype_inj role_list <-< q)
   in
   (* Problems with RoleList and AttributeList *)
   let _ =
-    run_jtype ~n:3 ~msg:"? <-< RandomAccess & ? <-< Iterable<Object>" (fun q ->
-        fresh ()
-          (* (q <-< jtype_inj random_access) *)
-          (q <-< jtype_inj (iterable obj))
+    run_jtype ~n:(-1) ~msg:"? <-< RandomAccess & ? <-< Iterable<Object>"
+      (fun q ->
+        fresh () (q <-< jtype_inj random_access) (q <-< jtype_inj (iterable obj))
         (* *))
   in
   (* Problems with RoleList and AttributeList *)
   let _ =
-    run_jtype ~n:2 ~msg:"? <-< RandomAccess & ? <-< AbstractCollection<Object>"
-      (fun q ->
+    run_jtype ~n:(-1)
+      ~msg:"? <-< RandomAccess & ? <-< AbstractCollection<Object>" (fun q ->
         fresh ()
-          (q =/= JGS.Jtype.null ())
           (q <-< jtype_inj random_access)
           (q <-< jtype_inj (abstract_collection obj))
         (* *))
@@ -291,14 +288,12 @@ let _ =
     run_jtype ~n:(-1) ~msg:"LinkedList<Object> <-< ? & TreeSet<Object> <-< ?"
       (fun q ->
         fresh ()
-          (q =/= JGS.Jtype.null ())
           (jtype_inj (linked_list obj) <-< q)
           (jtype_inj (tree_set obj) <-< q)
         (* *))
   in
   let _ =
-    run_jtype ~n:5 ~msg:"? <-< Collection<String>" (fun q ->
-        fresh () (q =/= JGS.Jtype.null ()) (q <-< jtype_inj (collection string))
-        (* *))
+    run_jtype ~n:(-1) ~msg:"? <-< Collection<String>" (fun q ->
+        q <-< jtype_inj (collection string))
   in
   ()

@@ -1,3 +1,9 @@
+(library
+ (name test_printer)
+ (modules test_printer)
+ (libraries JGS_lib OCanren)
+ (flags (-rectypes)))
+
 (executable
  (name functional_tests)
  (modules functional_tests)
@@ -24,7 +30,7 @@
 (executable
  (name relational_backward_tests)
  (modules relational_backward_tests)
- (libraries JGS_lib OCanren)
+ (libraries JGS_lib test_printer OCanren)
  (flags (-rectypes))
  (preprocess
   (pps

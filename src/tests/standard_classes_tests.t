@@ -6,61 +6,61 @@
   ? <-< Iterable<Object>, all answers:
      Iterable<[Object]>
      Collection<[Object]>
+     AbstactCollection<[Object]>
      Set<[Object]>
      Queue<[Object]>
-     AbstactCollection<[Object]>
      List<[Object]>
+     AbstractQueue<[Object]>
+     AbstractSet<[Object]>
+     AbstractList<[Object]>
      LinkedHashSet<[Object]>
      SortedSet<[Object]>
+     LinkedBlockingDeque<[Object]>
+     ArrayBlockingQueue<[Object]>
      HashSet<[Object]>
-     AbstractSet<[Object]>
-     BlockingQueue<[Object]>
-     AbstractQueue<[Object]>
-     Deque<[Object]>
-  -- AbstractQueue<[Object]>
-     NavigableSet<[Object]>
-  -- LinkedHashSet<[Object]>
   -- AbstractSet<[Object]>
-     AbstractList<[Object]>
+  -- AbstractQueue<[Object]>
      LinkedList<[Object]>
      ConcurrentSkipListSet<[Object]>
-  -- ConcurrentSkipListSet<[Object]>
-     TreeSet<[Object]>
-  -- HashSet<[Object]>
-  -- TreeSet<[Object]>
-     Vector<[Object]>
-     ArrayBlockingQueue<[Object]>
-  -- LinkedHashSet<[Object]>
-     BlockingDeque<[Object]>
-     ArrayList<[Object]>
-  -- AbstractList<[Object]>
-     LinkedBlockingDeque<[Object]>
-  -- ArrayBlockingQueue<[Object]>
-  -- LinkedBlockingDeque<[Object]>
-  -- ArrayBlockingQueue<[Object]>
-  -- LinkedBlockingDeque<[Object]>
-     Stack<[Object]>
-  -- LinkedList<[Object]>
-  -- BlockingDeque<[Object]>
-  -- LinkedBlockingDeque<[Object]>
-  -- ConcurrentSkipListSet<[Object]>
      AbstractSequentialList<[Object]>
-  -- TreeSet<[Object]>
-  -- Vector<[Object]>
+     TreeSet<[Object]>
+     Vector<[Object]>
   -- HashSet<[Object]>
+     ArrayList<[Object]>
+     BlockingQueue<[Object]>
+     Deque<[Object]>
+  -- Vector<[Object]>
+     NavigableSet<[Object]>
   -- ArrayList<[Object]>
+  -- AbstractList<[Object]>
+  -- LinkedList<[Object]>
+  -- LinkedHashSet<[Object]>
+     Stack<[Object]>
+  -- LinkedHashSet<[Object]>
      RoleList
      AttributeList
+  -- ConcurrentSkipListSet<[Object]>
+  -- TreeSet<[Object]>
+  -- ConcurrentSkipListSet<[Object]>
+  -- LinkedBlockingDeque<[Object]>
+  -- ArrayBlockingQueue<[Object]>
+  -- Stack<[Object]>
+  -- TreeSet<[Object]>
+  -- HashSet<[Object]>
+  -- LinkedHashSet<[Object]>
+  -- ArrayBlockingQueue<[Object]>
+  -- LinkedList<[Object]>
+  -- RoleList
+  -- AttributeList
   -- AbstractSequentialList<[Object]>
+     BlockingDeque<[Object]>
+  -- BlockingDeque<[Object]>
   -- Vector<[Object]>
   -- ArrayList<[Object]>
   -- LinkedList<[Object]>
-  -- LinkedList<[Object]>
-  -- LinkedHashSet<[Object]>
+  -- LinkedBlockingDeque<[Object]>
+  -- LinkedBlockingDeque<[Object]>
   -- Stack<[Object]>
-  -- Stack<[Object]>
-  -- RoleList
-  -- AttributeList
   -- RoleList
   -- AttributeList
   
@@ -135,19 +135,24 @@
      List<[Object]>
      Cloneable
      Serializable
-     AbstactCollection<[Object]>
-  -- List<[Object]>
-     Collection<[Object]>
-     Iterable<[Object]>
-  -- Collection<[Object]>
      Object
-  -- Iterable<[Object]>
+  -- List<[Object]>
+     AbstactCollection<[Object]>
+     Collection<[Object]>
   -- Collection<[Object]>
+  -- Object
+  -- Object
+  -- Object
+  -- Collection<[Object]>
+     Iterable<[Object]>
   -- Iterable<[Object]>
+  -- Object
+  -- Object
+  -- Iterable<[Object]>
+  -- Object
   
   
   Uniq answers:
-      1 - Object
       1 - AbstactCollection<[Object]>
       1 - AbstractList<[Object]>
       1 - ArrayList<[Object]>
@@ -158,8 +163,9 @@
       2 - List<[Object]>
       3 - Iterable<[Object]>
       3 - Collection<[Object]>
+      7 - Object
   
-  Total answers amount:      16
+  Total answers amount:      22
   Total uniq answers amount: 11
   
   
@@ -177,9 +183,9 @@
   -- Stack<[Object]>
      RoleList
   -- RoleList
+  -- RoleList
      AttributeList
   -- AttributeList
-  -- RoleList
   -- AttributeList
   
   
@@ -224,96 +230,137 @@
   -- Collection<[Object]>
   -- Collection<[Object]>
      AbstactCollection<[Object]>
+     Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
      Iterable<[Object]>
   -- Iterable<[Object]>
   -- Iterable<[Object]>
   -- Collection<[Object]>
   -- Collection<[Object]>
+  -- Object
+  -- Collection<[Object]>
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
   -- Collection<[Object]>
   -- Collection<[Object]>
+  -- Object
+  -- Collection<[Object]>
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Iterable<[Object]>
+  -- Iterable<[Object]>
+  -- Iterable<[Object]>
   -- Collection<[Object]>
   -- Collection<[Object]>
-     Object
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
+  -- Object
   -- Collection<[Object]>
-  -- Collection<[Object]>
-  -- Collection<[Object]>
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
   -- Iterable<[Object]>
   -- Iterable<[Object]>
   -- Iterable<[Object]>
+  -- Object
+  -- Iterable<[Object]>
+  -- Object
+  -- Iterable<[Object]>
+  -- Object
+  -- Iterable<[Object]>
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
+  -- Object
   
   
   Uniq answers:
-      1 - Object
       1 - AbstactCollection<[Object]>
       1 - Cloneable
       1 - Serializable
      12 - Iterable<[Object]>
      12 - Collection<[Object]>
+     42 - Object
   
-  Total answers amount:      28
+  Total answers amount:      69
   Total uniq answers amount: 6
   
   
   ****************************************************************************************************
   
   ? <-< Collection<String>, all answers:
+     AbstactCollection<[String]>
      Collection<[String]>
      Set<[String]>
      Queue<[String]>
-     AbstactCollection<[String]>
      List<[String]>
+     AbstractQueue<[String]>
+     AbstractSet<[String]>
+     AbstractList<[String]>
      LinkedHashSet<[String]>
      SortedSet<[String]>
+     LinkedBlockingDeque<[String]>
+     ArrayBlockingQueue<[String]>
      HashSet<[String]>
-     AbstractSet<[String]>
-     BlockingQueue<[String]>
-     AbstractQueue<[String]>
-     Deque<[String]>
-  -- AbstractQueue<[String]>
-     NavigableSet<[String]>
-  -- LinkedHashSet<[String]>
   -- AbstractSet<[String]>
-     AbstractList<[String]>
+  -- AbstractQueue<[String]>
      LinkedList<[String]>
      ConcurrentSkipListSet<[String]>
-  -- ConcurrentSkipListSet<[String]>
-     TreeSet<[String]>
-  -- HashSet<[String]>
-  -- TreeSet<[String]>
-     Vector<[String]>
-     ArrayBlockingQueue<[String]>
-  -- LinkedHashSet<[String]>
-     BlockingDeque<[String]>
-     ArrayList<[String]>
-  -- AbstractList<[String]>
-     LinkedBlockingDeque<[String]>
-  -- ArrayBlockingQueue<[String]>
-  -- LinkedBlockingDeque<[String]>
-  -- ArrayBlockingQueue<[String]>
-  -- LinkedBlockingDeque<[String]>
-     Stack<[String]>
-  -- LinkedList<[String]>
-  -- BlockingDeque<[String]>
-  -- LinkedBlockingDeque<[String]>
-  -- ConcurrentSkipListSet<[String]>
      AbstractSequentialList<[String]>
-  -- TreeSet<[String]>
-  -- Vector<[String]>
+     TreeSet<[String]>
+     Vector<[String]>
   -- HashSet<[String]>
-  -- ArrayList<[String]>
-  -- AbstractSequentialList<[String]>
+     ArrayList<[String]>
+     BlockingQueue<[String]>
+     Deque<[String]>
   -- Vector<[String]>
+     NavigableSet<[String]>
   -- ArrayList<[String]>
-  -- LinkedList<[String]>
+  -- AbstractList<[String]>
   -- LinkedList<[String]>
   -- LinkedHashSet<[String]>
+     Stack<[String]>
+  -- LinkedHashSet<[String]>
+  -- ConcurrentSkipListSet<[String]>
+  -- TreeSet<[String]>
+  -- ConcurrentSkipListSet<[String]>
+  -- LinkedBlockingDeque<[String]>
+  -- ArrayBlockingQueue<[String]>
   -- Stack<[String]>
+  -- TreeSet<[String]>
+  -- HashSet<[String]>
+  -- LinkedHashSet<[String]>
+  -- AbstractSequentialList<[String]>
+  -- ArrayBlockingQueue<[String]>
+  -- LinkedList<[String]>
+  -- Vector<[String]>
+  -- ArrayList<[String]>
+     BlockingDeque<[String]>
+  -- BlockingDeque<[String]>
+  -- LinkedList<[String]>
+  -- LinkedBlockingDeque<[String]>
+  -- LinkedBlockingDeque<[String]>
   -- Stack<[String]>
   
   

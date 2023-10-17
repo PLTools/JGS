@@ -169,7 +169,7 @@ module JGS_PP = struct
 
   let rec jtyp ppf = function
     | Jtype.Var { id; index; upb; lwb } -> (
-        fprintf ppf "Var { id=%d; index=%a; upb=%a " id Std.Nat.fmt_ground index
+        fprintf ppf "Var { id=%d; index=%d; upb=%a " id (Std.Nat.to_int index)
           jtyp upb;
         match lwb with
         | None -> fprintf ppf "}"

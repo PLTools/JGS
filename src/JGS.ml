@@ -31,6 +31,10 @@ fun  pause(f: () -> Goal): Goal = { st -> ThunkStream { f()(st) } }
 
 context(RelationalContext)
 fun <A: Term<A>> wc(f : (Term<A>) -> Goal ) : Goal = f(wildcard())
+
+// short alias for fresh type variables uses only one (i.e. wildcards in unifications)
+context(RelationalContext)
+fun <A: Term<A>> _f(): Term<A> = freshTypedVar()
 |}]
 
 [@@@klogic.epilogue {|// Put epilogue here |}]
@@ -49,6 +53,8 @@ fun <A: Term<A>> wc(f : (Term<A>) -> Goal ) : Goal = f(wildcard())
   ("Jtype.null", "Null");
   ("Decl.c", "C");
   ("Decl.i", "I");
+  ("Jtype_kind.class_", "Class_kind");
+  ("Jtype_kind.interface", "Interface_kind");
   ("OCanren.Std.Nat.zero", "ZeroNaturalNumber");
   ("OCanren.Std.Nat.o", "ZeroNaturalNumber");
   ("OCanren.Std.Nat.succ", "NextNaturalNumber");
@@ -89,6 +95,7 @@ fun <A: Term<A>> wc(f : (Term<A>) -> Goal ) : Goal = f(wildcard())
   ("Decl.injected", "Decl");
   ("CC_type.injected", "ClosureConversionType");
   ("CC_subst.injected", "CC_subst");
+  ("Jtype_kind.injected", "Jtype_kind");
   ("OCanren.Std.Pair.injected", "LogicPair");
   ("OCanren.Std.Nat.injected", "PeanoLogicNumber");
   ("OCanren.Std.Option.injected", "LogicOption");
@@ -248,6 +255,16 @@ module Jtype = struct
 end
 [@@skip_from_klogic]
 
+module Jtype_kind = struct
+  [%%distrib
+  type nonrec ground = Class | Interface
+  [@@deriving gt ~options:{ show; fmt; gmap }]]
+
+  let class_ () : injected = !!Class
+  let interface () : injected = !!Interface
+end
+[@@skip_from_klogic]
+
 module Decl = struct
   [%%distrib
   type nonrec 'id ground =
@@ -302,11 +319,11 @@ open CC_type
 open CC_subst
 
 let rec substitute_typ :
-          'id.
-          'id ilogic Jtype.injected Targ.injected Std.List.injected ->
-          'id ilogic Jtype.injected ->
-          'id ilogic Jtype.injected ->
-          goal =
+      'id.
+      'id ilogic Jtype.injected Targ.injected Std.List.injected ->
+      'id ilogic Jtype.injected ->
+      'id ilogic Jtype.injected ->
+      goal =
  fun subst typ res ->
   conde
     [
@@ -355,7 +372,9 @@ module type CLASSTABLE = sig
 
   val get_superclass_by_id :
     int ilogic ->
+    Jtype_kind.injected ->
     int ilogic ->
+    Jtype_kind.injected ->
     int ilogic Jtype.injected Std.Option.injected ->
     goal
 
@@ -427,8 +446,10 @@ module type VERIFIER = sig
     goal) ->
     int ilogic ->
     int ilogic Jtype.injected Targ.injected Std.List.injected ->
+    Jtype_kind.injected ->
     int ilogic ->
     int ilogic Jtype.injected Targ.injected Std.List.injected ->
+    Jtype_kind.injected ->
     bool ilogic ->
     goal
 
@@ -575,14 +596,16 @@ module Verifier (CT : CLASSTABLE) : VERIFIER = struct
       goal) ->
       int ilogic ->
       int ilogic Jtype.injected Targ.injected Std.List.injected ->
+      Jtype_kind.injected ->
       int ilogic ->
       int ilogic Jtype.injected Targ.injected Std.List.injected ->
+      Jtype_kind.injected ->
       bool ilogic ->
       goal =
-   fun ( <-< ) id_a targs_a id_b targs_b res ->
+   fun ( <-< ) id_a targs_a kind_a id_b targs_b kind_b res ->
     conde
       [
-        fresh () (id_a === id_b)
+        fresh () (id_a === id_b) (kind_a === kind_b)
           (fold_left2o
              (fun acc ta tb res ->
                conde
@@ -592,14 +615,18 @@ module Verifier (CT : CLASSTABLE) : VERIFIER = struct
                  ])
              !!true targs_a targs_b res);
         fresh super_ (id_a =/= id_b)
-          (CT.get_superclass_by_id id_a id_b super_)
+          (CT.get_superclass_by_id id_a kind_a id_b kind_b super_)
           (conde
              [
                fresh (targs_b2 new_targs_b2)
                  (conde
                     [
-                      super_ === Std.some (class_ __ targs_b2);
-                      super_ === Std.some (interface __ targs_b2);
+                      fresh ()
+                        (super_ === Std.some (class_ id_b targs_b2))
+                        (kind_b === Jtype_kind.class_ ());
+                      fresh ()
+                        (super_ === Std.some (interface id_b targs_b2))
+                        (kind_b === Jtype_kind.interface ());
                     ])
                  (mapo
                     (fun arg res -> substitute_arg targs_a arg res)
@@ -635,13 +662,18 @@ module Verifier (CT : CLASSTABLE) : VERIFIER = struct
                  (converted === Std.some targs_a)
                  (conde
                     [
-                      fresh (id_b targs_b)
+                      fresh (id_b targs_b kind_b)
                         (conde
                            [
-                             type_b === interface id_b targs_b;
-                             type_b === class_ id_b targs_b;
+                             fresh ()
+                               (type_b === interface id_b targs_b)
+                               (kind_b === Jtype_kind.interface ());
+                             fresh ()
+                               (type_b === class_ id_b targs_b)
+                               (kind_b === Jtype_kind.class_ ());
                            ])
-                        (class_int_sub ( <-< ) id_a targs_a id_b targs_b res);
+                        (class_int_sub ( <-< ) id_a targs_a
+                           (Jtype_kind.class_ ()) id_b targs_b kind_b res);
                       fresh typ
                         (type_b === var __ __ __ (Std.some typ))
                         (conde
@@ -665,9 +697,18 @@ module Verifier (CT : CLASSTABLE) : VERIFIER = struct
                  (converted === Std.some targs_a)
                  (conde
                     [
-                      fresh (id_b targs_b)
-                        (type_b === interface id_b targs_b)
-                        (class_int_sub ( <-< ) id_a targs_a id_b targs_b res);
+                      fresh (id_b targs_b kind_b)
+                        (conde
+                           [
+                             fresh ()
+                               (type_b === interface id_b targs_b)
+                               (kind_b === Jtype_kind.interface ());
+                             fresh () (type_b === CT.object_t)
+                               (type_b === class_ id_b targs_b)
+                               (kind_b === Jtype_kind.class_ ());
+                           ])
+                        (class_int_sub ( <-< ) id_a targs_a
+                           (Jtype_kind.interface ()) id_b targs_b kind_b res);
                       fresh typ
                         (type_b === var __ __ __ (Std.some typ))
                         (conde

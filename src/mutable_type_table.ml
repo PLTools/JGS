@@ -219,15 +219,18 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
   type disj_args = {
     decl_by_id : (int ilogic * int ilogic Decl.injected) list lazy_t;
-    get_superclass_by_id :
-      (int ilogic * int ilogic * int ilogic Jtype.injected) list lazy_t;
-    subclass_map : (int ilogic * int ilogic Jtype.injected) list M.t lazy_t;
+    get_superclass_by_id : (int * int * int ilogic Jtype.injected) list lazy_t;
+    subclass_map : (int * int ilogic Jtype.injected) list M.t lazy_t;
   }
 
   let get_supers = function
     | Decl.C { super; supers; _ } -> super :: supers
     | I { supers = []; _ } -> [ Ground.object_t ]
     | I { supers; _ } -> supers
+
+  let get_jtype_kind = function
+    | Decl.C _ -> Jtype_kind.Class
+    | I _ -> Jtype_kind.Interface
 
   let update_disj_args =
     let decl_by_id_disjs_args = ref (lazy []) in
@@ -250,7 +253,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                        when super_id <> top_id ->
                          (* Printf.printf "sub_id: %d, super_id: %d\n" sub_id
                             super_id; *)
-                         Some (!!sub_id, !!super_id, jtype_inj super)
+                         Some (sub_id, super_id, jtype_inj super)
                      | _ -> None)
                    supers)
                bindings);
@@ -266,8 +269,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                        when super_id <> top_id ->
                          M.update super_id
                            (function
-                             | Some l -> Some ((!!sub_id, jtype_inj super) :: l)
-                             | None -> Some [ (!!sub_id, jtype_inj super) ])
+                             | Some l -> Some ((sub_id, jtype_inj super) :: l)
+                             | None -> Some [ (sub_id, jtype_inj super) ])
                            map
                      | _ -> map)
                    map supers)
@@ -312,14 +315,18 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
   let get_superclass_by_id :
       int ilogic ->
+      Jtype_kind.injected ->
       int ilogic ->
+      Jtype_kind.injected ->
       int ilogic Jtype.injected Std.Option.injected ->
       goal =
-    let get_superclass_by_id_ground_ground sub_id super_id rez =
+    let get_superclass_by_id_ground_ground sub_id sub_kind super_id super_kind
+        rez =
       match M.find_opt sub_id !m with
       | None -> failure
       | Some decl -> (
           let supers = get_supers decl in
+          let sub_expected_kind = !!(get_jtype_kind decl) in
           match
             Stdlib.List.find_opt
               (function
@@ -330,25 +337,44 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
               supers
           with
           | None -> failure
-          | Some ((Jtype.Class _ | Interface _) as t) -> rez === jtype_inj t
+          | Some (Jtype.Class _ as t) ->
+              sub_kind === sub_expected_kind
+              &&& (super_kind === Jtype_kind.class_ ())
+              &&& (rez === jtype_inj t)
+          | Some (Jtype.Interface _ as t) ->
+              sub_kind === sub_expected_kind
+              &&& (super_kind === Jtype_kind.interface ())
+              &&& (rez === jtype_inj t)
           | _ -> failure)
     in
-    let get_superclass_by_id_ground_free sub_id super_id_val rez =
+    let get_superclass_by_id_ground_free sub_id sub_kind super_id_val super_kind
+        rez =
       match M.find_opt sub_id !m with
       | None -> failure
       | Some decl ->
+          let sub_expected_kind = !!(get_jtype_kind decl) in
           let rec loop : _ -> goal = function
             | [] -> failure
-            | ((Jtype.Class (super_id, _) | Interface (super_id, _)) as t) :: tl
-              ->
+            | (Jtype.Class (super_id, _) as t) :: tl ->
                 OCanren.disj
-                  (super_id_val === !!super_id &&& (rez === jtype_inj t))
+                  (sub_kind === sub_expected_kind
+                  &&& (super_id_val === !!super_id)
+                  &&& (super_kind === Jtype_kind.class_ ())
+                  &&& (rez === jtype_inj t))
+                  (delay (fun () -> loop tl))
+            | (Interface (super_id, _) as t) :: tl ->
+                OCanren.disj
+                  (sub_kind === sub_expected_kind
+                  &&& (super_id_val === !!super_id)
+                  &&& (super_kind === Jtype_kind.interface ())
+                  &&& (rez === jtype_inj t))
                   (delay (fun () -> loop tl))
             | _ :: tl -> delay (fun () -> loop tl)
           in
           loop (get_supers decl)
     in
-    let get_superclass_by_id_free_ground sub_id_val super_id rez =
+    let get_superclass_by_id_free_ground sub_id_val sub_kind super_id super_kind
+        rez =
       let subclass_map = get_subclass_map () in
       match M.find_opt super_id subclass_map with
       | None -> failure
@@ -356,13 +382,24 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
           let rec loop : _ -> goal = function
             | [] -> failure
             | (sub, super) :: tl ->
+                let sub_expected_kind = !!(get_jtype_kind @@ M.find sub !m) in
                 OCanren.disj
-                  (sub_id_val === sub &&& (rez === super))
+                  (sub_id_val === !!sub
+                  &&& (sub_kind === sub_expected_kind)
+                  &&& (rez === super)
+                  &&& conde
+                        [
+                          super === Jtype.class_ __ __
+                          &&& (super_kind === Jtype_kind.class_ ());
+                          super === Jtype.interface __ __
+                          &&& (super_kind === Jtype_kind.interface ());
+                        ])
                   (delay (fun () -> loop tl))
           in
           loop filtered_by_super
     in
-    let get_superclass_by_id_free_free sub_id_val super_id_val rez =
+    let get_superclass_by_id_free_free sub_id_val sub_kind super_id_val
+        super_kind rez =
       let disj_args = get_superclass_by_id_disjs_args () in
 
       (* Printf.printf "%s generated %d disjuncts\n" __FUNCTION__
@@ -373,14 +410,41 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       let rec loop : _ -> goal = function
         | [] -> failure
         | (sub, sup, super) :: tl ->
+            let sub_expected_kind = !!(get_jtype_kind @@ M.find sub !m) in
+            let sup_expected_kind = !!(get_jtype_kind @@ M.find sup !m) in
             OCanren.disj
-              (sub_id_val === sub &&& (super_id_val === sup) &&& (rez === super))
+              (sub_id_val === !!sub &&& (super_id_val === !!sup)
+              &&& (sub_kind === sub_expected_kind)
+              &&& (super_kind === sup_expected_kind)
+              &&& (rez === super))
               (delay (fun () -> loop tl))
       in
       loop disj_args
     in
-    fun sub_id_val super_id_val some_rez ->
+    fun sub_id_val sub_kind super_id_val super_kind some_rez ->
+      (* debug_var sub_id_val (Fun.flip OCanren.reify) (fun sub_id ->
+             debug_var sub_kind (Fun.flip Jtype_kind.reify) (fun sub_kind ->
+                 debug_var super_id_val (Fun.flip OCanren.reify) (fun super_id ->
+                     debug_var super_kind (Fun.flip Jtype_kind.reify)
+                       (fun super_kind ->
+                         let pp_kind = function
+                           | [ Value Jtype_kind.Class ] -> "Class"
+                           | [ Value Jtype_kind.Interface ] -> "Interface"
+                           | _ -> "Var"
+                         in
+                         let pp_id = function
+                           | [ Value id ] -> string_of_int id
+                           | _ -> "Var"
+                         in
+                         Printf.printf
+                           "debug_var -- sub_id: %s, sub_kind: %s, super_id: %s, \
+                            super_kind: %s\n"
+                           (pp_id sub_id) (pp_kind sub_kind) (pp_id super_id)
+                           (pp_kind super_kind);
+                         success))))
+         &&& *)
       fresh rez
+        (super_id_val =/= !!top_id)
         (some_rez === Std.some rez)
         (debug_var sub_id_val (Fun.flip OCanren.reify) (fun sub_id_reified ->
              debug_var super_id_val (Fun.flip OCanren.reify)
@@ -388,16 +452,20 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
                  match (sub_id_reified, super_id_reified) with
                  (* If ids of subclass and superclass are ground *)
                  | [ Value sub_id ], [ Value super_id ] ->
-                     get_superclass_by_id_ground_ground sub_id super_id rez
+                     get_superclass_by_id_ground_ground sub_id sub_kind super_id
+                       super_kind rez
                  (* If id of subclass is ground only *)
                  | [ Value sub_id ], _ ->
-                     get_superclass_by_id_ground_free sub_id super_id_val rez
+                     get_superclass_by_id_ground_free sub_id sub_kind
+                       super_id_val super_kind rez
                  (* If id of superclass is ground only *)
                  | _, [ Value super_id ] ->
-                     get_superclass_by_id_free_ground sub_id_val super_id rez
+                     get_superclass_by_id_free_ground sub_id_val sub_kind
+                       super_id super_kind rez
                  (* General case: if ids of sub and super classes are free *)
                  | _, _ ->
-                     get_superclass_by_id_free_free sub_id_val super_id_val rez)))
+                     get_superclass_by_id_free_free sub_id_val sub_kind
+                       super_id_val super_kind rez)))
 
   let object_t = jtype_inj Ground.object_t
   let cloneable_t = jtype_inj Ground.cloneable_t

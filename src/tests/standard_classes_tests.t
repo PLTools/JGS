@@ -4,65 +4,6 @@
   ****************************************************************************************************
   
   ? <-< Iterable<Object>, all answers:
-     Iterable<[Object]>
-     Collection<[Object]>
-     AbstactCollection<[Object]>
-     Set<[Object]>
-     Queue<[Object]>
-     List<[Object]>
-     AbstractQueue<[Object]>
-     AbstractSet<[Object]>
-     AbstractList<[Object]>
-     LinkedHashSet<[Object]>
-     SortedSet<[Object]>
-     LinkedBlockingDeque<[Object]>
-     ArrayBlockingQueue<[Object]>
-     HashSet<[Object]>
-  -- AbstractSet<[Object]>
-  -- AbstractQueue<[Object]>
-     LinkedList<[Object]>
-     ConcurrentSkipListSet<[Object]>
-     AbstractSequentialList<[Object]>
-     TreeSet<[Object]>
-     Vector<[Object]>
-  -- HashSet<[Object]>
-     ArrayList<[Object]>
-     BlockingQueue<[Object]>
-     Deque<[Object]>
-  -- Vector<[Object]>
-     NavigableSet<[Object]>
-  -- ArrayList<[Object]>
-  -- AbstractList<[Object]>
-  -- LinkedList<[Object]>
-  -- LinkedHashSet<[Object]>
-     Stack<[Object]>
-  -- LinkedHashSet<[Object]>
-     RoleList
-     AttributeList
-  -- ConcurrentSkipListSet<[Object]>
-  -- TreeSet<[Object]>
-  -- ConcurrentSkipListSet<[Object]>
-  -- LinkedBlockingDeque<[Object]>
-  -- ArrayBlockingQueue<[Object]>
-  -- Stack<[Object]>
-  -- TreeSet<[Object]>
-  -- HashSet<[Object]>
-  -- LinkedHashSet<[Object]>
-  -- ArrayBlockingQueue<[Object]>
-  -- LinkedList<[Object]>
-  -- RoleList
-  -- AttributeList
-  -- AbstractSequentialList<[Object]>
-     BlockingDeque<[Object]>
-  -- BlockingDeque<[Object]>
-  -- Vector<[Object]>
-  -- ArrayList<[Object]>
-  -- LinkedList<[Object]>
-  -- LinkedBlockingDeque<[Object]>
-  -- LinkedBlockingDeque<[Object]>
-  -- Stack<[Object]>
-  -- RoleList
-  -- AttributeList
   
   
   Uniq answers:
@@ -101,14 +42,6 @@
   ****************************************************************************************************
   
   ? <-< AbstractList<Object>, all answers:
-     AbstractList<[Object]>
-     AbstractSequentialList<[Object]>
-     Vector<[Object]>
-     ArrayList<[Object]>
-     LinkedList<[Object]>
-     Stack<[Object]>
-     RoleList
-     AttributeList
   
   
   Uniq answers:
@@ -128,28 +61,6 @@
   ****************************************************************************************************
   
   RoleList <-< ?, all answers:
-     RoleList
-     ArrayList<[Object]>
-     AbstractList<[Object]>
-     RandomAccess
-     List<[Object]>
-     Cloneable
-     Serializable
-     Object
-  -- List<[Object]>
-     AbstactCollection<[Object]>
-     Collection<[Object]>
-  -- Collection<[Object]>
-  -- Object
-  -- Object
-  -- Object
-  -- Collection<[Object]>
-     Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Object
-  -- Object
-  -- Iterable<[Object]>
-  -- Object
   
   
   Uniq answers:
@@ -172,21 +83,6 @@
   ****************************************************************************************************
   
   ? <-< RandomAccess & ? <-< Iterable<Object>, all answers:
-     Vector<[Object]>
-  -- Vector<[Object]>
-  -- Vector<[Object]>
-     ArrayList<[Object]>
-  -- ArrayList<[Object]>
-  -- ArrayList<[Object]>
-     Stack<[Object]>
-  -- Stack<[Object]>
-  -- Stack<[Object]>
-     RoleList
-  -- RoleList
-  -- RoleList
-     AttributeList
-  -- AttributeList
-  -- AttributeList
   
   
   Uniq answers:
@@ -203,11 +99,6 @@
   ****************************************************************************************************
   
   ? <-< RandomAccess & ? <-< AbstractCollection<Object>, all answers:
-     Vector<[Object]>
-     ArrayList<[Object]>
-     Stack<[Object]>
-     RoleList
-     AttributeList
   
   
   Uniq answers:
@@ -224,75 +115,6 @@
   ****************************************************************************************************
   
   LinkedList<Object> <-< ? & TreeSet<Object> <-< ?, all answers:
-     Cloneable
-     Serializable
-     Collection<[Object]>
-  -- Collection<[Object]>
-  -- Collection<[Object]>
-     AbstactCollection<[Object]>
-     Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-     Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Collection<[Object]>
-  -- Collection<[Object]>
-  -- Object
-  -- Collection<[Object]>
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Collection<[Object]>
-  -- Collection<[Object]>
-  -- Object
-  -- Collection<[Object]>
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Collection<[Object]>
-  -- Collection<[Object]>
-  -- Object
-  -- Collection<[Object]>
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Object
-  -- Iterable<[Object]>
-  -- Object
-  -- Iterable<[Object]>
-  -- Object
-  -- Iterable<[Object]>
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
   
   
   Uniq answers:
@@ -310,58 +132,6 @@
   ****************************************************************************************************
   
   ? <-< Collection<String>, all answers:
-     AbstactCollection<[String]>
-     Collection<[String]>
-     Set<[String]>
-     Queue<[String]>
-     List<[String]>
-     AbstractQueue<[String]>
-     AbstractSet<[String]>
-     AbstractList<[String]>
-     LinkedHashSet<[String]>
-     SortedSet<[String]>
-     LinkedBlockingDeque<[String]>
-     ArrayBlockingQueue<[String]>
-     HashSet<[String]>
-  -- AbstractSet<[String]>
-  -- AbstractQueue<[String]>
-     LinkedList<[String]>
-     ConcurrentSkipListSet<[String]>
-     AbstractSequentialList<[String]>
-     TreeSet<[String]>
-     Vector<[String]>
-  -- HashSet<[String]>
-     ArrayList<[String]>
-     BlockingQueue<[String]>
-     Deque<[String]>
-  -- Vector<[String]>
-     NavigableSet<[String]>
-  -- ArrayList<[String]>
-  -- AbstractList<[String]>
-  -- LinkedList<[String]>
-  -- LinkedHashSet<[String]>
-     Stack<[String]>
-  -- LinkedHashSet<[String]>
-  -- ConcurrentSkipListSet<[String]>
-  -- TreeSet<[String]>
-  -- ConcurrentSkipListSet<[String]>
-  -- LinkedBlockingDeque<[String]>
-  -- ArrayBlockingQueue<[String]>
-  -- Stack<[String]>
-  -- TreeSet<[String]>
-  -- HashSet<[String]>
-  -- LinkedHashSet<[String]>
-  -- AbstractSequentialList<[String]>
-  -- ArrayBlockingQueue<[String]>
-  -- LinkedList<[String]>
-  -- Vector<[String]>
-  -- ArrayList<[String]>
-     BlockingDeque<[String]>
-  -- BlockingDeque<[String]>
-  -- LinkedList<[String]>
-  -- LinkedBlockingDeque<[String]>
-  -- LinkedBlockingDeque<[String]>
-  -- Stack<[String]>
   
   
   Uniq answers:

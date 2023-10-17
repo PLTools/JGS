@@ -1,28 +1,28 @@
   $ ./relational_backward_tests.exe
-  1.1 (?) -<- Object : 
+  1.1 (?) -<- Object, all answers:
   [
-    Class (1, []);
     Array (Class (1, []));
-    Interface (3, _.24);
-    Interface (2, _.24)
+    Class (1, []);
+    Interface (2, _.0);
+    Interface (3, _.0)
   ]
   
   
   ****************************************************************************************************
   
-  1.2 Object[] -<- (?) : 
+  1.2 Object[] -<- (?), all answers:
   [
+    Array (Class (1, []));
+    Array (Var {id=_.0, index=_.1, upb=_.2, lwb=Some (Class (1, []))});
     Class (1, []);
     Interface (2, []);
-    Interface (3, []);
-    Array (Var {id=_.41, index=_.42, upb=_.43, lwb=Some (Class (1, []))});
-    Array (Class (1, []))
+    Interface (3, [])
   ]
   
   
   ****************************************************************************************************
   
-  2 (?) -<- Cloneable : 
+  2 (?) -<- Cloneable, all answers:
   [
     Array (Class (1, []));
     Interface (2, [])
@@ -31,7 +31,7 @@
   
   ****************************************************************************************************
   
-  3 (?) -<- Serializable : 
+  3 (?) -<- Serializable, all answers:
   [
     Array (Class (1, []));
     Interface (3, [])
@@ -40,24 +40,24 @@
   
   ****************************************************************************************************
   
-  4.1 (?) -<- Object[] : 
+  4.1 (?) -<- Object[], 10 answers:
   [
+    Array (Array (Class (1, [])));
     Array (Class (1, []));
-    Array (Array (Class (1, [])));
-    Array (Intersect ([Class (1, []) | _.104]));
-    Array (Var {id=_.99, index=_.100, upb=Class (1, []), lwb=_.101});
+    Array (Interface (2, _.0));
+    Array (Interface (3, _.0));
+    Array (Intersect ([Class (1, []) | _.0]));
+    Array (Intersect ([_.0 [=/= Class (1, [])]; Class (1, []) | _.1]));
+    Array (Intersect ([_.0 [=/= Class (1, [])]; _.1 [=/= Class (1, [])]; Class (1, []) | _.2]));
+    Array (Intersect ([_.0 [=/= Class (1, [])]; _.1 [=/= Class (1, [])]; _.2 [=/= Class (1, [])]; Class (1, []) | _.3]));
     Array (Null);
-    Array (Intersect ([_.103 [=/= Class (1, [])]; Class (1, []) | _.120]));
-    Array (Interface (3, _.64));
-    Array (Intersect ([_.103 [=/= Class (1, [])]; _.119 [=/= Class (1, [])]; Class (1, []) | _.126]));
-    Array (Interface (2, _.64));
-    Array (Intersect ([_.103 [=/= Class (1, [])]; _.119 [=/= Class (1, [])]; _.125 [=/= Class (1, [])]; Class (1, []) | _.132]))
+    Array (Var {id=_.0, index=_.1, upb=Class (1, []), lwb=_.2})
   ]
   
   
   ****************************************************************************************************
   
-  4.2 Object -<- (?) : 
+  4.2 Object -<- (?), all answers:
   [
     Class (1, [])
   ]
@@ -65,48 +65,48 @@
   
   ****************************************************************************************************
   
-  5 Cloneable -<- (?): 
+  5 Cloneable -<- (?), all answers:
   [
-    Interface (2, []);
-    Class (1, [])
+    Class (1, []);
+    Interface (2, [])
   ]
   
   
   ****************************************************************************************************
   
-  6 Serializable -<- (?) : 
+  6 Serializable -<- (?), all answers:
   [
-    Interface (3, []);
-    Class (1, [])
+    Class (1, []);
+    Interface (3, [])
   ]
   
   
   ****************************************************************************************************
   
-  7.1 (?) -<- Serializable[] : 
+  7.1 (?) -<- Serializable[], 10 answers:
   [
+    Array (Array (Class (1, [])));
     Array (Interface (3, []));
-    Array (Array (Class (1, [])));
-    Array (Intersect ([Interface (3, []) | _.95]));
-    Array (Var {id=_.90, index=_.91, upb=Interface (3, []), lwb=_.92});
+    Array (Intersect ([Interface (3, []) | _.0]));
+    Array (Intersect ([_.0 [=/= Interface (3, [])]; Interface (3, []) | _.1]));
+    Array (Intersect ([_.0 [=/= Interface (3, [])]; _.1 [=/= Interface (3, [])]; Interface (3, []) | _.2]));
+    Array (Intersect ([_.0 [=/= Interface (3, [])]; _.1 [=/= Interface (3, [])]; _.2 [=/= Interface (3, [])]; Interface (3, []) | _.3]));
+    Array (Intersect ([_.0 [=/= Interface (3, [])]; _.1 [=/= Interface (3, [])]; _.2 [=/= Interface (3, [])]; _.3 [=/= Interface (3, [])]; Interface (3, []) | _.4]));
+    Array (Intersect ([_.0 [=/= Interface (3, [])]; _.1 [=/= Interface (3, [])]; _.2 [=/= Interface (3, [])]; _.3 [=/= Interface (3, [])]; _.4 [=/= Interface (3, [])]; Interface (3, []) | _.5]));
     Array (Null);
-    Array (Intersect ([_.94 [=/= Interface (3, [])]; Interface (3, []) | _.104]));
-    Array (Intersect ([_.94 [=/= Interface (3, [])]; _.103 [=/= Interface (3, [])]; Interface (3, []) | _.106]));
-    Array (Intersect ([_.94 [=/= Interface (3, [])]; _.103 [=/= Interface (3, [])]; _.105 [=/= Interface (3, [])]; Interface (3, []) | _.108]));
-    Array (Intersect ([_.94 [=/= Interface (3, [])]; _.103 [=/= Interface (3, [])]; _.105 [=/= Interface (3, [])]; _.107 [=/= Interface (3, [])]; Interface (3, []) | _.110]));
-    Array (Intersect ([_.94 [=/= Interface (3, [])]; _.103 [=/= Interface (3, [])]; _.105 [=/= Interface (3, [])]; _.107 [=/= Interface (3, [])]; _.109 [=/= Interface (3, [])]; Interface (3, []) | _.112]))
+    Array (Var {id=_.0, index=_.1, upb=Interface (3, []), lwb=_.2})
   ]
   
   
   ****************************************************************************************************
   
-  7.2 Object[][] -<- (?) : 
+  7.2 Object[][] -<- (?), all answers:
   [
+    Array (Array (Class (1, [])));
+    Array (Array (Var {id=_.0, index=_.1, upb=_.2, lwb=Some (Class (1, []))}));
     Array (Class (1, []));
     Array (Interface (2, []));
-    Array (Interface (3, []));
-    Array (Array (Var {id=_.54, index=_.55, upb=_.56, lwb=Some (Class (1, []))}));
-    Array (Array (Class (1, [])))
+    Array (Interface (3, []))
   ]
   
   
@@ -116,25 +116,25 @@
   
   Class B: 5
   
-  8.1 (?) -<- A : 
+  8.1 (?) -<- A, all answers:
   [
     Class (4, []);
-    Class (5, _.18)
+    Class (5, _.0)
   ]
   
   
   ****************************************************************************************************
   
-  8.2 B -<- (?) : 
+  8.2 B -<- (?), all answers:
   [
-    Class (5, []);
-    Class (4, [])
+    Class (4, []);
+    Class (5, [])
   ]
   
   
   ****************************************************************************************************
   
-  8.3 (?) -<- B : 
+  8.3 (?) -<- B, all answers:
   [
     Class (5, [])
   ]
@@ -142,10 +142,10 @@
   
   ****************************************************************************************************
   
-  8.4 A -<- (?) : 
+  8.4 A -<- (?), all answers:
   [
-    Class (4, []);
-    Class (1, [])
+    Class (1, []);
+    Class (4, [])
   ]
   
   
@@ -155,29 +155,29 @@
   
   Class C: 7
   
-  9 C -<- (?) : 
+  9 C -<- (?), all answers:
   [
+    Class (4, []);
     Class (7, []);
-    Interface (6, []);
-    Class (4, [])
-  ]
-  
-  
-  ****************************************************************************************************
-  
-  10.1 (?) -<- IA : 
-  [
-    Class (7, _.18);
     Interface (6, [])
   ]
   
   
   ****************************************************************************************************
   
-  10.2 IA -<- (?) : 
+  10.1 (?) -<- IA, all answers:
   [
-    Interface (6, []);
-    Class (1, [])
+    Class (7, _.0);
+    Interface (6, [])
+  ]
+  
+  
+  ****************************************************************************************************
+  
+  10.2 IA -<- (?), all answers:
+  [
+    Class (1, []);
+    Interface (6, [])
   ]
   
   
@@ -185,10 +185,10 @@
   
   Interface B: 8
   
-  11 IB -<- (?) : 
+  11 IB -<- (?), all answers:
   [
-    Interface (8, []);
-    Interface (6, [])
+    Interface (6, []);
+    Interface (8, [])
   ]
   
   
@@ -200,18 +200,18 @@
   
   Class F<X, Y>: 13
   
-  12.1 (?) -<- E<D<B>, A> : 
+  12.1 (?) -<- E<D<B>, A>, all answers:
   [
     Class (10, [Type (Class (9, [Type (Class (5, []))])); Type (Class (4, []))]);
-    Class (13, [Type (Class (4, [])); Type (Class (5, [])) | _.121])
+    Class (13, [Type (Class (4, [])); Type (Class (5, [])) | _.0])
   ]
   
   
   ****************************************************************************************************
   
-  12.2 F<A, B> -<- (?) : 
+  12.2 F<A, B> -<- (?), all answers:
   [
-    Class (13, [Type (Class (4, [])); Type (Class (5, []))]);
-    Class (10, [Type (Class (9, [Type (Class (5, []))])); Type (Class (4, []))])
+    Class (10, [Type (Class (9, [Type (Class (5, []))])); Type (Class (4, []))]);
+    Class (13, [Type (Class (4, [])); Type (Class (5, []))])
   ]
 

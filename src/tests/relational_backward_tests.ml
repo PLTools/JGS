@@ -2,6 +2,7 @@ open OCanren
 open JGS
 open Mutable_type_table
 open JGS_Helpers
+open Test_printer
 
 let _ =
   let module SampleCT = SampleCT () in
@@ -9,84 +10,64 @@ let _ =
   let rec ( <-< ) ta tb = ta -<- tb (* not complete! *)
   and ( -<- ) ta tb = V.( -<- ) ( <-< ) ta tb in
 
-  let run_jtype ?(n = -1) query =
-    let pp_list f l =
-      Printf.sprintf "\n[\n  %s\n]%!"
-      @@ String.concat ";\n  " @@ Stdlib.List.map f l
-    in
-    pp_list pp_ljtype @@ Stream.take ~n
-    @@ run q query (fun q -> q#reify (Jtype.reify OCanren.reify))
-  in
-
-  Printf.printf "1.1 (?) -<- Object : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q SampleCT.object_t !!true));
-
+  run_jtype ~n:(-1) ~msg:"1.1 (?) -<- Object" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q SampleCT.object_t !!true));
   sep ();
 
-  Printf.printf "1.2 Object[] -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (Jtype.array SampleCT.object_t) q !!true));
+  run_jtype ~n:(-1) ~msg:"1.2 Object[] -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (Jtype.array SampleCT.object_t) q !!true));
   sep ();
 
-  Printf.printf "2 (?) -<- Cloneable : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q SampleCT.cloneable_t !!true));
+  run_jtype ~n:(-1) ~msg:"2 (?) -<- Cloneable" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q SampleCT.cloneable_t !!true));
   sep ();
 
-  Printf.printf "3 (?) -<- Serializable : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q SampleCT.serializable_t !!true));
+  run_jtype ~n:(-1) ~msg:"3 (?) -<- Serializable" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q SampleCT.serializable_t !!true));
   sep ();
 
-  Printf.printf "4.1 (?) -<- Object[] : %s\n"
-  @@ run_jtype ~n:10 (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (Jtype.array SampleCT.object_t) !!true));
+  run_jtype ~n:10 ~msg:"4.1 (?) -<- Object[]" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q (Jtype.array SampleCT.object_t) !!true));
   sep ();
 
-  Printf.printf "4.2 Object -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) SampleCT.object_t q !!true));
+  run_jtype ~n:(-1) ~msg:"4.2 Object -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) SampleCT.object_t q !!true));
   sep ();
 
-  Printf.printf "5 Cloneable -<- (?): %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) SampleCT.cloneable_t q !!true));
+  run_jtype ~n:(-1) ~msg:"5 Cloneable -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) SampleCT.cloneable_t q !!true));
   sep ();
 
-  Printf.printf "6 Serializable -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) SampleCT.serializable_t q !!true));
+  run_jtype ~n:(-1) ~msg:"6 Serializable -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) SampleCT.serializable_t q !!true));
   sep ();
 
-  Printf.printf "7.1 (?) -<- Serializable[] : %s\n"
-  @@ run_jtype ~n:10 (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (Jtype.array SampleCT.serializable_t) !!true));
+  run_jtype ~n:10 ~msg:"7.1 (?) -<- Serializable[]" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q (Jtype.array SampleCT.serializable_t) !!true));
   sep ();
 
-  Printf.printf "7.2 Object[][] -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (Jtype.array (Jtype.array SampleCT.object_t)) q !!true));
+  run_jtype ~n:(-1) ~msg:"7.2 Object[][] -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (Jtype.array (Jtype.array SampleCT.object_t)) q !!true));
   sep ();
 
   (* class A {...} *)
@@ -99,32 +80,28 @@ let _ =
 
   Printf.printf "Class B: %d\n\n" class_b;
 
-  Printf.printf "8.1 (?) -<- A : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ Class (class_a, [])) !!true));
+  run_jtype ~n:(-1) ~msg:"8.1 (?) -<- A" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q (jtype_inj @@ Class (class_a, [])) !!true));
   sep ();
 
-  Printf.printf "8.2 B -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (jtype_inj @@ Class (class_b, [])) q !!true));
+  run_jtype ~n:(-1) ~msg:"8.2 B -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (jtype_inj @@ Class (class_b, [])) q !!true));
   sep ();
 
-  Printf.printf "8.3 (?) -<- B : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ Class (class_b, [])) !!true));
+  run_jtype ~n:(-1) ~msg:"8.3 (?) -<- B" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q (jtype_inj @@ Class (class_b, [])) !!true));
   sep ();
 
-  Printf.printf "8.4 A -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (jtype_inj @@ Class (class_a, [])) q !!true));
+  run_jtype ~n:(-1) ~msg:"8.4 A -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (jtype_inj @@ Class (class_a, [])) q !!true));
   sep ();
 
   (* interface IA {...} *)
@@ -139,25 +116,22 @@ let _ =
 
   Printf.printf "Class C: %d\n\n" class_c;
 
-  Printf.printf "9 C -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (jtype_inj @@ Class (class_c, [])) q !!true));
+  run_jtype ~n:(-1) ~msg:"9 C -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (jtype_inj @@ Class (class_c, [])) q !!true));
   sep ();
 
-  Printf.printf "10.1 (?) -<- IA : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ Interface (intf_a, [])) !!true));
+  run_jtype ~n:(-1) ~msg:"10.1 (?) -<- IA" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q (jtype_inj @@ Interface (intf_a, [])) !!true));
   sep ();
 
-  Printf.printf "10.2 IA -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (jtype_inj @@ Interface (intf_a, [])) q !!true));
+  run_jtype ~n:(-1) ~msg:"10.2 IA -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (jtype_inj @@ Interface (intf_a, [])) q !!true));
   sep ();
 
   (* interface IB extends IA {...} *)
@@ -165,11 +139,10 @@ let _ =
 
   Printf.printf "Interface B: %d\n\n" intf_b;
 
-  Printf.printf "11 IB -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (jtype_inj @@ Interface (intf_b, [])) q !!true));
+  run_jtype ~n:(-1) ~msg:"11 IB -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (jtype_inj @@ Interface (intf_b, [])) q !!true));
   sep ();
 
   (* class D<X> {...} *)
@@ -219,15 +192,13 @@ let _ =
         ] )
   in
 
-  Printf.printf "12.1 (?) -<- E<D<B>, A> : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) q (jtype_inj @@ e_d_b_a) !!true));
+  run_jtype ~n:(-1) ~msg:"12.1 (?) -<- E<D<B>, A>" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) q (jtype_inj @@ e_d_b_a) !!true));
   sep ();
 
-  Printf.printf "12.2 F<A, B> -<- (?) : %s\n"
-  @@ run_jtype ~n:(-1) (fun q ->
-         fresh ()
-           (only_classes_interfaces_and_arrays q)
-           (( -<- ) (jtype_inj @@ f_ab) q !!true))
+  run_jtype ~n:(-1) ~msg:"12.2 F<A, B> -<- (?)" (fun q ->
+      fresh ()
+        (only_classes_interfaces_and_arrays q)
+        (( -<- ) (jtype_inj @@ f_ab) q !!true))

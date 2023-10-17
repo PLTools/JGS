@@ -214,19 +214,6 @@ let _ =
   let open CollectionClasses.Types in
   let pp_list f l =
     let open Stdlib in
-    let rec is_first index elem l =
-      match (index, l) with
-      | 0, _ :: _ -> true
-      | n, x :: xs when x = elem -> false
-      | n, x :: xs -> is_first (n - 1) elem xs
-      | _ -> failwith "Out of bounds"
-    in
-
-    List.iteri
-      (fun i a ->
-        Format.printf "%s %a\n" (if is_first i a l then "  " else "--") f a)
-      l;
-
     let counts =
       let module M = Map.Make (struct
         type t = int logic JGS.Jtype.logic

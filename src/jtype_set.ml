@@ -13,6 +13,10 @@ module Int_map = Map.Make (Stdlib.Int)
 type state = int * int Int_map.t
 
 (* TODO: Rewrite with state-monad *)
+(* Removing duplaicates optimization: alpha-conversion of jtypes
+   JType left-to-right traversal to rename all variables.
+   In the process, we collect mappings of old variable numbers to new ones
+   in order to reuse it in case of the same variable. *)
 let replace_jtype : jtype_logic -> jtype_logic =
   let rec replace_jtype : state -> jtype_logic -> state * jtype_logic =
     let get_index : int -> state -> state * int =

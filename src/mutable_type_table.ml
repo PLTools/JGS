@@ -322,11 +322,14 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       goal =
     let get_superclass_by_id_ground_ground sub_id sub_kind super_id super_kind
         rez =
+      (* We find all parents of type `sub_id` *)
       match M.find_opt sub_id !m with
       | None -> failure
       | Some decl -> (
           let supers = get_supers decl in
           let sub_expected_kind = !!(get_jtype_kind decl) in
+
+          (* We find the parent of type `sub_id` that id is `super_id` *)
           match
             Stdlib.List.find_opt
               (function
@@ -337,6 +340,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
               supers
           with
           | None -> failure
+          (* We unify variable `rez` with only one declaration of parent that id is `super_id`.
+             And we recognize the kind of the parent. *)
           | Some (Jtype.Class _ as t) ->
               sub_kind === sub_expected_kind
               &&& (super_kind === Jtype_kind.class_ ())
@@ -349,8 +354,11 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     in
     let get_superclass_by_id_ground_free sub_id sub_kind super_id_val super_kind
         rez =
+      (* We find all parents of type `sub_id` *)
       match M.find_opt sub_id !m with
       | None -> failure
+      (* We unify variable `rez` with all declarations of parents of type `sub_id`.
+             And we recognize the kind of the parents. *)
       | Some decl ->
           let sub_expected_kind = !!(get_jtype_kind decl) in
           let rec loop : _ -> goal = function
@@ -376,11 +384,16 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     let get_superclass_by_id_free_ground sub_id_val sub_kind super_id super_kind
         rez =
       let subclass_map = get_subclass_map () in
+      (* We find all children of type `sub_id` in precalculated map of children.
+         For each type this map contains list of children ids and declaration of type `super_id` *)
       match M.find_opt super_id subclass_map with
       | None -> failure
       | Some filtered_by_super ->
           let rec loop : _ -> goal = function
             | [] -> failure
+            (* For each child we unify variable `rez` with declaration of `super_id`
+               and `sub_id_val` with the id found.
+               And we recognize the kind of the super. *)
             | (sub, super) :: tl ->
                 let sub_expected_kind = !!(get_jtype_kind @@ M.find sub !m) in
                 OCanren.disj

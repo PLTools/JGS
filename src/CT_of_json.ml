@@ -714,6 +714,8 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       if lower_bounds <> [] then
         Printf.eprintf "TODO: implement lower bounds\n%!";
 
+      (* Removing duplaicates optimization:
+         we make `debug_var` based constraint to check duplicate answers *)
       let constr =
         debug_var answer
           (Fun.flip (JGS.Jtype.reify OCanren.reify))
@@ -734,12 +736,19 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (answer, targ_inj (on_typ x)) in
 
+            (* Removing duplaicates optimization:
+               When calculating the first inequality in the system,
+               this constraint does not make sense,
+               since the answer to the first inequality
+               will be obtained only at the end of calculating this inequality. *)
             let query_constr =
               if (!lower_bounds_first && lower_bounds <> []) || not is_first
               then constr
               else success
             in
 
+            (* Removing duplaicates optimization:
+               assing the constraint to the subtyping relation *)
             (false, acc &&& is_subtype ~query_constr sub super))
           (true, OCanren.success) upper_bounds
       in
@@ -752,6 +761,8 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
+            (* Removing duplaicates optimization:
+               And again, don't apply the constraint to the first inequality. *)
             let query_constr =
               if
                 ((not !lower_bounds_first) && upper_bounds <> [])
@@ -760,6 +771,8 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
               else success
             in
 
+            (* Removing duplaicates optimization:
+               assing the constraint to the subtyping relation *)
             (false, acc &&& is_subtype ~query_constr sub super))
           (true, OCanren.success) lower_bounds
       in

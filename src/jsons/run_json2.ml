@@ -112,6 +112,8 @@ let run_jtype pp ?(n = test_args.answers_count) query =
           if Jtype_set.mem_alpha_converted h !answers_set then
             duplicated := Jtype_set.add_alpha_converted h !duplicated;
           answers_set := Jtype_set.add_alpha_converted h !answers_set;
+          (* Removing duplaicates optimization:
+             we add each evaluated answer to global set of answers *)
           Jtype_set.alpha_converted_answer_set :=
             Jtype_set.add_alpha_converted h
               !Jtype_set.alpha_converted_answer_set;

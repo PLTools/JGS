@@ -1,6 +1,7 @@
   $ export NOBENCH=1
 # Doesn't give even first answer
   $ ../jsons/run_json.exe -n 0 3.json 
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -39,7 +40,6 @@
     The type "REC" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.serialization.deserialization.descriptors.DeserializedMemberScope$NoReorderImplementation$functionsByName" is not found (Bad JSON?). Ignored.
     The type "kotlin.sequences.SequencesKt__SequencesKt$asSequence$$inlined" is not found (Bad JSON?). Ignored.
-    The type "L" is not found (Bad JSON?). Ignored.
     The type "kotlinx.serialization.internal.InlineClassDescriptorKt$InlinePrimitiveDescriptor" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor$1$visitValueParameter" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.ChannelsKt__ChannelsKt$sendBlocking" is not found (Bad JSON?). Ignored.
@@ -52,7 +52,6 @@
     The type "kotlinx.coroutines.debug.internal.DebugProbesImpl$dumpDebuggerInfo$$inlined" is not found (Bad JSON?). Ignored.
     The type "P" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__TransformKt$filterIsInstance$$inlined" is not found (Bad JSON?). Ignored.
-    The type "Collection" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.types.checker.NewCapturedTypeConstructor$refine$1" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__ReduceKt$firstOrNull$$inlined$collectWhile" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined" is not found (Bad JSON?). Ignored.
@@ -74,7 +73,6 @@
     The type "kotlin.reflect.jvm.internal.impl.renderer.DescriptorRendererImpl$renderConstant" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.FlowCoroutineKt$scopedFlow$" is not found (Bad JSON?). Ignored.
     The type "kotlin.sequences.SequencesKt___SequencesKt$onEach" is not found (Bad JSON?). Ignored.
-    The type "Builder" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.builtins.PrimitiveType$typeFqName" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__MergeKt$flattenConcat$$inlined" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__MergeKt$flattenConcat$$inlined$unsafeFlow" is not found (Bad JSON?). Ignored.
@@ -92,7 +90,6 @@
     The type "kotlinx.coroutines.flow.FlowKt__LimitKt$takeWhile$" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.jvm.KotlinModuleMetadata$data" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.descriptors.TypeParameterUtilsKt$computeConstructorTypeParameters$parametersFromContainingFunctions" is not found (Bad JSON?). Ignored.
-    The type "Element" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.renderer.DescriptorRendererOptionsImpl$property$$inlined$vetoable" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KMutableProperty0Impl$_setter" is not found (Bad JSON?). Ignored.
     The type "kotlin.collections.ArraysKt___ArraysKt$asIterable$$inlined" is not found (Bad JSON?). Ignored.
@@ -102,7 +99,6 @@
     The type "kotlin.reflect.jvm.internal.impl.descriptors.impl.ValueParameterDescriptorImpl$WithDestructuringDeclaration$copy" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.serialization.deserialization.descriptors.DeserializedClassDescriptor$DeserializedClassMemberScope$generateFakeOverrides" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.serialization.deserialization.descriptors.DeserializedClassDescriptor$DeserializedClassMemberScope$refinedSupertypes" is not found (Bad JSON?). Ignored.
-    The type "E_OUT" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__TransformKt$withIndex$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.internal.ExceptionsConstructorKt$createConstructor" is not found (Bad JSON?). Ignored.
     The type "kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMap$equals" is not found (Bad JSON?). Ignored.
@@ -238,7 +234,6 @@
     The type "kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$" is not found (Bad JSON?). Ignored.
     The type "org.junit.jupiter.api.AssertionsKt$sam$i" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.typeEnhancement.AbstractSignatureParts$computeIndexedQualifiers" is not found (Bad JSON?). Ignored.
-    The type "J" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.resolve.constants.ConstantValueFactory$createArrayValue" is not found (Bad JSON?). Ignored.
     The type "kotlinx.collections.immutable.implementations.immutableList.AbstractPersistentList$removeAll" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__ZipKt$combineUnsafe$$inlined" is not found (Bad JSON?). Ignored.
@@ -391,7 +386,6 @@
     The type "kotlinx.metadata.internal.metadata.jvm.deserialization.PackageParts$writeMultifileFacadeNames$$inlined$sortedBy" is not found (Bad JSON?). Ignored.
     The type "kotlinx.serialization.descriptors.SerialDescriptorKt$elementDescriptors$1" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$map" is not found (Bad JSON?). Ignored.
-    The type "BuilderType" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.typeEnhancement.SignatureEnhancement$enhanceSignature$valueParameterEnhancements$1" is not found (Bad JSON?). Ignored.
     The type "V0" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.jvm.impl.JvmMetadataExtensions$writePackageExtensions$1$visitLocalDelegatedProperty" is not found (Bad JSON?). Ignored.
@@ -432,7 +426,6 @@
     The type "kotlinx.serialization.SealedClassSerializer$descriptor" is not found (Bad JSON?). Ignored.
     The type "kotlin.comparisons.ComparisonsKt__ComparisonsKt$thenDescending" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.serialization.deserialization.descriptors.DeserializedMemberScope$OptimizedImplementation$typeAliasByName" is not found (Bad JSON?). Ignored.
-    The type "Array" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.typeEnhancement.SignatureEnhancement$enhanceSignature$returnTypeEnhancement" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KClassImpl$Data$constructors" is not found (Bad JSON?). Ignored.
     The type "org.junit.jupiter.api.AssertionsKt$convert" is not found (Bad JSON?). Ignored.
@@ -455,7 +448,6 @@
     The type "K0" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.typeEnhancement.PredefinedEnhancementInfoKt$PREDEFINED_FUNCTION_ENHANCEMENT_INFO_BY_SIGNATURE$1$1$3" is not found (Bad JSON?). Ignored.
     The type "N" is not found (Bad JSON?). Ignored.
-    The type "InElementT" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaScope$retainMostSpecificMethods" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.serialization.deserialization.TypeDeserializer$typeAliasDescriptors" is not found (Bad JSON?). Ignored.
     The type "org.mockito.junit.MockitoJUnitRunner" is not found (Bad JSON?). Ignored.
@@ -496,7 +488,6 @@
     The type "kotlin.collections.AbstractMap$toString" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaScope$declaredFunctions" is not found (Bad JSON?). Ignored.
     The type "kotlin.text.StringsKt___StringsKt$windowed" is not found (Bad JSON?). Ignored.
-    The type "PropertyType" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.types.TypeParameterUpperBoundEraser$erroneousErasedBound" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$filterNotNull" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaClassMemberScope$nestedClassIndex" is not found (Bad JSON?). Ignored.
@@ -512,7 +503,6 @@
     The type "kotlinx.coroutines.flow.internal.UndispatchedContextCollector$emitRef" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KPropertyImpl$Setter$descriptor" is not found (Bad JSON?). Ignored.
     The type "kotlinx.serialization.modules.SerializersModuleBuildersKt$polymorphic" is not found (Bad JSON?). Ignored.
-    The type "OutputT" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.JobSupport$addLastAtomic$$inlined$addLastIf" is not found (Bad JSON?). Ignored.
     The type "kotlin.sequences.SequencesKt___SequencesKt$runningFold" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KClassImpl$Data$allNonStaticMembers" is not found (Bad JSON?). Ignored.
@@ -521,7 +511,6 @@
     The type "kotlin.reflect.jvm.internal.KFunctionImpl$caller" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$singleOrNull" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.builtins.ReflectionTypes$kotlinReflectScope" is not found (Bad JSON?). Ignored.
-    The type "E_IN" is not found (Bad JSON?). Ignored.
     The type "kotlin.collections.AbstractCollection$toString" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.AbstractAnnotationTypeQualifierResolver$extractDefaultQualifiers" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onCompletion" is not found (Bad JSON?). Ignored.
@@ -628,7 +617,6 @@
     The type "kotlinx.coroutines.flow.FlowKt__MigrationKt$switchMap$$inlined$flatMapLatest" is not found (Bad JSON?). Ignored.
     The type "Q" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.resolve.scopes.TypeIntersectionScope$getContributedVariables" is not found (Bad JSON?). Ignored.
-    The type "OutConsumerT" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.typeEnhancement.PredefinedEnhancementInfoKt$PREDEFINED_FUNCTION_ENHANCEMENT_INFO_BY_SIGNATURE$1$1$4" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$$inlined$unsafeFlow" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.types.AbstractTypeChecker$isSubtypeOfForSingleClassifierType" is not found (Bad JSON?). Ignored.
@@ -672,7 +660,6 @@
     The type "kotlin.reflect.jvm.internal.impl.builtins.jvm.JvmBuiltInsCustomizer$createMockJavaIoSerializableType$superTypes" is not found (Bad JSON?). Ignored.
     The type "T12" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$filterIndexed" is not found (Bad JSON?). Ignored.
-    The type "Type" is not found (Bad JSON?). Ignored.
     The type "kotlin.text.Regex$splitToSequence" is not found (Bad JSON?). Ignored.
     The type "kotlin.comparisons.ComparisonsKt__ComparisonsKt$thenBy" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.CombineKt$zipImpl$1$1$second$1$1$emit" is not found (Bad JSON?). Ignored.
@@ -821,8 +808,6 @@
     The type "kotlin.reflect.jvm.internal.impl.descriptors.annotations.AnnotationUtilKt$createDeprecatedAnnotation" is not found (Bad JSON?). Ignored.
     The type "T18" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$distinct" is not found (Bad JSON?). Ignored.
-    The type "Z" is not found (Bad JSON?). Ignored.
-    The type "T_ARR" is not found (Bad JSON?). Ignored.
     The type "P15" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.BuiltinMethodsWithDifferentJvmName$isBuiltinFunctionWithDifferentNameInJvm" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.debug.internal.DebugProbesImpl$dumpCoroutinesInfo$$inlined$dumpCoroutinesInfoImpl" is not found (Bad JSON?). Ignored.
@@ -946,9 +931,7 @@
     The type "kotlin.sequences.SequencesKt___SequencesKt$runningReduceIndexed" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KPropertyImpl$Getter$caller" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.AbstractChannel$enqueueReceiveInternal$$inlined" is not found (Bad JSON?). Ignored.
-    The type "P_IN" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.lazy.ContextKt$copyWithNewDefaultTypeQualifiers" is not found (Bad JSON?). Ignored.
-    The type "U2" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.AbstractChannel$enqueueReceiveInternal$$inlined$addLastIfPrevAndIf" is not found (Bad JSON?). Ignored.
     The type "kotlin.sequences.SequencesKt___SequencesKt$onEachIndexed" is not found (Bad JSON?). Ignored.
@@ -957,7 +940,6 @@
     The type "kotlin.reflect.jvm.internal.impl.renderer.DescriptorRenderer$Companion$ONLY_NAMES_WITH_SHORT_TYPES" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.LazyJavaClassDescriptor$scopeHolder" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$emit" is not found (Bad JSON?). Ignored.
-    The type "OutSpliteratorT" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.jvm.impl.JvmMetadataExtensions$writeTypeParameterExtensions" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.TimeoutKt$withTimeoutOrNull" is not found (Bad JSON?). Ignored.
     The type "P6" is not found (Bad JSON?). Ignored.
@@ -1020,7 +1002,6 @@
     The type "kotlin.collections.ArraysKt___ArraysKt$asIterable" is not found (Bad JSON?). Ignored.
     The type "P4" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.descriptors.TypeParameterUtilsKt$computeConstructorTypeParameters" is not found (Bad JSON?). Ignored.
-    The type "K1" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.internal.ClassValueCtorCache$cache" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__LimitKt$drop$$inlined" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelFlow$collect" is not found (Bad JSON?). Ignored.
@@ -1042,7 +1023,6 @@
     The type "kotlinx.serialization.SealedClassSerializer$special" is not found (Bad JSON?). Ignored.
     The type "org.mockito.internal.runners.InternalRunner" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.debug.internal.DebugCoroutineInfoImpl$creationStackTrace" is not found (Bad JSON?). Ignored.
-    The type "ReturnType" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.types.typesApproximation.CapturedTypeApproximationKt$toTypeProjection$1" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__TransformKt$filterIsInstance" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.types.checker.KotlinTypePreparator$prepareType" is not found (Bad JSON?). Ignored.
@@ -1091,7 +1071,6 @@
     The type "kotlinx.coroutines.flow.CancellableFlowImpl$collect$2$emit" is not found (Bad JSON?). Ignored.
     The type "M" is not found (Bad JSON?). Ignored.
     The type "kotlin.comparisons.ComparisonsKt__ComparisonsKt$compareBy" is not found (Bad JSON?). Ignored.
-    The type "T_NODE" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.KProperty1Impl$_getter" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.resolve.scopes.LazyScopeAdapter$lazyScope" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__TransformKt$filter$" is not found (Bad JSON?). Ignored.
@@ -1108,7 +1087,6 @@
     The type "kotlinx.coroutines.flow.internal.SafeCollector$collectContextSize" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.channels.ChannelsKt__DeprecatedKt$takeWhile" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.internal.metadata.jvm.deserialization.PackageParts$writeMultifileFacadeNames$" is not found (Bad JSON?). Ignored.
-    The type "T_BUILDER" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$unsafeTransform" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.descriptors.impl.AbstractTypeAliasDescriptor$typeConstructor" is not found (Bad JSON?). Ignored.
     The type "kotlin.reflect.jvm.internal.impl.resolve.scopes.SubstitutingScope$_allDescriptors" is not found (Bad JSON?). Ignored.
@@ -4588,7 +4566,4 @@
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$windowed$1'
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
-  
-  Type variables mentioned in constraints: []
-  
   Running generated query

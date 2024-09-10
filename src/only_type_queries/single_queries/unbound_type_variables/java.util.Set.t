@@ -1,5 +1,6 @@
   $ export NOBENCH=1
   $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.Set.json -n 21
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4565,30 +4566,35 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: [ E ]
-  
   Running generated query
-  	     Processing: _.? <-< java.util.Set ((E <: java.lang.Object ()))
-  	     Processing: _.E <-< java.lang.Object ()
-    1)  sun.nio.ch.Util$2
-    2)  org.mockito.internal.util.collections.HashCodeAndEqualsSafeSet
-    3)  kotlin.collections.EmptySet
-    4)  java.util.Properties$EntrySet
-    5)  java.util.Set<[java.lang.Object]>
-    6)  kotlinx.collections.immutable.ImmutableSet<[java.lang.Object]>
-    7)  java.util.Set<[sun.util.calendar.CalendarDate]>
-    8)  kotlin.collections.AbstractSet<[java.lang.Object]>
-    9)  java.util.Set<[sun.text.UCompactIntArray]>
-   10)  java.util.Set<[sun.text.SupplementaryCharacterData]>
-   11)  java.util.Set<[sun.text.CompactByteArray]>
-   12)  java.util.Set<[sun.security.x509.GeneralSubtrees]>
-   13)  java.util.Set<[sun.security.ssl.SSLConfiguration]>
-   14)  javax.security.auth.Subject$SecureSet<[java.lang.Object]>
-   15)  java.util.Set<[sun.security.pkcs11.wrapper.CK_DATE]>
-   16)  java.util.Set<[sun.security.krb5.internal.Ticket]>
-   17)  kotlinx.collections.immutable.ImmutableSet<[sun.util.calendar.CalendarDate]>
-   18)  java.util.Set<[sun.security.krb5.internal.HostAddresses]>
-   19)  java.util.Set<[sun.security.krb5.internal.HostAddress]>
-   20)  kotlinx.collections.immutable.ImmutableSet<[sun.text.UCompactIntArray]>
-   21)  java.util.Set<[sun.security.krb5.internal.AuthorizationDataEntry]>
+  	     Processing: ? <-< java.util.Set ((E <: java.lang.Object ()))
+    1)  java.util.Set<[(? extends java.lang.Object)]>
+    2)  java.util.LinkedHashSet<[(? extends java.lang.Object)]>
+    3)  kotlin.collections.builders.MapBuilderKeys<[(? extends java.lang.Object)]>
+    4)  kotlin.collections.builders.SetBuilder<[(? extends java.lang.Object)]>
+    5)  kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilderKeys<[(? extends java.lang.Object); _.1613]>
+    6)  kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMapBuilderKeys<[(? extends java.lang.Object); _.1863]>
+    7)  com.google.common.collect.Sets$FilteredSet<[(? extends java.lang.Object)]>
+    8)  com.google.common.collect.ImmutableSet<[(? extends java.lang.Object)]>
+    9)  java.util.Collections$SetFromMap<[(? extends java.lang.Object)]>
+   10)  java.util.HashSet<[(? extends java.lang.Object)]>
+   11)  kotlin.collections.AbstractMutableSet<[(? extends java.lang.Object)]>
+   12)  java.util.ImmutableCollections$AbstractImmutableSet<[(? extends java.lang.Object)]>
+   13)  java.util.concurrent.ConcurrentHashMap$KeySetView<[(? extends java.lang.Object); _.4978]>
+   14)  kotlinx.collections.immutable.PersistentSet$Builder<[(? extends java.lang.Object)]>
+   15)  com.google.common.collect.Synchronized$SynchronizedSet<[(? extends java.lang.Object)]>
+   16)  com.google.common.collect.ForwardingSet<[(? extends java.lang.Object)]>
+   17)  java.util.AbstractSet<[(? extends java.lang.Object)]>
+   18)  java.util.Collections$CheckedSet<[(? extends java.lang.Object)]>
+   19)  java.util.Collections$SynchronizedSet<[(? extends java.lang.Object)]>
+   20)  java.util.Collections$UnmodifiableSet<[(? extends java.lang.Object)]>
+   21)  com.google.common.collect.Sets$FilteredSortedSet<[(? extends java.lang.Object)]>
+  
+  Total amount: 21
+  Total uniq amount: 21
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

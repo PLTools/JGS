@@ -1,5 +1,6 @@
   $ export NOBENCH=1
   $ ../../../jsons/run_json2.exe -n 1 -ct ../../../jsons_real/0.json java.util.List.json 
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4565,9 +4566,15 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: []
-  
   Running generated query
-  	     Processing: _.? <-< java.util.List (? extends java.lang.String ())
-    1)  java.util.List<[java.lang.String]>
+  	     Processing: ? <-< java.util.List (? extends java.lang.String ())
+    1)  java.util.List<[? Extends java.lang.String]>
+  
+  Total amount: 1
+  Total uniq amount: 1
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

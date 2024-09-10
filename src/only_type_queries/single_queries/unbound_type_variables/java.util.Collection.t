@@ -1,5 +1,6 @@
   $ export NOBENCH=1
   $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.Collection.json -n 16
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4565,25 +4566,30 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: [ E ]
-  
   Running generated query
-  	     Processing: _.? <-< java.util.Collection ((E <: java.lang.Object ()))
-  	     Processing: _.E <-< java.lang.Object ()
-    1)  kotlin.text.MatchGroupCollection
-    2)  kotlin.reflect.jvm.internal.impl.platform.TargetPlatform
-    3)  java.beans.beancontext.BeanContext
-    4)  java.util.Collection<[java.lang.Object]>
-    5)  kotlin.UShortArray
-    6)  kotlin.text.MatchNamedGroupCollection
-    7)  kotlinx.collections.immutable.ImmutableCollection<[java.lang.Object]>
-    8)  java.util.Collection<[sun.util.calendar.CalendarDate]>
-    9)  java.util.Collection<[sun.text.UCompactIntArray]>
-   10)  kotlin.ULongArray
-   11)  java.util.Collection<[sun.text.SupplementaryCharacterData]>
-   12)  java.util.Collection<[sun.text.CompactByteArray]>
-   13)  java.util.Collection<[sun.security.x509.GeneralSubtrees]>
-   14)  java.util.Collection<[sun.security.ssl.SSLConfiguration]>
-   15)  java.util.Collection<[sun.security.pkcs11.wrapper.CK_DATE]>
-   16)  java.util.Collection<[sun.security.krb5.internal.Ticket]>
+  	     Processing: ? <-< java.util.Collection ((E <: java.lang.Object ()))
+    1)  java.util.Collection<[(? extends java.lang.Object)]>
+    2)  kotlin.collections.builders.MapBuilderValues<[(? extends java.lang.Object)]>
+    3)  kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilderValues<[_.788; (? extends java.lang.Object)]>
+    4)  kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMapBuilderValues<[_.1065; (? extends java.lang.Object)]>
+    5)  java.util.concurrent.ConcurrentHashMap$ValuesView<[_.1327; (? extends java.lang.Object)]>
+    6)  kotlin.collections.AbstractMutableCollection<[(? extends java.lang.Object)]>
+    7)  kotlinx.collections.immutable.adapters.ImmutableCollectionAdapter<[(? extends java.lang.Object)]>
+    8)  java.util.concurrent.ConcurrentHashMap$CollectionView<[_.2110; _.2127; (? extends java.lang.Object)]>
+    9)  org.jooq.impl.QueryPartCollectionView<[(? extends java.lang.Object)]>
+   10)  kotlinx.collections.immutable.PersistentCollection$Builder<[(? extends java.lang.Object)]>
+   11)  com.google.common.collect.Synchronized$SynchronizedCollection<[(? extends java.lang.Object)]>
+   12)  com.google.common.collect.ForwardingCollection<[(? extends java.lang.Object)]>
+   13)  com.google.common.collect.Multiset<[(? extends java.lang.Object)]>
+   14)  java.util.AbstractCollection<[(? extends java.lang.Object)]>
+   15)  java.util.Collections$CheckedCollection<[(? extends java.lang.Object)]>
+   16)  java.util.Collections$SynchronizedCollection<[(? extends java.lang.Object)]>
+  
+  Total amount: 16
+  Total uniq amount: 16
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

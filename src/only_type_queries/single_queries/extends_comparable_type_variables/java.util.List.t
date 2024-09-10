@@ -1,5 +1,6 @@
   $ export NOBENCH=1
   $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.List.json -n 5
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4565,14 +4566,19 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: [ T ]
-  
   Running generated query
-  	     Processing: _.? <-< java.util.List (? extends java.lang.Comparable ((T <: java.lang.Object ())))
-  	     Processing: _.T <-< java.lang.Object ()
-    1)  java.util.List<[java.lang.Comparable<[java.lang.Object]>]>
-    2)  java.util.List<[java.lang.Comparable<[sun.util.calendar.CalendarDate]>]>
-    3)  java.util.List<[java.lang.Comparable<[sun.text.UCompactIntArray]>]>
-    4)  java.util.List<[java.lang.Comparable<[sun.text.SupplementaryCharacterData]>]>
-    5)  java.util.List<[java.lang.Comparable<[sun.text.CompactByteArray]>]>
+  	     Processing: ? <-< java.util.List (? extends java.lang.Comparable ((T <: java.lang.Object ())))
+    1)  java.util.List<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    2)  java.util.LinkedList<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    3)  sun.awt.util.IdentityLinkedList<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    4)  kotlin.collections.builders.ListBuilder<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    5)  com.google.common.collect.ImmutableList<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+  
+  Total amount: 5
+  Total uniq amount: 5
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

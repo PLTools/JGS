@@ -1,6 +1,7 @@
 dune exec jsons/run_json2.exe -- -n 100 -ct jsons_real/0.json only_type_queries/Serializable.json
   $ export NOBENCH=1
   $ ../jsons/run_json2.exe -ct ../jsons_real/0.json Serializable.json -n 100
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4566,108 +4567,114 @@ dune exec jsons/run_json2.exe -- -n 100 -ct jsons_real/0.json only_type_queries/
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: []
-  
   Running generated query
-  	     Processing: _.? <-< java.io.Serializable ()
+  	     Processing: ? <-< java.io.Serializable ()
     1)  Array<java.lang.Object>
     2)  java.io.Serializable
-    3)  sun.management.counter.Counter
-    4)  sun.jvm.hotspot.debugger.MachineDescription
-    5)  org.slf4j.Marker
-    6)  org.mockito.invocation.InvocationOnMock
-    7)  org.mockito.internal.matchers.VarargMatcher
-    8)  org.mockito.internal.invocation.RealMethod
-    9)  org.mockito.MockSettings
-   10)  org.junit.platform.engine.TestSource
-   11)  org.jooq.types.Interval
-   12)  org.jooq.RowId
-   13)  org.jooq.QueryPart
-   14)  org.jooq.Configuration
-   15)  org.jooq.Batch
-   16)  org.jooq.Attachable
-   17)  javax.print.attribute.Attribute
-   18)  javax.naming.ldap.ExtendedResponse
-   19)  javax.naming.ldap.ExtendedRequest
-   20)  javax.naming.ldap.Control
-   21)  javax.management.relation.RelationType
-   22)  javax.management.ValueExp
-   23)  javax.management.QueryExp
-   24)  javax.management.NotificationFilter
-   25)  java.security.cert.CertPathValidatorException$Reason
-   26)  java.security.Key
-   27)  java.io.Externalizable
-   28)  com.sun.jdi.connect.Connector$Argument
-   29)  com.google.common.hash.BloomFilter$Strategy
-   30)  sun.security.util.ObjectIdentifier
-   31)  Array<Array<java.lang.Object>>
-   32)  org.jooq.ExecuteListener
-   33)  sun.security.provider.MoreDrbgParameters
-   34)  sun.security.pkcs11.Token
-   35)  Array<Intersect [java.lang.Object | _.3905]>
-   36)  sun.security.krb5.internal.KRBError
-   37)  sun.reflect.annotation.ExceptionProxy
-   38)  sun.net.www.protocol.http.AuthCacheValue
-   39)  sun.management.counter.Variability
-   40)  Array<Not implemented JGS_Helpers.ml 74>
-   41)  sun.management.counter.Units
-   42)  sun.management.MethodInfo
-   43)  sun.management.counter.StringCounter
-   44)  Array<null>
-   45)  sun.management.LazyCompositeData
-   46)  sun.management.CompilerThreadStat
-   47)  sun.jvmstat.monitor.Variability
-   48)  sun.jvmstat.monitor.Units
-   49)  sun.jvm.hotspot.debugger.ReadResult
-   50)  Array<Intersect [_.3907 [=/= java.lang.Object]; java.lang.Object | _.9218]>
-   51)  org.sqlite.date.FastDatePrinter
-   52)  org.slf4j.helpers.NamedLoggerBase
-   53)  sun.management.counter.LongCounter
-   54)  org.postgresql.util.ServerErrorMessage
-   55)  org.opentest4j.ValueWrapper
-   56)  Array<java.lang.Cloneable>
-   57)  org.mockito.internal.verification.SingleRegisteredInvocation
-   58)  org.mockito.internal.verification.DefaultRegisteredInvocations
-   59)  Array<Intersect [_.3907 [=/= java.lang.Object]; _.9220 [=/= java.lang.Object]; java.lang.Object | _.10934]>
-   60)  org.mockito.internal.util.MockNameImpl
-   61)  sun.management.counter.LongArrayCounter
-   62)  org.mockito.internal.stubbing.InvocationContainerImpl
-   63)  org.mockito.internal.stubbing.DoAnswerStyleStubbing
-   64)  org.mockito.internal.invocation.MatchersBinder
-   65)  sun.management.counter.AbstractCounter
-   66)  org.mockito.internal.exceptions.stacktrace.StackTraceFilter
-   67)  org.mockito.internal.exceptions.stacktrace.ConditionalStackTraceFilter
-   68)  Array<java.io.Serializable>
-   69)  org.mockito.internal.debugging.Java9PlusLocationImpl
-   70)  Array<Intersect [_.3907 [=/= java.lang.Object]; _.9220 [=/= java.lang.Object]; _.10936 [=/= java.lang.Object]; java.lang.Object | _.12857]>
-   71)  org.mockito.internal.debugging.Java8LocationImpl
-   72)  org.mockito.internal.creation.bytebuddy.MockMethodInterceptor
-   73)  sun.management.counter.ByteArrayCounter
-   74)  org.mockito.internal.creation.bytebuddy.ByteBuddyCrossClassLoaderSerializationSupport
-   75)  org.mockito.internal.configuration.GlobalConfiguration
-   76)  Array<java.lang.Object>
-   77)  org.junit.platform.engine.support.descriptor.FilePosition
-   78)  sun.jvm.hotspot.debugger.MachineDescriptionPPC64
-   79)  org.junit.platform.engine.discovery.FilePosition
-   80)  org.junit.platform.engine.UniqueIdFormat
-   81)  Array<Intersect [_.3907 [=/= java.lang.Object]; _.9220 [=/= java.lang.Object]; _.10936 [=/= java.lang.Object]; _.12859 [=/= java.lang.Object]; java.lang.Object | _.14837]>
-   82)  org.junit.platform.engine.TestTag
-   83)  org.jooq.util.xml.jaxb.View
-   84)  Array<net.bytebuddy.dynamic.loading.ClassInjector$UsingUnsafe$System>
-   85)  org.jooq.util.xml.jaxb.TableConstraint
-   86)  org.jooq.util.xml.jaxb.Table
-   87)  org.jooq.util.xml.jaxb.Sequence
-   88)  org.jooq.util.xml.jaxb.Schema
-   89)  org.jooq.util.xml.jaxb.Routine
-   90)  org.jooq.util.xml.jaxb.ReferentialConstraint
-   91)  Array<Intersect [_.3907 [=/= java.lang.Object]; _.9220 [=/= java.lang.Object]; _.10936 [=/= java.lang.Object]; _.12859 [=/= java.lang.Object]; _.14839 [=/= java.lang.Object]; java.lang.Object | _.16908]>
-   92)  org.jooq.util.xml.jaxb.Parameter
-   93)  org.jooq.util.xml.jaxb.KeyColumnUsage
-   94)  org.jooq.util.xml.jaxb.InformationSchema
-   95)  sun.jvm.hotspot.debugger.MachineDescriptionIntelX86
-   96)  org.jooq.util.xml.jaxb.IndexColumnUsage
-   97)  Array<jdk.vm.ci.code.stack.InspectedFrame>
-   98)  org.jooq.util.xml.jaxb.Index
-   99)  org.jooq.util.xml.jaxb.ElementType
-   100)  org.jooq.util.xml.jaxb.DomainConstraint
+    3)  org.jooq.impl.MergeImpl$MatchedClause
+    4)  org.jooq.impl.MergeImpl$NotMatchedClause
+    5)  com.google.common.collect.EmptyContiguousSet$SerializedForm<[_.584]>
+    6)  com.google.common.collect.RegularContiguousSet$SerializedForm<[_.741]>
+    7)  javax.swing.text.DefaultFormatter$DefaultDocumentFilter
+    8)  javax.swing.text.DefaultFormatter$DefaultNavigationFilter
+    9)  com.google.common.collect.ImmutableSortedMultiset$SerializedForm<[_.1123]>
+   10)  com.google.common.collect.ImmutableSortedSet$SerializedForm<[_.1261]>
+   11)  com.google.common.collect.ImmutableMapKeySet$KeySetSerializedForm<[_.1384]>
+   12)  Array<java.lang.Object>
+   13)  com.google.common.collect.RegularImmutableMap$KeySet$SerializedForm<[_.1565]>
+   14)  Array<org.jooq.impl.SelectImpl$1<_.679>>
+   15)  javax.swing.text.DefaultFormatter
+   16)  javax.swing.text.DefaultFormatterFactory
+   17)  Array<Array<java.lang.Object>>
+   18)  com.google.common.collect.ImmutableMapEntrySet$EntrySetSerializedForm<[_.2046; _.2081]>
+   19)  net.bytebuddy.description.type.TypeDescription$ForLoadedType
+   20)  Array<org.jooq.impl.CreateTableImpl$1<_.679>>
+   21)  javax.swing.ColorChooserDialog$Closer
+   22)  javax.swing.ColorChooserDialog$DisposeOnClose
+   23)  Array<Intersect [java.lang.Object | _.1184]>
+   24)  javax.swing.JMenu$MenuChangeListener
+   25)  javax.swing.JMenu$WinListener
+   26)  Array<Not implemented JGS_Helpers.ml 71>
+   27)  sun.swing.table.DefaultTableCellHeaderRenderer$EmptyIcon
+   28)  com.sun.java.swing.plaf.motif.MotifTreeCellRenderer$TreeLeafIcon
+   29)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.679>>
+   30)  javax.swing.colorchooser.DefaultSwatchChooserPanel$MainSwatchListener
+   31)  Array<null>
+   32)  javax.swing.colorchooser.DefaultSwatchChooserPanel$RecentSwatchListener
+   33)  javax.swing.JFormattedTextField$AbstractFormatter
+   34)  Array<Intersect [_.1183 [=/= java.lang.Object]; java.lang.Object | _.3317]>
+   35)  javax.swing.JFormattedTextField$DocumentHandler
+   36)  javax.swing.JFormattedTextField$FocusLostHandler
+   37)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.679>>
+   38)  com.google.common.collect.TreeMultiset<[_.3974]>
+   39)  Array<org.jooq.impl.SelectImpl$1<_.745>>
+   40)  com.google.common.collect.ImmutableAsList$SerializedForm
+   41)  com.google.common.collect.RegularImmutableMap$Values$SerializedForm<[_.4269]>
+   42)  com.google.common.collect.ImmutableMultiset$EntrySetSerializedForm<[_.4417]>
+   43)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; java.lang.Object | _.4190]>
+   44)  com.google.common.collect.ImmutableMultiset$SerializedForm
+   45)  Array<kotlin.text.StringsKt___StringsKt$groupingBy$1<_.679>>
+   46)  com.google.common.collect.ImmutableEnumSet$EnumSerializedForm<[_.4700]>
+   47)  java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet<[_.4857]>
+   48)  sun.security.pkcs11.SunPKCS11$SunPKCS11Rep
+   49)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; java.lang.Object | _.4870]>
+   50)  com.sun.java.swing.plaf.motif.MotifRadioButtonMenuItemUI$ChangeHandler
+   51)  Array<org.jooq.impl.MergeImpl$1<_.679>>
+   52)  com.sun.org.apache.xerces.internal.dom.DocumentImpl$EnclosingAttr
+   53)  com.sun.org.apache.xerces.internal.dom.DocumentImpl$LEntry
+   54)  Array<org.jooq.impl.CreateTableImpl$1<_.745>>
+   55)  com.sun.rowset.FilteredRowSetImpl
+   56)  javax.swing.text.html.parser.ParserDelegator
+   57)  com.google.common.collect.TreeBasedTable$Factory<[_.5883; _.5913]>
+   58)  Array<org.jooq.impl.MergeImpl$MatchedClause<_.679>>
+   59)  javax.swing.JMenuItem$MenuItemFocusListener
+   60)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; java.lang.Object | _.5721]>
+   61)  javax.swing.plaf.basic.BasicComboPopup$EmptyListModelClass
+   62)  javax.swing.plaf.basic.BasicComboPopup$Handler
+   63)  javax.swing.JTextField$ScrollRepainter
+   64)  Array<org.jooq.impl.MergeImpl$NotMatchedClause<_.679>>
+   65)  com.google.common.collect.Sets$UnmodifiableNavigableSet<[_.6651]>
+   66)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.745>>
+   67)  java.beans.beancontext.BeanContextServicesSupport$BCSSServiceProvider
+   68)  com.google.common.collect.ImmutableList$SerializedForm
+   69)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; java.lang.Object | _.6375]>
+   70)  Array<org.jooq.impl.SelectImpl$1<_.3423>>
+   71)  com.google.common.collect.ImmutableMapValues$SerializedForm<[_.7115]>
+   72)  com.google.common.collect.ImmutableSet$SerializedForm
+   73)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$1<_.679>>
+   74)  com.google.common.collect.Lists$TransformingSequentialList<[_.7422; _.7455]>
+   75)  java.util.LinkedList<[_.7598]>
+   76)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; java.lang.Object | _.7203]>
+   77)  kotlin.collections.builders.ListBuilder<[_.7754]>
+   78)  java.util.concurrent.SynchronousQueue$WaitQueue
+   79)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$2<_.679>>
+   80)  java.util.EnumSet$SerializationProxy<[_.8010]>
+   81)  java.util.LinkedHashSet<[_.8170]>
+   82)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.745>>
+   83)  kotlin.collections.builders.SetBuilder<[_.8316]>
+   84)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; _.7202 [=/= java.lang.Object]; java.lang.Object | _.7870]>
+   85)  java.util.ImmutableCollections$List12<[_.8474]>
+   86)  java.util.ImmutableCollections$ListN<[_.8627]>
+   87)  java.util.ImmutableCollections$Set12<[_.8748]>
+   88)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$3<_.679>>
+   89)  java.util.ImmutableCollections$SetN<[_.8930]>
+   90)  Array<org.jooq.impl.CreateTableImpl$1<_.3423>>
+   91)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; _.7202 [=/= java.lang.Object]; _.7869 [=/= java.lang.Object]; java.lang.Object | _.8680]>
+   92)  java.util.Collections$CheckedNavigableSet<[_.9085]>
+   93)  java.util.Collections$UnmodifiableNavigableSet<[_.9248]>
+   94)  java.util.concurrent.LinkedBlockingDeque<[_.9381]>
+   95)  Array<org.jooq.impl.BoolAnd$2<_.679>>
+   96)  java.util.concurrent.LinkedTransferQueue<[_.9540]>
+   97)  Array<kotlin.text.StringsKt___StringsKt$groupingBy$1<_.745>>
+   98)  java.util.TreeSet<[_.9704]>
+   99)  java.util.concurrent.ConcurrentSkipListSet<[_.9866]>
+   100)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; _.7202 [=/= java.lang.Object]; _.7869 [=/= java.lang.Object]; _.8679 [=/= java.lang.Object]; java.lang.Object | _.9343]>
+  
+  Total amount: 100
+  Total uniq amount: 98
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

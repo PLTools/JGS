@@ -1,5 +1,6 @@
   $ export NOBENCH=1
   $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.NavigableSet.json -n 20
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4565,29 +4566,34 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: [ E ]
-  
   Running generated query
-  	     Processing: _.? <-< java.util.NavigableSet ((E <: java.lang.Object ()))
-  	     Processing: _.E <-< java.lang.Object ()
-    1)  com.google.common.collect.AbstractMapBasedMultimap$WrappedNavigableSet
-    2)  com.google.common.collect.AbstractMapBasedMultimap$NavigableKeySet
-    3)  java.util.NavigableSet<[java.lang.Object]>
-    4)  java.util.concurrent.ConcurrentSkipListSet<[java.lang.Object]>
-    5)  java.util.TreeSet<[java.lang.Object]>
-    6)  java.util.NavigableSet<[sun.util.calendar.CalendarDate]>
-    7)  java.util.TreeMap$KeySet<[java.lang.Object]>
-    8)  java.util.NavigableSet<[sun.text.UCompactIntArray]>
-    9)  java.util.NavigableSet<[sun.text.SupplementaryCharacterData]>
-   10)  java.util.NavigableSet<[sun.text.CompactByteArray]>
-   11)  java.util.NavigableSet<[sun.security.x509.GeneralSubtrees]>
-   12)  java.util.NavigableSet<[sun.security.ssl.SSLConfiguration]>
-   13)  java.util.concurrent.ConcurrentSkipListSet<[sun.util.calendar.CalendarDate]>
-   14)  java.util.NavigableSet<[sun.security.pkcs11.wrapper.CK_DATE]>
-   15)  java.util.NavigableSet<[sun.security.krb5.internal.Ticket]>
-   16)  java.util.Collections$UnmodifiableNavigableSet<[java.lang.Object]>
-   17)  java.util.concurrent.ConcurrentSkipListSet<[sun.text.UCompactIntArray]>
-   18)  java.util.NavigableSet<[sun.security.krb5.internal.HostAddresses]>
-   19)  java.util.NavigableSet<[sun.security.krb5.internal.HostAddress]>
-   20)  java.util.concurrent.ConcurrentSkipListSet<[sun.text.SupplementaryCharacterData]>
+  	     Processing: ? <-< java.util.NavigableSet ((E <: java.lang.Object ()))
+    1)  java.util.NavigableSet<[(? extends java.lang.Object)]>
+    2)  com.google.common.collect.ImmutableSortedSet<[(? extends java.lang.Object)]>
+    3)  com.google.common.collect.Maps$NavigableKeySet<[(? extends java.lang.Object); _.914]>
+    4)  com.google.common.collect.SortedMultisets$NavigableElementSet<[(? extends java.lang.Object)]>
+    5)  com.google.common.collect.Sets$FilteredNavigableSet<[(? extends java.lang.Object)]>
+    6)  com.google.common.collect.Synchronized$SynchronizedNavigableSet<[(? extends java.lang.Object)]>
+    7)  com.google.common.collect.ForwardingNavigableSet<[(? extends java.lang.Object)]>
+    8)  com.google.common.collect.Sets$UnmodifiableNavigableSet<[(? extends java.lang.Object)]>
+    9)  java.util.Collections$CheckedNavigableSet<[(? extends java.lang.Object)]>
+   10)  java.util.Collections$SynchronizedNavigableSet<[(? extends java.lang.Object)]>
+   11)  java.util.Collections$UnmodifiableNavigableSet<[(? extends java.lang.Object)]>
+   12)  com.google.common.collect.ContiguousSet<[(? extends java.lang.Object)]>
+   13)  java.util.TreeMap$KeySet<[(? extends java.lang.Object)]>
+   14)  java.util.TreeSet<[(? extends java.lang.Object)]>
+   15)  java.util.concurrent.ConcurrentSkipListMap$KeySet<[(? extends java.lang.Object); _.3831]>
+   16)  java.util.concurrent.ConcurrentSkipListSet<[(? extends java.lang.Object)]>
+   17)  com.google.common.collect.DescendingImmutableSortedSet<[(? extends java.lang.Object)]>
+   18)  com.google.common.collect.RegularImmutableSortedSet<[(? extends java.lang.Object)]>
+   19)  com.google.common.collect.EmptyContiguousSet<[(? extends java.lang.Object)]>
+   20)  com.google.common.collect.RegularContiguousSet<[(? extends java.lang.Object)]>
+  
+  Total amount: 20
+  Total uniq amount: 20
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

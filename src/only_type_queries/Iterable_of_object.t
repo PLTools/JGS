@@ -1,6 +1,7 @@
 dune exec jsons/run_json2.exe -- -n 5 -ct jsons_real/0.json only_type_queries/Iterable_of_object.json
   $ export NOBENCH=1
   $ ../jsons/run_json2.exe -ct ../jsons_real/0.json Iterable_of_object.json -n 5
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4566,14 +4567,19 @@ dune exec jsons/run_json2.exe -- -n 5 -ct jsons_real/0.json only_type_queries/It
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: [ T ]
-  
   Running generated query
-  	     Processing: _.? <-< java.lang.Iterable ((T <: java.lang.Object ()))
-  	     Processing: _.T <-< java.lang.Object ()
-    1)  org.postgresql.hostchooser.HostChooser
-    2)  org.objectweb.asm.tree.InsnList
-    3)  org.jooq.impl.Tools$26
-    4)  org.jooq.Versions
-    5)  kotlinx.serialization.descriptors.SerialDescriptorKt$special$$inlined$Iterable$1
+  	     Processing: ? <-< java.lang.Iterable ((T <: java.lang.Object ()))
+    1)  java.lang.Iterable<[(? extends java.lang.Object)]>
+    2)  org.jooq.ResultQuery<[(? extends java.lang.Object)]>
+    3)  org.jooq.Cursor<[(? extends java.lang.Object)]>
+    4)  org.jooq.impl.AbstractCursor<[(? extends java.lang.Object)]>
+    5)  java.util.stream.SpinedBuffer$OfPrimitive<[(? extends java.lang.Object); _.9048; _.9066]>
+  
+  Total amount: 5
+  Total uniq amount: 5
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

@@ -1,5 +1,6 @@
   $ export NOBENCH=1
   $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.SortedSet.json -n 40
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4565,49 +4566,54 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: [ E ]
-  
   Running generated query
-  	     Processing: _.? <-< java.util.SortedSet ((E <: java.lang.Object ()))
-  	     Processing: _.E <-< java.lang.Object ()
-    1)  com.google.common.collect.AbstractMapBasedMultimap$WrappedSortedSet
-    2)  com.google.common.collect.Maps$FilteredEntrySortedMap$SortedKeySet
-    3)  com.google.common.collect.AbstractMapBasedMultimap$SortedKeySet
-    4)  java.util.SortedSet<[java.lang.Object]>
-    5)  java.util.NavigableSet<[java.lang.Object]>
-    6)  java.util.Collections$UnmodifiableSortedSet<[java.lang.Object]>
-    7)  com.google.common.collect.AbstractMapBasedMultimap$WrappedNavigableSet
-    8)  java.util.SortedSet<[sun.util.calendar.CalendarDate]>
-    9)  java.util.Collections$SynchronizedSortedSet<[java.lang.Object]>
-   10)  java.util.SortedSet<[sun.text.UCompactIntArray]>
-   11)  java.util.SortedSet<[sun.text.SupplementaryCharacterData]>
-   12)  java.util.SortedSet<[sun.text.CompactByteArray]>
-   13)  java.util.SortedSet<[sun.security.x509.GeneralSubtrees]>
-   14)  java.util.SortedSet<[sun.security.ssl.SSLConfiguration]>
-   15)  java.util.NavigableSet<[sun.util.calendar.CalendarDate]>
-   16)  java.util.SortedSet<[sun.security.pkcs11.wrapper.CK_DATE]>
-   17)  java.util.Collections$CheckedSortedSet<[java.lang.Object]>
-   18)  java.util.SortedSet<[sun.security.krb5.internal.Ticket]>
-   19)  java.util.NavigableSet<[sun.text.UCompactIntArray]>
-   20)  java.util.SortedSet<[sun.security.krb5.internal.HostAddresses]>
-   21)  java.util.SortedSet<[sun.security.krb5.internal.HostAddress]>
-   22)  java.util.NavigableSet<[sun.text.SupplementaryCharacterData]>
-   23)  java.util.SortedSet<[sun.security.krb5.internal.AuthorizationDataEntry]>
-   24)  java.util.SortedSet<[sun.security.krb5.internal.AuthorizationData]>
-   25)  java.util.NavigableSet<[sun.text.CompactByteArray]>
-   26)  java.util.SortedSet<[sun.security.krb5.Realm]>
-   27)  java.util.SortedSet<[sun.security.krb5.PrincipalName]>
-   28)  java.util.NavigableSet<[sun.security.x509.GeneralSubtrees]>
-   29)  java.util.SortedSet<[sun.security.krb5.EncryptionKey]>
-   30)  java.util.SortedSet<[sun.security.krb5.EncryptedData]>
-   31)  java.util.NavigableSet<[sun.security.ssl.SSLConfiguration]>
-   32)  java.util.SortedSet<[sun.rmi.transport.LiveRef]>
-   33)  java.util.SortedSet<[sun.net.www.MimeEntry]>
-   34)  java.util.SortedSet<[sun.jvm.hotspot.runtime.RegisterMap]>
-   35)  java.util.Collections$UnmodifiableSortedSet<[sun.util.calendar.CalendarDate]>
-   36)  java.util.SortedSet<[sun.jvm.hotspot.runtime.Frame]>
-   37)  java.util.NavigableSet<[sun.security.pkcs11.wrapper.CK_DATE]>
-   38)  java.util.SortedSet<[sun.jvm.hotspot.memory.MemRegion]>
-   39)  com.google.common.collect.ForwardingSortedSet<[java.lang.Object]>
-   40)  java.util.SortedSet<[sun.java2d.loops.FontInfo]>
+  	     Processing: ? <-< java.util.SortedSet ((E <: java.lang.Object ()))
+    1)  java.util.SortedSet<[(? extends java.lang.Object)]>
+    2)  com.google.common.collect.Maps$SortedKeySet<[(? extends java.lang.Object); _.813]>
+    3)  com.google.common.collect.SortedMultisets$ElementSet<[(? extends java.lang.Object)]>
+    4)  com.google.common.collect.Sets$FilteredSortedSet<[(? extends java.lang.Object)]>
+    5)  com.google.common.collect.Synchronized$SynchronizedSortedSet<[(? extends java.lang.Object)]>
+    6)  com.google.common.collect.ForwardingSortedSet<[(? extends java.lang.Object)]>
+    7)  java.util.Collections$CheckedSortedSet<[(? extends java.lang.Object)]>
+    8)  java.util.Collections$SynchronizedSortedSet<[(? extends java.lang.Object)]>
+    9)  java.util.Collections$UnmodifiableSortedSet<[(? extends java.lang.Object)]>
+   10)  java.util.NavigableSet<[(? extends java.lang.Object)]>
+   11)  com.google.common.collect.Maps$NavigableKeySet<[(? extends java.lang.Object); _.3778]>
+   12)  com.google.common.collect.SortedMultisets$NavigableElementSet<[(? extends java.lang.Object)]>
+   13)  com.google.common.collect.Sets$FilteredNavigableSet<[(? extends java.lang.Object)]>
+   14)  com.google.common.collect.Synchronized$SynchronizedNavigableSet<[(? extends java.lang.Object)]>
+   15)  com.google.common.collect.ForwardingNavigableSet<[(? extends java.lang.Object)]>
+   16)  com.google.common.collect.Sets$UnmodifiableNavigableSet<[(? extends java.lang.Object)]>
+   17)  java.util.Collections$CheckedNavigableSet<[(? extends java.lang.Object)]>
+   18)  com.google.common.collect.Sets$DescendingSet<[(? extends java.lang.Object)]>
+   19)  java.util.Collections$SynchronizedNavigableSet<[(? extends java.lang.Object)]>
+   20)  java.util.Collections$UnmodifiableNavigableSet<[(? extends java.lang.Object)]>
+   21)  com.google.common.collect.ImmutableSortedSet<[(? extends java.lang.Object)]>
+   22)  java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet<[(? extends java.lang.Object)]>
+   23)  com.google.common.collect.Maps$NavigableKeySet<[(? extends java.lang.Object); _.11731]>
+   24)  com.google.common.collect.SortedMultisets$NavigableElementSet<[(? extends java.lang.Object)]>
+   25)  com.google.common.collect.Sets$FilteredNavigableSet<[(? extends java.lang.Object)]>
+   26)  com.google.common.collect.Synchronized$SynchronizedNavigableSet<[(? extends java.lang.Object)]>
+   27)  com.google.common.collect.ForwardingNavigableSet<[(? extends java.lang.Object)]>
+   28)  com.google.common.collect.Sets$UnmodifiableNavigableSet<[(? extends java.lang.Object)]>
+   29)  java.util.Collections$CheckedNavigableSet<[(? extends java.lang.Object)]>
+   30)  java.util.Collections$SynchronizedNavigableSet<[(? extends java.lang.Object)]>
+   31)  java.util.Collections$UnmodifiableNavigableSet<[(? extends java.lang.Object)]>
+   32)  com.google.common.collect.ContiguousSet<[(? extends java.lang.Object)]>
+   33)  java.util.TreeMap$KeySet<[(? extends java.lang.Object)]>
+   34)  java.util.TreeSet<[(? extends java.lang.Object)]>
+   35)  java.util.concurrent.ConcurrentSkipListMap$KeySet<[(? extends java.lang.Object); _.14759]>
+   36)  java.util.concurrent.ConcurrentSkipListSet<[(? extends java.lang.Object)]>
+   37)  com.google.common.collect.DescendingImmutableSortedSet<[(? extends java.lang.Object)]>
+   38)  com.google.common.collect.RegularImmutableSortedSet<[(? extends java.lang.Object)]>
+   39)  com.google.common.collect.EmptyContiguousSet<[(? extends java.lang.Object)]>
+   40)  com.google.common.collect.RegularContiguousSet<[(? extends java.lang.Object)]>
+  
+  Total amount: 40
+  Total uniq amount: 31
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

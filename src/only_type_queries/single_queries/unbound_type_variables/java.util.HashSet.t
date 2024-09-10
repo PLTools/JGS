@@ -1,5 +1,6 @@
   $ export NOBENCH=1
   $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.HashSet.json -n  5
+  Table size: 40960
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4565,14 +4566,16 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
-  Type variables mentioned in constraints: [ E ]
-  
   Running generated query
-  	     Processing: _.? <-< java.util.HashSet ((E <: java.lang.Object ()))
-  	     Processing: _.E <-< java.lang.Object ()
-    1)  sun.tools.jar.Main$1
-    2)  sun.tools.jar.Main$1
-    3)  java.util.HashSet<[java.lang.Object]>
-    4)  java.util.LinkedHashSet<[java.lang.Object]>
-    5)  java.util.HashSet<[java.lang.Cloneable]>
+  	     Processing: ? <-< java.util.HashSet ((E <: java.lang.Object ()))
+    1)  java.util.HashSet<[(? extends java.lang.Object)]>
+    2)  java.util.LinkedHashSet<[(? extends java.lang.Object)]>
+  
+  Total amount: 2
+  Total uniq amount: 2
+  First time:  0.00ms
+  Avg time:  0.00ms
+  Max time:  0.00ms
+  Time to prove:  0.00ms
+  Total time:  0.00ms
+  Total time without prove:  0.00ms

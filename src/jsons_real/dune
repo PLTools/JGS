@@ -1,7 +1,6 @@
 (cram
  (deps
   ../jsons/run_json.exe
-  0.json
   1.json
   2.json
   2_reduced.json
@@ -12,5 +11,13 @@
   7.json
   8.json
   9.json
+  ;
+  ))
+
+(cram
+ (applies_to 0)
+ (deps
+  ../jsons/run_json.exe
+  0.json
   ;
   ))

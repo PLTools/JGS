@@ -1,12 +1,10 @@
   $ export NOBENCH=1
   $ ./run_json.exe 5.json -n 5
-  
-  Type variables mentioned in constraints: []
-  
+  Table size: 3
   Running generated query
-  	     Processing: _.? <-< java.lang.Object ()
-    1)  null
+  	     Processing: ? <-< java.lang.Object ()
+    1)  java.lang.Object
     2)  Array<java.lang.Object>
-    3)  java.lang.Object
-    4)  java.lang.Clonable
-    5)  java.io.Serializable
+    3)  java.util.List<[_.337]>
+    4)  java.io.Serializable
+    5)  java.lang.Clonable

@@ -4570,9 +4570,9 @@
   	     Processing: ? <-< java.util.Collection (? extends java.lang.Comparable ((T <: java.lang.Object ())))
     1)  java.util.Collection<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
     2)  kotlin.collections.builders.MapBuilderValues<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    3)  kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilderValues<[_.788; ? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    4)  kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMapBuilderValues<[_.1065; ? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    5)  java.util.concurrent.ConcurrentHashMap$ValuesView<[_.1327; ? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    3)  kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilderValues<[_.612; ? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    4)  kotlinx.collections.immutable.PersistentCollection$Builder<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    5)  kotlinx.collections.immutable.implementations.persistentOrderedMap.PersistentOrderedMapBuilderValues<[_.929; ? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
   
   Total amount: 5
   Total uniq amount: 5

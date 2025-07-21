@@ -4571,10 +4571,10 @@
   Running generated query
   	     Processing: ? <-< java.util.SortedSet (? extends java.lang.Comparable ((T <: java.lang.Object ())))
     1)  java.util.SortedSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    2)  com.google.common.collect.Maps$SortedKeySet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>; _.813]>
-    3)  com.google.common.collect.SortedMultisets$ElementSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    4)  com.google.common.collect.Sets$FilteredSortedSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    5)  com.google.common.collect.Synchronized$SynchronizedSortedSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    2)  java.util.NavigableSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    3)  com.google.common.collect.Maps$SortedKeySet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>; _.691]>
+    4)  com.google.common.collect.SortedMultisets$ElementSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    5)  com.google.common.collect.Sets$FilteredSortedSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
   
   Total amount: 5
   Total uniq amount: 5

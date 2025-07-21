@@ -4572,8 +4572,8 @@ dune exec jsons/run_json2.exe -- -n 5 -ct jsons_real/0.json only_type_queries/si
     1)  java.lang.Iterable<[? Extends java.lang.Number]>
     2)  org.jooq.ResultQuery<[? Extends java.lang.Number]>
     3)  org.jooq.Cursor<[? Extends java.lang.Number]>
-    4)  org.jooq.impl.AbstractCursor<[? Extends java.lang.Number]>
-    5)  java.util.stream.SpinedBuffer$OfPrimitive<[? Extends java.lang.Number; _.9048; _.9066]>
+    4)  java.nio.file.DirectoryStream<[? Extends java.lang.Number]>
+    5)  com.google.common.collect.SortedIterable<[? Extends java.lang.Number]>
   
   Total amount: 5
   Total uniq amount: 5

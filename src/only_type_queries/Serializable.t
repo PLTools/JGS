@@ -4573,105 +4573,105 @@ dune exec jsons/run_json2.exe -- -n 100 -ct jsons_real/0.json only_type_queries/
     2)  java.io.Serializable
     3)  org.jooq.impl.MergeImpl$MatchedClause
     4)  org.jooq.impl.MergeImpl$NotMatchedClause
-    5)  com.google.common.collect.EmptyContiguousSet$SerializedForm<[_.584]>
-    6)  com.google.common.collect.RegularContiguousSet$SerializedForm<[_.741]>
+    5)  com.google.common.collect.EmptyContiguousSet$SerializedForm<[_.494]>
+    6)  com.google.common.collect.RegularContiguousSet$SerializedForm<[_.607]>
     7)  javax.swing.text.DefaultFormatter$DefaultDocumentFilter
     8)  javax.swing.text.DefaultFormatter$DefaultNavigationFilter
-    9)  com.google.common.collect.ImmutableSortedMultiset$SerializedForm<[_.1123]>
-   10)  com.google.common.collect.ImmutableSortedSet$SerializedForm<[_.1261]>
-   11)  com.google.common.collect.ImmutableMapKeySet$KeySetSerializedForm<[_.1384]>
-   12)  Array<java.lang.Object>
-   13)  com.google.common.collect.RegularImmutableMap$KeySet$SerializedForm<[_.1565]>
-   14)  Array<org.jooq.impl.SelectImpl$1<_.679>>
-   15)  javax.swing.text.DefaultFormatter
+    9)  com.google.common.collect.ImmutableSortedMultiset$SerializedForm<[_.898]>
+   10)  com.google.common.collect.ImmutableSortedSet$SerializedForm<[_.993]>
+   11)  com.google.common.collect.ImmutableMapKeySet$KeySetSerializedForm<[_.1093]>
+   12)  Array<org.jooq.impl.SelectImpl$1<_.548>>
+   13)  com.google.common.collect.RegularImmutableMap$KeySet$SerializedForm<[_.1183]>
+   14)  javax.swing.text.DefaultFormatter
+   15)  Array<Array<java.lang.Object>>
    16)  javax.swing.text.DefaultFormatterFactory
-   17)  Array<Array<java.lang.Object>>
-   18)  com.google.common.collect.ImmutableMapEntrySet$EntrySetSerializedForm<[_.2046; _.2081]>
+   17)  com.google.common.collect.ImmutableMapEntrySet$EntrySetSerializedForm<[_.1553; _.1566]>
+   18)  Array<Intersect [java.lang.Object | _.905]>
    19)  net.bytebuddy.description.type.TypeDescription$ForLoadedType
-   20)  Array<org.jooq.impl.CreateTableImpl$1<_.679>>
-   21)  javax.swing.ColorChooserDialog$Closer
+   20)  javax.swing.ColorChooserDialog$Closer
+   21)  Array<Not implemented JGS_Helpers.ml 71>
    22)  javax.swing.ColorChooserDialog$DisposeOnClose
-   23)  Array<Intersect [java.lang.Object | _.1184]>
+   23)  Array<org.jooq.impl.CreateTableImpl$1<_.548>>
    24)  javax.swing.JMenu$MenuChangeListener
    25)  javax.swing.JMenu$WinListener
-   26)  Array<Not implemented JGS_Helpers.ml 71>
+   26)  Array<null>
    27)  sun.swing.table.DefaultTableCellHeaderRenderer$EmptyIcon
    28)  com.sun.java.swing.plaf.motif.MotifTreeCellRenderer$TreeLeafIcon
-   29)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.679>>
+   29)  Array<Intersect [_.904 =/= [ java.lang.Object ]; java.lang.Object | _.2142]>
    30)  javax.swing.colorchooser.DefaultSwatchChooserPanel$MainSwatchListener
-   31)  Array<null>
-   32)  javax.swing.colorchooser.DefaultSwatchChooserPanel$RecentSwatchListener
+   31)  javax.swing.colorchooser.DefaultSwatchChooserPanel$RecentSwatchListener
+   32)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.548>>
    33)  javax.swing.JFormattedTextField$AbstractFormatter
-   34)  Array<Intersect [_.1183 [=/= java.lang.Object]; java.lang.Object | _.3317]>
-   35)  javax.swing.JFormattedTextField$DocumentHandler
+   34)  javax.swing.JFormattedTextField$DocumentHandler
+   35)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; java.lang.Object | _.2621]>
    36)  javax.swing.JFormattedTextField$FocusLostHandler
-   37)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.679>>
-   38)  com.google.common.collect.TreeMultiset<[_.3974]>
-   39)  Array<org.jooq.impl.SelectImpl$1<_.745>>
-   40)  com.google.common.collect.ImmutableAsList$SerializedForm
-   41)  com.google.common.collect.RegularImmutableMap$Values$SerializedForm<[_.4269]>
-   42)  com.google.common.collect.ImmutableMultiset$EntrySetSerializedForm<[_.4417]>
-   43)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; java.lang.Object | _.4190]>
-   44)  com.google.common.collect.ImmutableMultiset$SerializedForm
-   45)  Array<kotlin.text.StringsKt___StringsKt$groupingBy$1<_.679>>
-   46)  com.google.common.collect.ImmutableEnumSet$EnumSerializedForm<[_.4700]>
-   47)  java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet<[_.4857]>
-   48)  sun.security.pkcs11.SunPKCS11$SunPKCS11Rep
-   49)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; java.lang.Object | _.4870]>
-   50)  com.sun.java.swing.plaf.motif.MotifRadioButtonMenuItemUI$ChangeHandler
-   51)  Array<org.jooq.impl.MergeImpl$1<_.679>>
-   52)  com.sun.org.apache.xerces.internal.dom.DocumentImpl$EnclosingAttr
-   53)  com.sun.org.apache.xerces.internal.dom.DocumentImpl$LEntry
-   54)  Array<org.jooq.impl.CreateTableImpl$1<_.745>>
-   55)  com.sun.rowset.FilteredRowSetImpl
+   37)  com.google.common.collect.TreeMultiset<[_.2986]>
+   38)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.548>>
+   39)  com.google.common.collect.ImmutableAsList$SerializedForm
+   40)  com.google.common.collect.RegularImmutableMap$Values$SerializedForm<[_.3209]>
+   41)  com.google.common.collect.ImmutableMultiset$EntrySetSerializedForm<[_.3305]>
+   42)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; java.lang.Object | _.3047]>
+   43)  com.google.common.collect.ImmutableMultiset$SerializedForm
+   44)  com.google.common.collect.ImmutableEnumSet$EnumSerializedForm<[_.3537]>
+   45)  Array<kotlin.text.StringsKt___StringsKt$groupingBy$1<_.548>>
+   46)  java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet<[_.3640]>
+   47)  sun.security.pkcs11.SunPKCS11$SunPKCS11Rep
+   48)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; java.lang.Object | _.3507]>
+   49)  com.sun.java.swing.plaf.motif.MotifRadioButtonMenuItemUI$ChangeHandler
+   50)  com.sun.org.apache.xerces.internal.dom.DocumentImpl$EnclosingAttr
+   51)  Array<org.jooq.impl.MergeImpl$1<_.548>>
+   52)  com.sun.org.apache.xerces.internal.dom.DocumentImpl$LEntry
+   53)  com.sun.rowset.FilteredRowSetImpl
+   54)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; java.lang.Object | _.3953]>
+   55)  org.jooq.Identity<[_.4284; _.4300]>
    56)  javax.swing.text.html.parser.ParserDelegator
-   57)  com.google.common.collect.TreeBasedTable$Factory<[_.5883; _.5913]>
-   58)  Array<org.jooq.impl.MergeImpl$MatchedClause<_.679>>
+   57)  com.google.common.collect.TreeBasedTable$Factory<[_.4495; _.4511]>
+   58)  Array<org.jooq.impl.MergeImpl$MatchedClause<_.548>>
    59)  javax.swing.JMenuItem$MenuItemFocusListener
-   60)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; java.lang.Object | _.5721]>
-   61)  javax.swing.plaf.basic.BasicComboPopup$EmptyListModelClass
+   60)  javax.swing.plaf.basic.BasicComboPopup$EmptyListModelClass
+   61)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; _.3952 =/= [ java.lang.Object ]; java.lang.Object | _.4451]>
    62)  javax.swing.plaf.basic.BasicComboPopup$Handler
    63)  javax.swing.JTextField$ScrollRepainter
-   64)  Array<org.jooq.impl.MergeImpl$NotMatchedClause<_.679>>
-   65)  com.google.common.collect.Sets$UnmodifiableNavigableSet<[_.6651]>
-   66)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.745>>
-   67)  java.beans.beancontext.BeanContextServicesSupport$BCSSServiceProvider
+   64)  com.google.common.collect.Sets$UnmodifiableNavigableSet<[_.5007]>
+   65)  Array<org.jooq.impl.MergeImpl$NotMatchedClause<_.548>>
+   66)  java.beans.beancontext.BeanContextServicesSupport$BCSSServiceProvider
+   67)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; _.3952 =/= [ java.lang.Object ]; _.4450 =/= [ java.lang.Object ]; java.lang.Object | _.4915]>
    68)  com.google.common.collect.ImmutableList$SerializedForm
-   69)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; java.lang.Object | _.6375]>
-   70)  Array<org.jooq.impl.SelectImpl$1<_.3423>>
-   71)  com.google.common.collect.ImmutableMapValues$SerializedForm<[_.7115]>
-   72)  com.google.common.collect.ImmutableSet$SerializedForm
-   73)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$1<_.679>>
-   74)  com.google.common.collect.Lists$TransformingSequentialList<[_.7422; _.7455]>
-   75)  java.util.LinkedList<[_.7598]>
-   76)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; java.lang.Object | _.7203]>
-   77)  kotlin.collections.builders.ListBuilder<[_.7754]>
-   78)  java.util.concurrent.SynchronousQueue$WaitQueue
-   79)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$2<_.679>>
-   80)  java.util.EnumSet$SerializationProxy<[_.8010]>
-   81)  java.util.LinkedHashSet<[_.8170]>
-   82)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.745>>
-   83)  kotlin.collections.builders.SetBuilder<[_.8316]>
-   84)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; _.7202 [=/= java.lang.Object]; java.lang.Object | _.7870]>
-   85)  java.util.ImmutableCollections$List12<[_.8474]>
-   86)  java.util.ImmutableCollections$ListN<[_.8627]>
-   87)  java.util.ImmutableCollections$Set12<[_.8748]>
-   88)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$3<_.679>>
-   89)  java.util.ImmutableCollections$SetN<[_.8930]>
-   90)  Array<org.jooq.impl.CreateTableImpl$1<_.3423>>
-   91)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; _.7202 [=/= java.lang.Object]; _.7869 [=/= java.lang.Object]; java.lang.Object | _.8680]>
-   92)  java.util.Collections$CheckedNavigableSet<[_.9085]>
-   93)  java.util.Collections$UnmodifiableNavigableSet<[_.9248]>
-   94)  java.util.concurrent.LinkedBlockingDeque<[_.9381]>
-   95)  Array<org.jooq.impl.BoolAnd$2<_.679>>
-   96)  java.util.concurrent.LinkedTransferQueue<[_.9540]>
-   97)  Array<kotlin.text.StringsKt___StringsKt$groupingBy$1<_.745>>
-   98)  java.util.TreeSet<[_.9704]>
-   99)  java.util.concurrent.ConcurrentSkipListSet<[_.9866]>
-   100)  Array<Intersect [_.1183 [=/= java.lang.Object]; _.3316 [=/= java.lang.Object]; _.4189 [=/= java.lang.Object]; _.4869 [=/= java.lang.Object]; _.5720 [=/= java.lang.Object]; _.6374 [=/= java.lang.Object]; _.7202 [=/= java.lang.Object]; _.7869 [=/= java.lang.Object]; _.8679 [=/= java.lang.Object]; java.lang.Object | _.9343]>
+   69)  com.google.common.collect.ImmutableMapValues$SerializedForm<[_.5348]>
+   70)  com.google.common.collect.ImmutableSet$SerializedForm
+   71)  Array<Intersect [org.jooq.impl.SelectImpl$1<_.567> | _.4164]>
+   72)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; _.3952 =/= [ java.lang.Object ]; _.4450 =/= [ java.lang.Object ]; _.4914 =/= [ java.lang.Object ]; java.lang.Object | _.5357]>
+   73)  com.google.common.collect.Lists$TransformingSequentialList<[_.5562; _.5590]>
+   74)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$1<_.548>>
+   75)  java.util.LinkedList<[_.5691]>
+   76)  kotlin.collections.builders.ListBuilder<[_.5816]>
+   77)  java.util.concurrent.SynchronousQueue$WaitQueue
+   78)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; _.3952 =/= [ java.lang.Object ]; _.4450 =/= [ java.lang.Object ]; _.4914 =/= [ java.lang.Object ]; _.5356 =/= [ java.lang.Object ]; java.lang.Object | _.5834]>
+   79)  java.util.EnumSet$SerializationProxy<[_.6011]>
+   80)  java.util.LinkedHashSet<[_.6129]>
+   81)  Array<Not implemented JGS_Helpers.ml 71>
+   82)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$2<_.548>>
+   83)  kotlin.collections.builders.SetBuilder<[_.6273]>
+   84)  java.util.ImmutableCollections$List12<[_.6401]>
+   85)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; _.3952 =/= [ java.lang.Object ]; _.4450 =/= [ java.lang.Object ]; _.4914 =/= [ java.lang.Object ]; _.5356 =/= [ java.lang.Object ]; _.5833 =/= [ java.lang.Object ]; java.lang.Object | _.6232]>
+   86)  java.util.ImmutableCollections$ListN<[_.6500]>
+   87)  java.util.ImmutableCollections$Set12<[_.6644]>
+   88)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$3<_.548>>
+   89)  java.util.ImmutableCollections$SetN<[_.6751]>
+   90)  Array<null>
+   91)  java.util.Collections$CheckedNavigableSet<[_.6863]>
+   92)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; _.3952 =/= [ java.lang.Object ]; _.4450 =/= [ java.lang.Object ]; _.4914 =/= [ java.lang.Object ]; _.5356 =/= [ java.lang.Object ]; _.5833 =/= [ java.lang.Object ]; _.6231 =/= [ java.lang.Object ]; java.lang.Object | _.6687]>
+   93)  java.util.Collections$UnmodifiableNavigableSet<[_.6983]>
+   94)  java.util.concurrent.LinkedBlockingDeque<[_.7116]>
+   95)  Array<org.jooq.impl.BoolAnd$2<_.548>>
+   96)  java.util.concurrent.LinkedTransferQueue<[_.7221]>
+   97)  java.util.TreeSet<[_.7332]>
+   98)  Array<Intersect [_.904 =/= [ java.lang.Object ]; _.2141 =/= [ java.lang.Object ]; _.2620 =/= [ java.lang.Object ]; _.3046 =/= [ java.lang.Object ]; _.3506 =/= [ java.lang.Object ]; _.3952 =/= [ java.lang.Object ]; _.4450 =/= [ java.lang.Object ]; _.4914 =/= [ java.lang.Object ]; _.5356 =/= [ java.lang.Object ]; _.5833 =/= [ java.lang.Object ]; _.6231 =/= [ java.lang.Object ]; _.6686 =/= [ java.lang.Object ]; java.lang.Object | _.7172]>
+   99)  java.util.concurrent.ConcurrentSkipListSet<[_.7450]>
+   100)  com.google.common.collect.RegularImmutableBiMap$InverseSerializedForm<[_.7573; _.7591]>
   
   Total amount: 100
-  Total uniq amount: 98
+  Total uniq amount: 99
   First time:  0.00ms
   Avg time:  0.00ms
   Max time:  0.00ms

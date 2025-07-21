@@ -4571,9 +4571,9 @@
   	     Processing: ? <-< java.util.Set (? extends java.lang.Comparable ((T <: java.lang.Object ())))
     1)  java.util.Set<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
     2)  java.util.LinkedHashSet<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    3)  kotlin.collections.builders.MapBuilderKeys<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    4)  kotlin.collections.builders.SetBuilder<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    5)  kotlinx.collections.immutable.implementations.immutableMap.PersistentHashMapBuilderKeys<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>; _.1613]>
+    3)  kotlinx.collections.immutable.PersistentSet$Builder<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    4)  kotlin.collections.builders.MapBuilderKeys<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    5)  kotlin.collections.builders.SetBuilder<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
   
   Total amount: 5
   Total uniq amount: 5

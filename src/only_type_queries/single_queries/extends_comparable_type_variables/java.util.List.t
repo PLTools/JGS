@@ -4572,7 +4572,7 @@
     2)  java.util.LinkedList<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
     3)  sun.awt.util.IdentityLinkedList<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
     4)  kotlin.collections.builders.ListBuilder<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
-    5)  com.google.common.collect.ImmutableList<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
+    5)  kotlinx.collections.immutable.PersistentList$Builder<[? Extends java.lang.Comparable<[(? extends java.lang.Object)]>]>
   
   Total amount: 5
   Total uniq amount: 5

@@ -4573,105 +4573,105 @@ dune exec jsons/run_json2.exe -- -n 100 -ct jsons_real/0.json only_type_queries/
     2)  java.lang.Cloneable
     3)  javax.swing.text.DefaultFormatter
     4)  com.sun.rowset.FilteredRowSetImpl
-    5)  java.util.LinkedList<[_.584]>
-    6)  java.util.LinkedHashSet<[_.741]>
-    7)  java.util.TreeSet<[_.885]>
-    8)  java.util.concurrent.ConcurrentSkipListSet<[_.1014]>
+    5)  java.util.LinkedList<[_.494]>
+    6)  java.util.LinkedHashSet<[_.607]>
+    7)  java.util.TreeSet<[_.709]>
+    8)  java.util.concurrent.ConcurrentSkipListSet<[_.812]>
     9)  com.sun.org.apache.xpath.internal.axes.UnionPathIterator
-   10)  java.util.ArrayList<[_.1260]>
-   11)  java.util.Vector<[_.1388]>
-   12)  Array<java.lang.Object>
-   13)  java.util.EnumSet<[_.1568]>
-   14)  Array<org.jooq.impl.SelectImpl$1<_.679>>
-   15)  java.util.HashSet<[_.1728]>
-   16)  java.util.ArrayDeque<[_.1879]>
-   17)  Array<Array<java.lang.Object>>
-   18)  java.util.concurrent.ConcurrentSkipListMap<[_.2031; _.2051]>
-   19)  com.sun.org.apache.xpath.internal.objects.XRTreeFragSelectWrapper
-   20)  Array<org.jooq.impl.CreateTableImpl$1<_.679>>
-   21)  com.sun.org.apache.xpath.internal.axes.AxesWalker
-   22)  com.sun.org.apache.xpath.internal.axes.LocPathIterator
-   23)  Array<Intersect [java.lang.Object | _.1181]>
-   24)  sun.security.ssl.DTLSInputRecord$HandshakeFlight
-   25)  com.sun.rowset.CachedRowSetImpl
-   26)  Array<Not implemented JGS_Helpers.ml 71>
-   27)  com.sun.org.apache.xalan.internal.xsltc.dom.MultiValuedNodeHeapIterator$HeapNode
+   10)  java.util.ArrayList<[_.997]>
+   11)  java.util.Vector<[_.1093]>
+   12)  Array<org.jooq.impl.SelectImpl$1<_.548>>
+   13)  java.util.EnumSet<[_.1194]>
+   14)  Array<Array<java.lang.Object>>
+   15)  java.util.HashSet<[_.1330]>
+   16)  java.util.ArrayDeque<[_.1460]>
+   17)  javax.naming.Name
+   18)  Array<Intersect [java.lang.Object | _.904]>
+   19)  java.util.concurrent.ConcurrentSkipListMap<[_.1619; _.1664]>
+   20)  com.sun.org.apache.xpath.internal.objects.XRTreeFragSelectWrapper
+   21)  Array<Not implemented JGS_Helpers.ml 71>
+   22)  com.sun.org.apache.xpath.internal.axes.AxesWalker
+   23)  com.sun.org.apache.xpath.internal.axes.LocPathIterator
+   24)  Array<org.jooq.impl.CreateTableImpl$1<_.548>>
+   25)  sun.security.ssl.DTLSInputRecord$HandshakeFlight
+   26)  Array<null>
+   27)  com.sun.rowset.CachedRowSetImpl
    28)  javax.swing.text.InternationalFormatter
-   29)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.679>>
-   30)  java.util.concurrent.CopyOnWriteArrayList<[_.3100]>
-   31)  Array<null>
-   32)  java.security.MessageDigest$Delegate$CloneableDelegate
-   33)  java.security.Signature$Delegate$CloneableDelegate
-   34)  java.util.TreeMap<[_.3580; _.3612]>
-   35)  Array<Intersect [_.1180 [=/= java.lang.Object]; java.lang.Object | _.3313]>
-   36)  javax.swing.text.MaskFormatter
-   37)  com.sun.org.apache.xpath.internal.axes.NodeSequence
-   38)  com.sun.org.apache.xpath.internal.objects.XRTreeFrag
-   39)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.679>>
-   40)  com.sun.imageio.plugins.jpeg.DHTMarkerSegment$Htable
-   41)  Array<org.jooq.impl.SelectImpl$1<_.745>>
-   42)  com.sun.imageio.plugins.jpeg.DQTMarkerSegment$Qtable
-   43)  com.sun.imageio.plugins.jpeg.JFIFMarkerSegment$JFIFThumb
-   44)  com.sun.imageio.plugins.jpeg.SOFMarkerSegment$ComponentSpec
-   45)  Array<Intersect [_.1180 [=/= java.lang.Object]; _.3312 [=/= java.lang.Object]; java.lang.Object | _.4282]>
-   46)  com.sun.imageio.plugins.jpeg.SOSMarkerSegment$ScanComponentSpec
-   47)  Array<kotlin.text.StringsKt___StringsKt$groupingBy$1<_.679>>
-   48)  sun.text.RuleBasedBreakIterator$SafeCharIterator
-   49)  sun.java2d.SunGraphics2D
-   50)  sun.print.PeekGraphics
-   51)  Array<Intersect [_.1180 [=/= java.lang.Object]; _.3312 [=/= java.lang.Object]; _.4281 [=/= java.lang.Object]; java.lang.Object | _.4937]>
-   52)  java.util.EnumMap<[_.5200; _.5227]>
-   53)  Array<org.jooq.impl.MergeImpl$1<_.679>>
-   54)  org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.ExcludeFieldNameSelector
-   55)  org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldNameSelector
-   56)  Array<org.jooq.impl.CreateTableImpl$1<_.745>>
-   57)  sun.security.x509.NameConstraintsExtension
-   58)  java.util.HashMap<[_.5796; _.5818]>
-   59)  Array<org.jooq.impl.MergeImpl$MatchedClause<_.679>>
-   60)  java.util.IdentityHashMap<[_.5942; _.5961]>
-   61)  javax.swing.plaf.nimbus.NimbusStyle$RuntimeState
-   62)  Array<Intersect [_.1180 [=/= java.lang.Object]; _.3312 [=/= java.lang.Object]; _.4281 [=/= java.lang.Object]; _.4936 [=/= java.lang.Object]; java.lang.Object | _.5752]>
-   63)  com.sun.org.apache.xpath.internal.objects.XObject
-   64)  javax.swing.AbstractAction
-   65)  javax.management.MBeanAttributeInfo
-   66)  Array<org.jooq.impl.MergeImpl$NotMatchedClause<_.679>>
-   67)  javax.management.MBeanConstructorInfo
-   68)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.745>>
-   69)  javax.management.MBeanNotificationInfo
-   70)  Array<Intersect [_.1180 [=/= java.lang.Object]; _.3312 [=/= java.lang.Object]; _.4281 [=/= java.lang.Object]; _.4936 [=/= java.lang.Object]; _.5751 [=/= java.lang.Object]; java.lang.Object | _.6366]>
-   71)  javax.management.MBeanOperationInfo
-   72)  Array<org.jooq.impl.SelectImpl$1<_.3439>>
-   73)  javax.management.MBeanParameterInfo
-   74)  com.sun.org.apache.xpath.internal.NodeSetDTM
-   75)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$1<_.679>>
-   76)  com.sun.rowset.internal.InsertRow
-   77)  com.sun.rowset.internal.Row
-   78)  Array<Intersect [_.1180 [=/= java.lang.Object]; _.3312 [=/= java.lang.Object]; _.4281 [=/= java.lang.Object]; _.4936 [=/= java.lang.Object]; _.5751 [=/= java.lang.Object]; _.6365 [=/= java.lang.Object]; java.lang.Object | _.7176]>
-   79)  java.awt.image.BufferedImageFilter
-   80)  javax.swing.text.Segment
-   81)  javax.swing.text.ElementIterator$StackItem
-   82)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$2<_.679>>
-   83)  com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl
-   84)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.745>>
-   85)  javax.swing.text.DateFormatter
-   86)  org.jooq.conf.InterpreterSearchSchema
-   87)  Array<Intersect [_.1180 [=/= java.lang.Object]; _.3312 [=/= java.lang.Object]; _.4281 [=/= java.lang.Object]; _.4936 [=/= java.lang.Object]; _.5751 [=/= java.lang.Object]; _.6365 [=/= java.lang.Object]; _.7175 [=/= java.lang.Object]; java.lang.Object | _.7865]>
-   88)  org.jooq.conf.MappedCatalog
-   89)  org.jooq.conf.MappedSchema
-   90)  org.jooq.conf.MappedTable
-   91)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$3<_.679>>
-   92)  javax.swing.text.NumberFormatter
-   93)  org.jooq.conf.ParseSearchSchema
-   94)  Array<org.jooq.impl.CreateTableImpl$1<_.3439>>
-   95)  org.jooq.conf.RenderFormatting
-   96)  Array<Intersect [_.1180 [=/= java.lang.Object]; _.3312 [=/= java.lang.Object]; _.4281 [=/= java.lang.Object]; _.4936 [=/= java.lang.Object]; _.5751 [=/= java.lang.Object]; _.6365 [=/= java.lang.Object]; _.7175 [=/= java.lang.Object]; _.7864 [=/= java.lang.Object]; java.lang.Object | _.8728]>
-   97)  org.jooq.conf.RenderMapping
-   98)  org.jooq.conf.Settings
-   99)  Array<org.jooq.impl.BoolAnd$2<_.679>>
-   100)  org.junit.jupiter.params.shadow.com.univocity.parsers.common.CommonSettings<[_.9590]>
+   29)  com.sun.org.apache.xalan.internal.xsltc.dom.MultiValuedNodeHeapIterator$HeapNode
+   30)  javax.swing.text.MaskFormatter
+   31)  Array<Intersect [_.903 =/= [ java.lang.Object ]; java.lang.Object | _.2224]>
+   32)  java.util.concurrent.CopyOnWriteArrayList<[_.2538]>
+   33)  com.sun.org.apache.xalan.internal.xsltc.NodeIterator
+   34)  java.security.MessageDigest$Delegate$CloneableDelegate
+   35)  Array<kotlin.text.StringsKt___StringsKt$asIterable$$inlined$Iterable$1<_.548>>
+   36)  com.sun.org.apache.xml.internal.dtm.DTMAxisIterator
+   37)  java.security.Signature$Delegate$CloneableDelegate
+   38)  java.util.TreeMap<[_.3009; _.3023]>
+   39)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; java.lang.Object | _.2819]>
+   40)  com.sun.org.apache.xpath.internal.axes.NodeSequence
+   41)  com.sun.org.apache.xpath.internal.objects.XRTreeFrag
+   42)  Array<kotlin.text.StringsKt___StringsKt$asSequence$$inlined$Sequence$1<_.548>>
+   43)  com.sun.imageio.plugins.jpeg.DHTMarkerSegment$Htable
+   44)  java.security.cert.CRLSelector
+   45)  com.sun.imageio.plugins.jpeg.DQTMarkerSegment$Qtable
+   46)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; _.2818 =/= [ java.lang.Object ]; java.lang.Object | _.3241]>
+   47)  java.security.cert.CertPathBuilderResult
+   48)  com.sun.imageio.plugins.jpeg.JFIFMarkerSegment$JFIFThumb
+   49)  java.security.cert.CertPathParameters
+   50)  Array<kotlin.text.StringsKt___StringsKt$groupingBy$1<_.548>>
+   51)  com.sun.imageio.plugins.jpeg.SOFMarkerSegment$ComponentSpec
+   52)  java.security.cert.CertPathValidatorResult
+   53)  com.sun.imageio.plugins.jpeg.SOSMarkerSegment$ScanComponentSpec
+   54)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; _.2818 =/= [ java.lang.Object ]; _.3240 =/= [ java.lang.Object ]; java.lang.Object | _.3765]>
+   55)  java.security.cert.CertSelector
+   56)  sun.text.RuleBasedBreakIterator$SafeCharIterator
+   57)  java.security.cert.CertStoreParameters
+   58)  sun.java2d.SunGraphics2D
+   59)  Array<org.jooq.impl.MergeImpl$1<_.548>>
+   60)  sun.print.PeekGraphics
+   61)  java.text.CharacterIterator
+   62)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; _.2818 =/= [ java.lang.Object ]; _.3240 =/= [ java.lang.Object ]; _.3764 =/= [ java.lang.Object ]; java.lang.Object | _.4313]>
+   63)  java.util.EnumMap<[_.4666; _.4699]>
+   64)  org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.ExcludeFieldNameSelector
+   65)  javax.management.Descriptor
+   66)  org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldNameSelector
+   67)  Array<org.jooq.impl.MergeImpl$MatchedClause<_.548>>
+   68)  javax.naming.directory.Attribute
+   69)  sun.security.x509.NameConstraintsExtension
+   70)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; _.2818 =/= [ java.lang.Object ]; _.3240 =/= [ java.lang.Object ]; _.3764 =/= [ java.lang.Object ]; _.4312 =/= [ java.lang.Object ]; java.lang.Object | _.4828]>
+   71)  javax.naming.directory.Attributes
+   72)  java.util.HashMap<[_.5408; _.5424]>
+   73)  java.util.IdentityHashMap<[_.5527; _.5551]>
+   74)  Array<org.jooq.impl.MergeImpl$NotMatchedClause<_.548>>
+   75)  javax.swing.plaf.nimbus.NimbusStyle$RuntimeState
+   76)  javax.swing.text.DateFormatter
+   77)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; _.2818 =/= [ java.lang.Object ]; _.3240 =/= [ java.lang.Object ]; _.3764 =/= [ java.lang.Object ]; _.4312 =/= [ java.lang.Object ]; _.4827 =/= [ java.lang.Object ]; java.lang.Object | _.5441]>
+   78)  javax.swing.text.NumberFormatter
+   79)  com.sun.org.apache.xpath.internal.objects.XObject
+   80)  kotlin.reflect.jvm.internal.impl.protobuf.MessageLite$Builder
+   81)  javax.swing.AbstractAction
+   82)  kotlinx.metadata.internal.protobuf.MessageLite$Builder
+   83)  Array<Intersect [org.jooq.impl.SelectImpl$1<_.567> | _.4546]>
+   84)  javax.management.MBeanAttributeInfo
+   85)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; _.2818 =/= [ java.lang.Object ]; _.3240 =/= [ java.lang.Object ]; _.3764 =/= [ java.lang.Object ]; _.4312 =/= [ java.lang.Object ]; _.4827 =/= [ java.lang.Object ]; _.5440 =/= [ java.lang.Object ]; java.lang.Object | _.6005]>
+   86)  org.ietf.jgss.GSSCredential
+   87)  javax.management.MBeanConstructorInfo
+   88)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$1<_.548>>
+   89)  javax.management.MBeanNotificationInfo
+   90)  org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.ColumnMapper
+   91)  javax.management.MBeanOperationInfo
+   92)  sun.net.www.http.KeepAliveStreamCleaner
+   93)  org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldSelector
+   94)  Array<Intersect [_.903 =/= [ java.lang.Object ]; _.2223 =/= [ java.lang.Object ]; _.2818 =/= [ java.lang.Object ]; _.3240 =/= [ java.lang.Object ]; _.3764 =/= [ java.lang.Object ]; _.4312 =/= [ java.lang.Object ]; _.4827 =/= [ java.lang.Object ]; _.5440 =/= [ java.lang.Object ]; _.6004 =/= [ java.lang.Object ]; java.lang.Object | _.6604]>
+   95)  javax.management.MBeanParameterInfo
+   96)  Array<Not implemented JGS_Helpers.ml 71>
+   97)  com.sun.org.apache.xpath.internal.NodeSetDTM
+   98)  Array<kotlin.reflect.jvm.internal.impl.descriptors.impl.EnumEntrySyntheticClassDescriptor$EnumEntryScope$2<_.548>>
+   99)  com.sun.rowset.internal.InsertRow
+   100)  com.sun.rowset.internal.Row
   
   Total amount: 100
-  Total uniq amount: 98
+  Total uniq amount: 100
   First time:  0.00ms
   Avg time:  0.00ms
   Max time:  0.00ms

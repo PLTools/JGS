@@ -6,10 +6,10 @@
     1)  java.lang.Object
     2)  Array<java.lang.Object>
     3)  String
-    4)  Collection<[_.608]>
+    4)  Collection<[_.402]>
     5)  java.io.Serializable
     6)  java.lang.Clonable
-    7)  Array<java.lang.Object>
-    8)  Array<String<_.648>>
-    9)  Array<Array<java.lang.Object>>
-   10)  Array<Collection<_.648>>
+    7)  Array<String<_.621>>
+    8)  Array<Array<java.lang.Object>>
+    9)  Array<Intersect [java.lang.Object | _.797]>
+   10)  Array<Not implemented JGS_Helpers.ml 71>

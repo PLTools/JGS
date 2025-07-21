@@ -4571,11 +4571,11 @@
     1)  java.lang.Iterable<[(? extends java.lang.Object)]>
     2)  org.jooq.ResultQuery<[(? extends java.lang.Object)]>
     3)  org.jooq.Cursor<[(? extends java.lang.Object)]>
-    4)  org.jooq.impl.AbstractCursor<[(? extends java.lang.Object)]>
-    5)  java.util.stream.SpinedBuffer$OfPrimitive<[(? extends java.lang.Object); _.9048; _.9066]>
+    4)  java.nio.file.DirectoryStream<[(? extends java.lang.Object)]>
+    5)  com.google.common.collect.SortedIterable<[(? extends java.lang.Object)]>
     6)  org.jooq.impl.AbstractResultQuery<[(? extends java.lang.Object)]>
-    7)  java.nio.file.DirectoryStream<[(? extends java.lang.Object)]>
-    8)  org.jooq.Select<[(? extends java.lang.Object)]>
+    7)  java.util.Collection<[(? extends java.lang.Object)]>
+    8)  javax.xml.crypto.NodeSetData<[(? extends java.lang.Object)]>
   
   Total amount: 8
   Total uniq amount: 8

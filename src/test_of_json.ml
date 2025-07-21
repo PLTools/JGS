@@ -86,6 +86,7 @@ let%expect_test _ =
             {
               "id": "E",
               "index": 0,
+              "lwb": null,
               "upb": [ "Class", "Object", [] ]
             }
           ]
@@ -95,7 +96,7 @@ let%expect_test _ =
   [%expect
     {|
     `List ([`String ("Var");
-             `Assoc ([("id", `String ("E")); ("index", `Int (0));
+             `Assoc ([("id", `String ("E")); ("index", `Int (0)); ("lwb", `Null);
                        ("upb",
                         `List ([`String ("Class"); `String ("Object"); `List (
                                  [])]))
@@ -109,14 +110,7 @@ let%expect_test _ =
   in
   [%expect
     {|
-    Failure("CT_of_json.ml.jtype_of_yojson: the following record elements were undefined: lwb")
-    `List ([`String ("Var");
-             `Assoc ([("id", `String ("E")); ("index", `Int (0));
-                       ("upb",
-                        `List ([`String ("Class"); `String ("Object"); `List (
-                                 [])]))
-                       ])
-             ]) |}]
+    OK |}]
 
 let%expect_test _ =
   let j =
@@ -145,8 +139,7 @@ let%expect_test _ =
         Format.printf "%s\n%s\n%!" (Printexc.to_string exc) (Yojson.Safe.show j)
     | _ -> Format.printf "OK\n%!"
   in
-  [%expect
-    {|
+  [%expect {|
     OK
     	 |}]
 
@@ -158,6 +151,7 @@ let%expect_test _ =
            "Var",
            {
               "id": "id",
+              "index": 0,
               "upb": [ "Class", "java.lang.Object", [] ],
               "lwb": null
             }
@@ -168,7 +162,7 @@ let%expect_test _ =
   [%expect
     {|
     `List ([`String ("Var");
-             `Assoc ([("id", `String ("id"));
+             `Assoc ([("id", `String ("id")); ("index", `Int (0));
                        ("upb",
                         `List ([`String ("Class"); `String ("java.lang.Object");
                                  `List ([])]));
@@ -182,14 +176,7 @@ let%expect_test _ =
   in
   [%expect
     {|
-    Failure("CT_of_json.ml.jtype_of_yojson: the following record elements were undefined: index")
-    `List ([`String ("Var");
-             `Assoc ([("id", `String ("id"));
-                       ("upb",
-                        `List ([`String ("Class"); `String ("java.lang.Object");
-                                 `List ([])]));
-                       ("lwb", `Null)])
-             ]) |}]
+    OK |}]
 
 let%expect_test _ =
   let table =

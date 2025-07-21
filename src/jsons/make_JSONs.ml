@@ -164,8 +164,17 @@ let big_class_table_approx =
 
 let () =
   wrap "7.json"
-    ~upper_bounds:[ Interface ("ICollection", [ Class ("int", []) ]) ]
-    big_class_table_approx
+    ~upper_bounds:
+      [ Interface ("ICollection", [ Class ("java.lang.Integer", []) ]) ]
+    (make_c "java.lang.Number" ~params:[] []
+    :: make_c "java.lang.Integer"
+         ~sup:(Class ("java.lang.Number", []))
+         ~params:[]
+         [
+           Interface
+             ("java.lang.Comparable", [ Class ("java.lang.Integer", []) ]);
+         ]
+    :: big_class_table_approx)
 
 let () =
   wrap "8.json"

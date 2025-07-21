@@ -3,6 +3,30 @@
     [
       "C",
       {
+        "cname": "java.lang.Number",
+        "params": [],
+        "super": null,
+        "supers": []
+      }
+    ],
+    [
+      "C",
+      {
+        "cname": "java.lang.Integer",
+        "params": [],
+        "super": [ "Class", "java.lang.Number", [] ],
+        "supers": [
+          [
+            "Interface",
+            "java.lang.Comparable",
+            [ [ "Class", "java.lang.Integer", [] ] ]
+          ]
+        ]
+      }
+    ],
+    [
+      "C",
+      {
         "cname": "java.lang.Object",
         "params": [],
         "super": null,
@@ -101,7 +125,7 @@
     ]
   ],
   "upper_bounds": [
-    [ "Interface", "ICollection", [ [ "Class", "int", [] ] ] ]
+    [ "Interface", "ICollection", [ [ "Class", "java.lang.Integer", [] ] ] ]
   ],
   "lower_bounds": [],
   "neg_upper_bounds": [],

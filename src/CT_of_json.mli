@@ -59,7 +59,13 @@ type table = decl list
 
 val yojson_of_table : table -> Yojson.Safe.t
 val table_of_yojson : Yojson.Safe.t -> table
+
 val make_c : class_id -> params:param list -> ?sup:jtype -> jtype list -> decl
+(** A call [make_c classid params super ifaces] constructs a class declaration
+  with id [classid], super class [super] (or java.lang.Object if none),
+  parameter list [params], and
+  super interfaces list [ifaces]. *)
+
 val make_i : class_id -> params:param list -> jtype list -> decl
 
 type query = {

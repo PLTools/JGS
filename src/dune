@@ -36,6 +36,7 @@
    OCanren-ppx.ppx_distrib
    ppx_yojson_conv
    ppx_expect
+   bisect_ppx
    GT.ppx_all))
  (inline_tests))
 

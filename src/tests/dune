@@ -2,28 +2,39 @@
  (name test_printer)
  (modules test_printer)
  (libraries JGS_lib OCanren)
- (flags (-rectypes)))
+ (flags
+  (:standard -rectypes))
+ (preprocess
+  (pps bisect_ppx)))
 
 (executable
  (name functional_tests)
  (modules functional_tests)
  (libraries JGS_lib)
- (flags (-rectypes)))
+ (flags
+  (:standard -rectypes))
+ (preprocess
+  (pps bisect_ppx)))
 
 (executable
  (name reflection_tests)
  (modules reflection_tests)
  (libraries JGS_lib)
- (flags (-rectypes)))
+ (flags
+  (:standard -rectypes))
+ (preprocess
+  (pps bisect_ppx)))
 
 (executable
  (name relational_forward_tests)
  (modules relational_forward_tests)
  (libraries JGS_lib OCanren)
- (flags (-rectypes))
+ (flags
+  (:standard -rectypes))
  (preprocess
   (pps
    GT.ppx_all
+   bisect_ppx
    ;
    )))
 
@@ -36,6 +47,7 @@
   (pps
    GT.ppx_all
    OCanren-ppx.ppx_fresh
+   bisect_ppx
    ;
    )))
 
@@ -48,6 +60,7 @@
   (pps
    GT.ppx_all
    OCanren-ppx.ppx_fresh
+   bisect_ppx
    ;
    )))
 
@@ -60,6 +73,7 @@
   (pps
    GT.ppx_all
    OCanren-ppx.ppx_fresh
+   bisect_ppx
    ;
    )))
 
@@ -73,6 +87,7 @@
   (pps
    GT.ppx_all
    OCanren-ppx.ppx_fresh
+   bisect_ppx
    ;
    )))
 

@@ -10,7 +10,7 @@
  (flags
   (:standard -rectypes))
  (preprocess
-  (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
+  (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard bisect_ppx)))
 
 (executable
  (name run_json2)
@@ -19,7 +19,7 @@
  (flags
   (:standard -rectypes))
  (preprocess
-  (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
+  (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard bisect_ppx)))
 
 (cram
  (deps

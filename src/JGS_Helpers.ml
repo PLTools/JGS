@@ -68,7 +68,7 @@ let rec pp_jtyp_logic name_of :
     | Var { upb; lwb = Value (Some lwb); _ } ->
         fprintf ppf "(? extends %a super %a)" main upb main lwb
     | Var { upb = _; lwb = Var _; _ } ->
-        fprintf ppf "Not implemented %s %d" __FILE__ __LINE__
+        fprintf ppf "Not implemented %s %d" __MODULE__ __LINE__
   and main : _ -> int logic Jtype.logic -> _ =
    fun ppf x -> GT.fmt OCanren.logic helper ppf x
   in

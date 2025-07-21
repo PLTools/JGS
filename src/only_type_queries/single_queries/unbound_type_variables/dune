@@ -1,7 +1,7 @@
 (cram
  (deps
-  %{project_root}/jsons/run_json2.exe
-  %{project_root}/jsons_real/0.json
+  %{project_root}/src/jsons/run_json2.exe
+  %{project_root}/src/jsons_real/0.json
   ./java.util.NavigableSet.json
   ./java.util.HashSet.json
   ./java.util.SortedSet.json

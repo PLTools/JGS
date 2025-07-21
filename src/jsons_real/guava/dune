@@ -1,7 +1,7 @@
 (cram
  (applies_to 0)
  (deps
-  %{project_root}/jsons/run_json.exe
+  %{project_root}/src/jsons/run_json.exe
   0.json
   ;
   ))

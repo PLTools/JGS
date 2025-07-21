@@ -1,7 +1,7 @@
 [submodule "src/OCanren"]
 	path = src/OCanren
-	url = git@github.com:Lozov-Petr/OCanren.git
-	branch = wildcards+var_ordering
+	url = https://github.com/Kakadu/OCanren.git
+	branch = wildcards-2025-forPR-2
 [submodule "src/noCanren"]
 	path = src/noCanren
 	url = https://github.com/PLTools/noCanren.git

@@ -339,9 +339,7 @@ module Make (CT : CLASSTABLE) : MAKE = struct
 
   let debug_var_handler : int ilogic Jtype.injected -> goal -> goal -> goal =
    fun ta closure_down closure_up ->
-    debug_var ta
-      (Fun.flip (Jtype.reify OCanren.reify))
-      (fun reified_ta ->
+    debug_var ta (Jtype.reify OCanren.reify) (fun reified_ta ->
         match reified_ta with [ Value _ ] -> closure_up | _ -> closure_down)
 
   let direct_subtyping :

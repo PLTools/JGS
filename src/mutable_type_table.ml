@@ -308,7 +308,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       loop disj_args
     in
     fun id rez ->
-      debug_var id (Fun.flip OCanren.reify) (function
+      debug_var id OCanren.reify (function
         | [ Value id ] when id = top_id -> failure
         | [ Value id ] -> decl_by_id_ground id rez
         | _ -> decl_by_id_free id rez)
@@ -459,9 +459,8 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
       fresh rez
         (super_id_val =/= !!top_id)
         (some_rez === Std.some rez)
-        (debug_var sub_id_val (Fun.flip OCanren.reify) (fun sub_id_reified ->
-             debug_var super_id_val (Fun.flip OCanren.reify)
-               (fun super_id_reified ->
+        (debug_var sub_id_val OCanren.reify (fun sub_id_reified ->
+             debug_var super_id_val OCanren.reify (fun super_id_reified ->
                  match (sub_id_reified, super_id_reified) with
                  (* If ids of subclass and superclass are ground *)
                  | [ Value sub_id ], [ Value super_id ] ->

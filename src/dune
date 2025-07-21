@@ -17,7 +17,15 @@
   ;
   )
  (wrapped false)
- (libraries yojson GT OCanren noCanren.Option noCanren.List ocamlgraph str)
+ (libraries
+  yojson
+  ppx_yojson_conv_lib
+  GT
+  OCanren
+  noCanren.Option
+  noCanren.List
+  ocamlgraph
+  str)
  (flags
   (:standard -rectypes))
  (preprocess

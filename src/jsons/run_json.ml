@@ -33,9 +33,9 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       let fin = Mtime_clock.elapsed () in
       let span = Mtime.Span.abs_diff start fin in
       let msg =
-        if Mtime.Span.to_ms span > 1000. then
-          Printf.sprintf "%5.1fs" (Mtime.Span.to_s span)
-        else Printf.sprintf "%5.1fms" (Mtime.Span.to_ms span)
+        if Mtime.Span.to_uint64_ns span > 1_000_000_000L then
+          Printf.sprintf "%5.1fs" (Mtime.Span.to_float_ns span /. 1e9)
+        else Printf.sprintf "%5.1fms" (Mtime.Span.to_float_ns span /. 1e6)
       in
       (Some msg, ans)
     else fun f -> (None, f ())

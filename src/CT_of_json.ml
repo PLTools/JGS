@@ -11,6 +11,13 @@ let log_error fmt =
 type polarity = JGS.Polarity.t = Extends | Super
 [@@deriving yojson_of, of_yojson]
 
+(* let yojson_of_string s : Yojson.Safe.t = `String s
+
+   let string_of_yojson = function
+     | `String s -> s
+     | _ -> failwith "Bad input: string_of_yojson" *)
+open Ppx_yojson_conv_lib.Yojson_conv
+
 type class_id = string [@@deriving yojson_of, of_yojson]
 
 type jtype =
@@ -717,14 +724,12 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       (* Removing duplaicates optimization:
          we make `debug_var` based constraint to check duplicate answers *)
       let constr =
-        debug_var answer
-          (Fun.flip (JGS.Jtype.reify OCanren.reify))
-          (function
-            | [ (Value _ as ans) ]
-              when Jtype_set.mem_alpha_converted ans
-                     !Jtype_set.alpha_converted_answer_set ->
-                failure
-            | _ -> success)
+        debug_var answer (JGS.Jtype.reify OCanren.reify) (function
+          | [ (Value _ as ans) ]
+            when Jtype_set.mem_alpha_converted ans
+                   !Jtype_set.alpha_converted_answer_set ->
+              failure
+          | _ -> success)
       in
 
       let _, upper_goal =

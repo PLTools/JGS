@@ -135,7 +135,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
        id; *)
     Jtype.Var { id; index = Std.Nat.of_int index; upb; lwb = None }
 
-  let padding = -35
+  (* let padding = -35 *)
 
   let make_class ?name:_ params super supers =
     let id = add_class { params; super; supers } in
@@ -383,6 +383,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
     in
     let get_superclass_by_id_free_ground sub_id_val sub_kind super_id super_kind
         rez =
+      let _ : int ilogic Jtype.injected = rez in
       let subclass_map = get_subclass_map () in
       (* We find all children of type `sub_id` in precalculated map of children.
          For each type this map contains list of children ids and declaration of type `super_id` *)

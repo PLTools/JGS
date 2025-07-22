@@ -377,6 +377,10 @@ module type CLASSTABLE = sig
     Jtype_kind.injected ->
     int ilogic Jtype.injected Std.Option.injected ->
     goal
+  (** A call [get_superclass_by_id subid subkind supid supkind rez]
+  realtionally checks that subtypes [subid] with a kind [subkind] can be
+  a subtype of [supid] with kind [supkind]
+  *)
 
   (* TODO: After translation these signature items are functions,
      but they are values in `( -<- )` image *)
@@ -438,6 +442,10 @@ module type VERIFIER = sig
     int ilogic Jtype.injected Targ.injected ->
     bool ilogic ->
     goal
+  (** A "contains" relation [(<=<) (<-<) ta tb] checks that set of types [tb]
+      is  contained in the set of types [ta]
+      TODO: recheck
+      *)
 
   val class_int_sub :
     (int ilogic Jtype.injected ->
@@ -452,6 +460,9 @@ module type VERIFIER = sig
     Jtype_kind.injected ->
     bool ilogic ->
     goal
+  (** A helper  [class_int_sub (<-<) sub subArgs subKind sup supArgs supKind rez]
+      relationally  calculates if given instance of [sub] with args [subArgs]
+      could be a direct subtype of [sup] with args [supArgs] *)
 
   val ( -<- ) :
     (int ilogic Jtype.injected ->
@@ -462,6 +473,8 @@ module type VERIFIER = sig
     int ilogic Jtype.injected ->
     bool ilogic ->
     goal
+  (** Direct subtyping [(-<-) (<-<) sub sup rez] realtionally calculates
+    if given [sub] could be a direct subtype of [sup] *)
 end
 
 (* TODO for KAKADU: reversed order of methods in KLogic image *)

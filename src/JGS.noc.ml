@@ -193,7 +193,9 @@ struct
       then Some targs
       else None
     in
-    (* helper function *)
+    (* helper function to check class/interface subtyping.
+       Subtype is in the beginning, supertype in the end
+    *)
     let class_int_sub id_a targs_a id_b targs_b =
       if id_a = id_b then
         List.fold_left2 (fun f ta tb -> f && ta <=< tb) true targs_a targs_b

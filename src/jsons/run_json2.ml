@@ -101,7 +101,7 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       let fin = Mtime_clock.elapsed () in
       if JGS_stats.config.enable_counters then JGS_stats.report_counters ();
       let span = Mtime.Span.abs_diff start fin in
-      let span_ms = Mtime.Span.to_ms span in
+      let span_ms = Mtime.Span.to_float_ns span /. 1e6 in
 
       (match ans with
       | Some _ ->
@@ -112,9 +112,9 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       | None -> last_time := span_ms);
 
       let msg =
-        if Mtime.Span.to_ms span > 1000. then
-          Printf.sprintf "%5.2fs" (Mtime.Span.to_s span)
-        else Printf.sprintf "%5.2fms" span_ms
+        if Mtime.Span.to_uint64_ns span > 1_000_000_000L then
+          Printf.sprintf "%5.1fs" (Mtime.Span.to_float_ns span /. 1e9)
+        else Printf.sprintf "%5.1fms" (Mtime.Span.to_float_ns span /. 1e6)
       in
       (Some msg, ans))
     else fun f -> (None, f ())
@@ -174,7 +174,7 @@ let () =
 
     let upper, lower =
       match query with
-      | `Assoc vals -> (
+      | `Assoc vals ->
           ( (try List.assoc "upperBounds" vals
              with Not_found -> (
                try `List [ List.assoc "upperBound" vals ]
@@ -182,7 +182,7 @@ let () =
             try List.assoc "lowerBounds" vals
             with Not_found -> (
               try `List [ List.assoc "lowerBound" vals ]
-              with Not_found -> `List []) ))
+              with Not_found -> `List []) )
       | _ -> assert false
     in
 

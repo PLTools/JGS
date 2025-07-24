@@ -113,8 +113,8 @@ let rec ( <=< ) ~direct_subtyping ~constr ta tb =
        ])
 
 let ( <~< ) ~direct_subtyping ~constr ta tb =
-  debug_var ta (Fun.flip JGS.HO.jtype_reify) (fun reified_ta ->
-      debug_var tb (Fun.flip JGS.HO.jtype_reify) (fun reified_tb ->
+  debug_var ta JGS.HO.jtype_reify (fun reified_ta ->
+      debug_var tb JGS.HO.jtype_reify (fun reified_tb ->
           match (reified_ta, reified_tb) with
           | [ Value _ ], _ -> ( <=< ) ~direct_subtyping ~constr ta tb
           | _ -> ( <-< ) ~direct_subtyping ~constr ta tb))

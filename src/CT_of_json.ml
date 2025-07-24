@@ -15,6 +15,8 @@ let log_error fmt =
 type polarity = JGS.polarity = Extends | Super
 [@@deriving yojson_of, of_yojson]
 
+open Ppx_yojson_conv_lib.Yojson_conv
+
 type class_id = string [@@deriving yojson_of, of_yojson]
 
 type jtype =
@@ -717,7 +719,7 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
       let constr =
         match !need_remove_dups with
         | Debug_var ->
-            debug_var answer (Fun.flip JGS.HO.jtype_reify) (function
+            debug_var answer JGS.HO.jtype_reify (function
               | [ (Value _ as ans) ]
                 when Jtype_set.mem_alpha_converted ans
                        !Jtype_set.alpha_converted_answer_set ->

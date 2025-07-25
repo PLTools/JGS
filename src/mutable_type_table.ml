@@ -324,14 +324,11 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
         | None -> failure
         | Some decl -> (
             let supers = get_supers decl in
-            match
-              Stdlib.List.find_opt
-                (function
-                  | (Class (id, _) | Interface (id, _)) when id = super_id ->
-                      true
-                  | _ -> false)
-                supers
-            with
+            let is_typ_with_right_id = function
+              | (Class (id, _) | Interface (id, _)) when id = super_id -> true
+              | _ -> false
+            in
+            match Stdlib.List.find_opt is_typ_with_right_id supers with
             | None -> failure
             | Some ((Class _ | Interface _) as t) -> rez === jtype_inj t
             | _ -> failure)

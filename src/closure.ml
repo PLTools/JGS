@@ -47,23 +47,19 @@ let is_correct_type (module CT : SCT) ~closure_subtyping t =
         (id actual_params expected_params super supers)
         (t === !!(Class (id, actual_params)))
         (decl_by_id id !!(C !!{ params = expected_params; super; supers }))
-        (* TODO (Kakadu): write a relation same_length *)
-        (* (List.lengtho expected_params length)
-           (List.lengtho actual_params length) *)
         (list_same_length expected_params actual_params);
-      (* Interface: should be metioned in interface declarations with the same arguments amount *)
+      (* Interface: should be mentioned in interface declarations with the same arguments count *)
       fresh
         (id actual_params expected_params supers length)
         (t === !!(Interface (id, actual_params)))
         (decl_by_id id !!(I !!{ params = expected_params; supers }))
-        (List.lengtho expected_params length)
-        (List.lengtho actual_params length);
+        (list_same_length expected_params actual_params);
       (* Variable: lower bound should be subtype of upper bound *)
       fresh (id index upb lwb)
         (t === !!(Var { id; index; upb; lwb = some lwb }))
         (upb =/= lwb)
         (closure_subtyping lwb upb);
-      (* Varaible without lover bound: always allow *)
+      (* Variable without lower bound: always allow *)
       fresh (id index upb) (t === !!(Var { id; index; upb; lwb = none () }));
       (* Null: always allow *)
       t === !!Null;
@@ -79,6 +75,9 @@ let ( -<- ) (module CT : SCT) ~direct_subtyping ~closure_subtyping
        ta tb !!true)
     (is_correct_type ta) (is_correct_type tb)
 
+(** Subtyping relatton [ ta <-< tb ~direct_subtyping ~constr] optimized for
+  non-ground [ ta ] (i.e. assuming ground [tb])
+*)
 let rec ( <-< ) ~direct_subtyping ~constr ta tb st =
   if JGS_stats.config.trace_closure_subtyping then
     Format.printf "Closure.(<-<): ta = %a, tb = %a\n%!"
@@ -99,6 +98,8 @@ let rec ( <-< ) ~direct_subtyping ~constr ta tb st =
               (( <-< ) ~direct_subtyping ~constr ta ti);
           ])
 
+(** Subtyping relatton [ ta <=< tb ~direct_subtyping ~constr] optimized for ground [ ta ]
+*)
 let rec ( <=< ) ~direct_subtyping ~constr ta tb =
   fresh () constr
     (JGS_Helpers.only_classes_interfaces_and_arrays ta)
@@ -112,6 +113,9 @@ let rec ( <=< ) ~direct_subtyping ~constr ta tb =
            (( <=< ) ~direct_subtyping ~constr ti tb);
        ])
 
+(** Main subtyping relation [ta <~< tb ~direct_subtyping ~constr ]  checks groundness
+  of [ta] and picks [<=<] implementation and [<-<] otherwise
+*)
 let ( <~< ) ~direct_subtyping ~constr ta tb =
   debug_var ta JGS.HO.jtype_reify (fun reified_ta ->
       debug_var tb JGS.HO.jtype_reify (fun reified_tb ->

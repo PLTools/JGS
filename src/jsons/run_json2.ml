@@ -85,7 +85,68 @@ let pp_float_time fmt time =
   if time < 1000. then Format.fprintf fmt "%5.2fms" time
   else Format.fprintf fmt "%5.2fs" (Float.div time 1000.)
 
-let run_jtype pp ?(n = test_args.answers_count) query =
+type bench_results = {
+  total_amount : int;
+  uniq_count : int;
+  first_time : float;
+  total_time : float;
+  max_time : float;
+  last_time : float;
+}
+
+let empty_bench_result () =
+  {
+    total_amount = 0;
+    uniq_count = 0;
+    first_time = 0.0;
+    total_time = 0.0;
+    max_time = 0.0;
+    last_time = 0.0;
+  }
+
+let join_bench_results br1 br2 =
+  let join_count c1 c2 =
+    if c1 = 0 && c2 = 0 then failwith "Bad argument";
+    if c1 < 0 || c2 < 0 then failwith "Bad argument";
+    max c1 c2
+  in
+  {
+    total_amount = join_count br1.total_amount br2.total_amount;
+    uniq_count = join_count br1.uniq_count br2.uniq_count;
+    first_time = br1.first_time +. br2.first_time;
+    total_time = br1.total_time +. br2.total_time;
+    max_time = br1.max_time +. br2.max_time;
+    last_time = br1.last_time +. br2.last_time;
+  }
+
+let avg_bench_result count br =
+  let c = float_of_int count in
+  {
+    br with
+    first_time = br.first_time /. c;
+    total_time = br.total_time /. c;
+    max_time = br.max_time /. c;
+    last_time = br.last_time /. c;
+  }
+
+let pp_bench_results ppf
+    { total_amount; uniq_count; first_time; total_time; max_time; last_time; _ }
+    =
+  Format.fprintf ppf "\n";
+  Format.fprintf ppf "Total amount: %d\n" total_amount;
+  Format.fprintf ppf "Total uniq amount: %d\n" @@ uniq_count;
+  Format.fprintf ppf "First time: %a\n" pp_float_time first_time;
+  Format.fprintf ppf "Avg time: %a\n" pp_float_time
+  @@ Float.div total_time @@ Float.of_int total_amount;
+  Format.fprintf ppf "Max time: %a\n" pp_float_time max_time;
+  Format.fprintf ppf "Time to prove: %a\n" pp_float_time last_time;
+  Format.fprintf ppf "Total time: %a\n" pp_float_time
+  @@ Float.add total_time last_time;
+  Format.fprintf ppf "Total time without prove: %a\n" pp_float_time total_time;
+  Format.pp_print_flush ppf ();
+  ()
+
+let run_jtype ?(verbose = true) ?(n = test_args.answers_count) pp query =
   let is_first = ref true in
   let total_time = ref 0. in
   let max_time = ref 0. in
@@ -126,10 +187,10 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       match time (fun () -> OCanren.Stream.msplit stream) with
       | None, None -> i - 1
       | Some msg, None ->
-          Format.printf "%s  -  no answer\n%!" msg;
+          if verbose then Format.printf "%s  -  no answer\n%!" msg;
           i - 1
       | Some msg, Some (h, tl) ->
-          Format.printf "%s % 3d)  %a\n%!" msg i pp h;
+          if verbose then Format.printf "%s % 3d)  %a\n%!" msg i pp h;
           if Jtype_set.mem_alpha_converted h !answers_set then
             duplicated := Jtype_set.add_alpha_converted h !duplicated;
           answers_set := Jtype_set.add_alpha_converted h !answers_set;
@@ -138,7 +199,7 @@ let run_jtype pp ?(n = test_args.answers_count) query =
               !Jtype_set.alpha_converted_answer_set;
           loop (1 + i) tl
       | None, Some (h, tl) ->
-          Format.printf "% 3d)  %a\n%!" i pp h;
+          if verbose then Format.printf "% 3d)  %a\n%!" i pp h;
           answers_set := Jtype_set.add_alpha_converted h !answers_set;
           loop (1 + i) tl
   in
@@ -148,17 +209,14 @@ let run_jtype pp ?(n = test_args.answers_count) query =
   (* Format.printf "\n";
      Format.printf "Duplicated answers:\n";
      Jtype_set.iter (fun a -> Format.printf "  %a\n" pp a) !duplicated; *)
-  Format.printf "\n";
-  Format.printf "Total amount: %d\n" total_amount;
-  Format.printf "Total uniq amount: %d\n" @@ Jtype_set.cardinal !answers_set;
-  Format.printf "First time: %a\n" pp_float_time !first_time;
-  Format.printf "Avg time: %a\n" pp_float_time
-  @@ Float.div !total_time @@ Float.of_int total_amount;
-  Format.printf "Max time: %a\n" pp_float_time !max_time;
-  Format.printf "Time to prove: %a\n" pp_float_time !last_time;
-  Format.printf "Total time: %a\n" pp_float_time
-  @@ Float.add !total_time !last_time;
-  Format.printf "Total time without prove: %a\n" pp_float_time !total_time
+  {
+    total_amount;
+    uniq_count = Jtype_set.cardinal !answers_set;
+    first_time = !first_time;
+    total_time = !total_time;
+    max_time = !max_time;
+    last_time = !last_time;
+  }
 
 let class_or_interface typ =
   let open OCanren in
@@ -278,10 +336,11 @@ let () =
   let () =
     if test_args.run_default then
       let () = Printf.printf "1.1 (?) < Object :\n" in
-      run_jtype pp ~n:test_args.answers_count (fun typ ->
-          let open OCanren in
-          fresh () (class_or_interface typ)
-            (closure ~closure_type:Subtyping typ (jtype_inj CT.object_t)))
+      pp_bench_results Format.std_formatter
+      @@ run_jtype pp ~n:test_args.answers_count (fun typ ->
+             let open OCanren in
+             fresh () (class_or_interface typ)
+               (closure ~closure_type:Subtyping typ (jtype_inj CT.object_t)))
   in
 
   let __ () =
@@ -295,11 +354,35 @@ let () =
     |> Stdlib.Option.iter (fun s ->
            ignore @@ Sys.command ("echo 'enable\n' > " ^ s))
   in
-  run_jtype pp (fun typ ->
-      let open OCanren in
-      fresh ()
-        (typ =/= intersect __)
-        (typ =/= !!HO.Null)
-        (typ =/= var ~index:__ __ __ __)
-        (*  *)
-        (goal ~is_subtype:closure Fun.id typ))
+  let run_synthesis ~verbose () =
+    run_jtype ~verbose pp (fun typ ->
+        let open OCanren in
+        fresh ()
+          (typ =/= intersect __)
+          (typ =/= !!HO.Null)
+          (typ =/= var ~index:__ __ __ __)
+          (*  *)
+          (goal ~is_subtype:closure Fun.id typ))
+  in
+  match Sys.getenv "JGS_BENCH" with
+  | exception Not_found ->
+      pp_bench_results Format.std_formatter @@ run_synthesis ~verbose:true ()
+  | repeat_str ->
+      let repeat =
+        match int_of_string_opt repeat_str with
+        | None ->
+            Printf.eprintf "JGS_BENCH doesn't contain valid iteration count.\n";
+            exit 1
+        | Some repeat -> repeat
+      in
+      Printf.printf "Run benchmarks for %d iterations.\n%!" repeat;
+      let timings =
+        Stdlib.List.init repeat (fun _ -> run_synthesis ~verbose:false ())
+      in
+      Stdlib.List.iter (pp_bench_results Format.std_formatter) timings;
+      let avg =
+        List.fold_left join_bench_results (empty_bench_result ()) timings
+        |> avg_bench_result repeat
+      in
+      Format.printf "\n\n==== Final bench result:%a\n%!" pp_bench_results avg;
+      exit 1

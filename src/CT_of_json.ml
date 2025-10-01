@@ -652,12 +652,12 @@ type result_query =
   JGS.HO.jtype_injected ->
   OCanren.goal
 
-let show_processing pos pp_a a pp_b b =
-  Format.printf "\t%sProcessing: %a <-< %a\n%!"
+let show_processing ppf pos pp_a a pp_b b =
+  Format.fprintf ppf "\t%sProcessing: %a <-< %a\n%!"
     (if pos then "     " else " NOT ")
     pp_a a pp_b b
 
-let make_query ?(hack_goal = false) j : _ * result_query * _ =
+let make_query ?(hack_goal = false) j : _ * result_query * _ * _ =
   let { table; neg_upper_bounds; neg_lower_bounds; upper_bounds; lower_bounds }
       =
     query_of_yojson j
@@ -733,7 +733,8 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           (fun acc x ->
             let pos = true in
 
-            show_processing pos Format.pp_print_string "?" pp_jtype x;
+            show_processing Format.std_formatter pos Format.pp_print_string "?"
+              pp_jtype x;
 
             let sub, super = (answer, targ_inj (on_typ x)) in
 
@@ -745,7 +746,8 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           (fun acc x ->
             let pos = true in
 
-            show_processing pos pp_jtype x Format.pp_print_string "?";
+            show_processing Format.std_formatter pos pp_jtype x
+              Format.pp_print_string "?";
 
             let sub, super = (targ_inj (on_typ x), answer) in
 
@@ -764,8 +766,12 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
     in
     goal
   in
-
-  if not hack_goal then (ct, prepare_goal_attempt (), name_of_id)
+  let repr =
+    List.map (Format.asprintf "? <-< %a" pp_jtype) upper_bounds
+    @ List.map (Format.asprintf "%a <-< ?" pp_jtype) lower_bounds
+    |> String.concat " /\\ "
+  in
+  if not hack_goal then (ct, prepare_goal_attempt (), name_of_id, repr)
   else
     let varnames =
       let acc =
@@ -921,8 +927,12 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
             | Named v -> lookup v
           in
           let wrap ~upper ~pos (name, b) =
-            if upper then show_processing pos pp_var_desc name pp_jtype b
-            else show_processing pos pp_jtype b pp_var_desc name;
+            if upper then
+              show_processing Format.std_formatter pos pp_var_desc name pp_jtype
+                b
+            else
+              show_processing Format.std_formatter pos pp_jtype b pp_var_desc
+                name;
 
             let sub, super, closure_type =
               if upper then
@@ -965,4 +975,4 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ =
           | _ -> List.fold_right ( &&& ) all_goals success)
     in
 
-    (ct, goal, name_of_id)
+    (ct, goal, name_of_id, repr)

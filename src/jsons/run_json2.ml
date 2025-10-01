@@ -7,6 +7,8 @@ type test_args = {
   mutable answers_count : int;
   mutable fifo : string option;
   mutable query_hack : bool;
+  mutable latex_file : string;
+  mutable latex_prefix : string;
 }
 
 let test_args =
@@ -17,6 +19,8 @@ let test_args =
     answers_count = 1;
     fifo = None;
     query_hack = false;
+    latex_file = "";
+    latex_prefix = "TEST";
   }
 
 let () =
@@ -74,6 +78,12 @@ let () =
       ( "-remove-dups-debug-var",
         Arg.Unit (fun () -> CT_of_json.need_remove_dups := CT_of_json.Debug_var),
         " Remove answers duplacates using structural debug_var" );
+      ( "-la-file",
+        Arg.String (fun s -> test_args.latex_file <- s),
+        " Set latex output file for benchmarks" );
+      ( "-la-testname",
+        Arg.String (fun s -> test_args.latex_prefix <- s),
+        " <STRING> Set LaTeX test name" );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -146,7 +156,29 @@ let pp_bench_results ppf
   Format.pp_print_flush ppf ();
   ()
 
-let run_jtype ?(verbose = true) ?(n = test_args.answers_count) pp query =
+let pp_bench_latex ~name ~desc ppf
+    { total_amount; uniq_count; first_time; total_time; max_time; last_time; _ }
+    =
+  let open Format in
+  fprintf ppf "%% Benchmark '%s': %s\n%!" name desc;
+  fprintf ppf "\\def\\b%stotal{%d} %% Total amount\n" name total_amount;
+  fprintf ppf "\\def\\b%suniqC{%d} %% Total uniq amount\n" name uniq_count;
+  fprintf ppf "\\def\\b%sfirstTime{%a} %% First time\n" name pp_float_time
+    first_time;
+  fprintf ppf "\\def\\b%sAvgTime{%a} %% Avg time\n" name pp_float_time
+  @@ Float.div total_time @@ Float.of_int total_amount;
+  fprintf ppf "\\def\\b%sMaxTime{%a} %% Max time\n" name pp_float_time max_time;
+  fprintf ppf "\\def\\b%sLastTime{%a} %% Time to prove:\n" name pp_float_time
+    last_time;
+  fprintf ppf "\\def\\b%sTotalTime{%a} %% Total time\n" name pp_float_time
+    (Float.add total_time last_time);
+  fprintf ppf "\\def\\b%sTotalWioutProve{%a} %% Total time without prove\n" name
+    pp_float_time total_time;
+  fprintf ppf "%!"
+
+let run_jtype ?(verbose = true) ?(n = test_args.answers_count) pp
+    (query : JGS.HO.jtype_injected -> OCanren.goal) =
+  let _ : JGS.HO.jtype_injected -> OCanren.goal = query in
   let is_first = ref true in
   let total_time = ref 0. in
   let max_time = ref 0. in
@@ -259,7 +291,10 @@ let () =
   Out_channel.with_open_text "/tmp/combined.json" (fun ch ->
       Yojson.Safe.pretty_to_channel ch j);
 
-  let (module CT : Mutable_type_table.SAMPLE_CLASSTABLE), goal, name_of_id =
+  let ( (module CT : Mutable_type_table.SAMPLE_CLASSTABLE),
+        goal,
+        name_of_id,
+        goal_repr ) =
     match CT_of_json.make_query ~hack_goal:test_args.query_hack j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->
@@ -384,5 +419,17 @@ let () =
         List.fold_left join_bench_results (empty_bench_result ()) timings
         |> avg_bench_result repeat
       in
+      Format.printf "la_file = %s\n%!" test_args.latex_file;
       Format.printf "\n\n==== Final bench result:%a\n%!" pp_bench_results avg;
-      exit 1
+      if test_args.latex_file <> "" then
+        Out_channel.with_open_text test_args.latex_file (fun ch ->
+            let ppf = Format.formatter_of_out_channel ch in
+            Format.fprintf ppf "@[%a@]\n%!"
+              (pp_bench_latex ~desc:goal_repr ~name:"hack")
+              avg;
+            flush ch)
+      else
+        Format.printf "@[%a@]\n%!"
+          (pp_bench_latex ~desc:goal_repr ~name:"hack")
+          avg;
+      exit 0

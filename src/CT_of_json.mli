@@ -102,4 +102,7 @@ type result_query =
 val make_query :
   ?hack_goal:bool ->
   Yojson.Safe.t ->
-  (module Mutable_type_table.SAMPLE_CLASSTABLE) * result_query * (int -> string)
+  (module Mutable_type_table.SAMPLE_CLASSTABLE)
+  * result_query
+  * (int -> string)
+  * string

@@ -19,8 +19,6 @@ deps:
 		benchmark ppx_yojson_conv yojson ocamlformat ocaml-lsp-server mtime.1.4.0 mtime.1.4.0
 
 
-
-
 RUN_EXAMPLE = dune exec jsons/run_json2.exe --profile=release -- \
               -n 1000 -silent -need-simplified -ct jsons_real/0.json
 
@@ -69,3 +67,9 @@ example_upper_first_no_opts_$(1):
 endef
 
 $(foreach i,$(UP_DOWN_EXAMPLES),$(eval $(call LOPSTR_UP_DOWN_EXAMPLES,$(i))))
+
+
+.PHONY: bench_LOPSTR
+JGS_REPEAT ?= 10
+bench_LOPSTR:
+	JGS_BENCH=$(JGS_REPEAT) $(RUN_EXAMPLE)  -la-testname TI -la-file TI.tex only_type_queries/LOPSTR2023/down1_1.json

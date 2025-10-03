@@ -259,8 +259,20 @@ let class_or_interface typ =
 let () =
   let open JGS_Helpers in
   let j =
-    let ct = Yojson.Safe.from_file test_args.ct_file in
-    let query = Yojson.Safe.from_file test_args.query_file in
+    let ct =
+      if Sys.file_exists test_args.ct_file then
+        Yojson.Safe.from_file test_args.ct_file
+      else (
+        Printf.eprintf "File '%s' doesn't exist\n%!" test_args.ct_file;
+        exit 1)
+    in
+    let query =
+      if Sys.file_exists test_args.query_file then
+        Yojson.Safe.from_file test_args.query_file
+      else (
+        Printf.eprintf "File '%s' doesn't exist\n%!" test_args.query_file;
+        exit 1)
+    in
 
     let upper, lower =
       match query with
@@ -414,18 +426,18 @@ let () =
       let timings =
         Stdlib.List.init repeat (fun _ -> run_synthesis ~verbose:false ())
       in
-      Stdlib.List.iter (pp_bench_results Format.std_formatter) timings;
+      (* Stdlib.List.iter (pp_bench_results Format.std_formatter) timings; *)
       let avg =
         List.fold_left join_bench_results (empty_bench_result ()) timings
         |> avg_bench_result repeat
       in
-      Format.printf "la_file = %s\n%!" test_args.latex_file;
+
       Format.printf "\n\n==== Final bench result:%a\n%!" pp_bench_results avg;
       if test_args.latex_file <> "" then
         Out_channel.with_open_text test_args.latex_file (fun ch ->
             let ppf = Format.formatter_of_out_channel ch in
             Format.fprintf ppf "@[%a@]\n%!"
-              (pp_bench_latex ~desc:goal_repr ~name:"hack")
+              (pp_bench_latex ~desc:goal_repr ~name:test_args.latex_prefix)
               avg;
             flush ch)
       else

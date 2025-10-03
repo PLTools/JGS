@@ -68,8 +68,23 @@ endef
 
 $(foreach i,$(UP_DOWN_EXAMPLES),$(eval $(call LOPSTR_UP_DOWN_EXAMPLES,$(i))))
 
-
-.PHONY: bench_LOPSTR
+# Preapare target 'bench_LOPSTR' for 7 LOPSTR benchmarks
+.PHONY: bench_LOPSTR bench_LOPSTR_run
 JGS_REPEAT ?= 10
-bench_LOPSTR:
-	JGS_BENCH=$(JGS_REPEAT) $(RUN_EXAMPLE)  -la-testname TI -la-file TI.tex only_type_queries/LOPSTR2023/down1_1.json
+EXT     :=   TESTI  TESTII TESTIII  TESTV TESTVI TESTVII    TESTVIII
+CODE    := down1_1 down2_1 down2_2  up1_1  up2_1   up3_1 up1_down1_1
+# Getters
+JOINED  := $(join $(addsuffix :,$(EXT)),$(CODE))
+GET_EXT  = $(word 1,$(subst :, ,$1))
+GET_CODE = $(word 2,$(subst :, ,$1))
+define BUILD_RULES
+.PHONY: LOPSTR_$1
+LOPSTR_$1:
+	JGS_BENCH=$(JGS_REPEAT) $(RUN_EXAMPLE) -la-testname $(1) -la-file $(1).tex only_type_queries/LOPSTR2023/$(2).json
+bench_LOPSTR_run: LOPSTR_$1
+endef
+$(foreach j,$(JOINED),$(eval $(call BUILD_RULES,$(call GET_EXT,$j),$(call GET_CODE,$j))))
+
+bench_LOPSTR: bench_LOPSTR_run
+	cat $(addsuffix .tex,$(EXT)) > LOPSTR.tex
+	$(RM) $(addsuffix .tex,$(EXT))

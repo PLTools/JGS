@@ -713,9 +713,6 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ * _ =
     in
     let goal : result_query =
      fun ~is_subtype targ_inj answer ->
-      if lower_bounds <> [] then
-        Printf.eprintf "TODO: implement lower bounds\n%!";
-
       let constr =
         match !need_remove_dups with
         | Debug_var ->

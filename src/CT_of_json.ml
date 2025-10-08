@@ -657,7 +657,7 @@ let show_processing ppf pos pp_a a pp_b b =
     (if pos then "     " else " NOT ")
     pp_a a pp_b b
 
-let make_query ?(hack_goal = false) j : _ * result_query * _ * _ =
+let make_query ?(hack_goal = false) join_goals j : _ * result_query * _ * _ =
   let { table; neg_upper_bounds; neg_lower_bounds; upper_bounds; lower_bounds }
       =
     query_of_yojson j
@@ -957,14 +957,9 @@ let make_query ?(hack_goal = false) j : _ * result_query * _ * _ =
             []
           in
           let all_goals =
-            List.concat
-              [
-                pos_upper_goals;
-                pos_lower_goals;
-                neg_upper_goals;
-                neg_lower_goals;
-              ]
+            join_goals ~upper:pos_upper_goals ~lower:pos_lower_goals
           in
+
           match all_goals with
           | [] ->
               Format.printf "The are not bounds. Exit\n%!";

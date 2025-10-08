@@ -101,6 +101,7 @@ type result_query =
 
 val make_query :
   ?hack_goal:bool ->
+  (upper:OCanren.goal list -> lower:OCanren.goal list -> OCanren.goal list) ->
   Yojson.Safe.t ->
   (module Mutable_type_table.SAMPLE_CLASSTABLE)
   * result_query

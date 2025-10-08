@@ -9,6 +9,7 @@ type test_args = {
   mutable query_hack : bool;
   mutable latex_file : string;
   mutable latex_prefix : string;
+  mutable lower_before : bool;
 }
 
 let test_args =
@@ -21,6 +22,7 @@ let test_args =
     query_hack = false;
     latex_file = "";
     latex_prefix = "TEST";
+    lower_before = false;
   }
 
 let () =
@@ -84,6 +86,12 @@ let () =
       ( "-la-testname",
         Arg.String (fun s -> test_args.latex_prefix <- s),
         " <STRING> Set LaTeX test name" );
+      ( "-upbefore",
+        Arg.Unit (fun () -> test_args.lower_before <- false),
+        " Put upper constraint in the beginning of the search (DEFAULT)" );
+      ( "-lobefore",
+        Arg.Unit (fun () -> test_args.lower_before <- true),
+        " Put lower constraint in the beginning of the search " );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -307,7 +315,11 @@ let () =
         goal,
         name_of_id,
         goal_repr ) =
-    match CT_of_json.make_query ~hack_goal:test_args.query_hack j with
+    let join ~upper ~lower =
+      if test_args.lower_before then lower @ upper else upper @ lower
+    in
+
+    match CT_of_json.make_query ~hack_goal:test_args.query_hack join j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->
         Format.eprintf "%s\n%!" (Printexc.to_string exn);

@@ -1,5 +1,6 @@
 {
   "table": [
+    [ "I", { "iname": "int", "iparams": [], "isupers": [] } ],
     [
       "C",
       {

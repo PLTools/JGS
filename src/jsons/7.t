@@ -1,10 +1,8 @@
   $ export NOBENCH=1
-  $ ./run_json.exe 7.json -n 3 #-v
-  
-  Type variables mentioned in constraints: []
-  
+  $ export OCAMLRUNPARAM='b=0'
+  $ timeout 5 ./run_json.exe 7.json -n 2 #-v
+  Table size: 9
   Running generated query
-  	     Processing: _.? <-< ICollection (int ())
-    1)  null
-    2)  list<[int]>
-    3)  ICollection<[int]>
+  	     Processing: ? <-< ICollection (int ())
+    1)  ICollection<[int]>
+    2)  java.util.List<[int]>

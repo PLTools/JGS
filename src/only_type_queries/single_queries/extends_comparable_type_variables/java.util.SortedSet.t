@@ -6,4 +6,5 @@
   Negatives bound are not yet supported
   Running generated query
   	     Processing: ? <-< java.util.SortedSet (? extends java.lang.Comparable ((T <: java.lang.Object ())))
+  timeout
   [124]

@@ -165,7 +165,7 @@ let big_class_table_approx =
 let () =
   wrap "7.json"
     ~upper_bounds:[ Interface ("ICollection", [ Class ("int", []) ]) ]
-    big_class_table_approx
+    (make_i "int" ~params:[] [] :: big_class_table_approx)
 
 let () =
   wrap "8.json"

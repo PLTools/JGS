@@ -2,5 +2,6 @@
  (deps
   %{project_root}/jsons/run_json.exe
   0.json
+  %{bin:run_json}
   ;
   ))

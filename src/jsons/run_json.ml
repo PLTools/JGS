@@ -1,4 +1,11 @@
-let () = Printexc.record_backtrace true
+(* let () = Printexc.record_backtrace true *)
+
+let () =
+  Sys.set_signal Sys.sigterm
+    (Sys.Signal_handle
+       (fun _ ->
+         print_endline "timeout";
+         exit 1))
 
 type test_args = {
   mutable json_name : string;

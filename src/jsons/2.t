@@ -1,10 +1,9 @@
   $ export NOBENCH=1
 # should give List<int> but it doesn't
-  $ ./run_json.exe 2.json -n 2
-  
-  Type variables mentioned in constraints: []
-  
+  $ timeout 5 ./run_json.exe 2.json -n 2
+  Table size: 4
   Running generated query
-  	     Processing: _.? <-< List (? extends java.lang.Object ())
-    1)  null
-    2)  List<[java.lang.Object]>
+  	     Processing: ? <-< List (? extends java.lang.Object ())
+    1)  List<[java.lang.Object]>
+  timeout
+  [124]

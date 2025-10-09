@@ -6,6 +6,7 @@
 (executable
  (name run_json)
  (modules run_json)
+ (public_name run_json)
  (libraries JGS_lib yojson unix mtime.clock.os mtime)
  (flags
   (:standard -rectypes))
@@ -23,8 +24,9 @@
   (pps OCanren-ppx.ppx_fresh OCanren-ppx.ppx_wildcard)))
 
 (cram
+ ; (timeout 2.5) needs dune 3.20
  (deps
-  ; run_json.exe
+  run_json.exe
   run_json2.exe
   test1.json
   2.json

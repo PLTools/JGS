@@ -178,6 +178,12 @@ let pp_bench_latex ~name ~desc ppf
     { total_amount; uniq_count; first_time; total_time; max_time; last_time; _ }
     =
   let open Format in
+  let pp_float_time fmt time =
+    if time < 1. then fprintf fmt ">1~\\ms{}"
+    else if time < 1000. then fprintf fmt "%5.0f\\ms{}" time
+    else fprintf fmt "%5.0f\\s{}" (Float.div time 1000.)
+  in
+
   fprintf ppf "%% Benchmark '%s': %s\n%!" name desc;
   fprintf ppf "\\def\\b%stotal{%d} %% Total amount\n" name total_amount;
   fprintf ppf "\\def\\b%suniqC{%d} %% Total uniq amount\n" name uniq_count;
@@ -273,6 +279,21 @@ let class_or_interface typ =
   let open JGS_Helpers in
   conde
     [ fresh (a b) (typ === class_ a b); fresh (a b) (typ === interface a b) ]
+
+let perform_KS_test timings =
+  match Sys.getenv_opt "JGS_BENCH" with
+  | None -> ()
+  | Some _ -> (
+      let data =
+        List.map (fun { total_time; _ } -> total_time) timings |> Array.of_list
+      in
+      (* TODO(Kakadu): Uniform distribution should be Normal? *)
+      let uniform_cdf x = x in
+      (* CDF for a uniform distribution over [0,1] *)
+      match Owl_stats.ks_test ~alpha:0.05 data uniform_cdf with
+      | { Owl_stats.reject = false; _ } -> ()
+      | { Owl_stats.reject = true; _ } ->
+          Printf.printf "\027[31m%s\027[0m\n%!" "Statistics is bad.")
 
 let () =
   let open JGS_Helpers in
@@ -452,7 +473,9 @@ let () =
       let timings =
         Stdlib.List.init repeat (fun _ -> run_synthesis ~verbose:false ())
       in
-      (* Stdlib.List.iter (pp_bench_results Format.std_formatter) timings; *)
+
+      let () = perform_KS_test timings in
+
       let avg =
         List.fold_left join_bench_results (empty_bench_result ()) timings
         |> avg_bench_result repeat

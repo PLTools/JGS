@@ -17,7 +17,7 @@
  (name run_json2)
  (public_name run_json2)
  (modules run_json2)
- (libraries JGS_lib yojson unix mtime.clock.os mtime)
+ (libraries JGS_lib yojson unix mtime.clock.os mtime owl)
  (flags
   (:standard -rectypes))
  (preprocess

@@ -92,6 +92,9 @@ let () =
       ( "-lobefore",
         Arg.Unit (fun () -> test_args.lower_before <- true),
         " Put lower constraint in the beginning of the search " );
+      ( "-vct",
+        Arg.Unit (fun () -> CT_of_json.verbose_errors := true),
+        " Verbose building of class table " );
     ]
     (fun file -> test_args.query_file <- file)
     ""
@@ -369,7 +372,6 @@ let () =
 
        let (_ : hack -> hack -> bool ilogic -> Peano.HO.goal) = ( -<- )
      end in *)
-  Format.printf "Running generated query\n%!";
   let pp ppf x =
     let nat_logic_to_int = function
       | Value n -> n
@@ -392,7 +394,7 @@ let () =
     Format.fprintf ppf "%a" (JGS_Helpers.pp_jtyp_logic lookup) x
   in
 
-  let () =
+  let __ () =
     if test_args.run_default then
       let () = Printf.printf "1.1 (?) < Object :\n" in
       pp_bench_results Format.std_formatter
@@ -423,9 +425,14 @@ let () =
           (*  *)
           (goal ~is_subtype:closure Fun.id typ))
   in
+  Format.printf "Running generated query\n%!";
+
   match Sys.getenv "JGS_BENCH" with
-  | exception Not_found ->
+  | exception Not_found when Sys.getenv_opt "NOBENCH" = None ->
       pp_bench_results Format.std_formatter @@ run_synthesis ~verbose:true ()
+  | exception Not_found ->
+      let _ = run_synthesis ~verbose:true () in
+      ()
   | repeat_str ->
       let repeat =
         match int_of_string_opt repeat_str with

@@ -14,6 +14,7 @@
 
 (executable
  (name run_json2)
+ (public_name run_json2)
  (modules run_json2)
  (libraries JGS_lib yojson unix mtime.clock.os mtime)
  (flags
@@ -23,7 +24,7 @@
 
 (cram
  (deps
-  run_json.exe
+  ; run_json.exe
   run_json2.exe
   test1.json
   2.json

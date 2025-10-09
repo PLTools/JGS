@@ -33,9 +33,9 @@ let run_jtype pp ?(n = test_args.answers_count) query =
       let fin = Mtime_clock.elapsed () in
       let span = Mtime.Span.abs_diff start fin in
       let msg =
-        if Mtime.Span.to_ms span > 1000. then
-          Printf.sprintf "%5.1fs" (Mtime.Span.to_s span)
-        else Printf.sprintf "%5.1fms" (Mtime.Span.to_ms span)
+        if Mtime.Span.to_uint64_ns span > 1_000_000_000L then
+          Printf.sprintf "%5.1fs" (Mtime.Span.to_float_ns span /. 1e9)
+        else Printf.sprintf "%5.1fms" (Mtime.Span.to_float_ns span /. 1e6)
       in
       (Some msg, ans)
     else fun f -> (None, f ())
@@ -65,8 +65,9 @@ let () =
   let open JGS_Helpers in
   let j = Yojson.Safe.from_file test_args.json_name in
 
-  let (module CT : Mutable_type_table.SAMPLE_CLASSTABLE), goal, name_of_id =
-    match CT_of_json.make_query j with
+  let join ~upper ~lower = upper @ lower in
+  let (module CT : Mutable_type_table.SAMPLE_CLASSTABLE), goal, name_of_id, _ =
+    match CT_of_json.make_query join j with
     | x -> x
     | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (exn, j) ->
         Format.eprintf "%s\n%!" (Printexc.to_string exn);
@@ -75,7 +76,6 @@ let () =
   in
   let module V = JGS.FO.Verifier (CT) in
   let open OCanren in
-  let open JGS in
   let open Closure in
   let { closure = ( <-< ); direct_subtyping = ( -<- ); _ } =
     Closure.make_closure (module CT) V.( -<- )

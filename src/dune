@@ -1,7 +1,10 @@
 (env
  (dev
   (flags
-   (:standard -warn-error -9-27-32-33-34))))
+   (:standard -warn-error -9-22-27-32-33-34)))
+ (_
+  (flags
+   (:standard -warn-error -22))))
 
 (library
  (name JGS_lib)

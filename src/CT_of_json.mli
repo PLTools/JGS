@@ -72,6 +72,7 @@ type query = {
   lower_bounds : jtype list;
   neg_upper_bounds : jtype list;
   neg_lower_bounds : jtype list;
+      [@ocaml.ppwarning "Negative bounds are not supported in goal generation"]
 }
 
 val yojson_of_query : query -> Yojson.Safe.t

@@ -1,7 +1,7 @@
 open Stdlib
 
 let failwiths fmt = Format.kasprintf failwith fmt
-let verbose_errors = ref true
+let verbose_errors = ref false
 let lower_bounds_first = ref true
 
 type deplicates_tactic = No_remove | Structural | Debug_var
@@ -679,7 +679,7 @@ let make_query ?(hack_goal = false) join_goals j : _ * result_query * _ * _ =
           match id_of_name name with
           | cid -> JGS_Helpers.interface !!cid (Std.list on_arg args)
           | exception Not_found -> failwiths "Can't find class name '%s'" name)
-      | Var { id; index; upb; lwb } ->
+      | Var { id = _; index; upb; lwb } ->
           (* let id = Std.Nat.inj (Std.Nat.of_int (CT.new_var ())) in *)
           let make_var : index:_ -> _ -> _ -> _ -> JGS.HO.jtype_injected =
             JGS_Helpers.var
@@ -948,14 +948,15 @@ let make_query ?(hack_goal = false) join_goals j : _ * result_query * _ * _ =
           let pos_lower_goals =
             List.map (wrap ~upper:false ~pos:true) lower_bounds
           in
-          let neg_upper_goals =
+          let _neg_upper_goals =
             []
             (* List.map (wrap ~upper:true ~pos:false) upper_bounds *)
           in
-          let neg_lower_goals =
+          let _neg_lower_goals =
             (* List.map (wrap ~upper:false ~pos:false) upper_bounds *)
             []
           in
+
           let all_goals =
             join_goals ~upper:pos_upper_goals ~lower:pos_lower_goals
           in

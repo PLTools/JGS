@@ -625,11 +625,11 @@ module HO = struct
      fun ( <-< ) type_a type_b res st ->
       let () =
         (if JGS_stats.config.enable_counters then
-         let open JGS_stats in
-         OCanren.is_ground_bool res st
-           ~on_ground:(fun b ->
-             (if b then st_add_true else st_add_false) get_arr set_arr stats)
-           ~onvar:(fun () -> st_add_var get_arr set_arr stats));
+           let open JGS_stats in
+           OCanren.is_ground_bool res st
+             ~on_ground:(fun b ->
+               (if b then st_add_true else st_add_false) get_arr set_arr stats)
+             ~onvar:(fun () -> st_add_var get_arr set_arr stats));
         if JGS_stats.config.trace_arrow then
           Format.printf " -<-: type_a = %a, type_b = %a, rez = %a\n%!"
             CT.pp_jtyp
@@ -781,9 +781,6 @@ module HO = struct
 end
 
 module FO = struct
-  open Option.HO
-  open Peano.HO
-  open List.HO
   open Option.HO
   open HO
 

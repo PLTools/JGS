@@ -1,7 +1,7 @@
 [submodule "src/OCanren"]
 	path = src/OCanren
-	url = https://github.com/Kakadu/OCanren.git
-	branch = wildcards-2025-forPR-2+reify_in_state
+	url = https://github.com/PLTools/OCanren.git
+	branch = master
 	shallow = true
 
 [submodule "src/noCanren"]

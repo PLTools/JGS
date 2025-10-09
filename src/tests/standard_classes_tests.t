@@ -4,44 +4,45 @@
   ****************************************************************************************************
   
   ? <-< Iterable<Object>, 10 answers:
-     Collection<[Object]>
      Iterable<[Object]>
+     Collection<[Object]>
+     Set<[Object]>
+     Queue<[Object]>
      AbstactCollection<[Object]>
      List<[Object]>
-     Queue<[Object]>
-     Set<[Object]>
-     AbstractList<[Object]>
+     LinkedHashSet<[Object]>
+     SortedSet<[Object]>
+     HashSet<[Object]>
      AbstractSet<[Object]>
-     AbstractQueue<[Object]>
-  -- AbstractList<[Object]>
   
   
   Uniq answers:
       1 - AbstactCollection<[Object]>
       1 - AbstractSet<[Object]>
-      1 - AbstractQueue<[Object]>
+      1 - HashSet<[Object]>
+      1 - LinkedHashSet<[Object]>
       1 - Iterable<[Object]>
       1 - Collection<[Object]>
       1 - List<[Object]>
       1 - Queue<[Object]>
       1 - Set<[Object]>
-      2 - AbstractList<[Object]>
+      1 - SortedSet<[Object]>
   
   Total answers amount:      10
-  Total uniq answers amount: 9
+  Total uniq answers amount: 10
   
   
   ****************************************************************************************************
   
   ? <-< AbstractList<Object>, 8 answers:
      AbstractList<[Object]>
-     ArrayList<[Object]>
-     Vector<[Object]>
      AbstractSequentialList<[Object]>
-     AttributeList
-     RoleList
-     Stack<[Object]>
+     Vector<[Object]>
+     ArrayList<[Object]>
      LinkedList<[Object]>
+     RoleList
+     AttributeList
+     Stack<[Object]>
   
   
   Uniq answers:
@@ -79,8 +80,8 @@
   -- Object
   -- Object
      List<[? Extends Object]>
-     List<[? Super Object]>
   -- Object
+     List<[? Super Object]>
   -- Collection<[Object]>
      AbstactCollection<[? Extends Object]>
   -- List<[? Extends Object]>
@@ -91,18 +92,18 @@
      Collection<[? Extends Object]>
      Collection<[? Super Object]>
   -- Object
-     Iterable<[? Extends Object]>
-     Iterable<[? Super Object]>
   -- Iterable<[Object]>
+     Iterable<[? Extends Object]>
   -- Collection<[? Extends Object]>
+     Iterable<[? Super Object]>
   -- Collection<[? Super Object]>
   -- Iterable<[Object]>
   -- Collection<[? Extends Object]>
   -- Collection<[? Super Object]>
   -- Object
   -- Iterable<[? Extends Object]>
-  -- Object
   -- Iterable<[? Super Object]>
+  -- Object
   -- Iterable<[? Extends Object]>
   -- Iterable<[? Super Object]>
   
@@ -139,15 +140,15 @@
   ****************************************************************************************************
   
   ? <-< RandomAccess & ? <-< Iterable<Object>, 3 answers:
-     Collection<[Object]>
      Iterable<[Object]>
-     AbstactCollection<[Object]>
+     Collection<[Object]>
+     Set<[Object]>
   
   
   Uniq answers:
-      1 - AbstactCollection<[Object]>
       1 - Iterable<[Object]>
       1 - Collection<[Object]>
+      1 - Set<[Object]>
   
   Total answers amount:      3
   Total uniq answers amount: 3
@@ -156,8 +157,8 @@
   ****************************************************************************************************
   
   ? <-< RandomAccess & ? <-< AbstractCollection<Object>, 2 answers:
-     ArrayList<[Object]>
      Vector<[Object]>
+     ArrayList<[Object]>
   
   
   Uniq answers:
@@ -196,31 +197,28 @@
   -- Object
   -- Object
      Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
   -- Collection<[Object]>
+  -- Iterable<[Object]>
+  -- Iterable<[Object]>
   -- Collection<[Object]>
   -- Collection<[Object]>
      Collection<[? Extends Object]>
-  -- Collection<[? Extends Object]>
-  -- Collection<[? Extends Object]>
      AbstactCollection<[? Extends Object]>
+  -- Collection<[? Extends Object]>
+  -- Collection<[? Extends Object]>
      Collection<[? Super Object]>
-  -- Collection<[? Super Object]>
-  -- Collection<[? Super Object]>
      AbstactCollection<[? Super Object]>
+  -- Collection<[? Super Object]>
+  -- Collection<[? Super Object]>
   -- Collection<[Object]>
   -- Collection<[Object]>
-  -- Object
-  -- Collection<[Object]>
-  -- Object
-  -- Object
-  -- Collection<[Object]>
-  -- Object
   -- Collection<[Object]>
   -- Object
   -- Object
-  -- Collection<[Object]>
+  -- Object
+  -- Object
+  -- Object
+  -- Object
   -- Iterable<[Object]>
   -- Iterable<[Object]>
   -- Iterable<[Object]>
@@ -234,8 +232,26 @@
   -- Collection<[? Extends Object]>
   -- Collection<[? Extends Object]>
   -- Collection<[? Super Object]>
+  -- Collection<[Object]>
+  -- Collection<[Object]>
   -- Collection<[? Super Object]>
   -- Collection<[? Super Object]>
+  -- Collection<[Object]>
+  -- Iterable<[Object]>
+  -- Iterable<[Object]>
+  -- Iterable<[Object]>
+  -- Collection<[? Extends Object]>
+  -- Collection<[? Extends Object]>
+  -- Collection<[? Extends Object]>
+  -- Object
+  -- Object
+  -- Collection<[? Super Object]>
+  -- Collection<[? Super Object]>
+  -- Collection<[? Super Object]>
+  -- Object
+  -- Object
+  -- Object
+  -- Object
   -- Iterable<[Object]>
   -- Iterable<[Object]>
   -- Iterable<[Object]>
@@ -245,19 +261,17 @@
   -- Collection<[? Super Object]>
   -- Collection<[? Super Object]>
   -- Collection<[? Super Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
-  -- Iterable<[Object]>
   -- Object
-  -- Collection<[? Extends Object]>
-  -- Collection<[? Extends Object]>
-  -- Collection<[? Extends Object]>
+  -- Iterable<[? Extends Object]>
   -- Object
-  -- Collection<[? Super Object]>
+  -- Iterable<[? Extends Object]>
+  -- Iterable<[? Extends Object]>
   -- Object
-  -- Collection<[? Super Object]>
-  -- Collection<[? Super Object]>
   -- Object
+  -- Iterable<[? Super Object]>
+  -- Iterable<[? Super Object]>
+  -- Object
+  -- Iterable<[? Super Object]>
   -- Object
   -- Object
   -- Object
@@ -268,26 +282,13 @@
   -- Iterable<[? Extends Object]>
   -- Iterable<[? Extends Object]>
   -- Iterable<[? Extends Object]>
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Object
-  -- Iterable<[? Super Object]>
-  -- Iterable<[? Super Object]>
-  -- Iterable<[? Super Object]>
   -- Iterable<[? Extends Object]>
   -- Iterable<[? Extends Object]>
   -- Iterable<[? Extends Object]>
   -- Iterable<[? Super Object]>
   -- Iterable<[? Super Object]>
   -- Iterable<[? Super Object]>
-  -- Iterable<[? Extends Object]>
-  -- Iterable<[? Extends Object]>
   -- Iterable<[? Super Object]>
-  -- Iterable<[? Extends Object]>
   -- Iterable<[? Super Object]>
   -- Iterable<[? Super Object]>
   
@@ -314,10 +315,10 @@
   
   ? <-< Collection<String>, 5 answers:
      Collection<[String]>
+     Set<[String]>
+     Queue<[String]>
      AbstactCollection<[String]>
      List<[String]>
-     Queue<[String]>
-     Set<[String]>
   
   
   Uniq answers:

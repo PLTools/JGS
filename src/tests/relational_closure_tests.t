@@ -20,7 +20,7 @@
   
   C <-3-< A: 
   [
-    [Class (4, []); Class (5, []); Var {id=_.11554, index=_.11555, upb=Class (5, []), lwb=Some (Class (6, []))}; Class (6, [])]
+    [Class (4, []); Class (5, []); Var {id=_.23648, index=_.23649, upb=Class (5, []), lwb=Some (Class (6, []))}; Class (6, [])]
   ]
   
   Class Int: 4

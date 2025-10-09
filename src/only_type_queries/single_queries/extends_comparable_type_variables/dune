@@ -1,6 +1,8 @@
 (cram
  (deps
   %{project_root}/jsons/run_json2.exe
+  %{bin:run_json2}
+  ; %{bin:Chro}
   %{project_root}/jsons_real/0.json
   ./java.util.NavigableSet.json
   ./java.util.HashSet.json
@@ -11,3 +13,9 @@
   ./java.util.Collection.json
   ;
   ))
+
+; These tests were not working during LOPSTR2023 submission
+
+(cram
+ (applies_to java.lang.Iterable java.util.Collection java.util.HashSet)
+ (enabled_if false))

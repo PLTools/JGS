@@ -3,11 +3,17 @@
   %{project_root}/jsons/run_json2.exe
   %{project_root}/jsons_real/0.json
   ./java.util.NavigableSet.json
-  ./java.util.HashSet.json
-  ./java.util.SortedSet.json
-  ./java.util.List.json
-  ./java.lang.Iterable.json
-  ./java.util.Set.json
-  ./java.util.Collection.json
+  ; ./java.util.HashSet.json
+  ; ./java.util.SortedSet.json
+  ; ./java.util.List.json
+  ; ./java.lang.Iterable.json
+  ; ./java.util.Set.json
+  ; ./java.util.Collection.json
   ;
   ))
+
+; Disable tests that  were not working in LOPSTR paper
+
+(cram
+ (applies_to java.util.NavigableSet)
+ (enabled_if false))

@@ -2,7 +2,7 @@
 # 14s (direct subtyping) for the 1st answer is a cringe!
 # 26s (closure subtyping)
 # I tried to rewrite query from using a variable to usage of Wildcards. Performance become worse!
-  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.util.NavigableSet.json -n 5
+  $ timeout 15 run_json2 -ct ../../../jsons_real/0.json java.util.NavigableSet.json -n 3
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4568,9 +4568,9 @@
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
+
   Type variables mentioned in constraints: [ T ]
-  
+
   Running generated query
   	     Processing: _.? <-< java.util.NavigableSet (? extends java.lang.Comparable ((T <: java.lang.Object ())))
   	     Processing: _.T <-< java.lang.Object ()

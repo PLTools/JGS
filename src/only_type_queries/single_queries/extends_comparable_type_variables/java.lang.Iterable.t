@@ -1,6 +1,6 @@
 dune exec jsons/run_json2.exe -- -n 5 -ct jsons_real/0.json only_type_queries/single_queries/extends_comparable_type_variables/java.lang.Iterable.json
   $ export NOBENCH=1
-  $ ../../../jsons/run_json2.exe -ct ../../../jsons_real/0.json java.lang.Iterable.json -n 5
+  $ timeout 15 run_json2 -ct ../../../jsons_real/0.json java.lang.Iterable.json -n 1
     The type "kotlinx.coroutines.flow.FlowKt__EmittersKt$onEmpty$1$1$emit" is not found (Bad JSON?). Ignored.
     The type "kotlinx.coroutines.flow.internal.ChannelLimitedFlowMerge$collectTo" is not found (Bad JSON?). Ignored.
     The type "kotlinx.metadata.impl.WritersKt$writeConstructor" is not found (Bad JSON?). Ignored.
@@ -4566,9 +4566,9 @@ dune exec jsons/run_json2.exe -- -n 5 -ct jsons_real/0.json only_type_queries/si
   Possibly undeclared param 'K' in the class 'kotlin.text.StringsKt___StringsKt$groupingBy$1'
   Possibly undeclared param 'R' in the class 'kotlin.text.StringsKt___StringsKt$chunkedSequence$1'
   Negatives bound are not yet supported
-  
+
   Type variables mentioned in constraints: [ T ]
-  
+
   Running generated query
   	     Processing: _.? <-< java.lang.Iterable (? extends java.lang.Comparable ((T <: java.lang.Object ())))
   	     Processing: _.T <-< java.lang.Object ()

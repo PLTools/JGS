@@ -281,19 +281,62 @@ let class_or_interface typ =
     [ fresh (a b) (typ === class_ a b); fresh (a b) (typ === interface a b) ]
 
 let perform_KS_test timings =
-  match Sys.getenv_opt "JGS_BENCH" with
-  | None -> ()
-  | Some _ -> (
-      let data =
-        List.map (fun { total_time; _ } -> total_time) timings |> Array.of_list
-      in
-      (* TODO(Kakadu): Uniform distribution should be Normal? *)
-      let uniform_cdf x = x in
-      (* CDF for a uniform distribution over [0,1] *)
-      match Owl_stats.ks_test ~alpha:0.05 data uniform_cdf with
-      | { Owl_stats.reject = false; _ } -> ()
-      | { Owl_stats.reject = true; _ } ->
-          Printf.printf "\027[31m%s\027[0m\n%!" "Statistics is bad.")
+  let data =
+    timings
+    |> Stdlib.List.map (fun { total_time = t; _ } -> t)
+    |> Stdlib.List.sort Float.compare
+    |> Stdlib.List.map string_of_float
+  in
+  let fmt : _ format =
+    {|
+import numpy as np
+from scipy import stats
+import matplotlib.pyplot as plt
+
+# Step 1: Create a float array
+data = [ %s ]
+
+# Step 2: Perform the Shapiro-Wilk Test
+statistic, p_value = stats.shapiro(data)
+
+# Step 3: Interpret the results
+alpha = 0.05
+print(f'Statistic: {statistic}, p-value: {p_value}')
+
+if p_value > alpha:
+    print("The data follows a normal distribution (fail to reject H0)")
+else:
+    print("The data does not follow a normal distribution (reject H0)")
+
+plt.figure(figsize=(10, 6))
+plt.hist(data, bins=30, color='skyblue', edgecolor='black')
+plt.xlabel('Value')
+plt.ylabel('Frequency')
+plt.grid(axis='y', alpha=0.75)  # Grid lines for better readability
+plt.savefig('histogram.png', format='png', dpi=300)  # Save with high resolution
+plt.close()  # Close the plot to free up memor
+|}
+  in
+  let filename = "1.py" in
+  Out_channel.with_open_text filename (fun ch ->
+      Printf.fprintf ch fmt (String.concat ", " data));
+  let _ : int = Sys.command (Printf.sprintf "python3 %s" filename) in
+  ()
+(* in *)
+
+(* match Sys.getenv_opt "JGS_BENCH" with
+   | None -> ()
+   | Some _ -> (
+       let data =
+         List.map (fun { total_time; _ } -> total_time) timings |> Array.of_list
+       in
+       (* TODO(Kakadu): Uniform distribution should be Normal? *)
+       let uniform_cdf x = x in
+       (* CDF for a uniform distribution over [0,1] *)
+       match Owl_stats.ks_test ~alpha:0.05 data uniform_cdf with
+       | { Owl_stats.reject = false; _ } -> ()
+       | { Owl_stats.reject = true; _ } ->
+           Printf.printf "\027[31m%s\027[0m\n%!" "Statistics is bad.") *)
 
 let () =
   let open JGS_Helpers in
@@ -453,6 +496,23 @@ let () =
           (*  *)
           (goal ~is_subtype:closure Fun.id typ))
   in
+
+  let () =
+    print_endline "Warmup";
+    Gc.compact ();
+    let maj_before, min_before =
+      let st = Gc.stat () in
+      (st.Gc.major_collections, st.Gc.minor_collections)
+    in
+    let _ = run_synthesis ~verbose:false () in
+    let maj_after, min_after =
+      let st = Gc.stat () in
+      (st.Gc.major_collections, st.Gc.minor_collections)
+    in
+    Format.printf "Before: %d, %d\n%!" maj_before min_before;
+    Format.printf "After:  %d, %d\n%!" maj_after min_after
+  in
+
   Format.printf "Running generated query\n%!";
 
   match Sys.getenv "JGS_BENCH" with
@@ -469,7 +529,7 @@ let () =
             exit 1
         | Some repeat -> repeat
       in
-      Printf.printf "Run benchmarks for %d iterations.\n%!" repeat;
+      Printf.printf "Run benchmarks for %d iterations!!!\n%!" repeat;
       let timings =
         Stdlib.List.init repeat (fun _ -> run_synthesis ~verbose:false ())
       in

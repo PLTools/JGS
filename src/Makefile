@@ -19,7 +19,7 @@ deps:
 		benchmark ppx_yojson_conv yojson ocamlformat ocaml-lsp-server mtime.1.4.0 mtime.1.4.0
 
 
-RUN_EXAMPLE = dune exec jsons/run_json2.exe --profile=release -- \
+RUN_EXAMPLE = OCAMLRUNPARAM='s=500M,h=500M' dune exec jsons/run_json2.exe --profile=release -- \
               -n 1000 -silent -need-simplified -ct jsons_real/0.json
 
 UP_DOWN_EXAMPLES = up1_down1_1 up1_down1_2
@@ -70,7 +70,7 @@ $(foreach i,$(UP_DOWN_EXAMPLES),$(eval $(call LOPSTR_UP_DOWN_EXAMPLES,$(i))))
 
 # Preapare target 'bench_LOPSTR' for 7 LOPSTR benchmarks
 .PHONY: bench_LOPSTR bench_LOPSTR_run
-JGS_REPEAT ?= 10
+JGS_REPEAT ?= 100
 EXT     :=   TESTI TESTII TESTIII TESTIV TESTV TESTVI TESTVII  TESTIX
 CODE    := down1_1 down2_1 down2_2   up3_0 up1_1  up2_1    up3_1   up1_down1_1
 # Getters
@@ -80,8 +80,10 @@ GET_CODE = $(word 2,$(subst :, ,$1))
 
 define BUILD_RULES
 .PHONY: LOPSTR_$1
-LOPSTR_$1:
-	JGS_BENCH=$(JGS_REPEAT) $(RUN_EXAMPLE) -la-testname $(1) -la-file $(1).tex only_type_queries/LOPSTR2023/$(2).json
+LOPSTR_$1: bench_LOPSTR_prepare
+	JGS_BENCH=$(JGS_REPEAT) OCAMLRUNPARAM='s=500M,h=500M' taskset -c 0 ../_build/default/src/jsons/run_json2.exe \
+		-n 1000 -silent -need-simplified -ct jsons_real/0.json \
+		-la-testname $(1) -la-file $(1).tex only_type_queries/LOPSTR2023/$(2).json
 bench_LOPSTR_run: LOPSTR_$1
 endef
 $(foreach j,$(JOINED),$(eval $(call BUILD_RULES,$(call GET_EXT,$j),$(call GET_CODE,$j))))
@@ -90,6 +92,11 @@ LOPSTR_TESTVIII:
 	JGS_BENCH=$(JGS_REPEAT) $(RUN_EXAMPLE) -la-testname TESTVIII -la-file TESTVIII.tex only_type_queries/LOPSTR2023/up1_down1_1.json -lobefore
 bench_LOPSTR_run: LOPSTR_TESTVIII
 
-bench_LOPSTR: bench_LOPSTR_run
+bench_LOPSTR: bench_LOPSTR_prepare bench_LOPSTR_run
 	cat $(addsuffix .tex,$(EXT) TESTVIII) > LOPSTR.tex
 	$(RM) $(addsuffix .tex,$(EXT) TESTVIII)
+.PHONY: bench_LOPSTR_prepare
+bench_LOPSTR_prepare:
+	sudo cpupower -c 0 frequency-set --governor performance
+	dune b jsons/run_json2.exe --profile=release
+

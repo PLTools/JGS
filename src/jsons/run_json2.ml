@@ -237,6 +237,16 @@ let run_jtype ?(verbose = true) ?(n = test_args.answers_count) pp
     else fun f -> (None, f ())
   in
   (* TODO: OCanren.Stream needs iteri_k for stuff like this *)
+  let iteri_k n stream fin f =
+    let rec helper i n stream ~f =
+      if i > n then fin (i - 1)
+      else
+        f i
+          (fun () -> OCanren.Stream.msplit stream)
+          (fun tl -> helper (1 + i) n ~f tl)
+    in
+    helper 0 n ~f stream
+  in
   let rec loop i stream =
     if i > n then i - 1
     else
@@ -260,7 +270,28 @@ let run_jtype ?(verbose = true) ?(n = test_args.answers_count) pp
           loop (1 + i) tl
   in
   let total_amount =
-    loop 1 @@ OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify)
+    iteri_k n
+      (OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify))
+      Fun.id
+      (fun i calc k ->
+        match time calc with
+        | None, None -> i - 1
+        | Some msg, None ->
+            if verbose then Format.printf "%s  -  no answer\n%!" msg;
+            i - 1
+        | Some msg, Some (h, tl) ->
+            if verbose then Format.printf "%s % 3d)  %a\n%!" msg i pp h;
+            if Jtype_set.mem_alpha_converted h !answers_set then
+              duplicated := Jtype_set.add_alpha_converted h !duplicated;
+            answers_set := Jtype_set.add_alpha_converted h !answers_set;
+            Jtype_set.alpha_converted_answer_set :=
+              Jtype_set.add_alpha_converted h
+                !Jtype_set.alpha_converted_answer_set;
+            k tl
+        | None, Some (h, tl) ->
+            if verbose then Format.printf "% 3d)  %a\n%!" i pp h;
+            answers_set := Jtype_set.add_alpha_converted h !answers_set;
+            k tl)
   in
   (* Format.printf "\n";
      Format.printf "Duplicated answers:\n";

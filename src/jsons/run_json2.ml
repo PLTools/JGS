@@ -314,7 +314,16 @@ plt.xlabel('Value')
 plt.ylabel('Frequency')
 plt.grid(axis='y', alpha=0.75)  # Grid lines for better readability
 plt.savefig('histogram.png', format='png', dpi=300)  # Save with high resolution
-plt.close()  # Close the plot to free up memor
+plt.close()
+
+# Q-Q plot
+stats.probplot(data, dist="norm", plot=plt)
+plt.title("Normal Q-Q Plot")
+plt.xlabel("Theoretical Quantiles")
+plt.ylabel("Sample Quantiles")
+plt.grid()
+plt.savefig('qq.png', format='png', dpi=300)
+plt.close()
 |}
   in
   let filename = "1.py" in
@@ -322,21 +331,6 @@ plt.close()  # Close the plot to free up memor
       Printf.fprintf ch fmt (String.concat ", " data));
   let _ : int = Sys.command (Printf.sprintf "python3 %s" filename) in
   ()
-(* in *)
-
-(* match Sys.getenv_opt "JGS_BENCH" with
-   | None -> ()
-   | Some _ -> (
-       let data =
-         List.map (fun { total_time; _ } -> total_time) timings |> Array.of_list
-       in
-       (* TODO(Kakadu): Uniform distribution should be Normal? *)
-       let uniform_cdf x = x in
-       (* CDF for a uniform distribution over [0,1] *)
-       match Owl_stats.ks_test ~alpha:0.05 data uniform_cdf with
-       | { Owl_stats.reject = false; _ } -> ()
-       | { Owl_stats.reject = true; _ } ->
-           Printf.printf "\027[31m%s\027[0m\n%!" "Statistics is bad.") *)
 
 let () =
   let open JGS_Helpers in

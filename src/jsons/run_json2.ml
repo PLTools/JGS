@@ -7,6 +7,15 @@ let () =
          print_endline "timeout";
          exit 1))
 
+let () =
+  let file = "/sys/devices/system/cpu/intel_pstate/no_turbo" in
+  let cnt = In_channel.with_open_text file In_channel.input_all in
+
+  match cnt with
+  | "0" | "0\n" -> Format.eprintf "Turbo Boost is enabled\n%!"
+  | "1" | "1\n" -> ()
+  | _ -> Printf.eprintf "What to do with '%s'\n%!" cnt
+
 type test_args = {
   mutable ct_file : string;
   mutable query_file : string;
@@ -114,12 +123,13 @@ let pp_float_time fmt time =
   else Format.fprintf fmt "%5.2fs" (Float.div time 1000.)
 
 type bench_results = {
-  total_amount : int;
-  uniq_count : int;
-  first_time : float;
+  total_amount : int;  (** Total count of answers *)
+  uniq_count : int;  (** Count of unique  answers *)
+  first_time : float;  (** Time of the first answer *)
   total_time : float;
-  max_time : float;
-  last_time : float;
+      (** Synthesis time: from the beginning to the time of last answer *)
+  max_time : float;  (** Longest time to get next answer *)
+  last_time : float;  (** Time to prove that no more answers left *)
 }
 
 let empty_bench_result () =
@@ -247,28 +257,7 @@ let run_jtype ?(verbose = true) ?(n = test_args.answers_count) pp
     in
     helper 0 n ~f stream
   in
-  let rec loop i stream =
-    if i > n then i - 1
-    else
-      match time (fun () -> OCanren.Stream.msplit stream) with
-      | None, None -> i - 1
-      | Some msg, None ->
-          if verbose then Format.printf "%s  -  no answer\n%!" msg;
-          i - 1
-      | Some msg, Some (h, tl) ->
-          if verbose then Format.printf "%s % 3d)  %a\n%!" msg i pp h;
-          if Jtype_set.mem_alpha_converted h !answers_set then
-            duplicated := Jtype_set.add_alpha_converted h !duplicated;
-          answers_set := Jtype_set.add_alpha_converted h !answers_set;
-          Jtype_set.alpha_converted_answer_set :=
-            Jtype_set.add_alpha_converted h
-              !Jtype_set.alpha_converted_answer_set;
-          loop (1 + i) tl
-      | None, Some (h, tl) ->
-          if verbose then Format.printf "% 3d)  %a\n%!" i pp h;
-          answers_set := Jtype_set.add_alpha_converted h !answers_set;
-          loop (1 + i) tl
-  in
+
   let total_amount =
     iteri_k n
       (OCanren.(run q) query (fun q -> q#reify JGS.HO.jtype_reify))
@@ -314,8 +303,8 @@ let class_or_interface typ =
 let perform_KS_test timings =
   let data =
     timings
-    |> Stdlib.List.map (fun { total_time = t; _ } -> t)
-    |> Stdlib.List.sort Float.compare
+    |> Stdlib.List.map (fun { first_time = t; _ } -> t)
+    (* |> Stdlib.List.sort Float.compare *)
     |> Stdlib.List.map string_of_float
   in
   let fmt : _ format =
@@ -407,8 +396,6 @@ let () =
           :: values)
     | _ -> failwith " Bad class table"
   in
-  Out_channel.with_open_text "/tmp/combined.json" (fun ch ->
-      Yojson.Safe.pretty_to_channel ch j);
 
   let ( (module CT : Mutable_type_table.SAMPLE_CLASSTABLE),
         goal,
@@ -524,18 +511,20 @@ let () =
 
   let () =
     print_endline "Warmup";
-    Gc.compact ();
-    let maj_before, min_before =
-      let st = Gc.stat () in
-      (st.Gc.major_collections, st.Gc.minor_collections)
-    in
-    let _ = run_synthesis ~verbose:false () in
-    let maj_after, min_after =
-      let st = Gc.stat () in
-      (st.Gc.major_collections, st.Gc.minor_collections)
-    in
-    Format.printf "Before: %d, %d\n%!" maj_before min_before;
-    Format.printf "After:  %d, %d\n%!" maj_after min_after
+    for _ = 1 to 10 do
+      Gc.compact ();
+      let maj_before, min_before =
+        let st = Gc.stat () in
+        (st.Gc.major_collections, st.Gc.minor_collections)
+      in
+      let _ = run_synthesis ~verbose:false () in
+      let maj_after, min_after =
+        let st = Gc.stat () in
+        (st.Gc.major_collections, st.Gc.minor_collections)
+      in
+      Format.printf "Before: %d, %d\n%!" maj_before min_before;
+      Format.printf "After:  %d, %d\n%!" maj_after min_after
+    done
   in
 
   Format.printf "Running generated query\n%!";

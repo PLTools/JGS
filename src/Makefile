@@ -81,7 +81,7 @@ GET_CODE = $(word 2,$(subst :, ,$1))
 define BUILD_RULES
 .PHONY: LOPSTR_$1
 LOPSTR_$1: bench_LOPSTR_prepare
-	JGS_BENCH=$(JGS_REPEAT) OCAMLRUNPARAM='s=500M,h=500M' taskset -c 0 ../_build/default/src/jsons/run_json2.exe \
+	JGS_BENCH=$(JGS_REPEAT) OCAMLRUNPARAM='s=1500M,h=1500M' taskset -c 0 _build/default/jsons/run_json2.exe \
 		-n 1000 -silent -need-simplified -ct jsons_real/0.json \
 		-la-testname $(1) -la-file $(1).tex only_type_queries/LOPSTR2023/$(2).json
 bench_LOPSTR_run: LOPSTR_$1

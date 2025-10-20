@@ -8,18 +8,22 @@ let () =
          exit 1))
 
 let () =
+  (* Intel-specific *)
   let file = "/sys/devices/system/cpu/intel_pstate/no_turbo" in
-  let cnt = In_channel.with_open_text file In_channel.input_all in
+  if Sys.file_exists file then
+    let cnt = In_channel.with_open_text file In_channel.input_all in
 
-  match cnt with
-  | "0" | "0\n" -> Format.eprintf "Turbo Boost is enabled\n%!"
-  | "1" | "1\n" -> ()
-  | _ -> Printf.eprintf "What to do with '%s'\n%!" cnt
+    match cnt with
+    | "0" | "0\n" -> Format.eprintf "Turbo Boost is enabled\n%!"
+    | "1" | "1\n" -> ()
+    | _ -> Printf.eprintf "What to do with '%s'\n%!" cnt
+  else ()
 
 type test_args = {
   mutable ct_file : string;
   mutable query_file : string;
   mutable run_default : bool;
+  mutable warmup_iterations : int;
   mutable answers_count : int;
   mutable fifo : string option;
   mutable query_hack : bool;
@@ -33,6 +37,7 @@ let test_args =
     ct_file = "";
     query_file = "";
     run_default = false;
+    warmup_iterations = 100;
     answers_count = 1;
     fifo = None;
     query_hack = false;
@@ -122,14 +127,14 @@ let pp_float_time fmt time =
   if time < 1000. then Format.fprintf fmt "%5.2fms" time
   else Format.fprintf fmt "%5.2fs" (Float.div time 1000.)
 
-type bench_results = {
+type 'f bench_results = {
   total_amount : int;  (** Total count of answers *)
   uniq_count : int;  (** Count of unique  answers *)
-  first_time : float;  (** Time of the first answer *)
-  total_time : float;
+  first_time : 'f;  (** Time of the first answer *)
+  total_time : 'f;
       (** Synthesis time: from the beginning to the time of last answer *)
-  max_time : float;  (** Longest time to get next answer *)
-  last_time : float;  (** Time to prove that no more answers left *)
+  max_time : 'f;  (** Longest time to get next answer *)
+  last_time : 'f;  (** Time to prove that no more answers left *)
 }
 
 let empty_bench_result () =
@@ -157,36 +162,53 @@ let join_bench_results br1 br2 =
     last_time = br1.last_time +. br2.last_time;
   }
 
-let avg_bench_result count br =
-  let c = float_of_int count in
-  {
-    br with
-    first_time = br.first_time /. c;
-    total_time = br.total_time /. c;
-    max_time = br.max_time /. c;
-    last_time = br.last_time /. c;
-  }
+let avg_bench_results = function
+  | [] -> assert false
+  | h :: tl ->
+      let c = float_of_int (1 + List.length tl) in
+      let collect field =
+        let f (min, sum, max) r =
+          let v = field r in
+          (Float.min min v, sum +. v, Float.max max v)
+        in
+        let min, sum, max =
+          List.fold_left f (Float.max_float, 0.0, Float.min_float) tl
+        in
+        (min, sum /. c, max)
+      in
+      assert (List.for_all (fun { uniq_count } -> uniq_count = h.uniq_count) tl);
+      assert (
+        List.for_all (fun { total_amount } -> total_amount = h.total_amount) tl);
+      {
+        total_amount = h.total_amount;
+        uniq_count = h.uniq_count;
+        first_time = collect (fun br -> br.first_time);
+        total_time = collect (fun br -> br.total_time);
+        max_time = collect (fun br -> br.max_time);
+        last_time = collect (fun br -> br.last_time);
+      }
 
-let pp_bench_results ppf
-    { total_amount; uniq_count; first_time; total_time; max_time; last_time; _ }
-    =
+let snd3 (_, x, _) = x
+let thr3 (_, _, x) = x
+
+let pp_bench_results ppf br =
   Format.fprintf ppf "\n";
-  Format.fprintf ppf "Total amount: %d\n" total_amount;
-  Format.fprintf ppf "Total uniq amount: %d\n" @@ uniq_count;
-  Format.fprintf ppf "First time: %a\n" pp_float_time first_time;
+  Format.fprintf ppf "Total amount: %d\n" br.total_amount;
+  Format.fprintf ppf "Total uniq amount: %d\n" br.uniq_count;
+  Format.fprintf ppf "First time: %a\n" pp_float_time (snd3 br.first_time);
   Format.fprintf ppf "Avg time: %a\n" pp_float_time
-  @@ Float.div total_time @@ Float.of_int total_amount;
-  Format.fprintf ppf "Max time: %a\n" pp_float_time max_time;
-  Format.fprintf ppf "Time to prove: %a\n" pp_float_time last_time;
+  @@ Float.div (snd3 br.total_time)
+  @@ Float.of_int br.total_amount;
+  Format.fprintf ppf "Max time: %a\n" pp_float_time (snd3 br.max_time);
+  Format.fprintf ppf "Time to prove: %a\n" pp_float_time (snd3 br.last_time);
   Format.fprintf ppf "Total time: %a\n" pp_float_time
-  @@ Float.add total_time last_time;
-  Format.fprintf ppf "Total time without prove: %a\n" pp_float_time total_time;
+  @@ Float.add (snd3 br.total_time) (snd3 br.last_time);
+  Format.fprintf ppf "Total time without prove: %a\n" pp_float_time
+    (snd3 br.total_time);
   Format.pp_print_flush ppf ();
   ()
 
-let pp_bench_latex ~name ~desc ppf
-    { total_amount; uniq_count; first_time; total_time; max_time; last_time; _ }
-    =
+let pp_bench_latex ~name ~desc ppf br =
   let open Format in
   let pp_float_time fmt time =
     if time < 1. then fprintf fmt ">1~\\ms{}"
@@ -194,20 +216,32 @@ let pp_bench_latex ~name ~desc ppf
     else fprintf fmt "%5.0f\\s{}" (Float.div time 1000.)
   in
 
+  let pp_error ppf (min, avg, max) =
+    Format.fprintf ppf "-%2.0f\\%% +%2.0f\\%%"
+      ((avg -. min) /. avg *. 100.)
+      ((max -. avg) /. avg *. 100.)
+  in
+
   fprintf ppf "%% Benchmark '%s': %s\n%!" name desc;
-  fprintf ppf "\\def\\b%stotal{%d} %% Total amount\n" name total_amount;
-  fprintf ppf "\\def\\b%suniqC{%d} %% Total uniq amount\n" name uniq_count;
+  fprintf ppf "\\def\\b%stotal{%d} %% Total amount\n" name br.total_amount;
+  fprintf ppf "\\def\\b%suniqC{%d} %% Total uniq amount\n" name br.uniq_count;
   fprintf ppf "\\def\\b%sfirstTime{%a} %% First time\n" name pp_float_time
-    first_time;
+    (snd3 br.first_time);
+  fprintf ppf "\\def\\b%sfirstTimeError{%a}\n" name pp_error br.first_time;
   fprintf ppf "\\def\\b%sAvgTime{%a} %% Avg time\n" name pp_float_time
-  @@ Float.div total_time @@ Float.of_int total_amount;
-  fprintf ppf "\\def\\b%sMaxTime{%a} %% Max time\n" name pp_float_time max_time;
+  @@ Float.div (snd3 br.total_time)
+  @@ Float.of_int br.total_amount;
+  fprintf ppf "\\def\\b%sAvgTimeError{%a}\n" name pp_error br.total_time;
+  fprintf ppf "\\def\\b%sMaxTime{%a} %% Max time\n" name pp_float_time
+    (snd3 br.max_time);
+  fprintf ppf "\\def\\b%sMaxTimeError{%a}\n" name pp_error br.max_time;
   fprintf ppf "\\def\\b%sLastTime{%a} %% Time to prove:\n" name pp_float_time
-    last_time;
+    (snd3 br.last_time);
   fprintf ppf "\\def\\b%sTotalTime{%a} %% Total time\n" name pp_float_time
-    (Float.add total_time last_time);
+    (Float.add (snd3 br.total_time) (snd3 br.last_time));
   fprintf ppf "\\def\\b%sTotalWioutProve{%a} %% Total time without prove\n" name
-    pp_float_time total_time;
+    pp_float_time (snd3 br.total_time);
+  fprintf ppf "\\def\\b%sTotalWioutProveError{%a}\n" name pp_error br.total_time;
   fprintf ppf "%!"
 
 let run_jtype ?(verbose = true) ?(n = test_args.answers_count) pp
@@ -480,11 +514,14 @@ let () =
   let __ () =
     if test_args.run_default then
       let () = Printf.printf "1.1 (?) < Object :\n" in
-      pp_bench_results Format.std_formatter
-      @@ run_jtype pp ~n:test_args.answers_count (fun typ ->
-             let open OCanren in
-             fresh () (class_or_interface typ)
-               (closure ~closure_type:Subtyping typ (jtype_inj CT.object_t)))
+      pp_bench_latex ~name:"test" ~desc:"desc" Format.std_formatter
+      @@ avg_bench_results
+           [
+             run_jtype pp ~n:test_args.answers_count (fun typ ->
+                 let open OCanren in
+                 fresh () (class_or_interface typ)
+                   (closure ~closure_type:Subtyping typ (jtype_inj CT.object_t)));
+           ]
   in
 
   let __ () =
@@ -511,7 +548,7 @@ let () =
 
   let () =
     print_endline "Warmup";
-    for _ = 1 to 10 do
+    for _ = 1 to test_args.warmup_iterations do
       Gc.compact ();
       let maj_before, min_before =
         let st = Gc.stat () in
@@ -531,7 +568,8 @@ let () =
 
   match Sys.getenv "JGS_BENCH" with
   | exception Not_found when Sys.getenv_opt "NOBENCH" = None ->
-      pp_bench_results Format.std_formatter @@ run_synthesis ~verbose:true ()
+      pp_bench_results Format.std_formatter
+      @@ avg_bench_results [ run_synthesis ~verbose:true () ]
   | exception Not_found ->
       let _ = run_synthesis ~verbose:true () in
       ()
@@ -550,10 +588,7 @@ let () =
 
       let () = perform_KS_test timings in
 
-      let avg =
-        List.fold_left join_bench_results (empty_bench_result ()) timings
-        |> avg_bench_result repeat
-      in
+      let avg = avg_bench_results timings in
 
       Format.printf "\n\n==== Final bench result:%a\n%!" pp_bench_results avg;
       if test_args.latex_file <> "" then

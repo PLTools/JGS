@@ -129,7 +129,7 @@ let pp_float_time fmt time =
 
 type 'f bench_results = {
   total_amount : int;  (** Total count of answers *)
-  uniq_count : int;  (** Count of unique  answers *)
+  uniq_count : int;  (** Count of unique answers *)
   first_time : 'f;  (** Time of the first answer *)
   total_time : 'f;
       (** Synthesis time: from the beginning to the time of last answer *)
@@ -206,6 +206,8 @@ let pp_bench_results ppf br =
   Format.fprintf ppf "Total time without prove: %a\n" pp_float_time
     (snd3 br.total_time);
   Format.pp_print_flush ppf ();
+  (* TODO: calculate error% *)
+  (* TODO: <1\\ms *)
   ()
 
 let pp_bench_latex ~name ~desc ppf br =
@@ -533,7 +535,7 @@ let () =
   let () =
     test_args.fifo
     |> Stdlib.Option.iter (fun s ->
-           ignore @@ Sys.command ("echo 'enable\n' > " ^ s))
+        ignore @@ Sys.command ("echo 'enable\n' > " ^ s))
   in
   let run_synthesis ~verbose () =
     run_jtype ~verbose pp (fun typ ->
@@ -542,26 +544,29 @@ let () =
           (typ =/= intersect __)
           (typ =/= !!HO.Null)
           (typ =/= var ~index:__ __ __ __)
-          (*  *)
+          (* *)
           (goal ~is_subtype:closure Fun.id typ))
   in
 
   let () =
-    print_endline "Warmup";
-    for _ = 1 to test_args.warmup_iterations do
-      Gc.compact ();
-      let maj_before, min_before =
-        let st = Gc.stat () in
-        (st.Gc.major_collections, st.Gc.minor_collections)
-      in
-      let _ = run_synthesis ~verbose:false () in
-      let maj_after, min_after =
-        let st = Gc.stat () in
-        (st.Gc.major_collections, st.Gc.minor_collections)
-      in
-      Format.printf "Before: %d, %d\n%!" maj_before min_before;
-      Format.printf "After:  %d, %d\n%!" maj_after min_after
-    done
+    match Sys.getenv "JGS_BENCH" with
+    | exception Not_found -> ()
+    | _ ->
+        print_endline "Warmup";
+        for _ = 1 to test_args.warmup_iterations do
+          Gc.compact ();
+          let maj_before, min_before =
+            let st = Gc.stat () in
+            (st.Gc.major_collections, st.Gc.minor_collections)
+          in
+          let _ = run_synthesis ~verbose:false () in
+          let maj_after, min_after =
+            let st = Gc.stat () in
+            (st.Gc.major_collections, st.Gc.minor_collections)
+          in
+          Format.printf "Before: %d, %d\n%!" maj_before min_before;
+          Format.printf "After:  %d, %d\n%!" maj_after min_after
+        done
   in
 
   Format.printf "Running generated query\n%!";

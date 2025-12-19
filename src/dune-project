@@ -1,6 +1,14 @@
 (lang dune 3.3)
 
+(generate_opam_files true)
+
 (name JGS)
 
 (package
- (name JGS))
+ (name JGS)
+ (depends
+  (ocamlformat
+   (and
+    :with-test
+    (>= 0.26.1)
+    (< 0.27)))))

@@ -1,0 +1,50 @@
+name: Build master
+
+on:
+  push:
+    paths-ignore:
+      - 'papers/**'
+      # do not run CI if we are writing a paper
+      # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#example-ignoring-paths
+    branches:
+      #- 'master'
+      - 'LOPSTR-2023'
+env:
+  OPAMCONFIRMLEVEL: unsafe-yes
+  OPAMROOT: /home/user/.opam
+  OCANREN_NON_ABSTRACT_GOAL: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: kakadu18/ocaml:pltools
+      options: --user user
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/LOPSTR-2023' }}
+
+    steps:
+      - run: opam --version
+      - run: opam exec -- ocamlopt --version
+      - run: opam update
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      # - run: opam pin add ./OCanren --yes   --with-test --with-doc
+      #   working-directory: ./src
+      # - run: opam pin add ./noCanren --yes   --with-test --with-doc
+      #   working-directory: ./src
+
+      - run: opam install . ./OCanren  ./noCanren  --yes --deps-only --with-test --with-doc
+        working-directory: ./src
+
+      - name: List installed dependencies...
+        run: opam list
+
+      - run: opam exec -- dune test --profile=release
+        working-directory: ./src

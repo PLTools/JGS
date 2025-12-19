@@ -653,6 +653,17 @@ module HO = struct
                        fresh () (q243 === !!None) (res === !!false);
                        fresh targs_a
                          (q243 === !!(Some targs_a))
+                         (fun st ->
+                           let _ :
+                               jtype_injected targ_injected Std.List.injected =
+                             targs_a
+                           in
+                           Format.printf " CC success result = %a\n%!"
+                             (GT.fmt Std.List.logic CT.pp_targ)
+                             (OCanren.reify_in_state st
+                                (Std.List.reify (targ_reify jtype_reify))
+                                targs_a);
+                           OCanren.success st)
                          (conde
                             [
                               fresh (id_b targs_b)

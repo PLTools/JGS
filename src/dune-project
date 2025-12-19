@@ -13,6 +13,11 @@
  (depends
   (ocaml
    (= "4.14.2"))
+  (mtime
+   (>= "2.0.0"))
+  benchmark
+  (ppx_yojson_conv
+   (= "v0.16.0"))
   (ocamlformat
    (and
     :with-test

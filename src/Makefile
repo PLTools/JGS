@@ -16,7 +16,7 @@ clean:
 .PHONY: deps
 deps:
 	opam install -y \
-		benchmark ppx_yojson_conv yojson ocamlformat ocaml-lsp-server mtime.1.4.0 mtime.1.4.0
+		benchmark ppx_yojson_conv yojson ocamlformat ocaml-lsp-server mtime.1.4.0
 
 
 RUN_EXAMPLE = OCAMLRUNPARAM='s=2200M,h=2200M,bt=0' dune exec jsons/run_json2.exe --profile=release -- \
@@ -96,4 +96,3 @@ bench_LOPSTR: bench_LOPSTR_prepare bench_LOPSTR_run
 bench_LOPSTR_prepare:
 	sudo cpupower -c 0 frequency-set --governor performance
 	dune b jsons/run_json2.exe --profile=release
-

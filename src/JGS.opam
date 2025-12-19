@@ -6,6 +6,9 @@ bug-reports: "https://github.com/PLTools/JGS/issues"
 depends: [
   "dune" {>= "3.3"}
   "ocaml" {= "4.14.2"}
+  "mtime" {>= "2.0.0"}
+  "benchmark"
+  "ppx_yojson_conv" {= "v0.16.0"}
   "ocamlformat" {with-test & >= "0.26.1" & < "0.27"}
   "odoc" {with-doc}
 ]

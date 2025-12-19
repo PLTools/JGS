@@ -2,11 +2,17 @@
 
 (generate_opam_files true)
 
+(bug_reports "https://github.com/PLTools/JGS/issues")
+
 (name JGS)
 
 (package
  (name JGS)
+ (synopsis "Java Generics Solver")
+ (maintainers "Dmitrii Kosarev Kakadu@pm.me")
  (depends
+  (ocaml
+   (= "4.14.2"))
   (ocamlformat
    (and
     :with-test

@@ -5,20 +5,9 @@
       "java.util.Set",
       [
         [
-          "Type",
-          [
-            "Var",
-            {
-              "id": "E",
-              "index": 0,
-              "upb": [
-                "Class",
-                "java.lang.Object",
-                []
-              ],
-              "lwb": null
-            }
-          ]
+          "Class",
+          "java.lang.Object",
+          []
         ]
       ]
     ],
@@ -27,20 +16,9 @@
       "java.lang.Iterable",
       [
         [
-          "Type",
-          [
-            "Var",
-            {
-              "id": "T",
-              "index": 0,
-              "upb": [
-                "Class",
-                "java.lang.Object",
-                []
-              ],
-              "lwb": null
-            }
-          ]
+          "Class",
+          "java.lang.Object",
+          []
         ]
       ]
     ]

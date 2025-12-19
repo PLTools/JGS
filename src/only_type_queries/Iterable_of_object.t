@@ -1,6 +1,6 @@
 dune exec jsons/run_json2.exe -- -n 5 -ct jsons_real/0.json only_type_queries/Iterable_of_object.json
   $ export NOBENCH=1
-  $ timeout 15 run_json2 -ct ../jsons_real/0.json Iterable_of_object.json -n 5
+  $ timeout 15 run_json2 -ct ../jsons_real/0.json Iterable_of_object.json -n 1 -trace-arrow -trace-cc
   Table size: 40960
   Negatives bound are not yet supported
   Running generated query

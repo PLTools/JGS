@@ -1,14 +1,34 @@
 (cram
+ (applies_to 1)
+ (enabled_if
+  (= %{profile} "dev"))
  (deps
   %{project_root}/jsons/run_json2.exe
   %{project_root}/jsons_real/0.json
-  java.lang.Iterable_java.util.Collection_java.util.List_java.util.ArrayList.json
-  java.lang.Iterable_java.util.Collection_java.util.List.json
-  java.lang.Iterable_java.util.Collection_java.util.Set_java.util.NavigableSet_java.util.SortedSet.json
-  java.lang.Iterable_java.util.Collection_java.util.Set_java.util.NavigableSet.json
-  java.lang.Iterable_java.util.Collection_java.util.Set_java.util.SortedSet_java.util.NavigableSet_java.util.TreeSet.json
-  java.lang.Iterable_java.util.List.json
-  java.util.Set_java.lang.Iterable.json
+  ; java.lang.Iterable_java.util.Collection_java.util.List_java.util.ArrayList.json
+  ; java.lang.Iterable_java.util.Collection_java.util.List.json
+  ; java.lang.Iterable_java.util.Collection_java.util.Set_java.util.NavigableSet_java.util.SortedSet.json
+  ; java.lang.Iterable_java.util.Collection_java.util.Set_java.util.NavigableSet.json
+  ; java.lang.Iterable_java.util.Collection_java.util.Set_java.util.SortedSet_java.util.NavigableSet_java.util.TreeSet.json
+  ; java.lang.Iterable_java.util.List.json
   java.util.Set_java.util.List.json
+  ;
+  ))
+
+(cram
+ (applies_to Set+Iterable)
+ (enabled_if
+  (= %{profile} "dev"))
+ (deps
+  %{project_root}/jsons/run_json2.exe
+  %{project_root}/jsons_real/0.json
+  ; java.lang.Iterable_java.util.Collection_java.util.List_java.util.ArrayList.json
+  ; java.lang.Iterable_java.util.Collection_java.util.List.json
+  ; java.lang.Iterable_java.util.Collection_java.util.Set_java.util.NavigableSet_java.util.SortedSet.json
+  ; java.lang.Iterable_java.util.Collection_java.util.Set_java.util.NavigableSet.json
+  ; java.lang.Iterable_java.util.Collection_java.util.Set_java.util.SortedSet_java.util.NavigableSet_java.util.TreeSet.json
+  ; java.lang.Iterable_java.util.List.json
+  java.util.Set_java.lang.Iterable.json
+  ; java.util.Set_java.util.List.json
   ;
   ))

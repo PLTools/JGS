@@ -107,6 +107,9 @@ let () =
       ( "-la-testname",
         Arg.String (fun s -> test_args.latex_prefix <- s),
         " <STRING> Set LaTeX test name" );
+      ( "-warmup-n",
+        Arg.Int (fun s -> test_args.warmup_iterations <- s),
+        " <INT> " );
       ( "-upbefore",
         Arg.Unit (fun () -> test_args.lower_before <- false),
         " Put upper constraint in the beginning of the search (DEFAULT)" );
@@ -176,9 +179,12 @@ let avg_bench_results = function
         in
         (min, sum /. c, max)
       in
-      assert (List.for_all (fun { uniq_count } -> uniq_count = h.uniq_count) tl);
       assert (
-        List.for_all (fun { total_amount } -> total_amount = h.total_amount) tl);
+        List.for_all (fun { uniq_count; _ } -> uniq_count = h.uniq_count) tl);
+      assert (
+        List.for_all
+          (fun { total_amount; _ } -> total_amount = h.total_amount)
+          tl);
       {
         total_amount = h.total_amount;
         uniq_count = h.uniq_count;
@@ -189,7 +195,7 @@ let avg_bench_results = function
       }
 
 let snd3 (_, x, _) = x
-let thr3 (_, _, x) = x
+(* let thr3 (_, _, x) = x *)
 
 let pp_bench_results ppf br =
   Format.fprintf ppf "\n";

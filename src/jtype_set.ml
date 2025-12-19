@@ -42,20 +42,23 @@ let replace_jtype : JGS.HO.jtype_logic -> JGS.HO.jtype_logic =
       | Cons (hd, tl) ->
           let state, hd = f state hd in
           let state, tl = replace_list f state tl in
-          (state, Cons (hd, tl)) | Nil -> (state, Nil)
+          (state, Cons (hd, tl))
+      | Nil -> (state, Nil)
     in
     let rec replace_peano state =
       let open OCanren.Std.Nat in
       update_var state @@ fun state -> function
       | S x ->
           let state, x = replace_peano state x in
-          (state, S x) | O -> (state, O)
+          (state, S x)
+      | O -> (state, O)
     in
     let replace_option f state =
       update_var state @@ fun state -> function
       | Some x ->
           let state, x = f state x in
-          (state, Some x) | None -> (state, None)
+          (state, Some x)
+      | None -> (state, None)
     in
     let replace_pair f g state =
       update_var state @@ fun state (a, b) ->
@@ -81,7 +84,8 @@ let replace_jtype : JGS.HO.jtype_logic -> JGS.HO.jtype_logic =
           (state, Wildcard x)
     in
     fun state ->
-      update_var state @@ fun state -> function Null -> (state, Null)
+      update_var state @@ fun state -> function
+      | Null -> (state, Null)
       | Array lt ->
           let state, lt = replace_jtype state lt in
           (state, Array lt)
@@ -107,3 +111,4 @@ let replace_jtype : JGS.HO.jtype_logic -> JGS.HO.jtype_logic =
 
 let add_alpha_converted t set = add (replace_jtype t) set
 let mem_alpha_converted t set = mem (replace_jtype t) set
+let not_alpha_covered t set = not (mem_alpha_converted t set)

@@ -74,6 +74,22 @@ let () =
     ]
 
 let () =
+  wrap "1.json"
+    ~upper_bounds:[ Class ("java.lang.Object", []) ]
+    [
+      make_c "java.lang.Object" ~params:[] [];
+      make_c "String" ~sup:(Class ("java.lang.Object", [])) [] ~params:[];
+      make_c "Int" ~sup:(Class ("java.lang.Object", [])) [] ~params:[];
+      C
+        {
+          cname = "List";
+          params = [ make_param "P1" ~up:[ Class ("java.lang.Object", []) ] ];
+          super = Some (Class ("java.lang.Object", []));
+          supers = [];
+        };
+    ]
+
+let () =
   let table =
     [
       make_c "String" ~params:[] ~sup:(Class ("java.lang.Object", [])) [];

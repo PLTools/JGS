@@ -219,7 +219,7 @@ let pp_bench_results ppf br =
 let pp_bench_latex ~name ~desc ppf br =
   let open Format in
   let pp_float_time fmt time =
-    if time < 1. then fprintf fmt ">1~\\ms{}"
+    if time < 1. then fprintf fmt "<1~\\ms{}"
     else if time < 1000. then fprintf fmt "%5.0f\\ms{}" time
     else fprintf fmt "%5.0f\\s{}" (Float.div time 1000.)
   in

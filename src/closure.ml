@@ -2,7 +2,7 @@ open OCanren
 open OCanren.Std
 open JGS.HO
 
-let need_dynamic_closure = ref false
+let need_dynamic_closure = ref true
 
 module type SCT = Mutable_type_table.SAMPLE_CLASSTABLE
 

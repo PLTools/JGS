@@ -70,7 +70,7 @@ let rec pp_jtyp_logic name_of : Format.formatter -> HO.jtype_logic -> unit =
         fprintf ppf "(? extends %a)" main upb
     | HO.Var { upb; lwb = Value (Some lwb); _ } ->
         fprintf ppf "(? extends %a super %a)" main upb main lwb
-    | HO.Var { upb; lwb = Var _; _ } ->
+    | HO.Var { upb = _; lwb = Var _; _ } ->
         fprintf ppf "Not implemented %s %d" __FILE__ __LINE__
   and main : _ -> HO.jtype_logic -> _ =
    fun ppf x -> GT.fmt OCanren.logic helper ppf x
@@ -152,10 +152,6 @@ let intersect xs = !!(HO.Intersect xs)
 let wildcard xs : _ JGS.HO.targ_injected = !!(HO.Wildcard xs)
 let type_ t : _ JGS.HO.targ_injected = !!(HO.Type t)
 let var ~index id lwb upb = !!(HO.Var { index; id; lwb; upb })
-
-(**************************************************************************************************)
-(*********************************** Relational helpers *******************************************)
-(**************************************************************************************************)
 
 let only_classes_interfaces_and_arrays q =
   let open HO in

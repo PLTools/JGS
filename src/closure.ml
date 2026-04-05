@@ -42,7 +42,7 @@ let is_correct_type (module CT : SCT) ~closure_subtyping t =
     [
       (* Array: always allow *)
       fresh elems (t === !!(Array elems));
-      (* Class: should be metioned in class declarations with the same arguments amount *)
+      (* Class: should be metioned in class declarations with the same arguments count *)
       fresh
         (id actual_params expected_params super supers)
         (t === !!(Class (id, actual_params)))
@@ -50,7 +50,7 @@ let is_correct_type (module CT : SCT) ~closure_subtyping t =
         (list_same_length expected_params actual_params);
       (* Interface: should be mentioned in interface declarations with the same arguments count *)
       fresh
-        (id actual_params expected_params supers length)
+        (id actual_params expected_params supers)
         (t === !!(Interface (id, actual_params)))
         (decl_by_id id !!(I !!{ params = expected_params; supers }))
         (list_same_length expected_params actual_params);
@@ -98,7 +98,7 @@ let rec ( <-< ) ~direct_subtyping ~constr ta tb st =
               (( <-< ) ~direct_subtyping ~constr ta ti);
           ])
 
-(** Subtyping relatton [ ta <=< tb ~direct_subtyping ~constr] optimized for ground [ ta ]
+(** Subtyping relation [ ta <=< tb ~direct_subtyping ~constr] optimized for ground [ ta ]
 *)
 let rec ( <=< ) ~direct_subtyping ~constr ta tb =
   fresh () constr

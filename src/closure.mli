@@ -22,10 +22,8 @@ type closure = {
     goal;
 }
 
-module type SCT = Mutable_type_table.SAMPLE_CLASSTABLE
-
 val make_closure :
-  (module SCT) ->
+  (module Mutable_type_table.SAMPLE_CLASSTABLE) ->
   ((jtype_injected -> jtype_injected -> bool ilogic -> goal) ->
   jtype_injected ->
   jtype_injected ->

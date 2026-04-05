@@ -196,6 +196,7 @@ let collect_varnames =
   in
 
   helper SS.empty
+[@@warning "-unused-value-declaration"]
 
 let make_sample_ct () =
   let open Mutable_type_table in
@@ -286,80 +287,82 @@ let populate_graph on_decl table =
     in
     table
     |> Stdlib.List.iter (fun decl ->
-        Hashtbl.clear params_hash;
-        match decl with
-        | I { iname; isupers; iparams } as d ->
-            log "Adding an interface %s to graph. %d" iname __LINE__;
-            G.add_vertex g iname;
-            add_decl_and_name iname d;
-            add_params iparams;
+           Hashtbl.clear params_hash;
+           match decl with
+           | I { iname; isupers; iparams } as d ->
+               log "Adding an interface %s to graph. %d" iname __LINE__;
+               G.add_vertex g iname;
+               add_decl_and_name iname d;
+               add_params iparams;
 
-            iparams |> Stdlib.List.iter (traverse_param iname);
-            let used_typenames =
-              List.fold_left
-                (fun acc p -> SS.union acc (collect_used_typenames p))
-                SS.empty isupers
-            in
-            SS.iter
-              (fun name ->
-                if is_a_param name then () else G.add_edge g name iname)
-              used_typenames
-        | C { cname; supers; super; params } as d ->
-            log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__;
-            G.add_vertex g cname;
-            assert (
-              match Hashtbl.find decl_of_name cname with
-              | exception Not_found -> true
-              | C
-                  {
-                    cname = "org.intellij.lang.annotations.PrintFormatPattern";
-                    _;
-                  }
-              | C { cname = "org.intellij.lang.annotations.JdkConstants"; _ } ->
-                  true
-              | _ ->
-                  log_error "Already present: '%s'\n%!" cname;
-                  false);
-            add_decl_and_name cname d;
-            add_params params;
-            let () =
-              (* If it is an inner class, we should add dependencies to parents  *)
-              add_parent_edges (G.add_edge g) cname
-            in
+               iparams |> Stdlib.List.iter (traverse_param iname);
+               let used_typenames =
+                 List.fold_left
+                   (fun acc p -> SS.union acc (collect_used_typenames p))
+                   SS.empty isupers
+               in
+               SS.iter
+                 (fun name ->
+                   if is_a_param name then () else G.add_edge g name iname)
+                 used_typenames
+           | C { cname; supers; super; params } as d ->
+               log "Adding a class %s to graph. %s %d" cname __FILE__ __LINE__;
+               G.add_vertex g cname;
+               assert (
+                 match Hashtbl.find decl_of_name cname with
+                 | exception Not_found -> true
+                 | C
+                     {
+                       cname =
+                         "org.intellij.lang.annotations.PrintFormatPattern";
+                       _;
+                     }
+                 | C { cname = "org.intellij.lang.annotations.JdkConstants"; _ }
+                   ->
+                     true
+                 | _ ->
+                     log_error "Already present: '%s'\n%!" cname;
+                     false);
+               add_decl_and_name cname d;
+               add_params params;
+               let () =
+                 (* If it is an inner class, we should add dependencies to parents  *)
+                 add_parent_edges (G.add_edge g) cname
+               in
 
-            params |> Stdlib.List.iter (traverse_param cname);
-            (* TODO: should we lookup references in params? *)
-            let used_typenames =
-              let acc =
-                Stdlib.Option.fold ~none:SS.empty
-                  ~some:(fun t ->
-                    (* Format.printf "Superclass = %s\n%!"
-                          (Yojson.Safe.pretty_to_string (yojson_of_jtype t)); *)
-                    collect_used_typenames t)
-                  super
-              in
-              List.fold_left
-                (fun acc p -> SS.union acc (collect_used_typenames p))
-                acc supers
-              |> SS.elements
-            in
-            let __ () =
-              if
-                cname
-                = "net.bytebuddy.pool.TypePool$Default$AnnotationRegistrant$ForTypeVariable$WithIndex$DoubleIndexed"
-              then
-                let () =
-                  Format.printf "Used typenames for %S: %s\n%!" cname
-                    (String.concat " " used_typenames)
-                in
-                (* Format.printf "%s\n%!"
-                      (Yojson.Safe.pretty_to_string (yojson_of_decl d)); *)
-                ()
-            in
-            List.iter
-              (fun name ->
-                if is_a_param name then () else G.add_edge g name cname)
-              used_typenames);
+               params |> Stdlib.List.iter (traverse_param cname);
+               (* TODO: should we lookup references in params? *)
+               let used_typenames =
+                 let acc =
+                   Stdlib.Option.fold ~none:SS.empty
+                     ~some:(fun t ->
+                       (* Format.printf "Superclass = %s\n%!"
+                             (Yojson.Safe.pretty_to_string (yojson_of_jtype t)); *)
+                       collect_used_typenames t)
+                     super
+                 in
+                 List.fold_left
+                   (fun acc p -> SS.union acc (collect_used_typenames p))
+                   acc supers
+                 |> SS.elements
+               in
+               let __ () =
+                 if
+                   cname
+                   = "net.bytebuddy.pool.TypePool$Default$AnnotationRegistrant$ForTypeVariable$WithIndex$DoubleIndexed"
+                 then
+                   let () =
+                     Format.printf "Used typenames for %S: %s\n%!" cname
+                       (String.concat " " used_typenames)
+                   in
+                   (* Format.printf "%s\n%!"
+                         (Yojson.Safe.pretty_to_string (yojson_of_decl d)); *)
+                   ()
+               in
+               List.iter
+                 (fun name ->
+                   if is_a_param name then () else G.add_edge g name cname)
+                 used_typenames);
 
     log "Graph hash %d vertexes and %d edges. %s %d" (G.nb_vertex g)
       (G.nb_edges g) __FILE__ __LINE__;
@@ -506,8 +509,8 @@ let make_classtable table =
     let upper_bounds =
       p_upper |> List.map on_typ
       |> List.map (function
-        | None -> failwith "Can't interpet a parameter"
-        | Some p -> p)
+           | None -> failwith "Can't interpet a parameter"
+           | Some p -> p)
     in
 
     (* let new_id = CT.new_var () in *)
@@ -782,9 +785,9 @@ let make_query ?(hack_goal = false) join_goals j : _ * result_query * _ * _ =
       in
       acc
       |> SS.filter (fun name ->
-          match id_of_name name with
-          | _ -> false
-          | exception Name_not_found _ -> true)
+             match id_of_name name with
+             | _ -> false
+             | exception Name_not_found _ -> true)
     in
 
     let () =

@@ -10,7 +10,12 @@ let need_table_dynamic_specialisation = ref true
 
 module type SAMPLE_CLASSTABLE = sig
   val decl_by_id : int -> decl
-  val get_superclass_by_id : int -> int -> jtype option
+
+  val get_superclass_by_id : sub_id:int -> int -> jtype option
+  (** Take [sub_id] and [super_id] and returns Some if class/interface with sub_id
+    hash a direct supertype [super_id]
+    *)
+
   val object_t : jtype
   val array_t : jtype -> jtype
   val primitive_t : string -> jtype
@@ -93,7 +98,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
 
   let decl_by_id id = M.find id !m
 
-  let get_superclass_by_id sub_id super_id =
+  let get_superclass_by_id ~sub_id super_id =
     let open Stdlib in
     List.find_map (fun (id, decl) ->
         if id = sub_id then
@@ -135,7 +140,7 @@ module SampleCT () : SAMPLE_CLASSTABLE = struct
        id; *)
     Var { id; index; upb; lwb = None }
 
-  let padding = -35
+  let padding = -35 [@@warning "-unused-value-declaration"]
 
   let make_class ?name:_ params super supers =
     let id = add_class { params; super; supers } in

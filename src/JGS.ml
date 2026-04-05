@@ -2,10 +2,7 @@ let need_simpified = ref false
 
 [@@@ocaml.warning "-8"]
 
-open Option
 open Peano
-open List
-open Option
 
 type polarity = Extends | Super
 type 'jtype targ = Type of 'jtype | Wildcard of (polarity * 'jtype) option
@@ -26,6 +23,7 @@ type capture_conversion_subst = CC_inter of jtype * jtype | CC_subst of jtype
 type capture_conversion_type =
   | CC_type of jtype
   | CC_var of int * nat * capture_conversion_subst * jtype option
+      (** ID, pos, subst, maybe bound *)
 
 let rec substitute_typ subst = function
   | Array typ -> Array (substitute_typ subst typ)
@@ -43,93 +41,91 @@ and substitute_arg subst = function
 
 module Verifier (CT : sig
   val decl_by_id : int -> decl
-  val get_superclass_by_id : int -> int -> jtype option
+  val get_superclass_by_id : sub_id:int -> int -> jtype option
   val object_t : jtype
   val cloneable_t : jtype
   val serializable_t : jtype
   val new_var : unit -> int
 end) =
 struct
+  (* Subtyping for arguments: "contains"  *)
+  let ( <=< ) (( <-< ) : jtype -> jtype -> bool) ta tb =
+    match (ta, tb) with
+    | Wildcard (Some (Extends, t)), Wildcard (Some (Extends, s)) -> t <-< s
+    | Wildcard (Some (Extends, _)), Wildcard None -> true
+    | Wildcard (Some (Super, t)), Wildcard (Some (Super, s)) -> s <-< t
+    | Wildcard (Some (Super, _)), Wildcard None -> true
+    | Wildcard (Some (Super, _)), Wildcard (Some (Extends, o)) ->
+        o = CT.object_t
+    | Type t1, Type t2
+    | Type t1, Wildcard (Some (Extends, t2))
+    | Type t1, Wildcard (Some (Super, t2)) ->
+        t1 = t2
+    | _ -> false
+
+  let capture_conversion ( <-< ) id targs =
+    let params =
+      match CT.decl_by_id id with C { params; _ } | I { params; _ } -> params
+    in
+    let raw =
+      List.mapi
+        (fun i -> function
+          | Type t -> CC_type t
+          | Wildcard None ->
+              CC_var (CT.new_var (), i, CC_subst (List.nth params i), Some Null)
+          | Wildcard (Some (Super, t)) ->
+              CC_var (CT.new_var (), i, CC_subst (List.nth params i), Some t)
+          | Wildcard (Some (Extends, t)) ->
+              CC_var
+                (CT.new_var (), i, CC_inter (t, List.nth params i), Some Null))
+        targs
+    in
+    let subst =
+      List.map
+        (function
+          | CC_type t -> Type t
+          | CC_var (id, i, _, _) ->
+              Type (Var { lwb = None; upb = Null; index = i; id }))
+        raw
+    in
+    let targs =
+      List.map
+        (function
+          | CC_type t -> Type (substitute_typ subst t)
+          | CC_var (id, index, CC_subst p, lwb) ->
+              let upb = substitute_typ subst p in
+              Type (Var { lwb; upb; index; id })
+          | CC_var (id, index, CC_inter (t, p), lwb) ->
+              let upb =
+                match substitute_typ subst p with
+                | Intersect ts -> Intersect (t :: ts)
+                | typ -> Intersect [ t; typ ]
+              in
+              Type (Var { lwb; upb; index; id }))
+        raw
+    in
+    if
+      List.for_all
+        (function
+          | Type (Var { upb; lwb = Some lwb; _ }) -> lwb <-< upb | _ -> true)
+        targs
+    then Some targs
+    else None
+
+  (* Transitive subtyping (-<-) is implemented as open recursion *)
   let rec ( -<- ) (( <-< ) : jtype -> jtype -> bool) (ta : jtype) (tb : jtype) =
-    let ( <=< ) ta tb =
-      match (ta, tb) with
-      | Wildcard (Some (Extends, t)), Wildcard (Some (Extends, s)) -> t <-< s
-      | Wildcard (Some (Extends, _)), Wildcard None -> true
-      | Wildcard (Some (Super, t)), Wildcard (Some (Super, s)) -> s <-< t
-      | Wildcard (Some (Super, _)), Wildcard None -> true
-      | Wildcard (Some (Super, _)), Wildcard (Some (Extends, o)) ->
-          o = CT.object_t
-      | Type t1, Type t2
-      | Type t1, Wildcard (Some (Extends, t2))
-      | Type t1, Wildcard (Some (Super, t2)) ->
-          t1 = t2
-      | _ -> false
-    in
-    let capture_conversion id targs =
-      let params =
-        match CT.decl_by_id id with
-        | C { params; _ } | I { params; _ } -> params
-      in
-      let raw =
-        List.mapi
-          (fun i -> function
-            | Type t -> CC_type t
-            | Wildcard None ->
-                CC_var
-                  (CT.new_var (), i, CC_subst (List.nth params i), Some Null)
-            | Wildcard (Some (Super, t)) ->
-                CC_var (CT.new_var (), i, CC_subst (List.nth params i), Some t)
-            | Wildcard (Some (Extends, t)) ->
-                CC_var
-                  (CT.new_var (), i, CC_inter (t, List.nth params i), Some Null))
-          targs
-      in
-      let subst =
-        List.map
-          (function
-            | CC_type t -> Type t
-            | CC_var (id, i, _, _) ->
-                Type (Var { lwb = None; upb = Null; index = i; id }))
-          raw
-      in
-      let targs =
-        List.map
-          (function
-            | CC_type t -> Type (substitute_typ subst t)
-            | CC_var (id, i, CC_subst p, lwb) ->
-                Type (Var { lwb; upb = substitute_typ subst p; index = i; id })
-            | CC_var (id, i, CC_inter (t, p), lwb) ->
-                Type
-                  (Var
-                     {
-                       lwb;
-                       upb =
-                         (match substitute_typ subst p with
-                         | Intersect ts -> Intersect (t :: ts)
-                         | typ -> Intersect [ t; typ ]);
-                       index = i;
-                       id;
-                     }))
-          raw
-      in
-      if
-        List.for_all
-          (function
-            | Type (Var { upb; lwb = Some lwb; _ }) -> lwb <-< upb | _ -> true)
-          targs
-      then Some targs
-      else None
-    in
     let class_int_sub id_a targs_a id_b targs_b =
       if id_a = id_b then
-        List.fold_left2 (fun f ta tb -> f && ta <=< tb) true targs_a targs_b
+        let ( <=< ) = ( <=< ) ( <-< ) in
+        List.fold_left2 (fun acc ta tb -> acc && ta <=< tb) true targs_a targs_b
       else
-        match CT.get_superclass_by_id id_a id_b with
+        match CT.get_superclass_by_id ~sub_id:id_a id_b with
         | Some (Class (_, targs_b')) | Some (Interface (_, targs_b')) ->
             targs_b = List.map (fun t -> substitute_arg targs_a t) targs_b'
         | None -> false
     in
     let ( -<- ) = ( -<- ) ( <-< ) in
+    let capture_conversion = capture_conversion ( <-< ) in
     match ta with
     | Class (id_a, targs_a) -> (
         match capture_conversion id_a targs_a with
@@ -163,24 +159,26 @@ end
 [@@@ocaml.warning "+8"]
 
 open GT
-open OCanren
 
 module HO = struct
-  open Option.HO
   open Peano.HO
   open List.HO
   open Option.HO
 
-  [@@@ocaml.warning "-27"]
-
-  [%%distrib
-  type polarity = Extends | Super [@@deriving gt ~options:{ show; fmt; gmap }]]
-
-  [%%distrib
-  type 'jtype targ = Type of 'jtype | Wildcard of (polarity * 'jtype) option
+  [%%ocanren_inject
+  type nonrec polarity = Extends | Super
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
-  [%%distrib
+  [%%ocanren_inject
+  type nonrec 'jtype targ =
+    | Type of 'jtype
+    | Wildcard of (polarity * 'jtype) option
+  [@@deriving gt ~options:{ show; fmt; gmap }]]
+
+  let[@inline] the_wildcard polarity typ =
+    !!(Wildcard !!(Some (Std.pair polarity typ)))
+
+  [%%ocanren_inject
   type jtype =
     | Array of jtype
     | Class of int * jtype targ list
@@ -190,36 +188,45 @@ module HO = struct
     | Intersect of jtype list
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
-  [%%distrib
-  type cdecl = { params : jtype list; super : jtype; supers : jtype list }
+  let intersect xs = !!(Intersect xs)
+
+  [%%ocanren_inject
+  type nonrec cdecl = {
+    params : jtype list;
+    super : jtype;
+    supers : jtype list;
+  }
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
   let ctor_cdecl params super supers = inj { params; super; supers }
 
-  [%%distrib
-  type idecl = { params : jtype list; supers : jtype list }
+  [%%ocanren_inject
+  type nonrec idecl = { params : jtype list; supers : jtype list }
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
   let ctor_idecl params supers = inj { params; supers }
   let var id index upb lwb = !!(Var { id; index; upb; lwb })
 
-  [%%distrib
-  type decl = C of cdecl | I of idecl
+  [%%ocanren_inject
+  type nonrec decl = C of cdecl | I of idecl
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
-  [%%distrib
-  type capture_conversion_subst =
+  [%%ocanren_inject
+  type nonrec capture_conversion_subst =
     | CC_inter of jtype * jtype
     | CC_subst of jtype
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
-  [%%distrib
-  type capture_conversion_type =
+  let cc_inter l r = !!(CC_inter (l, r))
+
+  [%%ocanren_inject
+  type nonrec capture_conversion_type =
     | CC_type of jtype
     | CC_var of int * nat * capture_conversion_subst * jtype option
+        (** ID, pos, subst, maybe bound *)
   [@@deriving gt ~options:{ show; fmt; gmap }]]
 
-  [@@@ocaml.warning "+27"]
+  let cc_var id id2 subst typ = !!(CC_var (id, id2, subst, typ))
 
   let rec substitute_typ subst q0 q30 =
     conde
@@ -261,6 +268,7 @@ module HO = struct
     module HO : sig
       val decl_by_id :
         (int ilogic -> OCanren.goal) -> decl_injected -> OCanren.goal
+      [@@ocaml.warning "-unused-value-declaration"]
 
       val decl_by_id_fo : int ilogic -> decl_injected -> OCanren.goal
 
@@ -269,6 +277,7 @@ module HO = struct
         (int ilogic -> OCanren.goal) ->
         jtype_injected option_injected ->
         OCanren.goal
+      [@@ocaml.warning "-unused-value-declaration"]
 
       val get_superclass_by_id_fo :
         ?from:int ->
@@ -278,11 +287,18 @@ module HO = struct
         OCanren.goal
 
       val object_t_ho : jtype_injected -> OCanren.goal
+      [@@ocaml.warning "-unused-value-declaration"]
+
       val object_t : jtype_injected
       val cloneable_t_ho : jtype_injected -> OCanren.goal
+
       val cloneable_t : jtype_injected
+      [@@ocaml.warning "-unused-value-declaration"]
+
       val serializable_t_ho : jtype_injected -> OCanren.goal
+
       val serializable_t : jtype_injected
+      [@@ocaml.warning "-unused-value-declaration"]
 
       val new_var :
         (unit OCanren.ilogic -> OCanren.goal) -> int ilogic -> OCanren.goal
@@ -366,23 +382,18 @@ module HO = struct
                   fresh t (q107 === !!(Type t)) (q133 === !!(CC_type t));
                   fresh (q114 q117)
                     (q107 === !!(Wildcard !!None))
-                    (q133
-                    === !!(CC_var (q114, i, !!(CC_subst q117), !!(Some !!Null)))
-                    )
+                    (q133 === cc_var q114 i !!(CC_subst q117) !!(Some !!Null))
                     (CT.HO.new_var (( === ) !!()) q114)
                     (List.HO.nth params (( === ) i) q117);
                   fresh (t q119 q122)
                     (q107 === !!(Wildcard !!(Some (Std.pair !!Super t))))
-                    (q133
-                    === !!(CC_var (q119, i, !!(CC_subst q122), !!(Some t))))
+                    (q133 === cc_var q119 i !!(CC_subst q122) !!(Some t))
                     (CT.HO.new_var (( === ) !!()) q119)
                     (List.HO.nth params (( === ) i) q122);
                   fresh (t q126 q130)
                     (q107 === !!(Wildcard !!(Some (Std.pair !!Extends t))))
                     (q133
-                    === !!(CC_var
-                             (q126, i, !!(CC_inter (t, q130)), !!(Some !!Null)))
-                    )
+                    === cc_var q126 i !!(CC_inter (t, q130)) !!(Some !!Null))
                     (CT.HO.new_var (( === ) !!()) q126)
                     (List.HO.nth params (( === ) i) q130);
                 ])
@@ -414,22 +425,21 @@ module HO = struct
                        (q152 === !!(Type q154))
                        (substitute_typ subst t q154);
                      fresh (id i p lwb q159)
-                       (q153 === !!(CC_var (id, i, !!(CC_subst p), lwb)))
+                       (q153 === cc_var id i !!(CC_subst p) lwb)
                        (q152 === !!(Type (var id i q159 lwb)))
                        (substitute_typ subst p q159);
                      fresh (id i t p lwb q168 q170)
-                       (q153 === !!(CC_var (id, i, !!(CC_inter (t, p)), lwb)))
+                       (q153 === cc_var id i (cc_inter t p) lwb)
                        (q152 === !!(Type (var id i q168 lwb)))
                        (substitute_typ subst p q170)
                        (conde
                           [
                             fresh ts
-                              (q170 === !!(Intersect ts))
-                              (q168 === !!(Intersect (Std.( % ) t ts)));
+                              (q170 === intersect ts)
+                              (q168 === intersect (Std.( % ) t ts));
                             fresh ()
-                              (q168
-                              === !!(Intersect (Std.list Fun.id [ t; q170 ])))
-                              (q170 =/= !!(Intersect __));
+                              (q168 === intersect (Std.list Fun.id [ t; q170 ]))
+                              (q170 =/= intersect __);
                           ]);
                    ]))
             raw
@@ -478,24 +488,24 @@ module HO = struct
          conde
            [
              fresh (t s)
-               (type_a === !!(Wildcard !!(Some (Std.pair !!Extends t))))
-               (type_b === !!(Wildcard !!(Some (Std.pair !!Extends s))))
+               (type_a === the_wildcard !!Extends t)
+               (type_b === the_wildcard !!Extends s)
                (( <-< ) t s res);
              fresh t
-               (type_a === !!(Wildcard !!(Some (Std.pair !!Extends t))))
+               (type_a === the_wildcard !!Extends t)
                (type_b === !!(Wildcard !!None))
                (res === !!true);
              fresh (t s)
-               (type_a === !!(Wildcard !!(Some (Std.pair !!Super t))))
-               (type_b === !!(Wildcard !!(Some (Std.pair !!Super s))))
+               (type_a === the_wildcard !!Super t)
+               (type_b === the_wildcard !!Super s)
                (( <-< ) s t res);
              fresh t
-               (type_a === !!(Wildcard !!(Some (Std.pair !!Super t))))
+               (type_a === the_wildcard !!Super t)
                (type_b === !!(Wildcard !!None))
                (res === !!true);
              fresh (t o)
-               (type_a === !!(Wildcard !!(Some (Std.pair !!Super t))))
-               (type_b === !!(Wildcard !!(Some (Std.pair !!Extends o))))
+               (type_a === the_wildcard !!Super t)
+               (type_b === the_wildcard !!Extends o)
                (conde
                   [
                     fresh () (o === CT.HO.object_t) (res === !!true);
@@ -505,8 +515,8 @@ module HO = struct
                (conde
                   [
                     type_b === !!(Type t2);
-                    type_b === !!(Wildcard !!(Some (Std.pair !!Extends t2)));
-                    type_b === !!(Wildcard !!(Some (Std.pair !!Super t2)));
+                    type_b === the_wildcard !!Extends t2;
+                    type_b === the_wildcard !!Super t2;
                   ])
                (conde
                   [
@@ -521,34 +531,31 @@ module HO = struct
                     type_b =/= !!(Wildcard !!(Some (Std.pair !!Extends __)));
                   ])
                (conde
+                  [ type_a =/= !!(Type __); type_b =/= the_wildcard !!Super __ ])
+               (conde
                   [
-                    type_a =/= !!(Type __);
-                    type_b =/= !!(Wildcard !!(Some (Std.pair !!Super __)));
+                    type_a =/= the_wildcard !!Super __;
+                    type_b =/= the_wildcard !!Extends __;
                   ])
                (conde
                   [
-                    type_a =/= !!(Wildcard !!(Some (Std.pair !!Super __)));
-                    type_b =/= !!(Wildcard !!(Some (Std.pair !!Extends __)));
-                  ])
-               (conde
-                  [
-                    type_a =/= !!(Wildcard !!(Some (Std.pair !!Super __)));
+                    type_a =/= the_wildcard !!Super __;
                     type_b =/= !!(Wildcard !!None);
                   ])
                (conde
                   [
-                    type_a =/= !!(Wildcard !!(Some (Std.pair !!Super __)));
-                    type_b =/= !!(Wildcard !!(Some (Std.pair !!Super __)));
+                    type_a =/= the_wildcard !!Super __;
+                    type_b =/= the_wildcard !!Super __;
                   ])
                (conde
                   [
-                    type_a =/= !!(Wildcard !!(Some (Std.pair !!Extends __)));
+                    type_a =/= the_wildcard !!Extends __;
                     type_b =/= !!(Wildcard !!None);
                   ])
                (conde
                   [
-                    type_a =/= !!(Wildcard !!(Some (Std.pair !!Extends __)));
-                    type_b =/= !!(Wildcard !!(Some (Std.pair !!Extends __)));
+                    type_a =/= the_wildcard !!Extends __;
+                    type_b =/= the_wildcard !!Extends __;
                   ]);
            ]
            st
@@ -760,9 +767,7 @@ module HO = struct
                                 (type_b =/= !!(Array __));
                             ]);
                      ]);
-                fresh ts
-                  (type_a === !!(Intersect ts))
-                  (List.FO.mem type_b ts res);
+                fresh ts (type_a === intersect ts) (List.FO.mem type_b ts res);
                 fresh typ
                   (type_a === var __ __ typ __)
                   (conde

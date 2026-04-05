@@ -27,15 +27,23 @@ type jtype =
   | Primitive of class_id
 
 val yojson_of_jtype : jtype -> Yojson.Safe.t
+
 val jtype_of_yojson : Yojson.Safe.t -> jtype
+[@@ocaml.warning "-unused-value-declaration"]
+
 val jtype_of_yojson : Yojson.Safe.t -> jtype
 val var : ?lwb:jtype -> class_id -> jtype -> jtype
 
 type param = { pname : class_id; p_upper : jtype list }
 
 val yojson_of_param : param -> Yojson.Safe.t
+
 val param_of_yojson : Yojson.Safe.t -> param
+[@@ocaml.warning "-unused-value-declaration"]
+
 val param_of_yojson : Yojson.Safe.t -> param
+[@@ocaml.warning "-unused-value-declaration"]
+
 val make_param : ?up:jtype list -> class_id -> param
 
 type cdecl = {
@@ -46,8 +54,12 @@ type cdecl = {
 }
 
 val yojson_of_cdecl : cdecl -> Yojson.Safe.t
+
 val cdecl_of_yojson : Yojson.Safe.t -> cdecl
+[@@ocaml.warning "-unused-value-declaration"]
+
 val cdecl_of_yojson : Yojson.Safe.t -> cdecl
+[@@ocaml.warning "-unused-value-declaration"]
 
 type idecl = { iname : class_id; iparams : param list; isupers : jtype list }
 

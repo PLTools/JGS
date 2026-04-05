@@ -27,13 +27,15 @@ let _ =
     (Array (Array SampleCT.object_t) -<- Array SampleCT.serializable_t);
 
   (* class A {...} *)
-  let class_a = SampleCT.make_class [] SampleCT.object_t [] in
+  let class_a = SampleCT.make_class ~name:"A" [] SampleCT.object_t [] in
 
   (* class B extends A {...} *)
-  let class_b = SampleCT.make_class [] (Class (class_a, [])) [] in
+  let class_b = SampleCT.make_class ~name:"B" [] (Class (class_a, [])) [] in
   Printf.printf " 8 B < A (true) : %b\n"
     (Class (class_b, []) -<- Class (class_a, []));
 
+  Printf.printf " 8.1 B < Object (false because simple implementation) : %b\n"
+    (Class (class_b, []) -<- SampleCT.object_t);
   (* interface IA {...} *)
   let intf_a = SampleCT.make_interface [] [] in
 

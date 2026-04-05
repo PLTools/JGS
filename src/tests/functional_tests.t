@@ -7,6 +7,7 @@
    6 Serializable < Object[] (false): false
    7 Object[][] < Serializable[] (true) : true
    8 B < A (true) : true
+   8.1 B < Object (false because simple implementation) : false
    9 C < A (true) : true
   10 C < IA (true) : true
   11 IB < IA (true) : true

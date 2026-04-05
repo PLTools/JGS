@@ -5,6 +5,13 @@
  (flags (-rectypes)))
 
 (executable
+ (name Important_closure)
+ (modules Important_closure)
+ (libraries JGS_lib)
+ (flags
+  (:standard -rectypes)))
+
+(executable
  (name reflection_tests)
  (modules reflection_tests)
  (libraries JGS_lib)
@@ -79,5 +86,6 @@
   ./relational_closure_tests.exe
   ./standard_classes_tests.exe
   ./standard2.exe
+  ./Important_closure.exe
   ;
   ))

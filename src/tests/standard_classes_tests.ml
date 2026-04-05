@@ -216,8 +216,8 @@ let _ =
     let rec is_first index elem l =
       match (index, l) with
       | 0, _ :: _ -> true
-      | n, x :: xs when x = elem -> false
-      | n, x :: xs -> is_first (n - 1) elem xs
+      | _, x :: _ when x = elem -> false
+      | n, _ :: xs -> is_first (n - 1) elem xs
       | _ -> failwith "Out of bounds"
     in
 

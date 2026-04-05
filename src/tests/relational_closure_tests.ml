@@ -1,5 +1,4 @@
 open OCanren
-open OCanren.Std
 open JGS
 open JGS_Helpers
 open Mutable_type_table
@@ -30,7 +29,7 @@ let _ =
   let module SampleCT = SampleCT () in
   let module V = FO.Verifier (SampleCT) in
   let open Closure in
-  let { is_correct_type; direct_subtyping; closure } =
+  let { direct_subtyping; closure; _ } =
     make_closure (module SampleCT) V.( -<- )
   in
   let ( -<- ) = direct_subtyping ~closure_type:Subtyping in
@@ -183,9 +182,7 @@ let _ =
   let module SampleCT = SampleCT () in
   let module V = FO.Verifier (SampleCT) in
   let open Closure in
-  let { is_correct_type; direct_subtyping; closure } =
-    make_closure (module SampleCT) V.( -<- )
-  in
+  let { closure; _ } = make_closure (module SampleCT) V.( -<- ) in
   let ( <-< ) = closure ~closure_type:Subtyping in
   let class_int = SampleCT.make_class [] SampleCT.object_t [] in
   let int = Class (class_int, []) in

@@ -2,7 +2,12 @@
  (name functional_tests)
  (modules functional_tests)
  (libraries JGS_lib)
- (flags (-rectypes)))
+ (flags
+  (:standard -rectypes)))
+
+(cram
+ (applies_to functional_tests)
+ (deps ./functional_tests.exe))
 
 (executable
  (name Important_closure)
@@ -11,58 +16,72 @@
  (flags
   (:standard -rectypes)))
 
+(cram
+ (applies_to Important_closure)
+ (deps ./Important_closure.exe))
+
 (executable
  (name reflection_tests)
  (modules reflection_tests)
  (libraries JGS_lib)
- (flags (-rectypes)))
+ (flags
+  (:standard -rectypes)))
+
+(cram
+ (applies_to reflection_tests)
+ (deps ./reflection_tests.exe))
 
 (executable
  (name relational_forward_tests)
  (modules relational_forward_tests)
  (libraries JGS_lib OCanren)
- (flags (-rectypes))
+ (flags
+  (:standard -rectypes))
  (preprocess
-  (pps
-   GT.ppx_all
-   ;
-   )))
+  (pps GT.ppx_all OCanren-ppx.ppx_fresh)))
+
+(cram
+ (applies_to relational_forward_tests)
+ (deps ./relational_forward_tests.exe))
 
 (executable
  (name relational_backward_tests)
  (modules relational_backward_tests)
  (libraries JGS_lib OCanren)
- (flags (-rectypes))
+ (flags
+  (:standard -rectypes))
  (preprocess
-  (pps
-   GT.ppx_all
-   OCanren-ppx.ppx_fresh
-   ;
-   )))
+  (pps GT.ppx_all OCanren-ppx.ppx_fresh)))
+
+(cram
+ (applies_to relational_backward_tests)
+ (deps ./relational_backward_tests.exe))
 
 (executable
  (name relational_closure_tests)
  (modules relational_closure_tests)
  (libraries JGS_lib OCanren)
- (flags (-rectypes))
+ (flags
+  (:standard -rectypes))
  (preprocess
-  (pps
-   GT.ppx_all
-   OCanren-ppx.ppx_fresh
-   ;
-   )))
+  (pps GT.ppx_all OCanren-ppx.ppx_fresh)))
+
+(cram
+ (applies_to relational_closure_tests)
+ (deps ./relational_closure_tests.exe))
 
 (executable
  (name standard_classes_tests)
  (modules standard_classes_tests)
  (libraries JGS_lib OCanren)
- (flags (-rectypes))
+ (flags
+  (:standard -rectypes))
  (preprocess
-  (pps
-   GT.ppx_all
-   OCanren-ppx.ppx_fresh
-   ;
-   )))
+  (pps GT.ppx_all OCanren-ppx.ppx_fresh)))
+
+(cram
+ (applies_to standard_classes_tests)
+ (deps ./standard_classes_tests.exe))
 
 (executable
  (name standard2)
@@ -71,21 +90,8 @@
  (flags
   (:standard -rectypes))
  (preprocess
-  (pps
-   GT.ppx_all
-   OCanren-ppx.ppx_fresh
-   ;
-   )))
+  (pps GT.ppx_all OCanren-ppx.ppx_fresh)))
 
 (cram
- (deps
-  ./functional_tests.exe
-  ./reflection_tests.exe
-  ./relational_forward_tests.exe
-  ./relational_backward_tests.exe
-  ./relational_closure_tests.exe
-  ./standard_classes_tests.exe
-  ./standard2.exe
-  ./Important_closure.exe
-  ;
-  ))
+ (applies_to standard2)
+ (deps ./standard2.exe))
